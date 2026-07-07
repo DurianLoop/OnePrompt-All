@@ -1,0 +1,30 @@
+{
+  "date": "2026-07-01",
+  "label_rule": {
+    "positive": "proposal can be used as a target instance or target candidate mask",
+    "negative": "proposal is obvious background, large adhesion, fragment, or inconsistent with the case-level instance target"
+  },
+  "cases": [
+    {
+      "case_name": "elephant_pair",
+      "stage3_feature_json": "runs/research_direction/stage3_feature_matching/elephant_pair/feature_scores.json",
+      "positive_group_ids": [4, 5, 8],
+      "negative_group_ids": [1, 2, 3, 6, 7, 9, 10, 11, 12],
+      "note": "4/5/8 cover the elephant body; others are water, waterfall, background adhesion, or too local."
+    },
+    {
+      "case_name": "horse_head",
+      "stage3_feature_json": "runs/research_direction/multi_instance_horse_head/stage3_feature_matching/feature_scores.json",
+      "positive_group_ids": [3, 4, 6, 7, 8, 11, 12, 13, 14],
+      "negative_group_ids": [1, 2, 5, 9, 10, 15, 16],
+      "note": "This case is labeled as complete horse instances; small head patches and fragments are negative."
+    },
+    {
+      "case_name": "elephant3_eps28",
+      "stage3_feature_json": "runs/research_direction/p0_p3_closure/elephant3_tuning/stage3_eps28_relaxed/feature_scores.json",
+      "positive_group_ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24],
+      "negative_group_ids": [11, 18],
+      "note": "Compact proposals on visible elephants are positive; 11/18 are obvious river/forest/background adhesion."
+    }
+  ]
+}

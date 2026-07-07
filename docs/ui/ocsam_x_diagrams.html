@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OCSAM-X 研究框架示意图</title>
+  <style>
+    :root {
+      --paper: #f7f6f1;
+      --ink: #151515;
+      --muted: #66665f;
+      --line: #d8d3c7;
+      --panel: #ffffff;
+      --blue: #2457d6;
+      --teal: #087f73;
+      --amber: #b46b00;
+      --red: #b83232;
+      --green: #2f7d32;
+      --violet: #6d4ca5;
+      --shadow: 0 18px 50px rgba(35, 31, 22, 0.10);
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+    }
+
+    .toc {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 24px;
+      border-right: 1px solid var(--line);
+      background: #ede9dd;
+    }
+
+    .mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 26px;
+      color: #fff;
+      background: var(--ink);
+      font-family: var(--mono);
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .toc h1 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .toc p {
+      margin: 0 0 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 10px 0;
+      color: var(--ink);
+      text-decoration: none;
+      border-top: 1px solid rgba(21, 21, 21, 0.10);
+      font-size: 14px;
+    }
+
+    main {
+      padding: 42px clamp(24px, 4vw, 68px) 72px;
+    }
+
+    .hero {
+      max-width: 1180px;
+      margin: 0 auto 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--amber);
+      font-family: var(--mono);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .hero h2 {
+      max-width: 980px;
+      margin: 0;
+      font-size: clamp(36px, 5vw, 76px);
+      line-height: 0.98;
+      letter-spacing: 0;
+      text-wrap: pretty;
+    }
+
+    .hero .summary {
+      max-width: 920px;
+      margin-top: 24px;
+      color: #3d3b35;
+      font-size: 18px;
+    }
+
+    .figure {
+      max-width: 1180px;
+      margin: 26px auto 34px;
+      padding: 28px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .figure-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .figure-header h3 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    .figure-header p {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(94px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .node {
+      position: relative;
+      min-height: 126px;
+      padding: 14px 14px 12px;
+      border: 1px solid var(--line);
+      background: #fbfaf7;
+    }
+
+    .node::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -13px;
+      width: 13px;
+      border-top: 2px solid var(--line);
+    }
+
+    .node:last-child::after { display: none; }
+
+    .node strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .node span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .node.input { border-top: 5px solid var(--blue); }
+    .node.prompt { border-top: 5px solid var(--teal); }
+    .node.model { border-top: 5px solid var(--violet); }
+    .node.uncertainty { border-top: 5px solid var(--amber); }
+    .node.output { border-top: 5px solid var(--green); }
+
+    .three-lanes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .lane {
+      min-height: 360px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fbfaf7;
+    }
+
+    .lane h4 {
+      margin: 0 0 14px;
+      font-size: 19px;
+    }
+
+    .lane .step {
+      margin: 12px 0;
+      padding: 12px;
+      border-left: 4px solid var(--line);
+      background: #fff;
+    }
+
+    .lane .step strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .lane .step span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .support .step { border-color: var(--blue); }
+    .uncertain .step { border-color: var(--amber); }
+    .refine .step { border-color: var(--green); }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 74px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .bar-track {
+      height: 18px;
+      border: 1px solid var(--line);
+      background: #efede7;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--blue);
+    }
+
+    .bar.teal { background: var(--teal); }
+    .bar.amber { background: var(--amber); }
+    .bar.green { background: var(--green); }
+    .bar.violet { background: var(--violet); }
+
+    .stat-box {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fbfaf7;
+    }
+
+    .stat-box h4 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .stat-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .matrix th,
+    .matrix td {
+      padding: 12px 10px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .matrix th {
+      background: #efede7;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .matrix td:nth-child(2),
+    .matrix td:nth-child(3),
+    .matrix td:nth-child(4) {
+      text-align: center;
+    }
+
+    .yes { color: var(--green); font-weight: 700; }
+    .risk { color: var(--amber); font-weight: 700; }
+    .no { color: var(--red); font-weight: 700; }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      counter-reset: stage;
+    }
+
+    .milestone {
+      min-height: 210px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: #fbfaf7;
+      counter-increment: stage;
+    }
+
+    .milestone::before {
+      content: "0" counter(stage);
+      display: inline-block;
+      margin-bottom: 18px;
+      color: var(--amber);
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .milestone strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .milestone span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .claim-map {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .claim {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #fbfaf7;
+    }
+
+    .claim h4 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .claim p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .claim.good { border-top: 6px solid var(--green); }
+    .claim.pending { border-top: 6px solid var(--amber); }
+    .claim.bad { border-top: 6px solid var(--red); }
+
+    .caption {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    @media (max-width: 1040px) {
+      .shell { grid-template-columns: 1fr; }
+      .toc {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .toc a { display: inline-block; margin-right: 18px; }
+      .pipeline,
+      .roadmap { grid-template-columns: 1fr 1fr; }
+      .node::after { display: none; }
+      .three-lanes,
+      .evidence-grid,
+      .claim-map { grid-template-columns: 1fr; }
+      .figure-header { display: block; }
+      .figure-header p { margin-top: 10px; text-align: left; }
+    }
+
+    @media print {
+      body { background: white; }
+      .shell { display: block; }
+      .toc { display: none; }
+      main { padding: 0; }
+      .figure {
+        page-break-inside: avoid;
+        margin: 0 0 22px;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="toc">
+      <div class="mark">OC</div>
+      <h1>OCSAM-X 示意图</h1>
+      <p>用于论文讨论、组会汇报和后续 PPT 的 HTML 图集。</p>
+      <a href="#fig1">图 1 总体框架</a>
+      <a href="#fig2">图 2 三个核心组件</a>
+      <a href="#fig3">图 3 证据与差距</a>
+      <a href="#fig4">图 4 实验矩阵</a>
+      <a href="#fig5">图 5 顶会路线图</a>
+      <a href="#fig6">图 6 Claim 边界</a>
+    </aside>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Phase3 Research Visuals</p>
+        <h2>OCSAM-X：支持集引导、不确定性感知的医学 SAM 自动提示适配框架</h2>
+        <p class="summary">
+          这组示意图把当前想法从“prompt selector 小组件”升级为完整研究框架：
+          support-guided prompt generation、prompt-induced uncertainty、reliability selector 和 lightweight refinement。
+        </p>
+      </section>
+
+      <section id="fig1" class="figure">
+        <div class="figure-header">
+          <div>
+            <span class="tag">Figure 1</span>
+            <h3>OCSAM-X 总体流程</h3>
+          </div>
+          <p>从医学图像输入，到多源 prompt 生成，再到 SAM-family 推理、可靠性选择和最终 mask。</p>
+        </div>
+
+        <div class="pipeline">
+          <div class="node input">
+            <strong>医学图像</strong>
+            <span>IDRID / MonuSeg / Polyp / Skin / Ultrasound / CT-MRI</span>
+          </div>
+          <div class="node prompt">
+            <strong>自动提示生成</strong>
+            <span>auto box、医学候选点、结构化 prompt</span>
+          </div>
+          <div class="node prompt">
+            <strong>支持集引导</strong>
+            <span>support image/mask 检索，生成 pseudo prompt</span>
+          </div>
+          <div class="node prompt">
+            <strong>扰动采样</strong>
+            <span>box jitter、point jitter、多 prompt ensemble</span>
+          </div>
+          <div class="node model">
+            <strong>SAM-family 推理</strong>
+            <span>SAM、MedSAM、SAM2、Matcher、SAM3</span>
+          </div>
+          <div class="node uncertainty">
+            <strong>可靠性估计</strong>
+            <span>uncertainty、mask stability、quality score</span>
+          </div>
+          <div class="node output">
+            <strong>最终输出</strong>
+            <span>selected mask、confidence、failure reason</span>
+          </div>
+        </div>
+        <p class="caption">设计意图：展示 OCSAM-X 不是单一模型，而是 prompt 生成、选择和适配框架。</p>
+      </section>
+
+      <section id="fig2" class="figure">
+        <div class="figure-header">
+          <div>
+            <span class="tag">Figure 2</span>
+            <h3>三个核心组件</h3>
+          </div>
+          <p>顶会版本不能只靠 selector，需要 support、uncertainty 和 refinement 共同形成方法闭环。</p>
+        </div>
+
+        <div class="three-lanes">
+          <div class="lane support">
+            <h4>A. Support-Guided Prompt</h4>
+            <div class="step">
+              <strong>Support Pool</strong>
+              <span>同数据域图像和 mask 作为小样本先验。</span>
+            </div>
+            <div class="step">
+              <strong>Similarity Retrieval</strong>
+              <span>颜色、纹理、DINOv2 或 lesion/nuclei 统计特征。</span>
+            </div>
+            <div class="step">
+              <strong>Pseudo Prompt</strong>
+              <span>生成 support_box_v1 / support_point_v1。</span>
+            </div>
+          </div>
+
+          <div class="lane uncertain">
+            <h4>B. Prompt Uncertainty</h4>
+            <div class="step">
+              <strong>Prompt Perturbation</strong>
+              <span>对 box 和 point 做多次轻扰动。</span>
+            </div>
+            <div class="step">
+              <strong>Mask Ensemble</strong>
+              <span>同一目标得到多个候选 mask。</span>
+            </div>
+            <div class="step">
+              <strong>Stability Score</strong>
+              <span>计算 variance、entropy、pairwise IoU。</span>
+            </div>
+          </div>
+
+          <div class="lane refine">
+            <h4>C. Lightweight Adaptation</h4>
+            <div class="step">
+              <strong>Quality Predictor</strong>
+              <span>预测候选 prompt/mask 的可靠性。</span>
+            </div>
+            <div class="step">
+              <strong>Prompt Selector</strong>
+              <span>跨 prompt、跨模型选择最可靠输出。</span>
+            </div>
+            <div class="step">
+              <strong>Mask Refinement</strong>
+              <span>轻量 CNN/U-Net refiner 修正边界。</span>
+            </div>
+          </div>
+        </div>
+        <p class="caption">设计意图：把方法拆成可以分别消融的三组贡献。</p>
+      </section>
+
+      <section id="fig3" class="figure">
+        <div class="figure-header">
+          <div>
+            <span class="tag">Figure 3</span>
+            <h3>当前证据与上限差距</h3>
+          </div>
+          <p>当前 selector 有正向趋势，但不能直接宣称强 SOTA；oracle gap 说明仍有研究空间。</p>
+        </div>
+
+        <div class="evidence-grid">
+          <div class="bar-list" aria-label="Mean Dice bars">
+            <div class="bar-row">
+              <span>fixed auto_box</span>
+              <div class="bar-track"><div class="bar" style="width: 77.95%"></div></div>
+              <strong>0.3118</strong>
+            </div>
+            <div class="bar-row">
+              <span>selector v1</span>
+              <div class="bar-track"><div class="bar teal" style="width: 80.85%"></div></div>
+              <strong>0.3234</strong>
+            </div>
+            <div class="bar-row">
+              <span>selector v2</span>
+              <div class="bar-track"><div class="bar amber" style="width: 81.58%"></div></div>
+              <strong>0.3263</strong>
+            </div>
+            <div class="bar-row">
+              <span>selector v3</span>
+              <div class="bar-track"><div class="bar green" style="width: 81.98%"></div></div>
+              <strong>0.3279</strong>
+            </div>
+            <div class="bar-row">
+              <span>oracle auto-family</span>
+              <div class="bar-track"><div class="bar violet" style="width: 89.60%"></div></div>
+              <strong>0.3584</strong>
+            </div>
+            <div class="bar-row">
+              <span>oracle portfolio</span>
+              <div class="bar-track"><div class="bar violet" style="width: 100%"></div></div>
+              <strong>0.4002</strong>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <h4>当前审计结论</h4>
+            <p>
+              selector v3 相对 fixed auto_box 的 mean delta 为 +0.0160，
+              95% CI 为 [-0.0001, +0.0340]，p-value 为 0.0689。
+              因此目前只能说有正向趋势，不能说已经显著超过强基线。
+            </p>
+          </div>
+        </div>
+        <p class="caption">设计意图：一眼说明当前成果、局限和继续做 Phase3 的空间。</p>
+      </section>
+
+      <section id="fig4" class="figure">
+        <div class="figure-header">
+          <div>
+            <span class="tag">Figure 4</span>
+            <h3>实验矩阵</h3>
+          </div>
+          <p>如果要冲顶会，必须从 prompt ablation 扩展到强模型、强数据集和统计检验。</p>
+        </div>
+
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>实验层级</th>
+              <th>当前</th>
+              <th>下一步</th>
+              <th>顶会要求</th>
+              <th>目的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Prompt ablation</td>
+              <td class="yes">已完成</td>
+              <td class="yes">继续扩展</td>
+              <td class="yes">必须</td>
+              <td>证明自动 prompt、support prompt、uncertainty 的单独贡献。</td>
+            </tr>
+            <tr>
+              <td>模型组合</td>
+              <td class="risk">初步</td>
+              <td class="yes">cross-model calibration</td>
+              <td class="yes">必须</td>
+              <td>证明 SAM、MedSAM、SAM2、Matcher 之间有互补性。</td>
+            </tr>
+            <tr>
+              <td>强医学基线</td>
+              <td class="no">不足</td>
+              <td class="risk">MedSAM2 / SAM-Med2D</td>
+              <td class="yes">必须</td>
+              <td>判断是否能和近几年强医学方法比较。</td>
+            </tr>
+            <tr>
+              <td>数据规模</td>
+              <td class="risk">40 cases</td>
+              <td class="risk">100-200 cases</td>
+              <td class="yes">多域大样本</td>
+              <td>让统计检验和泛化结论更可靠。</td>
+            </tr>
+            <tr>
+              <td>统计检验</td>
+              <td class="yes">已开始</td>
+              <td class="yes">按域/按模型扩展</td>
+              <td class="yes">必须</td>
+              <td>避免只报告小幅均值提升。</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="caption">设计意图：把“现在有什么”和“还缺什么”清楚分开。</p>
+      </section>
+
+      <section id="fig5" class="figure">
+        <div class="figure-header">
+          <div>
+            <span class="tag">Figure 5</span>
+            <h3>顶会冲刺路线图</h3>
+          </div>
+          <p>建议把接下来工作拆成五个可验收里程碑，而不是继续微调 selector 小数点。</p>
+        </div>
+
+        <div class="roadmap">
+          <div class="milestone">
+            <strong>Support Prompt v1</strong>
+            <span>实现 support_box_v1 / support_point_v1，验证是否和 image-only prompt 互补。</span>
+          </div>
+          <div class="milestone">
+            <strong>Perturbation Uncertainty</strong>
+            <span>对 box/point 做扰动采样，生成稳定性和不确定性特征。</span>
+          </div>
+          <div class="milestone">
+            <strong>Selector v4</strong>
+            <span>加入 support、uncertainty 和 cross-model calibration。</span>
+          </div>
+          <div class="milestone">
+            <strong>Mask Refinement</strong>
+            <span>训练轻量 refiner，输入图像、SAM mask 和 uncertainty map。</span>
+          </div>
+          <div class="milestone">
+            <strong>Strong Baselines</strong>
+            <span>扩到 100-200 cases，对比 MedSAM2、SAM-Med2D、Med-SA、nnU-Net。</span>
+          </div>
+        </div>
+        <p class="caption">设计意图：给后续研发和论文实验一个明确顺序。</p>
+      </section>
+
+      <section id="fig6" class="figure">
+        <div class="figure-header">
+          <div>
+            <span class="tag">Figure 6</span>
+            <h3>Claim 边界</h3>
+          </div>
+          <p>用三层 claim 防止论文表达过度，同时保留冲顶会的上升空间。</p>
+        </div>
+
+        <div class="claim-map">
+          <div class="claim good">
+            <h4>现在可以说</h4>
+            <p>
+              OCSAM 提升了 SAM-family 在医学图像中的自动 prompt reliability，
+              并展示了 support、uncertainty 和 selector 的研究价值。
+            </p>
+          </div>
+          <div class="claim pending">
+            <h4>扩展后可以说</h4>
+            <p>
+              OCSAM-X 通过支持集引导和不确定性感知提示适配，
+              在多个医学域上稳定提升 promptable segmentation。
+            </p>
+          </div>
+          <div class="claim bad">
+            <h4>现在不能说</h4>
+            <p>
+              OCSAM 已经超过近几年所有强医学分割模型，或已经达到通用 SOTA。
+              这需要更大数据和强基线验证。
+            </p>
+          </div>
+        </div>
+        <p class="caption">设计意图：帮助我们后面写摘要和 introduction 时守住可信边界。</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

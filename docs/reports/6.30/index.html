@@ -1,0 +1,1927 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAM3 × Matcher 教师方向闭环展示</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --paper-soft: #fbfcfe;
+      --ink: #18202a;
+      --muted: #5b6675;
+      --line: #dce2ea;
+      --line-strong: #bdc8d6;
+      --blue: #2458a6;
+      --blue-soft: #e8f0fb;
+      --green: #25705c;
+      --green-soft: #e7f4ef;
+      --orange: #9a5a17;
+      --orange-soft: #fff2df;
+      --red: #a23636;
+      --red-soft: #fdecec;
+      --code: #111827;
+      --radius: 8px;
+      --shadow: 0 12px 30px rgba(25, 37, 54, 0.08);
+      --mono: "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: "Source Han Sans SC", "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+      --serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.62;
+      letter-spacing: 0;
+      text-wrap: pretty;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 264px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      border-right: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      overflow: auto;
+    }
+
+    .brand {
+      display: grid;
+      gap: 6px;
+      padding: 4px 6px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand b {
+      font-family: var(--serif);
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 4px;
+      margin-top: 18px;
+    }
+
+    .nav a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      border-color: var(--line);
+      background: var(--paper-soft);
+      color: var(--ink);
+    }
+
+    .nav small {
+      color: #8b96a6;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 28px clamp(18px, 4vw, 54px) 64px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 20px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 980px;
+      font-family: var(--serif);
+      font-size: clamp(34px, 4.2vw, 56px);
+      font-weight: 700;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 38px);
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .lead {
+      max-width: 980px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .metric {
+      min-height: 118px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric .value {
+      margin-top: 8px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .metric .note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    section {
+      margin-top: 28px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      max-width: 860px;
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper-soft);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tag.ok {
+      border-color: #b8d8cb;
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .tag.warn {
+      border-color: #ebcf9e;
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .tag.risk {
+      border-color: #efbbbb;
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card strong {
+      color: var(--ink);
+    }
+
+    .answer-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .answer {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) 130px;
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+    }
+
+    .answer.wide {
+      grid-template-columns: 180px minmax(0, 1fr);
+    }
+
+    .answer b {
+      line-height: 1.35;
+    }
+
+    .answer p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .answer-body {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .answer-status {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    .evidence-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .evidence-strip.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mini-figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .mini-figure img {
+      display: block;
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      background: #eef2f6;
+      cursor: zoom-in;
+    }
+
+    .mini-figure figcaption {
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .mini-figure figcaption b,
+    figure figcaption b {
+      display: block;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+
+    .mini-figure figcaption span,
+    figure figcaption span {
+      display: block;
+    }
+
+    .mini-figure figcaption code,
+    figure figcaption code {
+      color: var(--blue);
+    }
+
+    .method-note {
+      padding: 11px 12px;
+      border: 1px solid #c9d9ee;
+      border-radius: var(--radius);
+      background: var(--blue-soft);
+      color: #284764;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .method-note b {
+      color: #18385f;
+    }
+
+    .method-note code {
+      color: #18385f;
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    body.contrast-mode figure img,
+    body.contrast-mode .mini-figure img {
+      filter: contrast(1.28) saturate(1.28) brightness(1.04);
+    }
+
+    .principle-animation {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #ffffff, #f6f8fb);
+    }
+
+    .principle-animation svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .principle-animation .node-box {
+      fill: #ffffff;
+      stroke: #b7c5d6;
+      stroke-width: 1.5;
+    }
+
+    .principle-animation .node-title {
+      fill: #1b2430;
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .principle-animation .node-sub {
+      fill: #657184;
+      font-family: var(--sans);
+      font-size: 12px;
+    }
+
+    .principle-animation .arrow {
+      fill: none;
+      stroke: #5b7faf;
+      stroke-width: 2.2;
+      stroke-dasharray: 7 7;
+      animation: dashFlow 1.8s linear infinite;
+    }
+
+    .principle-animation .signal {
+      fill: var(--blue);
+      opacity: 0.9;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: pulseNode 1.8s ease-in-out infinite;
+    }
+
+    .principle-caption {
+      display: grid;
+      gap: 6px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 28px;
+      padding: 4px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend-swatch {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px var(--line-strong);
+    }
+
+    .legend-swatch.red {
+      background: #ef4444;
+    }
+
+    .legend-swatch.yellow {
+      background: #facc15;
+    }
+
+    .legend-swatch.blue {
+      background: #2563eb;
+    }
+
+    @keyframes dashFlow {
+      to {
+        stroke-dashoffset: -28;
+      }
+    }
+
+    @keyframes pulseNode {
+      0%, 100% {
+        opacity: 0.35;
+        transform: scale(0.94);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.12);
+      }
+    }
+
+    .taxonomy-table {
+      font-size: 13px;
+    }
+
+    .taxonomy-table td,
+    .taxonomy-table th {
+      padding: 8px 10px;
+    }
+
+    .explain-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .explain-step {
+      min-height: 138px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+    }
+
+    .explain-step .step-id {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .explain-step h3 {
+      margin-top: 8px;
+    }
+
+    .explain-step p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .matcher-figure-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .flow-note {
+      padding: 12px 14px;
+      border: 1px solid #c9d9ee;
+      border-radius: var(--radius);
+      background: var(--blue-soft);
+      color: #27496f;
+      font-size: 14px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f4f8;
+      color: #344054;
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td.num,
+    th.num {
+      text-align: right;
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 16px;
+    }
+
+    .tab-button,
+    .filter-button,
+    .utility-button {
+      min-height: 36px;
+      padding: 7px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      background: var(--paper);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+
+    .tab-button:hover,
+    .filter-button:hover,
+    .utility-button:hover,
+    .tab-button.active,
+    .filter-button.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      position: relative;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+    }
+
+    .timeline-item .phase {
+      color: var(--blue);
+      font-family: var(--mono);
+      font-weight: 800;
+    }
+
+    .timeline-item p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .gallery-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      overflow: hidden;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: 230px;
+      object-fit: contain;
+      background: #eef2f6;
+      cursor: zoom-in;
+    }
+
+    figcaption {
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+    }
+
+    figcaption b {
+      line-height: 1.35;
+    }
+
+    figcaption span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      overflow: hidden;
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      min-height: 44px;
+      padding: 11px 14px;
+      cursor: pointer;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    pre {
+      margin: 0;
+      padding: 14px;
+      overflow: auto;
+      border-top: 1px solid var(--line);
+      background: var(--code);
+      color: #e5edf7;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.94em;
+    }
+
+    .claim-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .claim-grid ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .claim-grid li {
+      margin: 6px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .route {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .route span {
+      min-height: 66px;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .quote {
+      padding: 16px;
+      border-left: 4px solid var(--blue);
+      background: var(--blue-soft);
+      color: #243b5c;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      z-index: 20;
+      padding: 28px;
+      background: rgba(10, 18, 28, 0.82);
+    }
+
+    .lightbox.open {
+      display: grid;
+    }
+
+    .lightbox-inner {
+      width: min(1180px, 94vw);
+      max-height: 92vh;
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: var(--paper);
+    }
+
+    .lightbox img {
+      width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+      background: #eef2f6;
+    }
+
+    .lightbox-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .lightbox-caption {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mobile-top {
+      display: none;
+    }
+
+    @media (max-width: 1080px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .mobile-top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+      }
+
+      .mobile-top b {
+        font-family: var(--serif);
+      }
+
+      .main {
+        padding: 18px 14px 44px;
+      }
+
+      .hero-grid,
+      .cards,
+      .gallery,
+      .claim-grid,
+      .two-col,
+      .route {
+        grid-template-columns: 1fr;
+      }
+
+      .answer {
+        grid-template-columns: 1fr;
+      }
+
+      .answer.wide,
+      .evidence-strip,
+      .evidence-strip.two,
+      .explain-grid,
+      .matcher-figure-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      section,
+      .hero {
+        padding: 18px;
+      }
+
+      figure img {
+        height: 210px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .sidebar,
+      .mobile-top,
+      .tabs,
+      .gallery-toolbar,
+      .lightbox {
+        display: none !important;
+      }
+
+      .layout {
+        display: block;
+      }
+
+      .main {
+        padding: 0;
+      }
+
+      section,
+      .hero {
+        break-inside: avoid;
+        box-shadow: none;
+      }
+
+      .panel {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-top">
+    <b>SAM3 × Matcher 闭环展示</b>
+    <a class="tag" href="#commands">命令清单</a>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <b>SAM3 × Matcher<br>教师方向闭环展示</b>
+        <span>2026-06-30 汇报页</span>
+      </div>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#teacher">老师问题回应 <small>01</small></a>
+        <a href="#sam3">SAM3 最小验证 <small>02</small></a>
+        <a href="#matcher">Matcher 闭环 <small>03</small></a>
+        <a href="#p0p3">P0-P3 进展 <small>04</small></a>
+        <a href="#evidence">附录图集 <small>05</small></a>
+        <a href="#claims">可声称与边界 <small>06</small></a>
+        <a href="#plan">下一步计划 <small>07</small></a>
+        <a href="#commands">复现命令 <small>08</small></a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="hero" id="top">
+        <div class="eyebrow">Closed-loop validation for teacher direction</div>
+        <h1>把老师截图中的猜想逐项回应，并展示后续 P0-P3 的最小实验闭环</h1>
+        <p class="lead">
+          当前主线是：当 SAM3 text prompt 对复杂文本、动作词或领域词不稳定时，转向 Matcher/DINO 产生 matched points，
+          再通过正负点 feedback 修正点分布，按实例聚类采样 point prompts，送入 SAM/SAM3 生成 mask proposals，
+          最后用 instance-level feature matching 过滤并估计实例数 K。
+        </p>
+        <div>
+          <button class="utility-button" id="contrastToggle" type="button">增强图片对比度</button>
+        </div>
+        <div class="hero-grid" aria-label="核心结论">
+          <div class="metric">
+            <div class="label">Text prompt failure</div>
+            <div class="value">0 mask</div>
+            <div class="note"><code>white girl</code> / <code>execute</code> 已复现失败</div>
+          </div>
+          <div class="metric">
+            <div class="label">Point feedback</div>
+            <div class="value">0.652→0.738</div>
+            <div class="note">累计正点、正负点改善 SAM mask score</div>
+          </div>
+          <div class="metric">
+            <div class="label">Feature feedback</div>
+            <div class="value">9→29</div>
+            <div class="note">Stage 1 selected points 增加，负点邻域降为 0</div>
+          </div>
+          <div class="metric">
+            <div class="label">Multi-instance K</div>
+            <div class="value">K=6</div>
+            <div class="note">elephant3 调参后多实例分割成功；horse-head K=2</div>
+          </div>
+        </div>
+      </header>
+
+      <section id="teacher">
+        <div class="section-head">
+          <div>
+            <h2>先回应老师截图中的内容</h2>
+            <p>这里按老师原始问题逐条回应，避免只给进展、不回答问题本身。每一条都对应已有实验、脚本或下一步边界。</p>
+          </div>
+          <span class="tag ok">逐项回应</span>
+        </div>
+
+        <div class="answer-list">
+          <div class="answer">
+            <b>a. SAM3 point 效果较好</b>
+            <div class="answer-body">
+              <p>初步支持。点到 foreground/background 后，point prompt 比 text prompt 更可控。elephant case 中单点 score 为 0.652，累计正点提升到 0.676，两正一点负提升到 0.738。</p>
+              <div class="evidence-strip">
+                <figure class="mini-figure">
+                  <img src="assets/sam3_point_single.png" alt="SAM3 single point result">
+                  <figcaption><b>单点 point prompt</b><span>图中彩色区域是 SAM3 根据一个 foreground 点生成的 mask。能锁定左侧 elephant 的局部，但覆盖不完整，说明单点有方向性但信息不足。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/sam3_point_cumulative_fg.png" alt="SAM3 cumulative foreground points">
+                  <figcaption><b>累计两个正点</b><span>第二个 foreground 点加入后，mask 从局部扩展到更完整的主体区域。这个图用来说明“累计 prompt”比只看最新点更合理。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/sam3_point_posneg.png" alt="SAM3 positive and negative points">
+                  <figcaption><b>两正一点负</b><span>负点放在另一只 elephant 上，告诉模型“那里不是目标”。结果 score 提升到 0.738，目标边界更集中。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>这些图来自同一个 SAM3 point 验证脚本。脚本分别输入一组点、两组累计正点、两正一点负点，然后把模型输出的 mask 半透明叠加到原图上，所以能直接比较不同 prompt 设置下 mask 的变化。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">支持</span></div>
+          </div>
+          <div class="answer">
+            <b>b. SAM3 text 对 <code>white girl</code>、<code>execute</code> 失败</b>
+            <div class="answer-body">
+              <p>支持，而且现在有更多实测示例。<code>girl</code> 可返回实例，但 <code>white girl</code> 返回 0；<code>execute</code> 在 elephant 图和 person 图上都返回 0；同一人物图中 <code>person</code> 也返回 0，说明 text prompt 的失效不只来自“复杂词”，也可能来自图像/模型对类别解释的不稳定。</p>
+              <table class="taxonomy-table">
+                <thead>
+                  <tr>
+                    <th>实测 prompt</th>
+                    <th>图像</th>
+                    <th class="num">instances</th>
+                    <th>类型</th>
+                    <th>结论</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>execute</code></td><td>elephant1</td><td class="num">0</td><td>action</td><td>动作词失败</td></tr>
+                  <tr><td><code>execute</code></td><td>person</td><td class="num">0</td><td>action</td><td>跨图仍失败</td></tr>
+                  <tr><td><code>white girl</code></td><td>person</td><td class="num">0</td><td>attribute phrase</td><td>属性+名词失败</td></tr>
+                  <tr><td><code>person</code></td><td>person</td><td class="num">0</td><td>simple noun</td><td>简单词也可能不稳</td></tr>
+                  <tr><td><code>lesion / polyp</code></td><td>医学场景</td><td class="num">待测</td><td>medical term</td><td>taxonomy 标为高风险 fallback，不写成实测结论</td></tr>
+                </tbody>
+              </table>
+              <div class="evidence-strip">
+                <figure class="mini-figure">
+                  <img src="assets/sam3_text_execute.png" alt="execute prompt failed on elephant">
+                  <figcaption><b><code>execute</code> on elephant</b><span>图中没有有效彩色 mask，表示 text prompt 没有找到可分割对象。原因上，execute 是动作词，不是可见物体类别。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/sam3_text_person_execute.png" alt="execute prompt failed on person image">
+                  <figcaption><b><code>execute</code> on person</b><span>换到人物图后仍然是 0 mask，说明这个失败不是 elephant 图偶然现象，而是动作词作为 segmentation prompt 本身不合适。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/sam3_text_white_girl.png" alt="white girl prompt failed">
+                  <figcaption><b><code>white girl</code></b><span>同一人物图中，加入属性词 white 后没有返回 mask。它说明复合属性表达比简单名词更容易让 SAM3 text prompt 失效。</span></figcaption>
+                </figure>
+              </div>
+              <div class="evidence-strip two">
+                <figure class="mini-figure">
+                  <img src="assets/sam3_text_girl.png" alt="girl prompt works">
+                  <figcaption><b><code>girl</code> 对照正例</b><span>同一张人物图上，简单名词 girl 能返回 3 个实例。这个对照说明不是图片完全不可用，而是复杂 text prompt 更不稳定。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/sam3_text_person.png" alt="person prompt failed">
+                  <figcaption><b><code>person</code> 失败例</b><span>person 是简单 noun 但也返回 0，提示 text failure 不只发生在复杂词上；后续需要记录 prompt 类型、图像类型和返回实例数。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>这些图来自同一批 SAM3 text 验证结果。每次只改变输入文本 prompt，记录返回实例数；如果返回 mask，就叠加到原图上，如果返回 0，则图里保持原图/空叠加，用来直观看到 text prompt 是否真的分割出目标。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">支持</span></div>
+          </div>
+          <div class="answer">
+            <b>Stage 1：图大于 DINO 输入且不允许降采样</b>
+            <div class="answer-body">
+              <p>已做最小回答，并且已经继续把它推进到多实例分割成功。新增 sliding-window Stage 1：target 切成重叠 tiles，逐 tile 做 DINO matching，再把点坐标恢复到原图。elephant3 被切成 6 个 tile，合并 selected points 为 96。你指出得对：左图其实已经把多只 elephant 相关区域召回出来了；我后续把这些点接入 Stage 2/3，调小 DBSCAN 半径到 <code>eps=28</code>，最终 Stage 3 保留 6 个实例，<code>K_pred=6</code>。</p>
+              <div class="evidence-strip two">
+                <figure class="mini-figure">
+                  <img src="assets/p15_sliding_window_elephant3.png" alt="Sliding-window matching on elephant3">
+                  <figcaption><b>Sliding-window matched points</b><span>图上的点来自不同 tile，但已经恢复到原图坐标。它说明即使不把大图整体缩小，也能在原图尺度上收集 matched points。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/p0_runner_elephant3_cluster.png" alt="Elephant3 clustered points">
+                  <figcaption><b>tile points 后续聚类</b><span>这些点再进入 Stage 2 聚类。当前还没完成 tile-level mask merge，但已经回答了“大图如何先得到点”的问题。</span></figcaption>
+                </figure>
+              </div>
+              <div class="evidence-strip">
+                <figure class="mini-figure">
+                  <img src="assets/elephant3_tuned_stage2_eps28_cluster.png" alt="Tuned elephant3 Stage 2 clustering eps28">
+                  <figcaption><b>调参后 Stage 2 聚类</b><span>用 sliding-window 的 96 个点重新聚类，<code>eps=28</code> 得到 6 个 cluster，比旧 runner 的 1 个 cluster 更符合多实例场景。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/elephant3_tuned_proposals_eps28.png" alt="Tuned elephant3 Stage 2 proposals">
+                  <figcaption><b>调参后 SAM proposals</b><span>6 个 cluster 生成 24 个候选 masks，给 Stage 3 足够多的候选，而不是只生成旧版本的 2 个 proposals。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/elephant3_tuned_stage3_k6.png" alt="Tuned elephant3 Stage 3 K6 retained masks">
+                  <figcaption><b>调参后 Stage 3 输出</b><span>Stage 3 保留 6 个 masks，<code>K_pred=6</code>。这说明左图的点级召回可以成功转成多实例分割。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>先把 elephant3 target 图按固定窗口切成多个重叠小块，每个小块单独做 DINO matching；再把 96 个 selected points 转成 Stage 2 可读格式，用 DBSCAN 聚类。旧参数 <code>eps=70</code> 只得到 1 个 cluster、2 个 proposals、<code>K_pred=0</code>；新参数 <code>eps=28, min_samples=2</code> 得到 6 个 cluster、24 个 proposals，宽松 Stage 3 筛选后保留 6 个实例。<br><b>参数结论：</b><code>eps=20</code> 会过碎并错误保留大片背景；<code>eps=45/55</code> 会把中间目标合并过粗；当前最适合展示的是 <code>eps=28</code>。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">已落地</span></div>
+          </div>
+          <div class="answer">
+            <b>Stage 1：matching 过程如何完成</b>
+            <div class="answer-body">
+              <p>已打开流程：reference box/mask 提取 DINO feature prototype，在 target feature map 上算 cosine similarity，取 top-k matched points，并输出 heatmap/overlay。</p>
+              <div class="evidence-strip">
+                <figure class="mini-figure">
+                  <img src="assets/reference_box_elephant1.png" alt="Reference elephant box used to extract prototype">
+                  <figcaption><b>reference box</b><span>红框就是 reference 目标区域。DINO prototype 只从这个框内的 elephant 特征提取，框外区域不会参与目标外观定义。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/matcher_stage1_heatmap.png" alt="Matcher Stage 1 similarity heatmap">
+                  <figcaption><b>相似度热力图</b><span>亮的地方表示 target 中该位置的 DINO 特征更像 reference box 内的目标特征。它是 Stage 1 判断“哪里像目标”的连续证据。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/matcher_stage1_topk.png" alt="Matcher Stage 1 top-k points">
+                  <figcaption><b>top-k matched points</b><span>把热力图里相似度最高的一批位置取出来，变成离散点。后续 feedback、聚类和 SAM point prompt 都基于这些点。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>先在 reference 图上给定一个 box，框住我们想找的目标；再从这个框内提取 DINO 特征并求平均，得到目标 prototype；最后计算 target 图每个位置和 prototype 的相似度，画成 heatmap，并把最高分位置画成 top-k 点。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">已解释</span></div>
+          </div>
+          <div class="answer">
+            <b>Stage 2+3：sample N% points，多次送入 SAM，再 instance-level threshold</b>
+            <div class="answer-body">
+              <p>已跑通最小链路。matched points 先 DBSCAN/K-means 风格聚类，再按 cluster 采样 prompt groups，送入 SAM 得到 proposals，最后用 DINO instance feature 相似度、面积、coverage、NMS 过滤。</p>
+              <div class="evidence-strip">
+                <figure class="mini-figure">
+                  <img src="assets/stage2_elephant_cluster.png" alt="Stage 2 clustering">
+                  <figcaption><b>Stage 2 聚类</b><span>这些点不是直接全部送进 SAM，而是先按空间位置分组。同一组代表一个候选实例区域，避免不同物体的点混在一起。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/stage2_elephant_proposals.png" alt="Stage 2 proposals">
+                  <figcaption><b>SAM proposals</b><span>每个小图是一次 point prompt 产生的候选 mask。可以看到有些 mask 合理，有些扩张或偏移，所以不能直接把 Stage 2 当最终结果。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/stage3_elephant_feature_retained.png" alt="Stage 3 retained mask">
+                  <figcaption><b>Stage 3 保留结果</b><span>最终保留下来的 mask 是和 reference feature 最相似的 proposal。这个图就是 Stage 3 threshold 后的输出。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>Stage 2 用聚类后的 matched points 组成多组 point prompts，并逐组调用 SAM 生成 mask proposals；Stage 3 再对每个 proposal 内部提取特征，与 reference prototype 比较，只把相似度高的 mask 画出来。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">已闭环</span></div>
+          </div>
+          <div class="answer">
+            <b>多个物体很多时，sample 是否可行、代码如何知道 K</b>
+            <div class="answer-body">
+              <p>直接无结构 sample 风险较高。当前更稳的方案是先按 matched points 聚类得到候选实例，再对每个 cluster 采样并做 Stage 3 filtering。horse-head case 得到 <code>K_pred=2</code>。</p>
+              <div class="evidence-strip two">
+                <figure class="mini-figure">
+                  <img src="assets/horse_stage2_cluster.png" alt="Horse multi-instance clustering">
+                  <figcaption><b>horse 多实例点聚类</b><span>两团点分别落在两个马头附近，所以 Stage 2 给出两个候选 cluster。这里的 K 不是人工输入，而是点分布推出来的。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/horse_stage3_retained.png" alt="Horse multi-instance retained masks">
+                  <figcaption><b>horse 最终保留结果</b><span>Stage 3 过滤后保留两个 mask，因此报告 <code>K_pred=2</code>。这张图回应“多个物体时怎么知道 K”。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>先用 horse reference box 在 horse target 图上做 Stage 1 matching，得到一批相似点；这些点经 DBSCAN 分成两个 cluster，再分别采样送入 SAM，最后由 feature-level matching 保留两个实例。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">部分支持</span></div>
+          </div>
+          <div class="answer">
+            <b>加入 feedback：手动选 a 个正确点、b 个错误点后 matching 是否更好</b>
+            <div class="answer-body">
+              <p>支持最小版本。空间 reranking 与 feature/prototype update 都已验证；feature feedback 后 selected points 从 9 到 29，top-k 负点 70px 邻域从 16 到 0。</p>
+              <div class="evidence-strip two">
+                <figure class="mini-figure">
+                  <img src="assets/matcher_spatial_feedback_overlay.png" alt="Spatial feedback before after">
+                  <figcaption><b>空间 feedback 前后</b><span>左/右对比显示加入正负点后，matched points 更靠近正确区域，远离负点区域。这是最直观的 feedback 有效性证据。</span></figcaption>
+                </figure>
+                <figure class="mini-figure">
+                  <img src="assets/p0_feature_feedback_overlay.png" alt="Feature feedback before after">
+                  <figcaption><b>feature feedback 前后</b><span>这里不是只按距离重排，而是用正负点附近的 DINO 特征更新 prototype，再重新计算 target 相似度，更接近老师说的“更新 feature”。</span></figcaption>
+                </figure>
+              </div>
+              <div class="method-note"><b>图片怎么来的：</b>人工指定少量正点和负点后，脚本分别生成 feedback 前后的 matched points overlay。空间版用点到正负点的距离调整分数；feature 版用正负点附近的 DINO feature 更新 prototype 后重新 matching。</div>
+            </div>
+            <div class="answer-status"><span class="tag ok">支持</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sam3">
+        <div class="section-head">
+          <div>
+            <h2>SAM3 text / point 最小验证</h2>
+            <p>这个实验先把老师的 a/b 两点变成可复现现象：text 并非总失败，但复杂属性词和动作词会失败；point 更适合人手交互和目标指定。</p>
+          </div>
+          <span class="tag">runs/teacher_minimal_validation</span>
+        </div>
+
+        <div class="two-col">
+          <table>
+            <thead>
+              <tr>
+                <th>case</th>
+                <th>结果</th>
+                <th>结论</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>elephant</code> text</td>
+                <td>2 个实例，score 0.953</td>
+                <td>简单名词 text 可用</td>
+              </tr>
+              <tr>
+                <td><code>execute</code> text</td>
+                <td>elephant 图 0 个实例；person 图 0 个实例</td>
+                <td>动作词 text 跨图失败</td>
+              </tr>
+              <tr>
+                <td><code>girl</code> text</td>
+                <td>3 个实例，score 0.906</td>
+                <td>简单人物名词可用</td>
+              </tr>
+              <tr>
+                <td><code>white girl</code> text</td>
+                <td>0 个实例</td>
+                <td>复合属性 text 失败</td>
+              </tr>
+              <tr>
+                <td><code>person</code> text</td>
+                <td>0 个实例</td>
+                <td>简单 noun 也可能不稳</td>
+              </tr>
+              <tr>
+                <td>elephant 单点</td>
+                <td>score 0.652</td>
+                <td>可控但偏局部</td>
+              </tr>
+              <tr>
+                <td>两正一点负</td>
+                <td>score 0.738</td>
+                <td>正负点 feedback 改善范围</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="card">
+            <h3>Demo 问题也已回应</h3>
+            <p>
+              之前网页 demo 的 point prompt 只按最新一次点生成分割，不累计前几个 prompt。现在 demo 设置里加入了
+              <code>Point Scope: cumulative/latest</code> 和 <code>Point Run Mode: auto/manual</code>，可以在累计点与只看最新点之间切换。
+            </p>
+            <div class="route">
+              <span>text 失败</span>
+              <span>point 介入</span>
+              <span>累计正点</span>
+              <span>加入负点</span>
+              <span>mask 改善</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="matcher">
+        <div class="section-head">
+          <div>
+            <h2>Matcher 三阶段闭环</h2>
+            <p>这里把老师说的 matcher 文章路线翻译成当前项目中的可执行 pipeline：Stage 1 不是直接分割，而是先找到“target 图里哪些位置像 reference”；Stage 2 把这些位置变成多组 point prompts；Stage 3 再判断哪些 mask proposal 真的是目标实例。</p>
+          </div>
+          <span class="tag ok">Stage 1 / 2 / 3</span>
+        </div>
+
+        <div class="explain-grid" aria-label="Matcher 三阶段流程解释">
+          <div class="explain-step">
+            <div class="step-id">Problem</div>
+            <h3>为什么不用 text 直接分割</h3>
+            <p>当 text prompt 对属性、动作、医学术语不稳定时，先用视觉 reference 来定义“我要找的东西”。这一步把语言问题转成 visual matching 问题。</p>
+          </div>
+          <div class="explain-step">
+            <div class="step-id">Stage 1</div>
+            <h3>从 reference 找 target 点</h3>
+            <p>reference box 内的 DINO feature 求平均得到 prototype；target 每个位置和 prototype 算相似度，取 top-k matched points。</p>
+          </div>
+          <div class="explain-step">
+            <div class="step-id">Stage 2</div>
+            <h3>从点生成多个 mask 候选</h3>
+            <p>先聚类估计候选实例，再对每个 cluster 采样 1/3/5 个点，多次送入 SAM，得到一组 proposals，而不是只赌一次 prompt。</p>
+          </div>
+          <div class="explain-step">
+            <div class="step-id">Stage 3</div>
+            <h3>筛掉不像目标的 proposal</h3>
+            <p>对每个 proposal 内部再提 DINO feature，与 reference prototype 做 instance-level matching；高于 threshold 保留，低于 threshold 丢弃。</p>
+          </div>
+        </div>
+
+        <div class="flow-note">
+          最核心的理解：Matcher 不是替代 SAM 去画 mask，而是替 SAM 选择更可靠的 point prompts，并在 SAM 生成候选后再做一次“这是不是我要的实例”的 feature-level 审核。
+        </div>
+
+        <div class="principle-animation" aria-label="Matcher principle animation">
+          <svg viewBox="0 0 980 230" role="img" aria-labelledby="matcherFlowTitle matcherFlowDesc">
+            <title id="matcherFlowTitle">Matcher 三阶段信息流动画</title>
+            <desc id="matcherFlowDesc">Reference box 生成 prototype，prototype 在 target 上产生 heatmap 和 top-k points，points 聚类采样后进入 SAM，最后由 Stage 3 保留实例。</desc>
+            <defs>
+              <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 Z" fill="#5b7faf"></path>
+              </marker>
+            </defs>
+            <path class="arrow" d="M140 92 H205" marker-end="url(#arrowHead)"></path>
+            <path class="arrow" d="M325 92 H390" marker-end="url(#arrowHead)"></path>
+            <path class="arrow" d="M510 92 H575" marker-end="url(#arrowHead)"></path>
+            <path class="arrow" d="M695 92 H760" marker-end="url(#arrowHead)"></path>
+            <path class="arrow" d="M852 126 C820 178 210 178 178 126" marker-end="url(#arrowHead)"></path>
+
+            <g>
+              <rect class="node-box" x="20" y="44" width="120" height="96" rx="8"></rect>
+              <circle class="signal" cx="48" cy="72" r="7"></circle>
+              <text class="node-title" x="62" y="76">Reference</text>
+              <text class="node-sub" x="38" y="104">box / mask</text>
+              <text class="node-sub" x="38" y="122">定义目标外观</text>
+            </g>
+            <g>
+              <rect class="node-box" x="205" y="44" width="120" height="96" rx="8"></rect>
+              <circle class="signal" cx="232" cy="72" r="7"></circle>
+              <text class="node-title" x="248" y="76">Prototype</text>
+              <text class="node-sub" x="226" y="104">DINO feature</text>
+              <text class="node-sub" x="226" y="122">框内特征平均</text>
+            </g>
+            <g>
+              <rect class="node-box" x="390" y="44" width="120" height="96" rx="8"></rect>
+              <circle class="signal" cx="418" cy="72" r="7"></circle>
+              <text class="node-title" x="434" y="76">Heatmap</text>
+              <text class="node-sub" x="410" y="104">target 相似度</text>
+              <text class="node-sub" x="410" y="122">越亮越像</text>
+            </g>
+            <g>
+              <rect class="node-box" x="575" y="44" width="120" height="96" rx="8"></rect>
+              <circle class="signal" cx="604" cy="72" r="7"></circle>
+              <text class="node-title" x="620" y="76">Top-k points</text>
+              <text class="node-sub" x="596" y="104">离散候选点</text>
+              <text class="node-sub" x="596" y="122">进入聚类采样</text>
+            </g>
+            <g>
+              <rect class="node-box" x="760" y="44" width="160" height="96" rx="8"></rect>
+              <circle class="signal" cx="790" cy="72" r="7"></circle>
+              <text class="node-title" x="808" y="76">SAM proposals</text>
+              <text class="node-sub" x="785" y="104">多组 point prompts</text>
+              <text class="node-sub" x="785" y="122">生成候选 mask</text>
+            </g>
+            <g>
+              <rect class="node-box" x="336" y="166" width="300" height="44" rx="8"></rect>
+              <text class="node-title" x="372" y="193">Stage 3: instance-level matching 保留目标 mask</text>
+            </g>
+          </svg>
+          <div class="principle-caption">
+            <p><strong>怎么读这个动画：</strong>虚线箭头表示信息流，蓝点表示当前阶段产生的关键中间量。先由 reference box 定义目标外观，再把这个外观投到 target 图上找相似点，最后让 SAM 生成候选并由 Stage 3 审核。</p>
+            <p><strong>为什么有回环箭头：</strong>Stage 3 发现错分后，可以把正负点 feedback 反馈给 Stage 1，重新更新 prototype 或点分布。</p>
+          </div>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Matcher 阶段">
+          <button class="tab-button active" data-tab="stage1">Stage 1 matching</button>
+          <button class="tab-button" data-tab="stage2">Stage 2 sampling</button>
+          <button class="tab-button" data-tab="stage3">Stage 3 filtering</button>
+          <button class="tab-button" data-tab="multi">多实例 K</button>
+        </div>
+
+        <div class="panel active" id="stage1">
+          <div class="cards">
+            <div class="card">
+              <h3>输入是什么</h3>
+              <p>reference image + reference box，target image，DINO feature extractor。reference box 可以来自人工框、已有 mask 或老师说的 foreground/background 点击。</p>
+            </div>
+            <div class="card">
+              <h3>中间量是什么</h3>
+              <p>reference prototype 是“目标外观”的向量表示；similarity heatmap 是 target 上每个位置和 reference 有多像；top-k points 是后续 SAM prompts 的候选池。</p>
+            </div>
+            <div class="card">
+              <h3>输出给下一步什么</h3>
+              <p><strong>top-k=100</strong>，threshold=0.55，selected points=9，best similarity=0.605155。</p>
+            </div>
+          </div>
+          <div class="matcher-figure-grid">
+            <figure>
+              <img src="assets/reference_box_elephant1.png" alt="Reference box used in Stage 1">
+              <figcaption><b>Reference box</b><span>读图方式：红框圈住的是 reference 图中的目标 elephant，框内 DINO feature 会被平均成 prototype。来源：使用实验命令里的 reference-box 坐标 <code>0,60,295,425</code> 在原图上绘制。</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/matcher_stage1_heatmap.png" alt="Stage 1 similarity heatmap">
+              <figcaption><b>Similarity heatmap</b><span>读图方式：亮色区域就是 target 图里“看起来像 reference 框内目标”的地方，暗色区域相似度低。来源：用 reference box 内 DINO 特征求 prototype，再和 target 每个位置做 cosine similarity 后画成热力图。</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/matcher_stage1_topk.png" alt="Stage 1 top-k matched points">
+              <figcaption><b>Top-k matched points</b><span>读图方式：这些点是热力图中分数最高的候选位置，不是最终 mask。来源：从 similarity heatmap 中排序取 top-k，并按 threshold 筛掉低分点后画到原图上。</span></figcaption>
+            </figure>
+          </div>
+          <div class="legend-row" aria-label="Stage 1 color legend">
+            <span class="legend-chip"><span class="legend-swatch red"></span>红框：reference box / 人工给定目标区域</span>
+            <span class="legend-chip"><span class="legend-swatch yellow"></span>亮色热区：DINO feature 更像 reference</span>
+            <span class="legend-chip"><span class="legend-swatch blue"></span>点：从 heatmap 中取出的 top-k 候选位置</span>
+          </div>
+        </div>
+
+        <div class="panel" id="stage2">
+          <div class="cards">
+            <div class="card">
+              <h3>为什么先聚类</h3>
+              <p>如果图里有多个相同目标，直接从所有点随机 sample 会把不同实例混在一起。聚类把点拆成候选实例组，也就是一个粗略的 K 估计。</p>
+            </div>
+            <div class="card">
+              <h3>为什么多次采样</h3>
+              <p>SAM 对点的位置敏感。对每个 cluster 多次采样 1/3/5 点，可以得到多种 mask proposals，再交给 Stage 3 选择，而不是依赖单次点选。</p>
+            </div>
+            <div class="card">
+              <h3>当前 elephant 结果</h3>
+              <p>feedback 后 selected candidates 为 43，过滤后为 40，DBSCAN 得到 1 个 cluster；12 组 prompts 送入 SAM，得到 12 个 proposals。</p>
+            </div>
+          </div>
+          <div class="matcher-figure-grid">
+            <figure>
+              <img src="assets/stage2_elephant_cluster.png" alt="Stage 2 point clustering">
+              <figcaption><b>Clustering matched points</b><span>读图方式：同一颜色或同一空间团块的点会被当成一个候选实例来源。来源：把 Stage 1/feedback 后的点按空间距离做 DBSCAN 聚类，过滤太远或太散的点。</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/stage2_elephant_proposals.png" alt="Stage 2 SAM proposals">
+              <figcaption><b>SAM proposals</b><span>读图方式：每个小格是一组 point prompts 送入 SAM 后得到的候选 mask，可以直观看到有的候选过大、有的偏局部。来源：从每个 cluster 里多次采样 1/3/5 个点，逐组调用 SAM 并保存 overlay grid。</span></figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="panel" id="stage3">
+          <div class="cards">
+            <div class="card">
+              <h3>为什么需要 Stage 3</h3>
+              <p>Stage 2 的 proposals 只是“可能的 mask”，其中可能有背景粘连、面积过大、分到别的实例或局部碎片。Stage 3 负责把候选变成最终实例。</p>
+            </div>
+            <div class="card">
+              <h3>instance-level matching 是什么</h3>
+              <p>对每个 proposal 内部区域求 DINO feature prototype，再和 reference prototype 做 cosine similarity。相似度高说明这个 mask 内部视觉特征像 reference。</p>
+            </div>
+            <div class="card">
+              <h3>当前 elephant 结果</h3>
+              <p>feature-level filtering 从 12 个 proposals 中保留 group 5，instance similarity=0.784939，最终 <code>K_pred=1</code>。</p>
+            </div>
+          </div>
+          <div class="matcher-figure-grid">
+            <figure>
+              <img src="assets/stage2_elephant_proposals.png" alt="Stage 3 input proposals">
+              <figcaption><b>Stage 3 输入</b><span>读图方式：这里故意展示所有候选，说明 Stage 2 只负责“多生成可能答案”，并不能保证每个 mask 都对。来源：同一批 SAM proposal grid 被作为 Stage 3 的候选集合。</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/stage3_elephant_feature_retained.png" alt="Stage 3 feature retained mask">
+              <figcaption><b>Stage 3 输出</b><span>读图方式：最终只保留与 reference feature 最相似、面积和覆盖关系也合理的 mask。来源：对每个候选 mask 内部提 DINO prototype，与 reference prototype 比相似度，高于 threshold 且通过 NMS 后画出。</span></figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="panel" id="multi">
+          <div class="two-col">
+            <table>
+              <thead>
+                <tr>
+                  <th>阶段</th>
+                  <th>指标</th>
+                  <th class="num">horse-head 结果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Stage 1</td><td>selected points</td><td class="num">26</td></tr>
+                <tr><td>Stage 2</td><td>DBSCAN clusters</td><td class="num">2</td></tr>
+                <tr><td>Stage 2b</td><td>SAM proposals</td><td class="num">16</td></tr>
+                <tr><td>Stage 3</td><td>feature candidates</td><td class="num">6</td></tr>
+                <tr><td>Stage 3</td><td>retained masks / <code>K_pred</code></td><td class="num">2</td></tr>
+              </tbody>
+            </table>
+            <div class="card">
+              <h3>K 是怎么来的</h3>
+              <p>不是代码预先知道有几个物体，而是先从 matched points 的空间分布估计 cluster 数，再让每个 cluster 生成 proposals。Stage 3 过滤后剩下几个 retained masks，就报告 <code>K_pred</code>。因此 K 是 pipeline 的输出，不是人工提前输入。</p>
+            </div>
+          </div>
+          <div class="matcher-figure-grid">
+            <figure>
+              <img src="assets/horse_stage2_cluster.png" alt="Horse multi-instance cluster">
+              <figcaption><b>多实例点聚类</b><span>读图方式：两团 matched points 分别落在两个马头附近，所以 pipeline 先认为可能有两个实例。来源：horse reference box 提取 prototype 后，在 target 图上 matching，再对 matched points 做聚类。</span></figcaption>
+            </figure>
+            <figure>
+              <img src="assets/horse_stage3_retained.png" alt="Horse retained masks">
+              <figcaption><b>最终 retained masks</b><span>读图方式：最终显示两个被保留的 mask，因此输出 <code>K_pred=2</code>。来源：每个 cluster 采样生成 proposals 后，Stage 3 用 instance similarity 和 NMS 保留两个不同实例。</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="p0p3">
+        <div class="section-head">
+          <div>
+            <h2>P0-P3 后续推进结果</h2>
+            <p>这部分对应原文档第 7 节：不是大 benchmark，而是把老师猜想延伸成可以继续研究的最小闭环、可调参数边界和下一步门控。</p>
+          </div>
+          <span class="tag">2026-06-29</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="phase">P0</div>
+            <div>
+              <h3>稳定主线：feature/prototype feedback + 统一 runner</h3>
+              <p>新增 <code>apply_stage1_feature_feedback.py</code> 和 <code>run_research_direction_case.py</code>。feature feedback 后 selected count 从 9 到 29，正点 70px 邻域从 22 到 38，负点邻域从 16 到 0。elephant3 旧 runner 是 <code>K_pred=0</code>，但改用 sliding-window points 并调 <code>eps=28</code> 后，Stage 2 得到 6 个 cluster、24 个 proposals，Stage 3 保留 6 个实例，<code>K_pred=6</code>。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="phase">P1</div>
+            <div>
+              <h3>SAM3 text failure taxonomy + fallback trigger</h3>
+              <p>新增 13 条 taxonomy records，其中 6 条触发 fallback。规则包括 instances=0、action / attribute_or_phrase / medical_term、高实例数、低 score、面积异常。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="phase">P1.5</div>
+            <div>
+              <h3>大图不降采样：sliding-window Stage 1</h3>
+              <p>新增 tile-based matching，elephant3 切成 6 个 tile，merged top-k points=120，selected count=96。下一步接 tile-level mask merge/NMS。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="phase">P2</div>
+            <div>
+              <h3>医学小数据评估闭环</h3>
+              <p>本地医学 image candidates=5000，mask candidates=256，可算 Dice/IoU。当前自动配对到 1 个已有预测，Dice=0.020698，IoU=0.010457，说明评估闭环通了，但已有预测质量弱。</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="phase">P3</div>
+            <div>
+              <h3>Adapter / LoRA gate</h3>
+              <p>门控结论为 <code>adapter_training_ready</code>，可以进入 smoke training。但目前还不能声称 Adapter/LoRA 有性能提升，因为尚未训练、也没有 held-out evaluation。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="evidence">
+        <div class="section-head">
+          <div>
+            <h2>附录图集</h2>
+            <p>主要证据已经放到对应问题和 Matcher 阶段下面；这里保留完整可筛选图集，方便汇报时临时补充或放大查看。</p>
+          </div>
+          <span class="tag">interactive gallery</span>
+        </div>
+
+        <div class="gallery-toolbar" aria-label="图集筛选">
+          <button class="filter-button active" data-filter="all">全部</button>
+          <button class="filter-button" data-filter="sam3">SAM3</button>
+          <button class="filter-button" data-filter="matcher">Matcher</button>
+          <button class="filter-button" data-filter="p0p3">P0-P3</button>
+          <button class="filter-button" data-filter="medical">医学</button>
+        </div>
+
+        <div class="gallery">
+          <figure data-kind="sam3">
+            <img src="assets/sam3_text_elephant.png" alt="SAM3 text elephant 可返回实例">
+            <figcaption><b>SAM3 text: elephant</b><span>简单名词正例。输入文本为 elephant，SAM3 返回两个实例并叠加到原图上，用来说明 text prompt 并不是全部失败。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_text_execute.png" alt="SAM3 text execute 失败">
+            <figcaption><b>SAM3 text: execute</b><span>动作词失败例。输入 execute 后没有返回 mask，图中没有有效分割区域，说明动作词不适合作为直接分割目标。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_text_white_girl.png" alt="SAM3 text white girl 失败">
+            <figcaption><b>SAM3 text: white girl</b><span>属性短语失败例。同一人物图中 girl 能返回实例，但 white girl 返回 0，说明属性组合会增加 text prompt 不稳定性。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_text_person_execute.png" alt="SAM3 text execute on person image failed">
+            <figcaption><b>SAM3 text: execute on person</b><span>跨图动作词失败例。换到人物图仍然返回 0，说明 execute 的失败更像 prompt 类型问题，而不是单张 elephant 图偶然问题。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_text_person.png" alt="SAM3 text person failed">
+            <figcaption><b>SAM3 text: person</b><span>简单 noun 的失败边界。person 返回 0，提示 text 稳定性还受图像和模型解释影响，不能只按词长判断。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_text_girl.png" alt="SAM3 text girl works">
+            <figcaption><b>SAM3 text: girl</b><span>人物图对照正例。girl 返回 3 个实例，用来和 white girl、person 的失败做对比，说明同图不同 prompt 差异明显。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_point_single.png" alt="SAM3 point 单点">
+            <figcaption><b>Point 单点</b><span>只给一个 foreground 点得到的结果。它能把目标方向指出来，但目标覆盖常常偏局部，因此需要累计点或负点补充信息。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_point_cumulative_fg.png" alt="SAM3 point 累计正点">
+            <figcaption><b>累计正点</b><span>把前后两个 foreground 点一起输入，而不是只用最新点。mask 覆盖扩大，直接回应网页 demo 需要 cumulative point scope。</span></figcaption>
+          </figure>
+          <figure data-kind="sam3">
+            <img src="assets/sam3_point_posneg.png" alt="SAM3 point 正负点">
+            <figcaption><b>正负点 feedback</b><span>负点放在非目标 elephant 上，约束模型不要扩到那里。结果 score 提升，说明 foreground/background 点能改善分割控制。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/reference_box_elephant1.png" alt="Reference box on elephant image">
+            <figcaption><b>Reference box</b><span>红框是 reference 目标区域，DINO prototype 从框内特征得到。后面的 heatmap 和 top-k points 都是在寻找 target 中“像这个框内目标”的位置。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/matcher_stage1_topk.png" alt="Matcher Stage 1 top-k matched points">
+            <figcaption><b>Stage 1 top-k matched points</b><span>由 reference prototype 和 target DINO feature 相似度排序得到。它不是最终分割，而是后续 SAM point prompt 的候选来源。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/matcher_spatial_feedback_overlay.png" alt="Matcher 空间 feedback 前后对比">
+            <figcaption><b>空间 feedback 前后</b><span>人工正负点改变 matched points 的排序。图中可以看到点更靠近正点、远离负点，用来证明 feedback 机制有即时效果。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/p0_feature_feedback_overlay.png" alt="P0 feature feedback overlay">
+            <figcaption><b>P0 feature/prototype feedback</b><span>利用正负点附近的 DINO 特征更新 prototype 后重新 matching。相比空间 reranking，它更接近老师提出的“更新 feature 后 matching 是否更好”。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/p0_feature_feedback_heatmap.png" alt="P0 feature feedback heatmap">
+            <figcaption><b>P0 heatmap 对比</b><span>展示 feature feedback 前后 target 相似度分布如何变化。亮区移动或收缩，表示 prototype 更新确实改变了 matcher 的判断。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/stage2_elephant_cluster.png" alt="Stage 2 elephant clustering">
+            <figcaption><b>Stage 2 clustering</b><span>把 Stage 1 的 matched points 按空间分组。同一组点会生成一批 prompts，避免把不同实例或背景点混在一起。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/stage2_elephant_proposals.png" alt="Stage 2 SAM proposals">
+            <figcaption><b>Stage 2 SAM proposals</b><span>每个小格是一组采样点送入 SAM 后的候选 mask。它说明 Stage 2 产出的是候选集合，需要 Stage 3 再筛。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/stage3_elephant_feature_retained.png" alt="Stage 3 feature retained">
+            <figcaption><b>Stage 3 feature retained</b><span>最终保留的 mask 来自 feature-level instance matching。也就是 mask 内部特征与 reference 最像，并通过面积和 NMS 等约束。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/horse_stage2_cluster.png" alt="Horse 多实例 cluster">
+            <figcaption><b>Horse-head cluster</b><span>多实例正例的中间结果。matched points 自然分成两个空间团块，pipeline 因此估计存在两个候选实例。</span></figcaption>
+          </figure>
+          <figure data-kind="matcher">
+            <img src="assets/horse_stage3_retained.png" alt="Horse Stage 3 retained masks">
+            <figcaption><b>Horse-head K_pred=2</b><span>最终 retained masks 为两个，因此输出 K_pred=2。这是当前最清楚回应“多个物体如何知道 K”的图。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/p15_sliding_window_elephant3.png" alt="Sliding window elephant3">
+            <figcaption><b>P1.5 sliding-window</b><span>大图不整体降采样，而是切成重叠 tile 分别 matching，再把点坐标合并回原图。它回答 DINO 输入尺寸限制问题。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/p0_runner_elephant3_cluster.png" alt="Elephant3 runner cluster">
+            <figcaption><b>Elephant3 旧 runner cluster</b><span>旧 runner 只用非 sliding-window feature feedback 点，聚成 1 个 cluster，因此后续只生成 2 个 proposals。它解释了旧版为什么失败。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/p0_runner_elephant3_retained.png" alt="Elephant3 runner retained result">
+            <figcaption><b>Elephant3 旧 Stage 3 输出</b><span>旧参数下 <code>K_pred=0</code>，原因是 proposals 太少且过滤过严。现在已用 sliding-window 点和 <code>eps=28</code> 修正。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/elephant3_tuned_stage2_eps28_cluster.png" alt="Elephant3 tuned Stage 2 clusters">
+            <figcaption><b>Elephant3 tuned clustering</b><span>调参后使用 sliding-window 96 个点，<code>eps=28</code> 得到 6 个 cluster，说明多实例结构已经被 Stage 2 捕获。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/elephant3_tuned_proposals_eps28.png" alt="Elephant3 tuned proposals">
+            <figcaption><b>Elephant3 tuned proposals</b><span>6 个 clusters 生成 24 个 SAM proposals，候选数量足够，Stage 3 有选择空间。</span></figcaption>
+          </figure>
+          <figure data-kind="p0p3">
+            <img src="assets/elephant3_tuned_stage3_k6.png" alt="Elephant3 tuned K6 retained masks">
+            <figcaption><b>Elephant3 tuned K_pred=6</b><span>Stage 3 最终保留 6 个实例，说明原来不是 Stage 1 不行，而是 Stage 2/3 参数需要接 sliding-window 点重新调。</span></figcaption>
+          </figure>
+          <figure data-kind="medical">
+            <img src="assets/idrid14_fundus.jpg" alt="IDRID fundus image">
+            <figcaption><b>IDRID fundus image</b><span>医学小数据闭环的原始眼底图。它说明本地已有可用于 support/query 的医学图像，不只是自然图实验。</span></figcaption>
+          </figure>
+          <figure data-kind="medical">
+            <img src="assets/idrid14_sam_result.png" alt="IDRID SAM result">
+            <figcaption><b>已有 SAM 预测</b><span>自动配对到的现有预测结果。它和 GT 对比后 Dice 很低，因此只能说明评估闭环打通，不能说明医学效果已经好。</span></figcaption>
+          </figure>
+          <figure data-kind="medical">
+            <img src="assets/idrid14_gt_mask.png" alt="IDRID ground truth mask">
+            <figcaption><b>IDRID GT mask</b><span>对应的人工标注 mask。它用于和预测结果计算 Dice/IoU，是下一步医学小闭环评估的依据。</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="claims">
+        <div class="section-head">
+          <div>
+            <h2>现在可以声称什么，不能声称什么</h2>
+            <p>这一页适合直接给老师看，避免过度包装。结论清楚，边界也清楚。</p>
+          </div>
+          <span class="tag warn">claim boundary</span>
+        </div>
+
+        <div class="claim-grid">
+          <div class="card">
+            <span class="tag ok">可以声称</span>
+            <ul>
+              <li>P0 feature/prototype feedback 已实现并验证，selected count 从 9 到 29，负点邻域候选降到 0。</li>
+              <li>elephant3 已从旧版 <code>K_pred=0</code> 调到 <code>K_pred=6</code>：sliding-window 96 个点，Stage 2 聚成 6 类，24 个 proposals，Stage 3 保留 6 个实例。</li>
+              <li>统一 runner 和拆分脚本已能串起 Stage 1/2/3，并输出成功案例与参数敏感性结论。</li>
+              <li>P1 text failure taxonomy 已落地，13 条记录中 6 条触发 fallback。</li>
+              <li>P1.5 sliding-window no-downsample Stage 1 已落地，elephant3 切成 6 个 tile 后 selected points 为 96。</li>
+              <li>P2 医学数据评估闭环已经打通，本地 image/mask 可用于 Dice/IoU。</li>
+              <li>P3 Adapter/LoRA smoke training 的条件已满足。</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="tag risk">不能声称</span>
+            <ul>
+              <li>不能说当前方法已在大规模自然图上稳定泛化。</li>
+              <li>不能说 elephant3 已经是最终论文级最优结果；当前 tuned 版成功得到 <code>K_pred=6</code>，但左侧近邻 elephant 仍有合并现象，后续还需要更细的局部聚类或 mask merge/NMS。</li>
+              <li>不能说医学图像上方法已经有效；当前唯一自动配对预测 Dice 只有 0.020698。</li>
+              <li>不能说 Adapter/LoRA 有性能提升；当前只是 gate ready，还没有训练和 held-out evaluation。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="plan">
+        <div class="section-head">
+          <div>
+            <h2>下一步研究方案优先级</h2>
+            <p>建议不要继续扩散方向，而是围绕一个“小但硬”的医学闭环，把 training-free pipeline 和 adapter/LoRA smoke 做正面对比。</p>
+          </div>
+          <span class="tag ok">priority route</span>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>第一优先级：固定 IDRID 5 train / 5 val</h3>
+            <p>建立固定 split，避免每次换样本导致结论不可比。记录 support/query、prompt、feedback、threshold。</p>
+          </div>
+          <div class="card">
+            <h3>第二优先级：跑 training-free P0 pipeline</h3>
+            <p>对每个 query 记录 Dice、IoU、false positives、K_pred、interaction count，作为不训练基线。</p>
+          </div>
+          <div class="card">
+            <h3>第三优先级：Adapter/LoRA smoke</h3>
+            <p>只做最小训练，和 P0 training-free 结果对比。若不能超过 P0，不进入大规模训练。</p>
+          </div>
+        </div>
+
+        <div class="quote" style="margin-top: 14px;">
+          推荐对老师的汇报句式：我们已经把您的方向做成最小闭环。SAM3 text 对 <code>white girl</code>、<code>execute</code> 类 prompt 会失败，point prompt 和正负点 feedback 更可控；Matcher 方向已跑通 matched points、feedback、聚类采样、SAM proposals 和 instance-level filtering。当前 horse-head 能得到 <code>K_pred=2</code>；elephant3 先用 sliding-window 得到 96 个 matched points，再把 DBSCAN 调到 <code>eps=28</code>，Stage 2 得到 6 个 clusters 和 24 个 proposals，Stage 3 最终保留 6 个实例，<code>K_pred=6</code>。下一步最该做的是固定医学小数据 split，比较 training-free pipeline 与 Adapter/LoRA smoke 是否真的带来提升。
+        </div>
+      </section>
+
+      <section id="commands">
+        <div class="section-head">
+          <div>
+            <h2>可复现实验清单</h2>
+            <p>命令默认折叠，汇报时可以按需打开。所有路径均相对于 <code>D:\SAM</code>。</p>
+          </div>
+          <button class="utility-button" id="toggleDetails" type="button">展开全部命令</button>
+        </div>
+
+        <details>
+          <summary>SAM3 text / point 最小验证</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\sam3_teacher_minimal_validation.py --out-dir runs\teacher_minimal_validation</code></pre>
+        </details>
+
+        <details>
+          <summary>Matcher Stage 1 matched points 导出</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\export_matcher_stage1_points.py --reference-image code\gradio_demo\images\elephant1.png --target-image code\gradio_demo\images\elephant2.png --reference-box 0,60,295,425 --top-k 100 --threshold 0.55 --out-dir runs\research_direction\stage1_matching\elephant_pair</code></pre>
+        </details>
+
+        <details>
+          <summary>P0 feature/prototype feedback</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\apply_stage1_feature_feedback.py --stage1-dir runs\research_direction\stage1_matching\elephant_pair --positive-points "268,331" --negative-points "30,430;455,420" --sigma 42 --positive-weight 0.35 --negative-weight 0.25 --top-k 100 --threshold 0.55 --out-dir runs\research_direction\p0_p3_closure\p0_feature_feedback\elephant_pair</code></pre>
+        </details>
+
+        <details>
+          <summary>P0 统一 runner：elephant3 多实例边界案例</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\run_research_direction_case.py --case-name elephant3_multi_actual --reference-image code\gradio_demo\images\elephant1.png --target-image code\gradio_demo\images\elephant3.png --reference-box 0,60,295,425 --positive-points "350,300" --negative-points "220,120;500,130" --top-k 120 --threshold 0.48 --eps 70 --min-samples 1 --sample-sizes 1 --samples-per-cluster 2 --max-groups 6 --min-area-pct 0.1 --max-area-pct 55 --out-root runs\research_direction\p0_p3_closure\p0_runner</code></pre>
+        </details>
+
+        <details>
+          <summary>P1 text failure taxonomy</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\build_sam3_text_failure_taxonomy.py --out-dir runs\research_direction\p0_p3_closure\p1_text_taxonomy</code></pre>
+        </details>
+
+        <details>
+          <summary>P1.5 sliding-window no-downsample Stage 1</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\export_sliding_window_stage1_points.py --reference-image code\gradio_demo\images\elephant1.png --target-image code\gradio_demo\images\elephant3.png --reference-box 0,60,295,425 --tile-size 320 --overlap 80 --per-tile-top-k 16 --top-k 120 --threshold 0.48 --out-dir runs\research_direction\p0_p3_closure\p15_sliding_window\elephant3</code></pre>
+        </details>
+
+        <details>
+          <summary>Elephant3 tuned 多实例成功版：sliding-window points -> Stage 2/3</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\convert_sliding_window_points_to_feedback.py --merged-points-json runs\research_direction\p0_p3_closure\p15_sliding_window\elephant3\merged_points.json --out-dir runs\research_direction\p0_p3_closure\elephant3_tuning\sliding_feedback
+D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\sample_stage2_prompts.py --feedback-dir runs\research_direction\p0_p3_closure\elephant3_tuning\sliding_feedback --selected-only --cluster-method dbscan --eps 28 --min-samples 2 --sample-sizes 1,3 --samples-per-cluster 2 --max-anchor-distance 0 --out-dir runs\research_direction\p0_p3_closure\elephant3_tuning\stage2_eps28_ms2
+D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\generate_stage2_sam_proposals.py --stage2-dir runs\research_direction\p0_p3_closure\elephant3_tuning\stage2_eps28_ms2 --checkpoint assets\checkpoints\sam_vit_b.pth --model-type vit_b --device auto --max-groups 24 --out-dir runs\research_direction\p0_p3_closure\elephant3_tuning\proposals_eps28_ms2
+D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\feature_match_stage3_proposals.py --proposals-dir runs\research_direction\p0_p3_closure\elephant3_tuning\proposals_eps28_ms2 --stage1-dir runs\research_direction\p0_p3_closure\p0_runner\elephant3_multi_actual\stage1 --dinov2-weights assets\checkpoints\dinov2_vitl14_pretrain.pth --min-instance-similarity 0.42 --min-score 0.84 --min-area-pct 0.1 --max-area-pct 65 --max-bbox-area-pct 80 --min-cluster-coverage 0.05 --min-prompt-coverage 1.0 --nms-iou 0.65 --max-retained-per-cluster 1 --out-dir runs\research_direction\p0_p3_closure\elephant3_tuning\stage3_eps28_relaxed</code></pre>
+        </details>
+
+        <details>
+          <summary>P2 医学数据 gate 与 Dice/IoU 评估</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\medical_small_data_gate.py --out-dir runs\research_direction\p0_p3_closure\p2_medical_gate
+D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\evaluate_medical_prediction_pairs.py --out-dir runs\research_direction\p0_p3_closure\p2_medical_eval</code></pre>
+        </details>
+
+        <details>
+          <summary>P3 Adapter / LoRA gate</summary>
+          <pre><code>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\adapter_lora_gate.py --out-dir runs\research_direction\p0_p3_closure\p3_adapter_gate</code></pre>
+        </details>
+      </section>
+
+      <div class="footer">
+        Source document: <code>docs/research/teacher_direction_closed_loop_summary.md</code>. Static report generated under <code>docs/reports/6.30/</code>.
+      </div>
+    </main>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <div class="lightbox-inner">
+      <div class="lightbox-bar">
+        <div class="lightbox-caption" id="lightboxCaption">Image preview</div>
+        <button class="utility-button" type="button" id="closeLightbox">关闭</button>
+      </div>
+      <img src="" alt="" id="lightboxImage">
+    </div>
+  </div>
+
+  <script>
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const panels = document.querySelectorAll(".panel");
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.tab;
+        tabButtons.forEach((item) => item.classList.toggle("active", item === button));
+        panels.forEach((panel) => panel.classList.toggle("active", panel.id === target));
+      });
+    });
+
+    const filterButtons = document.querySelectorAll(".filter-button");
+    const figures = document.querySelectorAll("figure[data-kind]");
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        filterButtons.forEach((item) => item.classList.toggle("active", item === button));
+        figures.forEach((figure) => {
+          const show = filter === "all" || figure.dataset.kind === filter;
+          figure.style.display = show ? "" : "none";
+        });
+      });
+    });
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const lightboxCaption = document.getElementById("lightboxCaption");
+    document.querySelectorAll("figure img").forEach((image) => {
+      image.addEventListener("click", () => {
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
+        const caption = image.closest("figure").querySelector("figcaption").innerText;
+        lightboxCaption.textContent = caption;
+        lightbox.classList.add("open");
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightboxImage.src = "";
+    }
+
+    document.getElementById("closeLightbox").addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeLightbox();
+    });
+
+    const toggleDetails = document.getElementById("toggleDetails");
+    toggleDetails.addEventListener("click", () => {
+      const details = Array.from(document.querySelectorAll("#commands details"));
+      const shouldOpen = details.some((item) => !item.open);
+      details.forEach((item) => {
+        item.open = shouldOpen;
+      });
+      toggleDetails.textContent = shouldOpen ? "折叠全部命令" : "展开全部命令";
+    });
+
+    const contrastToggle = document.getElementById("contrastToggle");
+    contrastToggle.addEventListener("click", () => {
+      const enabled = document.body.classList.toggle("contrast-mode");
+      contrastToggle.textContent = enabled ? "恢复原始图片对比度" : "增强图片对比度";
+    });
+
+    const navLinks = document.querySelectorAll(".nav a");
+    const sections = Array.from(document.querySelectorAll("main > section, header.hero"));
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === "#" + visible.target.id);
+      });
+    }, { rootMargin: "-20% 0px -65% 0px", threshold: [0.1, 0.2, 0.4, 0.7] });
+    sections.forEach((section) => observer.observe(section));
+  </script>
+</body>
+</html>

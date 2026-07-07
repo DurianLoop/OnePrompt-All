@@ -1,0 +1,831 @@
+                            MA-SAM: Modality-agnostic SAM Adaptation for 3D Medical Image Segmentation
+
+                            Cheng Chena , Juzheng Miaob , Dufan Wua , Zhiling Yanc , Sekeun Kima , Jiang Hua , Aoxiao Zhongd,a , Zhengliang Liue,a ,
+                            Lichao Sunc , Xiang Lia , Tianming Liue , Pheng-Ann Hengb , Quanzheng Lia,∗
+                            a Center of Advanced Medical Computing and Analysis, Massachusetts General Hospital and Harvard Medical School, Boston, MA 02114, USA
+                            b Department of Computer Science and Engineering, The Chinese University of Hong Kong, Hong Kong, China
+                            c Department of Computer Science and Engineering, Lehigh University, Bethlehem, PA 18015, USA
+                            d Harvard John A. Paulson School of Engineering and Applied Sciences, Harvard University, Cambridge, MA 02138, USA
+                            e School of Computing, The University of Georgia, Athens, GA 30602, USA
+
+
+
+
+                            ABSTRACT
+
+                            The Segment Anything Model (SAM), a foundation model for general image segmentation, has demonstrated impressive zero-
+arXiv:2309.08842v1 [cs.CV] 16 Sep 2023
+
+
+
+
+                            shot performance across numerous natural image segmentation tasks. However, SAM’s performance significantly declines when
+                            applied to medical images, primarily due to the substantial disparity between natural and medical image domains. To effectively
+                            adapt SAM to medical images, it is important to incorporate critical third-dimensional information, i.e., volumetric or temporal
+                            knowledge, during fine-tuning. Simultaneously, we aim to harness SAM’s pre-trained weights within its original 2D backbone
+                            to the fullest extent. In this paper, we introduce a modality-agnostic SAM adaptation framework, named as MA-SAM, that is
+                            applicable to various volumetric and video medical data. Our method roots in the parameter-efficient fine-tuning strategy to update
+                            only a small portion of weight increments while preserving the majority of SAM’s pre-trained weights. By injecting a series of
+                            3D adapters into the transformer blocks of the image encoder, our method enables the pre-trained 2D backbone to extract third-
+                            dimensional information from input data. The effectiveness of our method has been comprehensively evaluated on four medical
+                            image segmentation tasks, by using 10 public datasets across CT, MRI, and surgical video data. Remarkably, without using any
+                            prompt, our method consistently outperforms various state-of-the-art 3D approaches, surpassing nnU-Net by 0.9%, 2.6%, and 9.9%
+                            in Dice for CT multi-organ segmentation, MRI prostate segmentation, and surgical scene segmentation respectively. Our model also
+                            demonstrates strong generalization, and excels in challenging tumor segmentation when prompts are used. Our code is available at:
+                            https://github.com/cchen-cc/MA-SAM.
+
+
+
+
+                            1. Introduction                                                                2023; He et al., 2023; Wald et al., 2023). In these assessments,
+                                                                                                           SAM obtains inferior performance when compared to state-of-
+                               The rise of foundation models (Bommasani et al., 2021)                      the-art (SOTA) medical image segmentation models, and even
+                            that are trained on vast and diverse datasets has catalyzed a                  encounters complete failure in some challenging tasks.
+                            paradigm shift in intelligent model development. Driven by
+                            their remarkable generalization and few-shot learning capa-                       Based on these evaluations, it becomes evident that fine-
+                            bility, it has become increasingly appealing to adapt a pre-                   tuning is an essential step for applying SAM to medical im-
+                            trained large model to a diversity of downstream tasks, as op-                 ages. But why are we inclined to adapt SAM for medical im-
+                            posed to the traditional approach of crafting and training dis-                age tasks? This can be attributed to three potential advantages
+                            tinct task-specific models from scratch. The Segment Anything                  associated with SAM. Firstly, SAM’s training dataset consists
+                            Model (SAM) (Kirillov et al., 2023) is a recently developed                    of an extensive collection of images. Acquiring a similarly
+                            visual foundation model for promptable image segmentation,                     large-scale training dataset in the context of medical applica-
+                            pre-trained over 1 billion masks on 11 million natural images.                 tions is extremely challenging. Although SAM’s training data
+                            Thanks to its large-scale training data and general model ar-                  only comprises natural images, it is not restricted to any specific
+                            chitecture, SAM has demonstrated impressive zero-shot perfor-                  medical imaging modality. If SAM fine-tuning proves effective
+                            mance on various tasks in the context of natural images. Given                 for one type of medical imaging, there is a good chance that
+                            these merits, a natural question arises: can SAM be directly                   the same approach could be applicable to other modalities as
+                            extended to address the critical medical image segmentation                    well. Secondly, after fine-tuning, SAM as a pre-trained large
+                            tasks, a domain that has been struggling with limited availabil-               models may possess potential for robust generalization, which
+                            ity of high-quality images and labels essential for training deep              is of great importance for effectively deploying intelligent mod-
+                            models? However, due to the significant domain gap between                     els in critical medical applications. Thirdly, SAM’s prompt de-
+                            natural images and medical images, the latest works on evaluat-                sign provides a convenient solution for semi-automatic segmen-
+                            ing SAM on medical images have shown that SAM’s zero-shot                      tation in tackling difficult tasks, such as tumor segmentation.
+                            capability, regardless of whether prompts are employed, falls                  In these aspects, SAM provides a general-purpose foundation
+                            short for direct deployment on medical images (Huang et al.,                   model with the potential to be adapted across diverse medical
+                                                                                                           imaging modalities, offering good generalization capability for
+                                                                                                           both fully-automatic and semi-automatic segmentation.
+                                         ∗ Corresponding author: li.quanzheng@mgh.harvard.edu                 Efforts to adapt SAM for medical applications are rapidly
+2
+
+growing, with the majority of these approaches relying on            • We validate that after fine-tuning on medical images, the
+SAM’s prompt design (Cheng et al., 2023; Wu et al., 2023a;             obtained models present outstanding generalization capa-
+Deng et al., 2023a; Dai et al., 2023). However, providing suit-        bility, showing even superior performance than SOTA do-
+able prompts for segmenting each object within medical data            main generalization approaches.
+is non-trivial. For example, consider an abdominal CT vol-
+ume containing multiple organs, even providing a basic point         • We show that by further leveraging prompts, our method
+prompt for each organ in every slice demands substantial ef-           achieves impressive results in challenging tumor segmen-
+forts. Moreover, in cases where segmentation objects present           tation task, surpassing nnU-Net by 38.7% in Dice score.
+relatively regular shapes and locations, automatic segmenta-
+tion methods already obtain encouraging results, obviating the     2. Related work
+need for prompts in semi-automatic segmentation. In the con-
+text of SAM adaptation for automatic medical image segmen-         2.1. Vision foundation models
+tation, some recent studies employ parameter-efficient transfer       Foundation models has recently been actively developed in
+learning (PETL) techniques, such as LoRA (Hu et al., 2021)         computer vision, although to a lesser extent compared to their
+or Adapters (Houlsby et al., 2019), showing promising perfor-      prevalence in natural language processing. Pioneering vision
+mance in automatic segmentation (Zhang and Liu, 2023; Wang         foundation models learn directly from vast image-text pairs
+et al., 2023a). However, these methods focus on pure 2D adap-      sourced from the web in a self-supervised manner. Representa-
+tation, overlooking the valuable third-dimensional information     tive works CLIP (Radford et al., 2021) and ALIGN (Jia et al.,
+inherently present in medical images. This includes the cru-       2021) leverage contrastive learning techniques to train both text
+cial 3D spatial information in medical volumetric data and the     and image encoders. However, these models primarily excel in
+temporal information in medical video data.                        tasks that involve mapping images to text, such as classifica-
+   In this paper, we propose a modality-agnostic SAM adapta-       tion. Later on, Florence (Yuan et al., 2021) incorporates uni-
+tion method for medical image segmentation, named as MA-           versal visual-language representations, showing adaptability to
+SAM, which efficiently and effectively captures the volumetric     more diverse computer vision tasks. One of the latest develop-
+or temporal information in medical data. For the fine-tuning       ments is SAM (Kirillov et al., 2023), a vision foundation model
+of image encoder, we leverage the PETL technique called            for general-purpose image segmentation. By pre-training on
+FacT (Jie and Deng, 2023), which is based on tensorization-        1 billion masks, SAM demonstrates impressive zero-shot ca-
+decomposition to enhance the tuning efficiency. Such fine-         pability across numerous image segmentation tasks. Concur-
+tuning approach retains the pre-trained weights to a large ex-     rently, SegGPT (Wang et al., 2023c) and SEEM (Zou et al.,
+tent and only updates lightweight weight increments, ensuring      2023) have also emerged for general image segmentation, but
+the preservation of general knowledge necessary for object seg-    are pre-trained on relatively smaller datasets compared to SAM.
+mentation and reducing the number of parameters that need to
+be adjusted. To bridge the gap between 2D natural images and
+                                                                   2.2. Parameter-efficient transfer learning
+volumetric or video medical data, we further incorporate a set
+of 3D adapters into each transformer block of the image en-           With the remarkable performance exhibited by large models,
+coder to extract the valuable third-dimensional information. For   the paradigm of pre-training large foundation models and sub-
+the adaptation of the lightweight mask decoder, we employ full     sequently fine-tuning for specific downstream tasks has gained
+fine-tuning and modify its original architecture with a simple     increasing popularity. As the pre-trained large models continue
+yet effective progressive up-sampling mechanism to recover the     to grow in scale, the research on PETL has emerged to achieve
+prediction resolution. We demonstrate the efficacy of our SAM      effective and efficient adaptation by optimizing only a small
+adaptation framework on multiple medical imaging modalities        subset of model parameters while keeping substantial amount
+in tackling various segmentation tasks. By comparing with mul-     of parameters fixed. PETL techniques has been originally pro-
+tiple SOTA methods, our automatic segmentation demonstrates        posed in natural language processing, and can be categorized
+superior performance and remarkable generalization capability.     into three main groups (Lialin et al., 2023), including addi-
+Our main contributions are highlighted as follows:                 tive methods, selective methods, and reparameterization-based
+                                                                   methods. Additive methods, such as Adapters (Houlsby et al.,
+    • We propose a parameter-efficient fine-tuning method          2019), aim to augment the existing pre-trained model by in-
+      to adapt SAM to volumetric and video medical data.           troducing additional parameters or layers, and then fine-tuning
+      Our method effectively incorporates the essential third-     only these newly introduced components (He et al., 2022; Liu
+      dimensional information from medical images into the 2D      et al., 2023). Selective methods focus on updating a few se-
+      network backbone via lightweight 3D adapters.                lected influential layers or internal structure within the model
+                                                                   (Gheini et al., 2021; Zaken et al., 2022). Reparameterization-
+    • We demonstrate that our SAM adaptation can be applied to     based methods, such as LoRA (Hu et al., 2021) and FacT (Jie
+      various medical imaging modalities, including CT, MRI,       and Deng, 2023), leverage low-rank representations to mini-
+      and surgical video data, for anatomy, surgical scene, and    mize the number of trainable parameters, demonstrating robust
+      tumor segmentation. Without using any prompt, our auto-      and SOTA performance across various PETL tasks. Recently,
+      matic segmentation consistently outperforms competitive      PETL has also been actively studied in computer vision, en-
+      SOTA methods by a large margin.                              abling the effective adaptation of vision foundation models to a
+                                                                                                                                          3
+
+wide range of downstream tasks (Zhou et al., 2022; Jia et al.,      Vision Transformer (ViT) (Dosovitskiy et al., 2020) as the back-
+2022; Pan et al., 2022; Wang et al., 2023b).                        bone, extracting essential features of the images with a set of
+                                                                    transformer blocks. The prompt encoder takes in various types
+2.3. Adapting SAM in medical imaging                                of prompts including points, boxes, or texts, and encodes these
+   Attracted by SAM’s outstanding zero-shot performance             inputs into prompts embeddings to facilitate the segmentation
+in natural images, a plethora of evaluation studies quickly         task. The mask decoder is designed to be lightweight, which
+emerged in various medical image segmentation tasks (Huang          computes the cross-attention between embeddings of image and
+et al., 2023; He et al., 2023; Wald et al., 2023; Zhou et al.,      prompts, and utilizes transposed convolutional layers and multi-
+2023b; Deng et al., 2023b; Hu and Li, 2023; Cheng et al., 2023;     layer perception to generate segmentation masks. When ap-
+Zhang et al., 2023). However, due to the large domain gap be-       plying to medical images, the model’s performance largely de-
+tween natural and medical images, directly applying SAM to          grades since medical images present distinct texture and objects
+medical applications typically resulted in unsatisfactory perfor-   from natural images. This highlights the necessity for task-
+mance. For example, He et al. (He et al., 2023) assessed SAM’s      specific fine-tuning of SAM to address such challenges.
+segmentation accuracy on 12 medical imaging datasets and ob-
+served that SAM’s zero-shot performance lagged significantly        3.2. Parameter-efficient fine-tuning of image encoder
+behind models trained on domain-specific medical images, with          In order to effectively extract image features, SAM’s image
+performance gap as large as 70% in Dice in some tasks. Similar      encoder comprises a substantial portion of network parameters.
+observations were reported in (Huang et al., 2023), even when       Fine-tuning all these weights is computationally intensive. Pre-
+using different types of prompts. These findings suggest the ne-    vious research has shown that PETL techniques can achieve
+cessity of task-specific fine-tuning to adapt SAM for medical       adaptation performance similar to full fine-tuning but with sig-
+images for a better segmentation performance.                       nificantly fewer network parameters updated (Hu et al., 2021;
+   Subsequently, attention has shifted from evaluation to adap-     Pan et al., 2022). In this regard, we adopt FacT (Jie and Deng,
+tation of SAM to medical images (Zhang and Liu, 2023;               2023), a SOTA PETL technique, that can obtain comparable or
+Biswas, 2023; Wu et al., 2023b; Li et al., 2023; Feng et al.,       superior performance compared to other PETL methods while
+2023). Driven by the improvements observed with the use of          introducing a smaller number of trainable parameter.
+prompts, a majority of works leverage SAM’s prompt design              Based on the common observations that the transformer-
+during fine-tuning (Cheng et al., 2023; Deng et al., 2023a; Dai     based models tend to be redundant in rank, FacT assumes the
+et al., 2023; Yue et al., 2023). For instance, SAM-Med2D            dense weight increment matrices ∆W used for fine-tuning can
+(Cheng et al., 2023) adopted more comprehensive prompts             be approximated by a set of low-rank factors with cross-layer
+involving points, bounding boxes, and masks to tailor SAM           weight sharing. Following the tensor decomposition in FacT,
+for 2D medical images, and conducted comprehensive evalu-           we decompose the weight increments ∆W for each layer into
+ations. MSA (Wu et al., 2023a) employed point prompts and           three factors U ∈ Rd×r , V ∈ Rd×r , and Σ ∈ Rr×r , where d de-
+the Adapter technique to integrate medical domain knowledge         notes the feature dimensions in ViT, r stands for the rank of
+into the SAM model. However, creating prompts for each 2D           these factors with r << d. It is worth noting that the two fac-
+slice of 3D medical data is labor-intensive. In the case of SAM     tors, U and V, are shared across all layers, while the factor Σ
+adaptation for fully automatic medical image segmentation (Hu       is unique for each layer. The weight increments can then be
+et al., 2023; Paranjape et al., 2023), SAMed (Zhang and Liu,        calculated using the following equation:
+2023) and Wang et al. (Wang et al., 2023a) adopted LoRA                                             r
+                                                                                                  r X
+                                                                                                  X
+for fine-tuning, showing superior performance than multiple 2D                     ∆W j,k = s ·                 Σt1 ,t2 U j,t1 Vk,t2 ,   (1)
+medical image segmentation methods. However, these methods                                        t1 =1 t2 =1
+do not take into account the critical 3D volumetric or temporal     where s denotes a hyper-parameter for adjusting the learning
+information, which is well-known to be valuable for enhancing       rate of factors. We fix s as 1 in our experiments and tune
+medical image segmentation performance.                             the overall learning rate with the optimizer to achieve a similar
+                                                                    scaling effect. The FacT weight increments are applied to the
+3. Methodology                                                      query and value transformations within each transformer block,
+                                                                    while all the other weights initialized from SAM remain frozen,
+   In this section, we first briefly introduce the overview of      as empirically there were no obvious improvements observed
+SAM architecture, then introduce our method for the parameter-      when applying FacT to other layers. With the FacT weight in-
+efficient fine-tuning of image encoder, the incorporation of vol-   crements, the query and value transformations become:
+umetric or temporal information, and the adaptation of mask
+decoder, respectively. An overview of our framework for effec-                        Wq/v = W0 + s · UΣq/v V T ,                        (2)
+tive SAM adaptation is illustrated in Fig. 1.                       where Wq/v denotes the query or value transformation after fine-
+                                                                    tuning, W0 represents the SAM pre-trained weights.
+3.1. Overview of SAM
+   SAM is a promptable segmentation architecture consisting of      3.3. Incorporating volumetric or temporal information
+three main components, i.e., the image encoder, the prompt en-         SAM is initially pre-trained on 2D images, yet medical imag-
+coder, and the mask decoder. The image encoder employs the          ing typically involves more than two dimensions. For example,
+4
+
+[B, N, H, W]                 [BN, H, W]                                 Image encoder                                                   Mask decoder
+
+
+
+
+                                                                                                                                      block x2
+
+
+                                                                                                                                                      conv x4
+                                                                             Transformer
+
+
+
+
+                                                                                                                                   Transformer
+                                                     Transformer
+
+
+
+
+                                                                                                     Transformer
+
+
+
+
+                                                                                                                                                   Transposed
+                Reshape
+                                                                                           …
+
+
+
+
+                                                                                block
+                                                        block
+
+
+
+
+                                                                                                        block
+
+
+
+
+                                                                                                                                                                         MLP
+                                                                                                                      Image
+Input 3D volumes                                                                                                    embedding                                                  Prediction
+
+
+                         3D Adapter                                Low-rank                                 3D Adapter
+                                                                    factors
+
+
+
+
+                                                                    self-attention
+
+
+
+
+                                                                                                                                                          Feed-forward
+                                                                     Multi-head
+
+
+
+
+                                                                                                    Wdown
+                                                                                           Norm
+                 Wdown
+         Norm
+
+
+
+
+                                                     Norm
+
+
+
+
+                                                                                                                                                 Norm
+                                                                                                                   conv
+                            conv
+
+
+
+
+                                                                                       ⊕                                           ⊕                                      ⊕
+
+
+
+
+                                                                                                                             Wup
+                                            ⊕
+                                      Wup
+
+
+
+
+                                                                                                                    3D
+                             3D
+
+
+
+
+                                                                                                                                                                                Fine-tune
+                            Reshape                                                                                Reshape                                                      Freeze
+
+Fig. 1: The overview of our proposed modality-agnostic SAM adaptation framework (MA-SAM) for medical image segmentation. The image encoder is updated
+through a parameter-efficient fine-tuning strategy with FacT. The volumetric or temporal information is effectively incorporated via a set of 3D adapters. The mask
+decoder is fully fine-tuned and modified to recover the prediction resolution. Reshape operations are used to make 3D operations compatible with the 2D backbone.
+
+
+
+volumetric CT and MRI data contain crucial 3D spatial infor-                                      passed into the SAM backbone, a reshape operation is applied
+mation for depicting anatomical structures or lesions, and sur-                                   to transform x ∈ RB×N×H×W into x ∈ RBN×H×W by merging
+gical video data possesses valuable temporal relations between                                    the adjacent slices into the batch dimension. Then for the fea-
+frames. Incorporating this volumetric or temporal knowledge                                       ture maps, prior to feeding into the 3D convolutional layer of
+inherent in medical imaging data, is pivotal for the success-                                     a 3D adapter, they are reshaped from [BN, H/16, W/16, c] to
+ful transfer learning of SAM in medical applications. To ad-                                      [B, c, N, H/16, W/16]. Here H/16 and W/16 denote the spatial
+dress this key challenge, we propose to integrate a series of 3D                                  dimensions of feature maps, which are down-sampled by 16
+adapters into the 2D transformer blocks within the SAM archi-                                     times because of the patch embedding process in transformer.
+tecture. These adapters serve the purpose of extracting the es-                                   After the 3D convolutional operation, the shape of feature maps
+sential volumetric or temporal insights needed for medical im-                                    are changed back again. In this way, the volumetric or temporal
+age analysis. By incorporating these adapters, we bridge the                                      information can be effectively extracted within a 2D network
+gap between the inherent complexities of medical imaging data                                     backbone. For each transformer block, we incorporate two 3D
+and SAM’s pre-trained 2D backbone, enabling it to effectively                                     adapters before and after the attention layers, as empirically su-
+handle multidimensional medical data.                                                             perior performance can be obtained with such a design.
+   Specifically, as shown in Fig. 1, each 3D adapter consists of
+a normalization layer, a linear down-projection layer, a 3D con-                                  3.4. Adapting mask decoder
+volutional layer followed by an activation layer, and a linear
+                                                                                                     The mask decoder within original SAM comprises only two
+up-projection layer. The core extraction of volumetric or tem-
+                                                                                                  transformer layers, two transposed convolutional layers, and a
+poral information primarily resides within the 3D convolutional
+                                                                                                  single multilayer perception layer. Considering its lightweight
+layer. The purpose of the down-projection layer is to reduce
+                                                                                                  architecture, it is feasible to apply full fine-tuning on the com-
+the dimensionality of the original d-dimensional features into
+                                                                                                  plete mask decoder for effective adaptation on medical images.
+a more compact c-dimensional representation, so as to control
+                                                                                                  During the patch embedding process of the transformer back-
+the number of newly introduced parameters. Conversely, the
+                                                                                                  bone within SAM’s image encoder, each 16×16 patch is embed-
+up-projection layer restores the feature dimensions. With M
+                                                                                                  ded as a feature vector, leading to 16 × 16 times down-sampling
+denoting feature maps, the 3D adapter can be expressed as:
+                                                                                                  of the inputs. The SAM mask decoder utilizes two consecutive
+    3DAdapter(M) = M+σ(Conv3D(Norm(M)·Wdown ))Wup , (3)                                           transposed convolutional layers to up-sample the feature maps
+                                                                                                  by 4 times, yet the final predictions generated by SAM remain
+where Norm denotes the layer normalization, σ denotes the ac-                                     4 times lower in resolution than the original shapes. Never-
+tivation function, Wdown ∈ Rd×c and Wup ∈ Rc×d denote the                                         theless, since many anatomical structures or lesions in medical
+linear down- and up-projection layer respectively, and Conv3D                                     images are quite small, achieving a higher resolution is often
+denotes the 3D convolutional layer with a kernel size of 3×1×1                                    necessary to ensure improved discrimination in the context of
+to specifically extract the third dimensional information.                                        medical imaging (Ronneberger et al., 2015).
+   To make the 3D adapters compatible with the 2D SAM back-                                          To address this issue, we explore two approaches to tailor the
+bone, for the network inputs, we extract a set of adjacent slices                                 mask decoder for enhanced suitability in medical image seg-
+x = {xi− N−1
+           2
+             , ..., xi , ..., xi+ N−1
+                                   2
+                                       B
+                                      }i=1 , x ∈ RB×N×H×W . Here, B de-                           mentation. For the first approach, termed as “progressive up-
+notes the batch size, N denotes the number of adjacent slices,                                    sampling”, we introduce modest adjustments to the SAM de-
+and H × W denotes the slice dimensions. Before the inputs are                                     coder by integrating two additional transposed convolutional
+                                                                                                                                     5
+
+operations. With each layer up-samples the feature maps by           with annotations for pancreas and tumor. Each scan comprises
+a factor of 2, the four transposed convolutional layers pro-         37 to 751 slices with an axial size of 512×512. We follow
+gressively restore feature maps to their original input resolu-      (Gong et al., 2023) to utilize only tumor labels in our experi-
+tion. The second approach, termed as “multi-scale fusion”, en-       ments and employ the same data split as in their work.
+tails creating a design resembling a “U-shaped” network (Ron-           In addition, we use the Multi-Modality Abdominal Multi-
+neberger et al., 2015). This involves connecting the multi-scale     Organ Segmentation Challenge (AMOS 22) dataset (Ji et al.,
+feature maps of the image encoder with corresponding stages          2022) for the evaluation of model generalization. This dataset
+of the mask decoder using skip connections, a concept akin to        contains abdominal CT and MRI data that were acquired from
+that of U-Net. To achieve this, we uniformly divide the image        different patients. Each scan was annotated with 15 organs, but
+encoder into four stages, establishing connections between the       we focus on the 12 organs that overlap with the BTCV dataset.
+feature maps of each stage and those of the decoder through          300 CT scans and 60 MRI scans in the training and validation
+a series of up-sampling and convolutional operations. In our         sets of AMOS 22 are used for our generalization evaluation.
+experiments, we have observed that the gradual up-sampling              For data pre-processing, the intensity values of each CT scan
+mechanism yields superior outcomes compared to multi-layer           in BTCV and MSD-Pancreas datasets were truncated within the
+feature aggregation, showing the efficacy and simplicity of the      range of [-200, 250] Hounsfield Units (HU) and [-50, 200] HU
+progressive up-sampling approach.                                    respectively. The intensity of each MRI scan was truncated
+                                                                     at the 99th percentile. Each CT or MRI scan was normalized
+4. Experiments                                                       to zero mean and unit variance. For surgical video data, each
+                                                                     frame was normalized to [0, 1] range. We resized all images to
+   We extensively evaluate our method on four medical image          512 × 512 for the axial plane of CT and MRI data, as well as
+segmentation tasks, covering three types of medical imaging          for each frame of surgical video sequences. For model evalu-
+modalities from 10 datasets, i.e., abdominal multi-organ seg-        ation, we employ the common metrics, i.e., the Dice score and
+mentation in CT, prostate segmentation in MRI, and surgical          Hausdorff Distance (HD) to assess pixel-wise segmentation ac-
+scene segmentation in surgical video. We first conduct compari-      curacy and the segmentation boundary quality respectively. We
+son with SOTA medical image segmentation methods and SAM             also report the mean intersection-over-union (mIoU) for the En-
+fine-tuning methods, and then provide generalization evaluation      doVis18 dataset and the normalized surface distance (NSD) for
+and in-depth ablation studies to analyze our method.                 the MSD-Pancreas dataset to align with previous studies.
+
+4.1. Datasets and evaluation metrics                                 4.2. Implementation details
+   Task1: The Beyond the Cranial Vault (BTCV) challenge
+dataset (Landman et al., 2015) contains 30 CT volumes with              The fine-tuning process was supervised using a hybrid seg-
+manual annotations for 13 abdominal organs. Each CT scan             mentation loss, which combines the cross-entropy loss and Dice
+contains 85 to 198 slices with the slice thickness varying from      loss as: Lseg = αLce + βLDice . The weighting factors α and β
+2.5 mm to 5.0 mm. The axial size is 512 × 512 for all scans, but     were set as 0.2 and 0.8 following (Zhang and Liu, 2023), except
+with in-plane resolution ranging from 0.54 × 0.54 mm2 to 0.98        for the surgical video data for which only the Dice loss was uti-
+× 0.98 mm2 . We use the same data split as (Tang et al., 2022a),     lized. Every five consecutive slices were taken as the network
+which contains 24 cases for training and 6 cases for testing.        inputs. For data augmentation, we applied a range of trans-
+   Task2: We perform prostate segmentation on 6 MRI data             formations including random rotation, flip, erasing, shearing,
+sources (Liu et al., 2020), i.e., Site A to F, that were collected   scaling, translation, posterization, contrast adjustment, bright-
+from NIC-ISBI13 (Bloch et al., 2015), I2CVB (Lemaı̂tre et al.,       ness modification, and sharpness enhancement. Our model was
+2015), and PROMISE12 (Litjens et al., 2014) datasets. The case       trained using Adam optimizer with a batch size of 24. As in
+number for each site is 30, 30, 19, 13, 12, 12 respectively, which   (Zhang and Liu, 2023), we adopted a warmup training strategy
+were randomly divided into 80% and 20% for training and test-        to increase the learning rate linearly to the specific value and
+ing. These MRI scans from different sites were acquired with         then exponentially decrease it towards the end of training to sta-
+varying imaging protocols and present heterogeneous data dis-        bilize the training. We employed ViT H as the backbone of the
+tributions, thus were commonly used in previous domain gen-          image encoder and conducted a total of 400 epochs of training,
+eralization studies (Liu et al., 2022).                              ensuring that the model converged effectively. Our framework
+   Task3: The 2018 MICCAI Robotic Scene Segmentation                 was implemented in PyTorch 2.0 using 8 NVIDIA A100 GPUs.
+Challenge (EndoVis18) dataset (Allan et al., 2020) comprises
+19 sequences, captured using the da Vinci X or Xi system. Each       4.3. Comparison with SOTA methods
+sequence contains either 149, 249, or 250 frames at a resolution        For CT and MRI datasets, we extensively compare our
+of 1280 × 1024. The dataset encompasses the surgical scene,          method with various SOTA 3D medical image segmentation
+with 12 classes annotated for various anatomical structures and      methods including CNN-based approaches nnU-Net (Isensee
+robotic instruments. The dataset is officially split into 15 se-     et al., 2021), which is a U-Net (Ronneberger et al., 2015) based
+quences for training and 4 sequences for testing.                    self-configuring framework, showing robust performance on
+   Task4: The Pancreas Tumor Segmentation task within 2018           various medical image segmentation competitions, and 3D UX-
+MICCAI Medical Segmentation Decathlon Challenge (MSD-                Net (Lee et al., 2023), which is a very recent large kernel volu-
+Pancreas) dataset (Antonelli et al., 2022) contains 281 CT scans     metric ConvNet for 3D medical image segmentation, as well as
+6
+
+    Table 1: Comparison of abdominal multi-organ segmentation results generated from our MA-SAM method and other state-of-the-art methods on BTCV dataset.
+    Methods                                           Spleen R.Kd                L.Kd       GB         Eso.      Liver Stomach Aorta                  IVC     Veins Pancreas AG Average
+                                                                                                Dice [%] ↑
+    nnU-Net (Isensee et al., 2021)                      97.0          95.3       95.3      63.5        77.5      97.4        89.1             90.1    88.5    79.0      87.1     75.2   86.3
+    3D UX-Net (Lee et al., 2023)                        94.6          94.2       94.3      59.3        72.2      96.4        73.4             87.2    84.9    72.2      80.9     67.1   81.4
+    SwinUNETR (Tang et al., 2022b)                      95.6          94.2       94.3      63.6        75.5      96.6        79.2             89.9    83.7    75.0      82.2     67.3   83.1
+    nnFormer (Zhou et al., 2023a)                       93.5          94.9       95.0      64.1        79.5      96.8        90.1             89.7    85.9    77.8      85.6     73.9   85.6
+    SAMed h (Zhang and Liu, 2023)                       95.3          92.1       92.9      62.1        75.3      96.4        90.2             87.6    79.8    74.2      77.9     61.0   82.1
+    MA-SAM (Ours)                                       96.7          95.1       95.4      68.2        82.1      96.9        92.8             91.1    87.5    79.8      86.6     73.9   87.2
+                                                                                                HD [%] ↓
+    nnU-Net (Isensee et al., 2021) 1.07 1.19                                     1.19      7.49 8.56 1.14                     4.84        14.11       2.87    5.67       2.31    2.23   4.39
+    3D UX-Net (Lee et al., 2023)   3.17 1.59                                     1.26      4.53 13.92 1.75                   19.72        12.53       3.47    9.99       3.70    4.11   6.68
+    SwinUNETR (Tang et al., 2022b) 1.21 1.41                                     1.37      2.25 5.82 1.70                    13.75        5.92        4.46    7.58       3.53    3.40   4.37
+    nnFormer (Zhou et al., 2023a)  78.03 1.41                                    1.43      3.00 4.92 1.38                     4.24         7.53       4.02    6.53       2.96    2.76   9.95
+    SAMed h (Zhang and Liu, 2023) 1.37 33.53                                     1.84      6.27 4.84 1.77                    7.49         4.97        7.28    6.87      10.00    6.49   7.73
+    MA-SAM (Ours)                   1.00 1.19                                    1.07      1.59 3.77 1.36                     3.87        5.29        3.12    3.25       3.93    2.57   2.67
+       SAMed h: ViT H version of SAMed, R.Kd: Right kidney, L.Kd: Left kidney, GB: Gall ladder, Eso.: Esophagus, IVC: Inferior vena cava, AG: Adrenal gland
+
+     Table 2: Comparison of prostate segmentation results generated from our MA-SAM method and other state-of-the-art methods on six prostate MRI datasets.
+    Methods                                           Site A Site B Site C Site D Site E Site F Average Site A Site B Site C Site D Site E Site F Average
+                                                                                    Dice [%] ↑                                                                HD [%] ↓
+    nnU-Net (Isensee et al., 2021)                    93.3          89.2     89.5      86.5     91.0     90.2        90.0         1.74         2.34    3.61    2.98     2.74    1.80     2.54
+    3D UX-Net (Lee et al., 2023)                      91.8          86.0     88.3      70.4     85.9     88.4        85.1         1.95         3.20    4.37    9.61     5.07    2.67     4.48
+    SwinUNETR (Tang et al., 2022b)                    88.7          88.0     88.4      71.5     84.7     84.6        84.3         3.27         3.02    4.37    8.59     5.24    2.82     4.55
+    nnFormer (Zhou et al., 2023a)                     93.6          90.1     89.5      86.8     91.9     90.6        90.4         1.73         2.11    3.54    2.93     2.75    2.08     2.52
+    SAMed h (Zhang and Liu, 2023)                     94.6          89.5     88.6      87.9     92.7     91.3        90.8         1.14         3.90    3.10    3.00     2.61    1.67     2.57
+    MA-SAM (Ours)                                     95.3          92.7     90.4      91.3     92.7     93.1        92.6         1.00         1.54    3.29    1.80     2.56    1.47     1.94
+       SAMed h: ViT H version of SAMed
+
+    Spleen   Right kidney   Left kidney   Esophagus   Gallbladder    Liver   Stomach    Aorta    IVC     Veins    Pancreas    Adrenal gland
+
+
+
+
+         CT image             Ground truth                 nnU-Net                  3D UX-Net              SwinUNETR                  nnFormer                SAMed_h           MA-SAM (ours)
+Fig. 2: Qualitative visualization of segmentation results generated from our MA-SAM method and other state-of-the-art methods on BTCV dataset. Abdominal
+organs are denoted in different colors as shown in the corresponding color bar.
+
+
+
+transformer-based methods SwinUNETR (Tang et al., 2022b),                                                for tumor segmentation. For surgical video data, we compare
+which is a 3D transformer-based model with a hierarchical en-                                            our method with SOTA surgical scene segmentation methods,
+coder, and nnFormer (Zhou et al., 2023a), which is a model                                               NCT (Shvets et al., 2018), UNC (Ren et al., 2020), and OTH
+combining local and global volume-based self-attention mech-                                             (Chen et al., 2018), which are the top-three approaches reported
+anism. We also compare our method with the most recent SAM                                               in the challenge, Noisy-LSTM (Wang et al., 2021) which uses
+adaptation methods SAMed h (Zhang and Liu, 2023), which                                                  ConvLSTM to learn temporal cues, STswinCL (Jin et al., 2022)
+is an automatic 2D medical image segmentation model for or-                                              which is a transformer-based model capturing intra- and inter-
+gan segmentation, and 3DSAM-adapter (Gong et al., 2023),                                                 video relations, and nnU-Net. For all comparison experiments,
+which is a promptable 3D medical image segmentation model                                                the dataset splits remain consistent across all the methods.
+                                                                                                                                                             7
+
+ Table 3: Comparison of segmentation results from different methods for sur-   Table 4: Comparison of segmentation results from different methods for pan-
+ gical scene segmentation on Endovis18 dataset.                                creas tumor segmentation in CT images.
+
+                                               Sequence (mIoU)                   Methods                                        Dice ↑ NSD ↑
+  Methods                           mIoU                            Dice
+                                            Seq 1 Seq 2 Seq 3 Seq 4              nnU-Net (Isensee et al., 2021)                  41.6 62.5
+  NCT (Shvets et al., 2018)          58.5   65.8   55.5   76.5   36.2    -       3D UX-Net (Lee et al., 2023)                    34.8 52.6
+  UNC (Ren et al., 2020)             60.7   63.3   57.8   81.4   37.3    -       SwinUNETR (Tang et al., 2022b)                  40.6 60.0
+  OTH (Chen et al., 2018)            62.1   69.1   57.5   82.9   39.0    -       nnFormer (Zhou et al., 2023a)                   36.5 54.0
+  Noisy-LSTM (Wang et al., 2021)     60.4   67.0   56.3   81.8   36.4   69.1     3DSAM-adapter (automatic) (Gong et al., 2023) 30.2 45.4
+  STswinCL (Jin et al., 2022)        63.6   67.0   63.4   83.7   40.3   72.0     3DSAM-adapter (10 pts/scan) (Gong et al., 2023) 57.5 79.6
+  nnU-Net (Isensee et al., 2021)     58.7   65.7   57.5   81.3   30.4   67.1     MA-SAM (automatic)                              40.2 59.1
+  SAMed h (Zhang and Liu, 2023)      66.5   68.7   60.7   84.3   52.3   74.7     MA-SAM (1 tight 3D bbx/scan)                    80.3 97.9
+  MA-SAM (Ours)                      69.2   73.4   64.5   85.4   53.4   77.0     MA-SAM (1 relaxed 3D bbx/scan)                  74.7 97.1
+
+
+
+
+       MRI image         Ground truth        nnU-Net             3D UX-Net      SwinUNETR          nnFormer           SAMed_h         MA-SAM (ours)
+
+Fig. 3: Qualitative visualization of segmentation results generated from our MA-SAM method and other state-of-the-art methods on prostate MRI datasets. The
+prostate boundary is delineated in green for ground truth, in orange for our method, and in red for other methods, respectively.
+
+
+
+   Table 1 to Table 4 present comparative results for the four dif-             formation for 3D medical image segmentation. The visual com-
+ferent tasks: abdominal multi-organ segmentation in CT data,                    parison results are presented in Fig. 2 to Fig. 4.
+prostate MRI segmentation across 6 sites, scene segmentation
+                                                                                   Pancreas tumor segmentation presents a substantial challenge
+in surgical video, and tumor segmentation in CT data, respec-
+                                                                                due to the irregular contours and unclear margins of pancreas
+tively. When prompts are not specified, all methods gener-
+                                                                                tumors in CT scans. As can be seen in Table 4 and Fig. 5, all
+ate results automatically without using any prompt. With our
+                                                                                automatic segmentation models struggle to correctly delineate
+dedicatedly designed fine-tuning strategy for SAM, our method
+                                                                                pancreas tumor regions, obtaining merely a 41.6% Dice score
+consistently and significantly outperforms other comparison ap-
+                                                                                for the best-performing model. We consider in such a demand-
+proaches across all the four tasks. In terms of fully automatic
+                                                                                ing segmentation task, the use of prompts become valuable. By
+segmentation for the first three tasks, our method improves the
+                                                                                adding prompts in the form of one tight 3D bounding box per
+Dice score by 0.9%, 2.6%, 5% compared to the second-best
+                                                                                volume into the model, our method remarkably boosts the Dice
+performing approach, respectively. Notably, nnU-Net proves
+                                                                                score from 41.6% to 80.35%, demonstrating the effectiveness of
+to be a strong competitor, showing robust segmentation per-
+                                                                                leveraging prompts for tumor segmentation. However, if allow-
+formance across CT and MRI datasets. However, in surgical
+                                                                                ing 5% relaxation on the tightness of provided bounding box,
+scene segmentation, nnU-Net obtains lower results compared
+                                                                                the performance drops to 74.7%, showing the effect of prompts
+to methods specifically tailored for processing surgical videos.
+                                                                                quality on segmentation performance. Our method also sig-
+Our method demonstrates strong performance across both vol-
+                                                                                nificantly outperforms the recent holistic 3D SAM adaptation
+umetric and video medical data, indicating the potential of uni-
+                                                                                method 3DSAM-adapter, with 10% Dice improvement when
+fying the network architecture in these two domains of medical
+                                                                                using automatic segmentation. This can be attributed to our
+imaging, where previous methods were developed separately.
+                                                                                method’s effective incorporation of third-dimensional informa-
+When comparing with the pure 2D SAM fine-tuning method
+                                                                                tion into model fine-tuning, as well as its substantial utilization
+SAMed h, which employs the same network backbone as ours,
+                                                                                of pre-trained weights from SAM to retain general discrimina-
+our method also achieves significantly better results, demon-
+                                                                                tive knowledge. We notice that our method’s automatic seg-
+strating the benefits of incorporating volumetric or temporal in-
+                                                                                mentation performance falls slightly behind nnU-Net on tumor
+8
+
+    Instrument shaft   Instrument clasper   Instrument wrist   Kidney   Covered kidney   Thread   Small intestine
+
+
+
+
+          CT image                  Ground truth                   nnU-Net                    SAMed_h               MA-SAM (ours)                     CT image    Ground truth               nnU-Net          Ours w/ tight bbx Ours w/ relaxed bbx
+
+Fig. 4: Qualitative visualization of segmentation results generated from differ-                                                    Fig. 5: Qualitative visualization of segmentation results generated from differ-
+ent methods for surgical video data. Classes are denoted in different colors.                                                       ent methods for pancreas tumor segmentation.
+
+
+                                                                                                                                               82.5
+                                                                                                                                                         AMOS CT                            90.0
+                                                                                                                                                                                                                        AMOS MRI
+segmentation. This observation might indicate that SAM fine-                                                                                                      82.2                                                                                81.4
+                                                                                                                                                                                            80.0                                      72.4
+tuning might be less effective for objects with ill-defined mar-                                                                               82.0                                         70.0                       60.4
+                                                                                                                                                                                            60.0
+gins and small sizes, as these characteristics differ from the nat-
+
+
+
+
+                                                                                                                                    Dice (%)
+
+
+
+
+                                                                                                                                                                                 Dice (%)
+                                                                                                                                               81.5
+                                                                                                                                                                                            50.0
+ural images on which SAM was originally trained.                                                                                                                                            40.0
+                                                                                                                                               81.0     80.8
+                                                                                                                                                                                            30.0
+                                                                                                                                               80.5                                         20.0       10.9
+4.4. Generalization evaluation                                                                                                                                                              10.0
+                                                                                                                                               80.0                                          0.0
+   One of the most appealing advantage of foundation models                                                                                           nnU-Net    MA-SAM                            nnU-Net          MA-SAM           nnU-Net      MA-SAM
+                                                                                                                                                       0 shot     0 shot                            0 shot           0 shot           5 shot       5 shot
+lies in their impressive generalization capability. To investigate
+the generalization of our models adapted from SAM, we first                                                                         Fig. 6: Comparison of zero-shot and five-shot generalization performance of
+compare the zero-shot and few-shot capability of nnU-Net and                                                                        nnU-Net and our MA-SAM model on AMOS CT and MRI data.
+our method by applying models trained on the BTCV CT scans
+to the AMOS22 CT and MRI scans. In Fig. 6, “nnU-Net 0                                                                               Table 5: Comparison of generalization performance of nnU-Net and our MA-
+shot” and MA-SAM 0 shot” denote that the models trained on                                                                          SAM model with SOTA domain generalization methods on prostate datasets.
+BTCV data are directly used to perform inference on AMOS22
+images, and “nnU-Net 5 shot” and MA-SAM 5 shot” denote the                                                                              Methods                                        Site B Site C Site D Site E Site F Average
+models are further fine-tuned with 5 additional training cases                                                                          nnU-Net (Isensee et al., 2021) 72.0                            69.6      84.7         42.5     82.9       70.3
+from the AMOS22 dataset. From the results, we can see that                                                                              TTST* (Karani et al., 2021)                         86.0       74.8      81.0         74.0     80.9       79.3
+our method exhibits better zero-shot and few-shot segmentation                                                                          TASD* (Liu et al., 2022)                            87.1       76.4      82.5         76.0     83.2       81.1
+performance on AMOS22 CT and MRI images, demonstrating                                                                                  MA-SAM (Ours)                                       86.7       66.6      88.6         79.1     89.5       82.1
+higher generalization capability. Especially for MRI images,                                                                                    Note: ∗ means the method uses domain generalization techniques.
+nnU-Net encounters complete failure in the zero-shot context,
+obtaining only 10.9% Dice score, while our model still retains
+the performance of 60.4% Dice score. In the five-shot context,                                                                      influence of network backbone, 4) choice of location for 3D
+our method also shows 9% improvements than nnU-Net, further                                                                         adapters, 5) choice of rank for parameter-efficient fine-tuning.
+underscoring the advantages of generalization.                                                                                         1) Effectiveness of each component: We first validate the con-
+   We also compare the model generalization on prostate MRI                                                                         tribution of key components within our method, i.e., SAM’s
+segmentation. In Table 5, the results of nnU-Net and our mod-                                                                       pre-trained weights, the parameter-efficient fine-tuning strategy
+els are obtained by directly applying the models fine-tuned on                                                                      with FacT, and the incorporation of 3D information with 3D
+Site A to make predictions for Site B to F. We include two re-                                                                      adapters. In Table 9, the “Full FT” model denotes whether full
+cent SOTA test-time domain generalization methods into com-                                                                         fine-tuning is used for the image encoder, since the mask de-
+parison, i.e., TTST (Karani et al., 2021) and TASD (Liu et al.,                                                                     coder is fully fine-tuned for all the models. By comparing the
+2022), which employ additional domain generalization tech-                                                                          results between the first and third rows in Table 9, we observe
+niques when performing predictions on each specific site. The                                                                       a substantial 13.1% improvement in Dice when the model is
+results demonstrate that our method not only outperforms nnU-                                                                       initialized with SAM’s pre-trained weights. This underscores
+Net by a large margin when generalizing to different sites, but                                                                     the benefits of utilizing SAM’s original weights that were pre-
+also achieves superior performance than SOTA domain gener-                                                                          trained on a large-scale and diverse dataset. The second row
+alization approaches. All these results on AMOS22 dataset and                                                                       shows that if the entire image encoder remains frozen with-
+different prostate MRI datasets underscore the impressive gen-                                                                      out being fine-tuned, and only the mask decoder is updated,
+eralization capability of our method, which is an importance                                                                        the performance is unsatisfactory. This suggests that due to
+characteristic for critical medical applications.                                                                                   the significant difference in image texture between natural and
+                                                                                                                                    medical images, the image encoder trained solely on natural
+4.5. Ablation analysis of our method                                                                                                images struggles to extract essential features from medical im-
+   We conduct extensive ablation experiments on the BTCV                                                                            ages. Moreover, Table 9 demonstrates that FacT is capable of
+dataset to investigate several key aspects regarding our SAM                                                                        delivering performance on par with full fine-tuning, by adjust-
+fine-tuning strategy: 1) effectiveness of each important com-                                                                       ing a small portion of weight increments. The models equipped
+ponent in our method, 2) effect of mask decoder design, 3)                                                                          with 3D adapters achieve superior performance, validating the
+                                                                                                                                                           9
+
+   Table 6: Comparison of model performance with        Table 7: Comparison of model perfor-         Table 8: Comparison of model performance with
+   different mask decoder designs.                      mance with different network backbones.      different position of 3D adapters.
+     Decoder design                  Dice [%]               Backbone            Dice [%]               Position                            Dice [%]
+     SAM mask decoder                  84.4                 ViT B                 82.5                 Before MHSA                           86.7
+     Progressive up-sampling           85.1                 ViT L                 84.1                 After MHSA                            86.8
+     Multi-scale fusion                84.5                 ViT H                 85.1                 Before & after MHSA                   87.2
+
+
+   Table 9: Ablation on each key component in our method. The markers            Table 10: The change of Dice score for our method with different ranks.
+   • and ◦ denote whether a specific component is used or not.
+                                                                                                   r=4       r=8       r = 16      r = 32     r = 64
+   SAM weights       Full FT      FacT    3D Adapters Dice [%] ↑
+         ◦              •           ◦           ◦            72.2                  MA-SAM           81.4      82.7      84.6        85.1       85.3
+         •              ◦           ◦           ◦            70.4
+         •              •           ◦           ◦            85.3
+         •              ◦           •           ◦            85.1             5. Discussion
+         •              ◦           ◦           •            86.4
+         •              ◦           •           •            87.2                Foundation models, like the Segment Anything Model
+                                                                              (SAM), have revolutionized intelligent model development by
+                                                                              offering robust generalization and few-shot learning capabili-
+                                                                              ties. SAM has demonstrated impressive zero-shot performance
+importance of incorporating the third-dimensional information                 for natural image tasks. However, applying SAM directly to
+for medical image segmentation.                                               medical image segmentation has proven ineffective due to the
+   2) Effect of mask decoder design: We compare the perfor-                   substantial domain differences. To address this problem, in this
+mance of different mask decoder designs, including the origi-                 work, we propose a parameter-efficient fine-tuning method to
+nal SAM mask decoder, the progressive up-sampling strategy,                   adapt SAM to various medical imaging modalities. Our method
+and the multi-scale fusion strategy. Table 6 shows that the                   leverages FacT to efficiently update a small portion of weight
+straightforward progressive up-sampling strategy yields supe-                 increments and injects a set of designed 3D adapters to extract
+rior results, validating its simplicity and effectiveness. These              crucial volumetric or temporal knowledge of medical images
+results demonstrate the importance of recovering prediction res-              during fine-tuning. The general applicability and effectiveness
+olution for medical images, which often contain small objects.                of our method has been validated on four medical image seg-
+However, no significant improvements were observed with the                   mentation tasks across three imaging modalities. Our model
+multi-scale fusion strategy. This might because of the extensive              also demonstrates outstanding generalization capability, as well
+modifications it introduces to the original SAM decoder, result-              as significant advantage in particularly challenging tumor seg-
+ing in less effective utilization of the pre-trained SAM weights.             mentation when prompts are used.
+   3) Influence of network backbone: We conduct experi-                          One significant motivation for adapting SAM to medical im-
+ments with different network backbones, i.e., ViT B, ViT L,                   ages is its pre-training on a vast and diverse dataset, which
+and ViT H, to assess their impact on the performance of our                   is difficult to achieve in the filed of medical imaging. This
+method. As can be observed in Table 7, there is a noticeable                  makes SAM’s adaptation generally applicable to various med-
+improvement in Dice performance as the model size increases                   ical imaging modalities. In medical applications, there are
+from ViT B to ViT H, signifying the advantages of using a                     recent efforts trying to pre-train modality-specific foundation
+larger model size to enhance overall model performance.                       models. However, these models are often constrained to a spe-
+                                                                              cific medical imaging modality and challenging to extend to
+   4) Choice of location for 3D adapters: We perform abla-                    others. For example, models pre-trained with chest x-ray data
+tion experiments to investigate the placement of 3D adapters                  may face difficulties when applied to MRI data. By leveraging
+within our model. Specifically, we compare the performance                    SAM’s pre-trained weights, we are able to train a large-scale
+when incorporating a 3D adapter in one of three locations: be-                segmentation network, such as ViT H, for medical image seg-
+fore the multi-head self-attention block (MHSA), after MHSA,                  mentation, even when limited data, such as just 5 imaging scans
+or in both of these positions. As demonstrated in Table 8, the                are used. Our experiments have demonstrated the benefits of in-
+configuration with two 3D adapters positioned both before and                 creasing the model size, raising the intriguing question of how
+after MHSA yields superior performance for our final model.                   performance evolves with further increases in model size. Can
+   5) Choice of rank: We investigate how the model’s perfor-                  we achieve improved accuracy or enhanced generalization with
+mance changes with varying decomposition rank r, by consid-                   larger models for medical images? Exploring these possibilities
+ering the rank value from the set {4, 8, 16, 32, 64}. As ex-                  holds great interest.
+pected, Table 10 shows that with an increase in rank, there is a                 Using promptable segmentation is less meaningful for tasks
+corresponding improvement in average Dice performance, but                    that can already achieve satisfactory results with SOTA med-
+the performance tends to saturate when r ≥ 32. We thus set                    ical image segmentation methods. Prompts prove particularly
+r = 32 in our experiments to seek a balance between perfor-                   beneficial and valuable when dealing with challenging tumor
+mance gains and the number of parameters introduced.                          segmentation tasks, as demonstrated in our experiments as well
+10
+
+as other SAM fine-tuning works. However, crafting effective                           Deng, R., Cui, C., Liu, Q., Yao, T., Remedios, L.W., Bao, S., Landman, B.A.,
+prompts demands a substantial amount of effort. As shown in                               Wheless, L.E., Coburn, L.A., Wilson, K.T., et al., 2023b. Segment anything
+                                                                                          model (sam) for digital pathology: Assess zero-shot segmentation on whole
+Table 4, the performance of promptable segmentation drops as                              slide imaging. arXiv preprint arXiv:2304.04155 .
+the quality of prompts declines. Given the challenges associ-                         Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Un-
+ated with manual prompt creation, there is considerate room                               terthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., et al.,
+for future exploration in automating this process. It would be                            2020. An image is worth 16x16 words: Transformers for image recognition
+                                                                                          at scale. arXiv preprint arXiv:2010.11929 .
+interesting and valuable to investigate methods for generating                        Feng, W., Zhu, L., Yu, L., 2023. Cheap lunch for medical image segmentation
+suitable prompts automatically or study how to train an accu-                             by fine-tuning sam on few exemplars. arXiv preprint arXiv:2308.14133 .
+rate segmentation model with noisy or imperfect prompts. This                         Gheini, M., Ren, X., May, J., 2021. Cross-attention is all you need: Adapting
+would enhance the practicality of promptable segmentation in                              pretrained transformers for machine translation, in: Moens, M., Huang, X.,
+                                                                                          Specia, L., Yih, S.W. (Eds.), Proceedings of the 2021 Conference on Empir-
+scenarios where manual prompt creation is challenging.                                    ical Methods in Natural Language Processing, EMNLP 2021, Virtual Event
+                                                                                          / Punta Cana, Dominican Republic, 7-11 November, 2021, Association for
+                                                                                          Computational Linguistics. pp. 1754–1765.
+6. Conclusion                                                                         Gong, S., Zhong, Y., Ma, W., Li, J., Wang, Z., Zhang, J., Heng, P.A., Dou,
+                                                                                          Q., 2023. 3dsam-adapter: Holistic adaptation of sam from 2d to 3d for
+                                                                                          promptable medical image segmentation. arXiv preprint arXiv:2306.13465
+   We present an effective SAM adaptation framework that is                               .
+general and can be applied to diverse medical image segmenta-                         He, J., Zhou, C., Ma, X., Berg-Kirkpatrick, T., Neubig, G., 2022. Towards a
+tion tasks across different modalities. Our method roots in the                           unified view of parameter-efficient transfer learning, in: The Tenth Interna-
+                                                                                          tional Conference on Learning Representations, ICLR 2022, Virtual Event,
+parameter-efficient fine-tuning strategy and successfully incor-                          April 25-29, 2022, OpenReview.net.
+porates the volumetric or temporal information of medical im-                         He, S., Bao, R., Li, J., Grant, P.E., Ou, Y., 2023. Accuracy of segment-
+ages during fine-tuning. Without using any prompt, our method                             anything model (sam) in medical image segmentation tasks. arXiv preprint
+                                                                                          arXiv:2304.09324 .
+with automatic segmentation outperforms various SOTA 3D
+                                                                                      Houlsby, N., Giurgiu, A., Jastrzebski, S., Morrone, B., De Laroussilhe, Q.,
+medical image segmentation methods by a large margin. Our                                 Gesmundo, A., Attariyan, M., Gelly, S., 2019. Parameter-efficient transfer
+model has demonstrated outstanding generalization capability,                             learning for nlp, in: International Conference on Machine Learning, PMLR.
+which is crucial for successful deployment of intelligent model                           pp. 2790–2799.
+                                                                                      Hu, C., Li, X., 2023. When sam meets medical images: An investigation of seg-
+across medical datasets. We have also shown the substantial                               ment anything model (sam) on multi-phase liver tumor segmentation. arXiv
+advantage of the prompt mode, which is particularly valuable                              preprint arXiv:2304.08506 .
+in tackling challenging tumor segmentation task. Our method                           Hu, E.J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., Chen,
+holds significant promise as a general segmentation framework                             W., 2021. Lora: Low-rank adaptation of large language models. arXiv
+                                                                                          preprint arXiv:2106.09685 .
+that can be applied to various medical imaging modalities for                         Hu, X., Xu, X., Shi, Y., 2023. How to efficiently adapt large segmentation
+both fully automatic and promptable segmentation.                                         model (sam) to medical images. arXiv preprint arXiv:2306.13731 .
+                                                                                      Huang, Y., Yang, X., Liu, L., Zhou, H., Chang, A., Zhou, X., Chen, R., Yu,
+                                                                                          J., Chen, J., Chen, C., et al., 2023. Segment anything model for medical
+                                                                                          images? arXiv preprint arXiv:2304.14660 .
+References
+                                                                                      Isensee, F., Jaeger, P.F., Kohl, S.A., Petersen, J., Maier-Hein, K.H., 2021. nnu-
+                                                                                          net: a self-configuring method for deep learning-based biomedical image
+Allan, M., Kondo, S., Bodenstedt, S., Leger, S., Kadkhodamohammadi,                       segmentation. Nature methods 18, 203–211.
+   R., Luengo, I., Fuentes, F., Flouty, E., Mohammed, A., Pedersen, M.,               Ji, Y., Bai, H., Yang, J., Ge, C., Zhu, Y., Zhang, R., Li, Z., Zhang, L., Ma,
+   et al., 2020. 2018 robotic scene segmentation challenge. arXiv preprint                W., et al., 2022. Amos: A large-scale abdominal multi-organ benchmark for
+   arXiv:2001.11190 .                                                                     versatile medical image segmentation. arXiv preprint arXiv:2206.08023 .
+Antonelli, M., Reinke, A., Bakas, S., Farahani, K., Kopp-Schneider, A., Land-         Jia, C., Yang, Y., Xia, Y., Chen, Y.T., Parekh, Z., Pham, H., Le, Q., Sung, Y.H.,
+   man, B.A., Litjens, G., Menze, B., Ronneberger, O., et al., 2022. The medi-            Li, Z., Duerig, T., 2021. Scaling up visual and vision-language represen-
+   cal segmentation decathlon. Nature communications 13, 4128.                            tation learning with noisy text supervision, in: International conference on
+Biswas, R., 2023. Polyp-sam++: Can a text guided sam perform better for                   machine learning, PMLR. pp. 4904–4916.
+   polyp segmentation? arXiv preprint arXiv:2308.06623 .                              Jia, M., Tang, L., Chen, B.C., Cardie, C., Belongie, S., Hariharan, B., Lim,
+Bloch, N., Madabhushi, A., Huisman, H., Freymann, J., Kirby, J., Grauer, M.,              S.N., 2022. Visual prompt tuning, in: European Conference on Computer
+   Enquobahrie, A., Jaffe, C., Clarke, L., Farahani, K., 2015. Nci-isbi 2013              Vision, Springer. pp. 709–727.
+   challenge: automated segmentation of prostate structures. The Cancer Imag-         Jie, S., Deng, Z.H., 2023. Fact: Factor-tuning for lightweight adaptation on
+   ing Archive 370.                                                                       vision transformer, in: Proceedings of the AAAI Conference on Artificial
+Bommasani, R., Hudson, D.A., Adeli, E., Altman, R., Arora, S., von Arx, S.,               Intelligence, pp. 1060–1068.
+   Bernstein, M.S., Bohg, J., Bosselut, A., et al., 2021. On the opportunities        Jin, Y., Yu, Y., Chen, C., Zhao, Z., Heng, P.A., Stoyanov, D., 2022. Explor-
+   and risks of foundation models. arXiv preprint arXiv:2108.07258 .                      ing intra-and inter-video relation for surgical semantic scene segmentation.
+Chen, L.C., Zhu, Y., Papandreou, G., Schroff, F., Adam, H., 2018. Encoder-                IEEE Transactions on Medical Imaging 41, 2991–3002.
+   decoder with atrous separable convolution for semantic image segmentation,         Karani, N., Erdil, E., Chaitanya, K., Konukoglu, E., 2021. Test-time adaptable
+   in: Proceedings of the European conference on computer vision (ECCV), pp.              neural networks for robust medical image segmentation. Medical Image
+   801–818.                                                                               Analysis 68, 101907.
+Cheng, D., Qin, Z., Jiang, Z., Zhang, S., Lao, Q., Li, K., 2023. Sam on medical       Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao,
+   images: A comprehensive study on three prompt modes. arXiv preprint                    T., Whitehead, S., Berg, A.C., Lo, W.Y., et al., 2023. Segment anything.
+   arXiv:2305.00035 .                                                                     arXiv preprint arXiv:2304.02643 .
+Dai, H., Ma, C., Liu, Z., Li, Y., Shu, P., Wei, X., Zhao, L., Wu, Z., Zhu, D., Liu,   Landman, B., Xu, Z., Igelsias, J., Styner, M., Langerak, T., Klein, A.,
+   W., et al., 2023. Samaug: Point prompt augmentation for segment anything               2015. Miccai multi-atlas labeling beyond the cranial vault–workshop
+   model. arXiv preprint arXiv:2307.01187 .                                               and challenge, in: Proc. MICCAI Multi-Atlas Labeling Beyond Cranial
+Deng, G., Zou, K., Ren, K., Wang, M., Yuan, X., Ying, S., Fu, H., 2023a. Sam-             Vault—Workshop Challenge, p. 12.
+   u: Multi-box prompts triggered uncertainty estimation for reliable sam in          Lee, H.H., Bao, S., Huo, Y., Landman, B.A., 2023. 3d ux-net: A large kernel
+   medical image. arXiv preprint arXiv:2307.04973 .
+                                                                                                                                                                    11
+
+   volumetric convnet modernizing hierarchical transformer for medical image          Wu, Q., Zhang, Y., Elbatel, M., 2023b. Self-prompting large vision models for
+   segmentation, in: The Eleventh International Conference on Learning Rep-             few-shot medical image segmentation. arXiv preprint arXiv:2308.07624 .
+   resentations, ICLR 2023, Kigali, Rwanda, May 1-5, 2023, OpenReview.net.            Yuan, L., Chen, D., Chen, Y.L., Codella, N., Dai, X., Gao, J., Hu, H., Huang, X.,
+Lemaı̂tre, G., Martı́, R., Freixenet, J., Vilanova, J.C., Walker, P.M., Meriaudeau,     Li, B., Li, C., et al., 2021. Florence: A new foundation model for computer
+   F., 2015. Computer-aided detection and diagnosis for prostate cancer based           vision. arXiv preprint arXiv:2111.11432 .
+   on mono and multi-parametric mri: a review. Computers in biology and               Yue, W., Zhang, J., Hu, K., Xia, Y., Luo, J., Wang, Z., 2023. Surgicalsam:
+   medicine 60, 8–31.                                                                   Efficient class promptable surgical instrument segmentation. arXiv preprint
+Li, C., Khanduri, P., Qiang, Y., Sultan, R.I., Chetty, I., Zhu, D., 2023. Auto-         arXiv:2308.08746 .
+   prompting sam for mobile friendly 3d medical image segmentation. arXiv             Zaken, E.B., Goldberg, Y., Ravfogel, S., 2022. Bitfit: Simple parameter-
+   preprint arXiv:2308.14936 .                                                          efficient fine-tuning for transformer-based masked language-models, in:
+Lialin, V., Deshpande, V., Rumshisky, A., 2023. Scaling down to scale up: A             Muresan, S., Nakov, P., Villavicencio, A. (Eds.), Proceedings of the 60th
+   guide to parameter-efficient fine-tuning. arXiv preprint arXiv:2303.15647 .          Annual Meeting of the Association for Computational Linguistics (Volume
+Litjens, G., Toth, R., van de Ven, W., Hoeks, C., Kerkstra, S., van Ginneken, B.,       2: Short Papers), ACL 2022, Dublin, Ireland, May 22-27, 2022, Association
+   Vincent, G., Guillard, G., Birbeck, N., Zhang, J., et al., 2014. Evaluation of       for Computational Linguistics. pp. 1–9.
+   prostate segmentation algorithms for mri: the promise12 challenge. Medical         Zhang, K., Liu, D., 2023. Customized segment anything model for medical
+   image analysis 18, 359–373.                                                          image segmentation. arXiv preprint arXiv:2304.13785 .
+Liu, Q., Chen, C., Dou, Q., Heng, P.A., 2022. Single-domain generalization in         Zhang, L., Liu, Z., Zhang, L., Wu, Z., Yu, X., Holmes, J., Feng, H., Dai, H.,
+   medical image segmentation via test-time adaptation from shape dictionary,           Li, X., Li, Q., et al., 2023. Segment anything model (sam) for radiation
+   in: AAAI, pp. 1756–1764.                                                             oncology. arXiv preprint arXiv:2306.11730 .
+Liu, Q., Dou, Q., Yu, L., Heng, P.A., 2020. Ms-net: Multi-site network for            Zhou, H.Y., Guo, J., Zhang, Y., Han, X., Yu, L., Wang, L., Yu, Y., 2023a.
+   improving prostate segmentation with heterogeneous mri data. IEEE Trans-             nnformer: Volumetric medical image segmentation via a 3d transformer.
+   actions on Medical Imaging .                                                         IEEE Transactions on Image Processing .
+Liu, X., Zheng, Y., Du, Z., Ding, M., Qian, Y., Yang, Z., Tang, J., 2023. Gpt         Zhou, K., Yang, J., Loy, C.C., Liu, Z., 2022. Conditional prompt learning for
+   understands, too. AI Open .                                                          vision-language models, in: Proceedings of the IEEE/CVF Conference on
+Pan, J., Lin, Z., Zhu, X., Shao, J., Li, H., 2022. St-adapter: Parameter-efficient      Computer Vision and Pattern Recognition, pp. 16816–16825.
+   image-to-video transfer learning. Advances in Neural Information Process-          Zhou, T., Zhang, Y., Zhou, Y., Wu, Y., Gong, C., 2023b. Can sam segment
+   ing Systems 35, 26462–26477.                                                         polyps? arXiv preprint arXiv:2304.07583 .
+Paranjape, J.N., Nair, N.G., Sikder, S., Vedula, S.S., Patel, V.M., 2023. Adap-       Zou, X., Yang, J., Zhang, H., Li, F., Li, L., Gao, J., Lee, Y.J., 2023. Segment
+   tivesam: Towards efficient tuning of sam for surgical scene segmentation.            everything everywhere all at once. arXiv preprint arXiv:2304.06718 .
+   arXiv preprint arXiv:2308.03726 .
+Radford, A., Kim, J.W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry,
+   G., Askell, A., Mishkin, P., Clark, J., et al., 2021. Learning transferable vi-
+   sual models from natural language supervision, in: International conference
+   on machine learning, PMLR. pp. 8748–8763.
+Ren, X., Ahmad, S., Zhang, L., Xiang, L., Nie, D., Yang, F., Wang, Q., Shen,
+   D., 2020. Task decomposition and synchronization for semantic biomedical
+   image segmentation. IEEE Transactions on Image Processing 29, 7497–
+   7510.
+Ronneberger, O., Fischer, P., Brox, T., 2015. U-net: Convolutional networks
+   for biomedical image segmentation, in: Medical Image Computing and
+   Computer-Assisted Intervention–MICCAI 2015: 18th International Confer-
+   ence, Springer. pp. 234–241.
+Shvets, A.A., Rakhlin, A., Kalinin, A.A., Iglovikov, V.I., 2018. Automatic
+   instrument segmentation in robot-assisted surgery using deep learning, in:
+   2018 17th IEEE international conference on machine learning and applica-
+   tions (ICMLA), IEEE. pp. 624–628.
+Tang, Y., Yang, D., Li, W., Roth, H.R., Landman, B., Xu, D., Nath, V.,
+   Hatamizadeh, A., 2022a. Self-supervised pre-training of swin transformers
+   for 3d medical image analysis, in: Proceedings of the IEEE/CVF Conference
+   on Computer Vision and Pattern Recognition, pp. 20730–20740.
+Tang, Y., Yang, D., Li, W., Roth, H.R., Landman, B., Xu, D., Nath, V.,
+   Hatamizadeh, A., 2022b. Self-supervised pre-training of swin transformers
+   for 3d medical image analysis, in: Proceedings of the IEEE/CVF Conference
+   on Computer Vision and Pattern Recognition, pp. 20730–20740.
+Wald, T., Roy, S., Koehler, G., Disch, N., Rokuss, M.R., Holzschuh, J., Zim-
+   merer, D., Maier-Hein, K., 2023. Sam. md: Zero-shot medical image seg-
+   mentation capabilities of the segment anything model, in: Medical Imaging
+   with Deep Learning, short paper track.
+Wang, A., Islam, M., Xu, M., Zhang, Y., Ren, H., 2023a. Sam meets robotic
+   surgery: An empirical study on generalization, robustness and adaptation.
+   arXiv preprint arXiv:2308.07156 .
+Wang, B., Li, L., Nakashima, Y., Kawasaki, R., Nagahara, H., Yagi, Y., 2021.
+   Noisy-lstm: Improving temporal awareness for video semantic segmenta-
+   tion. IEEE Access 9, 46810–46820.
+Wang, W., Shen, J., Chen, C., Jiao, J., Zhang, Y., Song, S., Li, J., 2023b. Med-
+   tuning: Exploring parameter-efficient transfer learning for medical volumet-
+   ric segmentation. arXiv preprint arXiv:2304.10880 .
+Wang, X., Zhang, X., Cao, Y., Wang, W., Shen, C., Huang, T., 2023c. Seggpt:
+   Segmenting everything in context. arXiv preprint arXiv:2304.03284 .
+Wu, J., Fu, R., Fang, H., Liu, Y., Wang, Z., Xu, Y., Jin, Y., Arbel, T., 2023a.
+   Medical sam adapter: Adapting segment anything model for medical image
+   segmentation. arXiv preprint arXiv:2304.12620 .
+

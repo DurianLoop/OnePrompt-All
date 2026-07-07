@@ -1,5 +1,13 @@
 # OCSAM: Medical SAM Prompt Workbench
 
+Current workspace map:
+
+- `docs/workspace_index.md`: where to start now.
+- `docs/code_entrypoints.md`: runnable demo and benchmark entrypoints.
+- `docs/sam3_matcher_teacher_direction_report.md`: teacher-direction report and experiment interpretation.
+- `docs/sam_workspace_cleanup_experiment_plan.md`: current cleanup and experiment plan.
+- `docs/archive/`: historical phase reports and prompt-selector notes.
+
 OCSAM 是一个面向医学图像和视频分割的 SAM 系列复现与实验工作台。当前重点是把 SAM、MedSAM、SAM2、Matcher、SAM3 等方法统一到同一个 promptable segmentation 页面中，并进一步围绕医学图像的自动提示、提示鲁棒性和不确定性分析设计可发表的小项目实验。
 
 ![OCSAM Prompt Workbench](assets/img.png)

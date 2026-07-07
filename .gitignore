@@ -31,6 +31,7 @@ Matcher/MonuSeg/
 Matcher/ddr_datasets/
 
 # Generated demo/evaluation outputs
+runs/
 code/demo_outputs/
 code/debug_figure/
 code/vis/

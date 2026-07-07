@@ -1,0 +1,531 @@
+                                                                        One-Prompt to Segment All Medical Images
+
+                                                        Junde Wu                                 Jiayuan Zhu †                       Yueming Jin †
+                                              National University of Singapore                University of Oxford          National University of Singapore
+                                                         MBZUAI
+                                                   University of Oxford
+                                                                                                   Min Xu
+arXiv:2305.10300v5 [eess.IV] 17 Apr 2024
+
+
+
+
+                                                                                          Carnegie Mellon University
+                                                                                                  MBZUAI
+
+
+                                               Apology: We sincerely apologize to Jiayuan Zhu†              1. Introduction
+                                           and Yueming Jin† for their absence from the authorship
+                                           list, despite their significant contributions to this project.   Large foundation models pre-trained on large-scale
+                                           Unfortunately, due to missing the CVPR registration              datasets, are transforming the landscape with powerful
+                                           deadline, we were unable to include them. We deeply              zero-shot capabilities [27, 54–56]. These foundational
+                                           appreciate their dedication, expertise, and insights, which      models showcase an impressive ability in adapting to the
+                                           have been instrumental in bringing this work to fruition.        tasks not seen during training. A standout example is
+                                                                                                            the Segment Anything Model (SAM) [27], which has
+                                                                    Abstract                                gained great success for the zero-shot image segmentation.
+                                                                                                            The strength of SAM lies in its interactive segmentation
+                                           Large foundation models, known for their strong zero-shot        paradigm: the model segments the target following the user-
+                                           generalization, have excelled in visual and language             given prompts, such as a point, a bounding box (BBox), or
+                                           applications. However, applying them to medical im-              free text-like descriptions.
+                                           age segmentation, a domain with diverse imaging types                Medical image segmentation, as a unique component of
+                                           and target labels, remains an open challenge. Current            the image segmentation, plays a vital role in real-world
+                                           approaches, such as adapting interactive segmentation            clinical practices, including disease diagnosis and image-
+                                           models like Segment Anything Model (SAM), require user           guided surgery. Many efforts have been made on bring this
+                                           prompts for each sample during inference. Alternatively,         interactive foundation model to the medical image segmen-
+                                           transfer learning methods like few/one-shot models de-           tation through fine-tuning [13, 36, 58]. However, most of
+                                           mand labeled samples, leading to high costs. This paper          them still need to re-training the model for each new task,
+                                           introduces a new paradigm toward the universal medical           leading to actually a loss of zero-shot generalization. Addi-
+                                           image segmentation, termed ’One-Prompt Segmentation.’            tionally, in these interactive models, the users have to pro-
+                                           One-Prompt Segmentation combines the strengths of                vide prompts for each image, which is time-consuming and
+                                           one-shot and interactive methods. In the inference stage,        inapplicable for building the automatic pipeline.
+                                           with just one prompted sample, it can adeptly handle the             Another way towards the universal medical image seg-
+                                           unseen task in a single forward pass. We train One-Prompt        mentation is few/one-shot learning [8, 41, 42, 51]. In
+                                           Model on 64 open-source medical datasets, accompa-               this setting, a pre-trained foundational model needs one
+                                           nied by the collection of over 3,000 clinician-labeled           or few labeled samples as the ’supportive examples’, to
+                                           prompts. Tested on 14 previously unseen datasets, the            grasp a new specific task. However, securing labels for new
+                                           One-Prompt Model showcases superior zero-shot seg-               tasks is not always feasible. Furthermore, the success of
+                                           mentation capabilities, outperforming a wide range of            these methods heavily depends on the number of supportive
+                                           related methods. The code and data is released as https:         examples provided. For example, UniverSeg[8] achieves
+                                           //github.com/KidsWithTokens/one- prompt.                         competitive performance with 64 supportive samples. But
+                                                                                                            obtaining such amount of data can be challenging in real
+                                                                                                            clinical practice.
+                                                                                                                In this paper, we introduce a new paradigm for the
+                                                                                                            universal medical image segmentation, called One-Prompt
+Figure 1. Medical segmentation involves a wide range of different organs, tissues and anatomies. One-Prompt Segmentation is a novel
+paradigm to building a foundation model that can generalize to unseen tasks. Given an unseen task, One-Prompt Model only needs the
+users to prompt one image to grasp the task, which is notably cost-effective comparing with interactive and few-shot segmentation.
+
+
+Medical Image Segmentation. This method combines the                  a strong but low-cost paradigm for the universal medical
+strengths of both one-shot and interactive models to meet             image segmentation.
+the real clinical requirements. Specifically, given an unseen       • We propose a model with unique One-Prompt Former to
+task, the user only needs to provide one prompted sample to           fuse the prompted template feature with the query feature
+the trained model, then it can perform well at this new task          in the multiple feature scales.
+without any retraining or fine-tuning, even for tasks signifi-      • We set four different prompt types for better prompting
+cantly different from those encountered during training. An           the special medical targets, thus to meet the various clini-
+illustration is shown in Fig. 1.                                      cal practices .
+    The success of the One-Prompt Model is driven by three          • We gather a large-scale collection comprising 78 open-
+key factors. First, we propose novel One-Prompt Former                source datasets to train and test the model, and also an-
+modules as the model decoder. Such design helps to effi-              notated over 3000 of the samples with clinician-given
+ciently integrate the prompted template feature into the pro-         prompts.
+cess of query image segmentation. Secondly, we gather
+a large-scale data collection comprising 78 open-source
+                                                                    2. Method
+datasets covering diverse biomedical domains. Our model
+is trained on 64 datasets, with clinicians prompting a part         Consider a set D containing all medical image segmenta-
+of the data. Moreover, to further enhance the clinical utility,     tion tasks. Each task d consists of image-label pairs xd , y d .
+we offer four different prompt types, which are Click, BBox,        In conventional fully-supervised segmentation methods, a
+Doodle, and SegLab. The Click and BBox work the same as             function y d = fθd (xd ) is typically learned to estimate a
+those in SAM [27]. Doodle allows the users to freely draw           segmentation map y d based on an input image xd . How-
+on the image, helpful for prompting irregular organs like the       ever, this function fθd is tailored exclusively for the spe-
+pancreas or lymph glands. SegLab allows the user to pro-            cific task d. In the case of few-shot strategies, the target
+vide the segmentation mask as the prompt for representing           is to learn a universal function y d = fθ (xd , S d ) perform-
+more detailed tissues like vessels.                                 ing on any task d guided by the task-specific support set
+    In sum, our contributions can be summarized as follows:         S d = {(xdj , yjd )}nj=1 , comprising example image & label
+• We introduce novel One-Prompt Segmentation, which is              pairs available for task d.
+Figure 2. An illustration of One-Prompt Model, which starts from (a) an overview of the pipeline, and continues with zoomed-in diagrams
+of individual Models, including (b) One-Prompt Former, and (c) Prompt-Parser.
+
+
+    In contrast, our One-Prompt Segmentation learns a more            mentation labels (SegLab) and freehand doodles (Doodle)
+general function y = fθ (xdj , k d ) performing on any task d,        as prompts. Each prompt type is best suited for its spe-
+where k d = {xdc , pdc } comprising one fixed template image          cific situations. For example, Click work well for obvious
+xdc and a paired prompt pdc available for task d. This prompt         lesions like melanoma. BBox are effective for lesions with
+can be freely chosen by the users from different types like           blurry boundaries but can be refined well by the boxes, such
+Click, BBox, Doodle, and SegLabel. This learning paradigm             as the optic cup. SegLab are ideal for scenarios with de-
+is more user-friendly in the clinical practice in that users          tailed features, like complex vessels. Doodle are handy for
+only need to provide a single sample with prompts, and                organs with varies and unusual structures, like the pancreas
+the model can adapt to any new task in one forward pass.              and mandible. An illustration of it is shown in Section C. in
+This makes it easy for clinicians without a computer sci-             the supplementary.
+ence background to use the system without the complexities               All prompts are represented using two embeddings, de-
+of training or fine-tuning.                                           noted as p1 and p2 . For Click and Doodle, the two embed-
+    It is worth noting that interactive and one-shot models           dings are used to denote the foreground and background.
+can be seen as special cases of One-prompt Segmentation.              BBox use them to denote the left-top and right-bottom cor-
+In specific, when xdc = xd , it works as an interactive seg-          ner points. For these three kinds of prompts, we use posi-
+mentation model, and when pdc is a segmentation label, it             tional encoding to compress the coordinate information of
+aligns with a one-shot model.                                         the prompts, then add them to the learnable embeddings.
+                                                                      These embeddings learn themselves the concepts they to
+2.1. Prompts
+                                                                      represent. SegLab is converted into an embedding using a
+Our model supports four types of prompts. Going be-                   pre-trained autoencoder. Two prompt embeddings share the
+yond the usual Click and BBox, users can also use seg-                same parameters in this case.
+2.2. Model                                                       back to N . eql is then matrix multiply on it to transfer its ac-
+                                                                 tivation to the query domain. The process can be formalized
+The One-Prompt Model comprises an image encoder and a
+                                                                 as:
+sequence of One-Prompt Former as the decoder, illustrated
+                                                                                     M = w[etl ; p1 ; p2 ](eql )T .            (2)
+in Fig. 2 (a). The model takes three inputs: the query image
+xq , the template image xt , and the prompt of the template      Then in the Masking Step, we apply M ∈ RN ×N to etq
+                                                                                                                  l
+image pt , and subsequently predicts the segmentation of the     through a proposed Gaussian Masking operation:
+query denoted as yq . The multi-scale features of the encoder
+and decoder are skip-connected.                                             eG = M ax(etq                  tq
+                                                                                       l ∗ kG [Conv(M )], el ),               (3)
+Encoder The image encoder can be CNN based [24] or ViT
+based [12]. We show a CNN based encoder in the figure            where kG is Gaussian kernel, * denotes general convolu-
+for the simple illustration. The query sample xq and the         tion operation. Gaussian Masking first projects M to a 2-
+template sample xt will both go through the same encoder         channel feature map by convolution layer. Then we gener-
+to get the feature fq and ft .                                   ate kG by taking two channels as mean and variance respec-
+One-prompt Former We then decode the down-sampled                tively. kG then multiply with etq
+                                                                                                 l in a pixel-wise manner to
+query feature by incorporating the prompt embeddings,            enlarge the prompted space but with uncertainty. Finally,
+multi-scale template features, and multi-scale query fea-        we select the maximum value between the original feature
+tures together through a sequence of our proposed One-           and the smoothed one, preserving the highest activation and
+Prompt Former. All feature maps are pachlized, flattened         eliminating low-confidence uncertainty regions. The output
+and projected to the embedding e ∈ RN ×L for further             is obtained by finally multiplying with etl .
+processing. The One-Prompt Former primarily consists             2.3. Training and Loss
+of attention blocks, and its structure involves two parallel
+branches for processing query and template features, as de-      We divided our One-Prompt dataset into 64 datasets for
+picted in Fig. 2 (b).                                            model training and 14 datasets for testing. Each training
+    In each One-Prompt Former block (considering the ith         dataset is further split into three parts: a prompted template
+block), the Cross Attention [10] in the query branch ini-        split, a training split, and a validation split. Similarly, each
+tially takes the lth level skip-connected query embedding eql    test dataset has a test split and a prompted template split.
+as the query and the last output embedding esi−1 serves as       Human users prompt each sample in the template split, for
+both the key and value, followed by another Cross Attention      both training and testing. Model training is performed on
+to incorporate the template feature symmetrically. Simulta-      the template and training splits across all datasets. In each
+neously, the template branch employs a proposed Prompt-          iteration, we randomly pick one prompted template from
+Parser to integrate the prompts p with eql and etl , followed    the template set of the same dataset with the query image.
+by another Cross Attention to integrate the query feature.       Training is collectively conducted across the 64 datasets.
+In the end, a Cross Attention integrates the two branches        Our final loss is a simple sum of cross-entropy loss and dice
+by transferring the prompted template segmentation to the        loss.
+query domain. Then a self-attention followed by Feedfor-             During the inference stage, we randomly choose a
+ward Neural Network (FNN) are employed to project the            prompted template from the template split and run the
+embedding to the desired length.                                 model over the test/validation split for the evaluation. Un-
+Prompt-Parser In the template branch, we propose a sim-          less otherwise specified, we run the model 50 times and en-
+ple Prompt-Parser to mix the prompt, query and template          semble the predictions to mitigate variance.
+feature in an effective way. We show an illustration of the
+Prompt-Parser in Fig. 2 (c). The high-level idea is to pro-      3. One-Prompt Data
+duce an adaptive attentive mask M to activate the prompted       3.1. Data Source
+target on the query-template-integrated embedding etq  l :
+                                                                 In order to construct a foundation model with high gen-
+                  etq   t 1     2   q
+                   l = el (p + p + el ).                  (1)    eralization on the unseen tasks, we train our model on
+                                                                 large-scale and diverse medical images consisted by on-
+We then divide Prompt-Parser to a Prompting Step and a           line open-access datasets. Our data source is constructed
+Masking Step. In the Prompting Step, we build a mask M           from 78 datasets encompassing diverse medical domains
+adaptive to the different feature scale by mixing prompts        and imaging modalities. The dataset covers a wide array
+with the given etl and eql . Specifically, we fist apply a MLP   of organs, such as lungs [48–50], eyes [16, 23, 39, 40],
+layer on the stacked embedding [f t ; p1 ; p2 ] ∈ R3N ×L . An    brain [5, 17, 22, 28, 29], and abdominal [6, 20, 25, 26, 30–
+MLP layer with weight w ∈ RN ×3N is applied along N              33, 35, 38, 44, 50]. A detailed list of One-Prompt datasets
+to mix three different embeddings and reduce its dimension       is released with our code.
+3.2. Prompt Annotation                                             real-world prompting scenarios such as clinical education
+                                                                   or semi-automatic annotation.
+A team of clinicians prompt over 3000 samples across over
+all collected dataset. These samples are meticulously se-          4.2. One-Prompt Transfer Capability
+lected by experienced annotators to ensure diversity and
+comprehensiveness. The clinicians involved in prompt-              Task We first validate the One-Prompt transfer capability
+ing come from diverse backgrounds, including cardiolo-             by comparing it with few/one-shot learning baseline using
+gists, dermatologists, gastroenterologists, neurologists, on-      varies prompts. Our main objective is to assess the gen-
+cologists, pulmonologists, rheumatologists, endocrinolo-           eralization of One-Prompt Model in solving unseen tasks.
+gists, and ophthalmologists. They are encouraged to choose         We compare with various few-shot models: PANet[51],
+datasets aligned with their expertise during the prompting         ALPNet[41], SENet[47], UniverSeg[8], all provide with the
+process.                                                           same template to run. Few-shot methods are all given only
+    In this process, all four prompt types are available for       one template in the testing for the fair comparison. Ad-
+each sample, and clinicians are encouraged to use the most         ditionally, we compare with one-shot models: DAT[59],
+convenient prompt tool for the given targets. The clinicians       ProbOne [15], HyperSegNas[42], and LT-Net [53]. All
+employ a browser-based interactive segmentation tool to            these models are trained on the same dataset as ours, and
+prompt images. Upon prompting, ground-truth masks im-              are all given segmentation labels as the ’prompt’ as they
+mediately appear on the images based on the given prompts.         could not accept sparse prompts.
+Clinicians have the flexibility to refine their prompts, but ad-   Data In this comparison, we conduct tests on the held-out
+justments are suggested only if they feel their initial prompt     test set with 14 different tasks. Among them, KiTS23[21],
+was incorrect. Our prompt-based segmentation operates in           ATLAS23[43], TDSC[1], and WBC[60] datasets using the
+real-time directly within a browser. Notably, we do not set        one Click prompt. For the SegRap [4], CrossM23 [2], and
+strict constraints on prompt quality. Clinicians are encour-       REFUGE [16] datasets, we employ the BBox Prompt. The
+aged to prompt images in their most natural way, with a            Doodle prompt is applied to the Pendal [3], Pancreas-CT
+suggested time limit of no more than 5 seconds for each im-        [46], LNQ23 [45], and CAS23 [11] datasets, while the
+age. The prompting details on the test set can be found in         SegLab prompt is used for CadVidSet [52], STAR [23], and
+Section 4.1.                                                       ToothFairy [7] datasets
+                                                                   Results Fig. 3 illustrates the average Dice score per task for
+4. Experiments                                                     each method, and Fig. 5 provides the comparison on visu-
+                                                                   alized results. It is worth noting that the compared few/one-
+In this section, we present task generalization experiments        shot models all necessitate the segmentation label as the
+with One-Prompt Model. We divide out 14 tasks in our               ’prompt.’ Therefore, they have a comparative advantage in
+available datasets, which differ significantly in term of im-      contrast to our model. Despite this, our model consistently
+age modalities and target structures, as our held-out test         outperforms the competitors by significant margins, show-
+set. This set comprises 8 MICCAI2023 Challenge tasks, en-          casing its robust generation ability across various tasks. In
+compassing various anatomies including kidney tumor [21],          a fair comparison where all methods are provided segmen-
+liver tumor [43], breast cancer [1], nasopharynx cancer [4],       tation labels (Fig. 3 SegLab), our model demonstrates more
+vestibular schwannoma [2], mediastinal lymph node [45],            substantial leads, which averagely outperforms the second
+cerebral artery [11], and inferior alveolar nerve [7]. The         11.2%, which is the most among all the prompt settings.
+other 6 tasks including the segmentation of white blood cell
+[60], optic cup [16], mandible [3], coronary artery [52],          4.3. Interactive Segmentation Capability
+pancreas [46], and retinal blood vessel [23]. We assess            Task
+the model performance on each test dataset using a specific           Interactive segmentation models achieve zero-shot gen-
+prompt type, informed by the observation that users tend to        eralization by prompting each of the test sample. When
+favor specific prompts for particular tasks. We provide our        we offer the One-Prompt Model with the same query im-
+implementation and data processing details in the appendix.        age and prompted template image, the model degrades
+                                                                   to a standard interactive segmentation model. We com-
+4.1. Human-User Prompted Evaluation
+                                                                   pare this setting with other interactive segmentation mod-
+For the evaluation, we involved human users to simulate            els, including vanilla SAM [27], SAM-U [14], VMN [61],
+real-world interactions for prompt-based segmentation. We          iSegFormer[34], MedSAM [37], MSA [58], and SAM-
+assigned 15 users to prompt about 10% of the test images.          Med2D [13]. Except vanilla SAM, all models are trained
+The users comprised 5 regular individuals with a clear un-         on the same dataset as ours. Since most of these models
+derstanding of the task but no clinical background, 7 junior       only accept Click and BBox prompts, Doodle and SegLab
+clinicians, and 3 senior clinicians. This aims to simulate         prompt settings are not included in this comparison. Since
+             Figure 3. One-Prompt Model v.s. Few/One-shot Models on 14 held-out test datasets with 4 different prompts.
+
+
+                                                                     4.4. Zero-shot Capability
+                                                                     Task Our model can automatically segment all salient tar-
+                                                                     gets following the similar ’segment everything’ setting in
+                                                                     SAM. In this setup, we prompt the template image with
+                                                                     a regular grid of foreground points, generating an average
+                                                                     of approximately 50 masks per image. We compare our
+                                                                     model under this setting with conventional fully-supervised
+                                                                     models that are not promptable [9, 12, 18, 19, 24, 57], and
+                                                                     also SAM-based methods [13, 36, 58] under ’segment ev-
+                                                                     erything’ setting.
+                                                                     Data We use 11 unseen datasets in the held-out test set to
+Figure 4. One-Prompt Model v.s. Interactive Segmentation Mod-        verify the zero-shot transfer ability of the models. Detailed
+els on 7 held-out datasets with One-Click and BBox prompts.          datasets are shown in Table. 1
+                                                                     Results We present a quantitative comparison of zero-shot
+                                                                     segmentation results in Table 1. It shows the challenge
+                                                                     faced by fully-supervised segmentation methods in gener-
+                                                                     alizing to unseen tasks, as they may struggle to understand
+all these models need the prompt on each input image, we
+                                                                     the task, such as ’what to segment,’ without the human in-
+simulate the oracle prompts (details in Section 4.5: Effect
+                                                                     teraction. When compared to SAM-based models under the
+of prompt quality & types in the inference) over the images
+                                                                     ’segment everything’ setting, the One-Prompt Model con-
+if needed. It is worth noting that we did not re-train One-
+                                                                     sistently outperforms them across all tasks, achieving the
+Prompt Model on the simulated prompts: we use the same
+                                                                     highest average performance of 64.0%, which surpasses the
+trained One-Prompt Model as that in the last section, but
+                                                                     second-highest by a substantial 10.7%. It again highlights
+only offered the simulated prompts in testing for the possi-
+                                                                     the value of setting a challenging learning task with a com-
+ble of comparison.
+                                                                     parable model for enhancing the generalization.
+Data We conduct the comparison on all 14 held-out test               4.5. Ablation Study and Analysis
+datasets.
+                                                                     Ablation on Prompt-Parser In the design of Prompt-
+Results. We present a quantitative comparison with the in-           Parser, we experimented with various combinations of
+teractive segmentation methods in Fig. 4. We can see in              strategies in both the Masking and Prompting steps. The
+the figure that One-Prompt Model outperforms all other in-           comparative results are shown in Fig. 6. For the Prompt-
+teractive competitors by a significant margin. These results         ing step, we explored simply adding or concatenating three
+demonstrate that One-Prompt Model could perform as well              embeddings and then projecting them to the desired length
+when the query image itself is prompted, despite not be-             using a MLP. In the Masking step, we tested different ap-
+ing intentionally trained for this specific setting. By train-       proaches, such as directly adding the mask to the feature,
+ing under our more challenging setting, the One-Prompt               binary thresholding the mask (setting negatives to zero and
+Model demonstrates superior capability compared to inter-            positives to one) then do element-wise multiplication with
+active models.                                                       the feature (Binary Masking), or normalizing the mask and
+Figure 5. Visualized comparison of One-Prompt Model and few/zero-shot models. One-Prompt Model is given templates with prompts for
+the prediction. Few/zero-shot models are given templates with segmentation labels for the prediction.
+
+Table 1. The zero-shot comparison between One-Prompt Model, full-supervised models and SAM-based models under ’segment every-
+thing’ setting. Evaluated on 11 unseen tasks by Dice Score (%).
+
+         Methods     KiTS   ATLAS    WBC     SegRap   CrossM    REFUGE   Pendal   LQN    CAS    CadVidSet   ToothFairy   Ave
+        TransUNet    38.2    34.5    49.1     25.5     37.7       36.3    31.2    23.3   24.5     31.6         37.9      33.6
+        Swin-UNetr   37.2    26.5    32.1     25.6     29.7       28.9    31.4    17.2   20.5     22.6         32.1      28.5
+         nnUNet      39.8    30.3    40.4     26.8     35.0       34.9    42.9    18.9   37.4     41.8         35.3      34.9
+        MedSegDiff   40.1    30.5    42.9     34.7     37.7       31.9    42.6    21.1   38.3     34.7         33.5      35.3
+          MSA        54.6    48.9    55.9     47.3     51.7       49.2    54.2    41.0   48.9     53.5         47.6      50.3
+         MedSAM      62.4    53.1    67.8     52.3     59.3       54.5    58.7    42.5   41.5     45.7         56.2      53.9
+       SAM-Med2D     56.3    51.4    52.6     43.5     47.2       52.0    50.8    47.4   44.3     49.0         55.1      50.0
+        One-Prompt   67.3    63.8    72.5     62.2     65.8       58.4    72.6    49.5   64.5     66.3         61.4      64.0
+
+
+
+then element-wise multiplying it with the feature (Norm            ance is observed when using fine-grained SegLab prompts.
+Masking). We can see the combination of the proposed               Overall, we observed variance consistently staying below
+Stack MLP + Gaussian Masking achieves the highest score            13%. This inherent stability of the model suggests a robust
+on the held-out test dataset.                                      zero-shot generalization capability.
+
+Variance of offering different Templates in the inference          Effect of prompt quality & types in the inference To ver-
+To assess the variance of using different templates during         ify the effect of prompt quality and types in the inference,
+inference, we conducted 100 repetitions using different ran-       we categorize five different levels of the prompt quality,
+dom templates across 8 test tasks. The results are shown           from the lowest to the highest quality, respectively denoted
+in Fig. 7. We can see given the same type of prompts for           as: Low, Medium, High, Oracle, and Human, on each of
+different tasks, the larger variances are shown in tasks with      the prompt type. The detailed prompt simulation process
+more diverse and uncertain target structures, such as Optic-       is provided in the supplementary. We provide the model
+Cup (REFUGE) and Pancreas segmentation. This is be-                the same template with different prompt qualities each time
+cause the template may significantly differ from the query         in the comparison. The model is tested under One-Prompt
+samples in these tasks. The variance also varies depending         setting on REFUGE and WBC datasets.
+on the type of prompts, such as the notably smaller vari-              In Fig. 8, we observe a gradual improvement in model
+                                                                   Figure 8. The variance of model performance given differ-
+                                                                   ent prompts with different qualities on REFUGE and WBC test
+Figure 6. Ablation study on Prompt-Parser. We cross-validate       datasets.
+the combination of different methods in Masking and Prompting
+steps, and show the average dice score under one-prompt segmen-
+tation setting on the held-out test set.                           ply prompt the image, significantly reducing the user-cost
+                                                                   time. On average, it takes a user 27.47 seconds to anno-
+                                                                   tate one image across 14 datasets, while prompting for one
+                                                                   image only takes an average of 2.28 seconds. Moreover,
+                                                                   the prompting process requires the users much less clinical
+                                                                   background and domain knowledge, making it more practi-
+                                                                   cal. The One-Prompt Model also exhibits superior scale-up
+                                                                   capability, showing a significant improvement of about 10%
+                                                                   compared to smaller models and only a 3.23% decrease
+                                                                   compared to the TransUNet upper-bound. Comparing with
+                                                                   the fully-supervised upper-bound, One-Prompt only needs
+                                                                   to train one time for all downstream tasks, which saves sig-
+                                                                   nificant parameters, training run time, and user-cost time for
+                                                                   the annotation.
+                                                                   Table 2. Model efficiency comparison with few/one-shot trans-
+                                                                   fer learning models. To establish an upper bound for perfor-
+Figure 7. Variance of offering different templates to One-Prompt
+                                                                   mance, we individually train 14 task-specific TransUNet models
+Model in the inference. Validated on 8 held-out test task giving
+                                                                   for 14 held-out datasets. The run-time is its cumulative training
+different prompts.
+                                                                   time. The user-cost time is denoted as ∞ since the user must an-
+                                                                   notate all training samples in using.
+
+performance as prompt quality increases, highlighting the               Models         params (M)   Run Time (ms)   User-Cost Time (s)   Dice
+                                                                        ALPNet             14.7          240              27.47          52.96
+significant impact of prompt quality on the final model per-             PANet             43.0          528              27.47          50.11
+formance. The choice of prompt types also has a notable              HyperSegNas         1321.0         2154              27.47          63.86
+                                                                       UniverSeg            1.2          142              27.47          64.66
+effect on the results. For both tasks, fine-grained SegLab             OnePrompt          192.0          741               2.28          73.98
+exhibit the highest performance. BBox and Doodle demon-             TransUNet (sup.)    14 × 103    14 × 5.7 ·107           ∞            77.21
+strate comparable performance after convergence and gen-
+erally outperform the quicker and simpler Click prompt.
+This underscores a trade-off between user prompting and            5. Conclusion
+model performance: achieving better performance typically
+requires more detailed and high-quality prompts.                   In this paper, we introduce ”One-Prompt Medical Im-
+Model Efficiency In Table 2, we compare the efficiency             age Segmentation”, a new paradigm for building founda-
+of our model with one/few-shot learning models across 14           tion model to handle diverse medical segmentation tasks.
+test tasks. Additionally, we train 14 TransUNet on 14 test         The model competed many related methods with just one
+datasets to establish an upper-bound for the performance.          prompted sample. With user-friendly prompt options for
+Unlike current one/few-shot models that require the fully-         clinicians and remarkable results, the model holds signifi-
+labeled images, One-Prompt only needs the users to sim-            cant promise for practical applications in clinical settings.
+References                                                               prompts triggered uncertainty estimation for reliable sam in
+                                                                         medical image. arXiv preprint arXiv:2307.04973, 2023. 5
+ [1] Tumor detection, segmentation and classification challenge     [15] Yuhang Ding, Xin Yu, and Yi Yang. Modeling the proba-
+     on automated 3d breast ultrasound (abus) 2023. https://tdsc-        bilistic distribution of unlabeled data for one-shot medical
+     abus2023.grand-challenge.org, 20203. 5                              image segmentation. In Proceedings of the AAAI conference
+ [2] Cross-modality domain adaptation for medical image seg-             on artificial intelligence, pages 1246–1254, 2021. 5
+     mentation. https://crossmoda-challenge.ml, 2023. 5             [16] Huihui Fang, Fei Li, Huazhu Fu, Xu Sun, Xingxing Cao,
+ [3] Amir Hossein Abdi, Shohreh Kasaei, and Mojdeh                       Jaemin Son, Shuang Yu, Menglu Zhang, Chenglang Yuan,
+     Mehdizadeh.       Automatic segmentation of mandible in             Cheng Bian, et al. Refuge2 challenge: Treasure for multi-
+     panoramic x-ray. Journal of Medical Imaging, 2(4):044003–           domain learning in glaucoma assessment. arXiv preprint
+     044003, 2015. 5                                                     arXiv:2202.08994, 2022. 4, 5
+ [4] Mehdi Astaraki, Simone Bendazzoli, and Iuliana Toma-           [17] Randy L Gollub, Jody M Shoemaker, Margaret D King,
+     Dasu. Fully automatic segmentation of gross target volume           Tonya White, Stefan Ehrlich, Scott R Sponheim, Vincent P
+     and organs-at-risk for radiotherapy planning of nasopharyn-         Clark, Jessica A Turner, Bryon A Mueller, Vince Magnotta,
+     geal carcinoma. arXiv preprint arXiv:2310.02972, 2023. 5            et al. The mcic collection: a shared repository of multi-
+ [5] Ujjwal Baid, Satyam Ghodasara, Suyash Mohan, Michel                 modal, multi-site brain image data from a clinical investiga-
+     Bilello, Evan Calabrese, Errol Colak, Keyvan Farahani,              tion of schizophrenia. Neuroinformatics, 11:367–388, 2013.
+     Jayashree Kalpathy-Cramer, Felipe C Kitamura, Sarthak               4
+     Pati, et al. The rsna-asnr-miccai brats 2021 benchmark on      [18] Ali Hatamizadeh, Vishwesh Nath, Yucheng Tang, Dong
+     brain tumor segmentation and radiogenomic classification.           Yang, Holger R Roth, and Daguang Xu. Swin unetr: Swin
+     arXiv preprint arXiv:2107.02314, 2021. 4                            transformers for semantic segmentation of brain tumors in
+ [6] Nicholas Bloch, Anant Madabhushi, Henkjan Huisman,                  mri images. In International MICCAI Brainlesion Workshop,
+     John Freymann, Justin Kirby, Michael Grauer, Andinet En-            pages 272–284. Springer, 2022. 6
+     quobahrie, Carl Jaffe, Larry Clarke, and Keyvan Farahani.      [19] Ali Hatamizadeh, Yucheng Tang, Vishwesh Nath, Dong
+     Nci-isbi 2013 challenge: automated segmentation of prostate         Yang, Andriy Myronenko, Bennett Landman, Holger R
+     structures. The Cancer Imaging Archive, 370(6):5, 2015. 4           Roth, and Daguang Xu. Unetr: Transformers for 3d medical
+ [7] Federico Bolelli. Tooth fairy: A cone-beam computed to-             image segmentation. In Proceedings of the IEEE/CVF Win-
+     mography segmentation challenge. International Conference           ter Conference on Applications of Computer Vision, pages
+     on Medical Image Computing and Computer Assisted Inter-             574–584, 2022. 6
+     vention (MICCAI) 2023, 2023. 5                                 [20] Nicholas Heller, Fabian Isensee, Klaus H Maier-Hein, Xi-
+ [8] Victor Ion Butoi, Jose Javier Gonzalez Ortiz, Tianyu Ma,            aoshuai Hou, Chunmei Xie, Fengyi Li, Yang Nan, Guangrui
+     Mert R Sabuncu, John Guttag, and Adrian V Dalca. Uni-               Mu, Zhiyong Lin, Miofei Han, et al. The state of the art in
+     verseg: Universal medical image segmentation. arXiv                 kidney and kidney tumor segmentation in contrast-enhanced
+     preprint arXiv:2304.06131, 2023. 1, 5                               ct imaging: Results of the kits19 challenge. Medical image
+ [9] Bingzhi Chen, Yishu Liu, Zheng Zhang, Guangming Lu, and             analysis, 67:101821, 2021. 4
+     Adams Wai Kin Kong. Transattunet: Multi-level attention-       [21] Nicholas Heller, Fabian Isensee, Dasha Trofimova, Re-
+     guided u-net with transformer for medical image segmenta-           sha Tejpaul, Zhongchen Zhao, Huai Chen, Lisheng Wang,
+     tion. IEEE Transactions on Emerging Topics in Computa-              Alex Golts, Daniel Khapun, Daniel Shats, Yoel Shoshan,
+     tional Intelligence, 2023. 6                                        Flora Gilboa-Solomon, Yasmeen George, Xi Yang, Jian-
+[10] Chun-Fu Richard Chen, Quanfu Fan, and Rameswar Panda.               peng Zhang, Jing Zhang, Yong Xia, Mengran Wu, Zhiyang
+     Crossvit: Cross-attention multi-scale vision transformer for        Liu, Ed Walczak, Sean McSweeney, Ranveer Vasdev, Chris
+     image classification. In Proceedings of the IEEE/CVF in-            Hornung, Rafat Solaiman, Jamee Schoephoerster, Bailey
+     ternational conference on computer vision, pages 357–366,           Abernathy, David Wu, Safa Abdulkadir, Ben Byun, Jus-
+     2021. 4                                                             tice Spriggs, Griffin Struyk, Alexandra Austin, Ben Simp-
+[11] Huijun Chen. Cerebral artery segmentation challenge. In-            son, Michael Hagstrom, Sierra Virnig, John French, Nitin
+     ternational Conference on Medical Image Computing and               Venkatesh, Sarah Chan, Keenan Moore, Anna Jacobsen,
+     Computer Assisted Intervention (MICCAI) 2023., 2023. 5              Susan Austin, Mark Austin, Subodh Regmi, Nikolaos Pa-
+[12] Jieneng Chen, Yongyi Lu, Qihang Yu, Xiangde Luo, Ehsan              panikolopoulos, and Christopher Weight. The kits21 chal-
+     Adeli, Yan Wang, Le Lu, Alan L Yuille, and Yuyin Zhou.              lenge: Automatic segmentation of kidneys, renal tumors, and
+     Transunet: Transformers make strong encoders for medi-              renal cysts in corticomedullary-phase ct, 2023. 5
+     cal image segmentation. arXiv preprint arXiv:2102.04306,       [22] Moritz R Hernandez Petzsche, Ezequiel de la Rosa, Uta
+     2021. 4, 6                                                          Hanning, Roland Wiest, Waldo Valenzuela, Mauricio Reyes,
+[13] Junlong Cheng, Jin Ye, Zhongying Deng, Jianpin Chen,                Maria Meyer, Sook-Lei Liew, Florian Kofler, Ivan Ezhov,
+     Tianbin Li, Haoyu Wang, Yanzhou Su, Ziyan Huang, Ji-                et al. Isles 2022: A multi-center magnetic resonance imag-
+     long Chen, Lei Jiang, et al. Sam-med2d. arXiv preprint              ing stroke lesion segmentation dataset. Scientific data, 9(1):
+     arXiv:2308.16184, 2023. 1, 5, 6                                     762, 2022. 4
+[14] Guoyao Deng, Ke Zou, Kai Ren, Meng Wang, Xuedong               [23] AD Hoover, Valentina Kouznetsova, and Michael Gold-
+     Yuan, Sancong Ying, and Huazhu Fu. Sam-u: Multi-box                 baum. Locating blood vessels in retinal images by piecewise
+     threshold probing of a matched filter response. IEEE Trans-      [35] Xiangde Luo, Wenjun Liao, Jianghong Xiao, Tao Song, Xi-
+     actions on Medical imaging, 19(3):203–210, 2000. 4, 5                 aofan Zhang, Kang Li, Guotai Wang, and Shaoting Zhang.
+[24] Fabian Isensee, Paul F Jaeger, Simon AA Kohl, Jens Pe-                Word: Revisiting organs segmentation in the whole abdomi-
+     tersen, and Klaus H Maier-Hein. nnu-net: a self-configuring           nal region. arXiv preprint arXiv:2111.02403, 1(2):13, 2021.
+     method for deep learning-based biomedical image segmen-               4
+     tation. Nature methods, 18(2):203–211, 2021. 4, 6                [36] Jun Ma and Bo Wang. Segment anything in medical images.
+[25] Yuanfeng Ji, Haotian Bai, Jie Yang, Chongjian Ge, Ye Zhu,             arXiv preprint arXiv:2304.12306, 2023. 1, 6
+     Ruimao Zhang, Zhen Li, Lingyan Zhang, Wanling Ma, Xi-            [37] Jun Ma and Bo Wang. Segment anything in medical images.
+     ang Wan, et al. Amos: A large-scale abdominal multi-organ             arXiv preprint arXiv:2304.12306, 2023. 5
+     benchmark for versatile medical image segmentation. arXiv        [38] Jun Ma, Yao Zhang, Song Gu, Cheng Zhu, Cheng Ge, Yichi
+     preprint arXiv:2206.08023, 2022. 4                                    Zhang, Xingle An, Congcong Wang, Qiyuan Wang, Xin Liu,
+[26] A Emre Kavur, N Sinem Gezer, Mustafa Barış, Sinem                    et al. Abdomenct-1k: Is abdominal organ segmentation a
+     Aslan, Pierre-Henri Conze, Vladimir Groza, Duc Duy Pham,              solved problem? IEEE Transactions on Pattern Analysis
+     Soumick Chatterjee, Philipp Ernst, Savaş Özkan, et al. Chaos        and Machine Intelligence, 44(10):6695–6714, 2021. 4
+     challenge-combined (ct-mr) healthy abdominal organ seg-          [39] Yuhui Ma, Huaying Hao, Jianyang Xie, Huazhu Fu, Jiong
+     mentation. Medical Image Analysis, 69:101950, 2021. 4                 Zhang, Jianlong Yang, Zhen Wang, Jiang Liu, Yalin Zheng,
+[27] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao,             and Yitian Zhao. Rose: a retinal oct-angiography vessel
+     Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer White-             segmentation dataset and new model. IEEE transactions on
+     head, Alexander C Berg, Wan-Yen Lo, et al. Segment any-               medical imaging, 40(3):928–939, 2020. 4
+     thing. arXiv preprint arXiv:2304.02643, 2023. 1, 2, 5            [40] José Ignacio Orlando, Huazhu Fu, João Barbosa Breda,
+[28] Hugo J Kuijf, J Matthijs Biesbroek, Jeroen De Bresser, Rut-           Karel Van Keer, Deepti R Bathula, Andrés Diaz-Pinto,
+     ger Heinen, Simon Andermatt, Mariana Bento, Matt Berseth,             Ruogu Fang, Pheng-Ann Heng, Jeyoung Kim, JoonHo Lee,
+     Mikhail Belyaev, M Jorge Cardoso, Adria Casamitjana, et al.           et al. Refuge challenge: A unified framework for evaluat-
+     Standardized assessment of automatic segmentation of white            ing automated methods for glaucoma assessment from fun-
+     matter hyperintensities and results of the wmh segmentation           dus photographs. Medical image analysis, 59:101570, 2020.
+     challenge. IEEE transactions on medical imaging, 38(11):              4
+     2556–2568, 2019. 4                                               [41] Cheng Ouyang, Carlo Biffi, Chen Chen, Turkay Kart, Huaqi
+[29] Maria Kuklisova-Murgasova, Paul Aljabar, Latha Srinivasan,            Qiu, and Daniel Rueckert. Self-supervision with superpix-
+     Serena J Counsell, Valentina Doria, Ahmed Serag, Ioannis S            els: Training few-shot medical image segmentation without
+     Gousias, James P Boardman, Mary A Rutherford, A David                 annotation. In Computer Vision–ECCV 2020: 16th Euro-
+     Edwards, et al. A dynamic 4d probabilistic atlas of the de-           pean Conference, Glasgow, UK, August 23–28, 2020, Pro-
+     veloping brain. NeuroImage, 54(4):2750–2763, 2011. 4                  ceedings, Part XXIX 16, pages 762–780. Springer, 2020. 1,
+[30] Zoé Lambert, Caroline Petitjean, Bernard Dubray, and Su              5
+     Kuan. Segthor: Segmentation of thoracic organs at risk in        [42] Cheng Peng, Andriy Myronenko, Ali Hatamizadeh, Vish-
+     ct images. In 2020 Tenth International Conference on Image            wesh Nath, Md Mahfuzur Rahman Siddiquee, Yufan He,
+     Processing Theory, Tools and Applications (IPTA), pages 1–            Daguang Xu, Rama Chellappa, and Dong Yang. Hyperseg-
+     6. IEEE, 2020. 4                                                      nas: Bridging one-shot neural architecture search with 3d
+[31] Bennett Landman, Zhoubing Xu, J Igelsias, Martin Styner,              medical image segmentation using hypernet. In Proceedings
+     T Langerak, and Arno Klein.           Miccai multi-atlas la-          of the IEEE/CVF Conference on Computer Vision and Pat-
+     beling beyond the cranial vault–workshop and challenge.               tern Recognition, pages 20741–20751, 2022. 1, 5
+     In Proc. MICCAI Multi-Atlas Labeling Beyond Cranial              [43] Félix Quinton, Romain Popoff, Benoı̂t Presles, Sarah
+     Vault—Workshop Challenge, page 12, 2015.                              Leclerc, Fabrice Meriaudeau, Guillaume Nodari, Olivier
+[32] Guillaume Lemaı̂tre, Robert Martı́, Jordi Freixenet, Joan C           Lopez, Julie Pellegrinelli, Olivier Chevallier, Dominique
+     Vilanova, Paul M Walker, and Fabrice Meriaudeau.                      Ginhac, et al. A tumour and liver automatic segmentation (at-
+     Computer-aided detection and diagnosis for prostate cancer            las) dataset on contrast-enhanced magnetic resonance imag-
+     based on mono and multi-parametric mri: a review. Comput-             ing for hepatocellular carcinoma. Data, 8(5):79, 2023. 5
+     ers in biology and medicine, 60:8–31, 2015.                      [44] Perry Radau, Yingli Lu, Kim Connelly, Gideon Paul,
+[33] Geert Litjens, Robert Toth, Wendy Van De Ven, Caroline                Alexander J Dick, and Graham A Wright. Evaluation frame-
+     Hoeks, Sjoerd Kerkstra, Bram Van Ginneken, Graham Vin-                work for algorithms segmenting short axis cardiac mri. The
+     cent, Gwenael Guillard, Neil Birbeck, Jindang Zhang, et al.           MIDAS Journal, 2009. 4
+     Evaluation of prostate segmentation algorithms for mri: the      [45] Erik Ziegler Ron Kikinis, Steve Pieper. Mediastinal lymph
+     promise12 challenge. Medical image analysis, 18(2):359–               node quantification (lnq): Segmentation of heterogeneous ct
+     373, 2014. 4                                                          data. International Conference on Medical Image Comput-
+[34] Qin Liu, Zhenlin Xu, Yining Jiao, and Marc Niethammer.                ing and Computer Assisted Intervention (MICCAI), 2023. 5
+     isegformer: interactive segmentation via transformers with       [46] Holger R Roth, Amal Farag, E Turkbey, Le Lu, Jiamin Liu,
+     application to 3d knee mr images. In International Confer-            and Ronald M Summers. Data from pancreas-ct. the cancer
+     ence on Medical Image Computing and Computer-Assisted                 imaging archive. IEEE Transactions on Image Processing,
+     Intervention, pages 464–474. Springer, 2022. 5                        2016. 5
+[47] Abhijit Guha Roy, Shayan Siddiqui, Sebastian Pölsterl,             adapter: Adapting segment anything model for medical im-
+     Nassir Navab, and Christian Wachinger. ‘squeeze & ex-               age segmentation. arXiv preprint arXiv:2304.12620, 2023.
+     cite’guided few-shot segmentation of volumetric images.             1, 5, 6
+     Medical image analysis, 59:101587, 2020. 5                     [59] Amy Zhao, Guha Balakrishnan, Fredo Durand, John V Gut-
+[48] Adriel Saporta, Xiaotong Gui, Ashwin Agrawal, Anuj Pa-              tag, and Adrian V Dalca. Data augmentation using learned
+     reek, SQ Truong, CD Nguyen, Van-Doan Ngo, Jayne                     transformations for one-shot medical image segmentation. In
+     Seekins, Francis G Blankenberg, AY Ng, et al. Deep learn-           Proceedings of the IEEE/CVF conference on computer vi-
+     ing saliency maps do not accurately highlight diagnostically        sion and pattern recognition, pages 8543–8553, 2019. 5
+     relevant regions for medical image interpretation. MedRxiv,    [60] Xin Zheng, Yong Wang, Guoyou Wang, and Jianguo Liu.
+     2021. 4                                                             Fast and robust segmentation of white blood cell images by
+[49] Arnaud Arindra Adiyoso Setio, Alberto Traverso, Thomas              self-supervised learning. Micron, 107:55–71, 2018. 5
+     De Bel, Moira SN Berens, Cas Van Den Bogaard, Piergiorgio      [61] Tianfei Zhou, Liulei Li, Gustav Bredell, Jianwu Li, Jan Un-
+     Cerello, Hao Chen, Qi Dou, Maria Evelina Fantacci, Bram             kelbach, and Ender Konukoglu. Volumetric memory network
+     Geurts, et al. Validation, comparison, and combination of           for interactive medical image segmentation. Medical Image
+     algorithms for automatic detection of pulmonary nodules in          Analysis, 83:102599, 2023. 5
+     computed tomography images: the luna16 challenge. Medi-
+     cal image analysis, 42:1–13, 2017.
+[50] Amber L Simpson, Michela Antonelli, Spyridon Bakas,
+     Michel Bilello, Keyvan Farahani, Bram Van Ginneken, An-
+     nette Kopp-Schneider, Bennett A Landman, Geert Litjens,
+     Bjoern Menze, et al. A large annotated medical image dataset
+     for the development and evaluation of segmentation algo-
+     rithms. arXiv preprint arXiv:1902.09063, 2019. 4
+[51] Kaixin Wang, Jun Hao Liew, Yingtian Zou, Daquan Zhou,
+     and Jiashi Feng. Panet: Few-shot image semantic seg-
+     mentation with prototype alignment. In proceedings of
+     the IEEE/CVF international conference on computer vision,
+     pages 9197–9206, 2019. 1, 5
+[52] Lu Wang, Dongxue Liang, Xiaolei Yin, Jing Qiu, Zhiyun
+     Yang, Junhui Xing, Jianzeng Dong, and Zhaoyuan Ma.
+     Coronary artery segmentation in angiographic videos utiliz-
+     ing spatial-temporal information. BMC medical imaging, 20:
+     1–10, 2020. 5
+[53] Shuxin Wang, Shilei Cao, Dong Wei, Renzhen Wang, Kai
+     Ma, Liansheng Wang, Deyu Meng, and Yefeng Zheng. Lt-
+     net: Label transfer by learning reversible voxel-wise corre-
+     spondence for one-shot medical image segmentation. In Pro-
+     ceedings of the IEEE/CVF Conference on Computer Vision
+     and Pattern Recognition, pages 9162–9171, 2020. 5
+[54] Xinlong Wang, Wen Wang, Yue Cao, Chunhua Shen, and
+     Tiejun Huang. Images speak in images: A generalist
+     painter for in-context visual learning. In Proceedings of
+     the IEEE/CVF Conference on Computer Vision and Pattern
+     Recognition, pages 6830–6839, 2023. 1
+[55] Xinlong Wang, Xiaosong Zhang, Yue Cao, Wen Wang,
+     Chunhua Shen, and Tiejun Huang. Seggpt: Segmenting ev-
+     erything in context. arXiv preprint arXiv:2304.03284, 2023.
+[56] Jason Wei, Yi Tay, Rishi Bommasani, Colin Raffel, Barret
+     Zoph, Sebastian Borgeaud, Dani Yogatama, Maarten Bosma,
+     Denny Zhou, Donald Metzler, et al. Emergent abilities of
+     large language models. arXiv preprint arXiv:2206.07682,
+     2022. 1
+[57] Junde Wu, Huihui Fang, Yu Zhang, Yehui Yang, and Yanwu
+     Xu. Medsegdiff: Medical image segmentation with diffusion
+     probabilistic model. arXiv preprint arXiv:2211.00611, 2022.
+     6
+[58] Junde Wu, Rao Fu, Huihui Fang, Yuanpei Liu, Zhaowei
+     Wang, Yanwu Xu, Yueming Jin, and Tal Arbel. Medical sam
+

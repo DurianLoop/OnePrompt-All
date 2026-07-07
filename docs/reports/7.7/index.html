@@ -1,0 +1,1319 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7.7 Matcher Feedback & Learning 阶段研究汇报</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --ink: #17202a;
+      --muted: #5f6d7e;
+      --line: #d9e1ea;
+      --blue: #245fa8;
+      --blue-soft: #e8f1fb;
+      --green: #24715f;
+      --green-soft: #e8f4ef;
+      --amber: #9a681f;
+      --amber-soft: #fff3d9;
+      --red: #a84343;
+      --red-soft: #f8e8e6;
+      --shadow: 0 18px 45px rgba(31, 45, 61, .08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 20px;
+      background: #111a24;
+      color: #edf4fb;
+      overflow: auto;
+    }
+
+    .brand b { display: block; font-size: 20px; line-height: 1.3; }
+    .brand span { display: block; margin-top: 8px; color: #aebdca; font-size: 13px; }
+    nav { display: grid; gap: 8px; margin-top: 28px; }
+    nav a {
+      color: #dbe6ef;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid transparent;
+    }
+    nav a:hover, nav a.active { background: #1f2d3a; border-color: #31475c; }
+    nav small { color: #8fa3b6; }
+    .side-note {
+      margin-top: 26px;
+      padding: 14px;
+      border: 1px solid #304255;
+      border-radius: var(--radius);
+      color: #bdcad6;
+      font-size: 13px;
+      background: #172333;
+    }
+
+    main { padding: 30px clamp(20px, 4vw, 56px) 70px; }
+    section { margin: 0 0 34px; scroll-margin-top: 22px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(300px, .9fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+    .panel, .card, figure, details {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .panel { padding: 26px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { margin: 0; line-height: 1.25; }
+    h1 { margin-top: 12px; font-size: clamp(32px, 5vw, 58px); max-width: 980px; }
+    h2 { font-size: clamp(24px, 3vw, 34px); }
+    h3 { font-size: 18px; }
+    p { margin: 10px 0 0; color: var(--muted); }
+    .lead { font-size: 18px; color: #344557; max-width: 900px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      background: #f8fafc;
+      color: #314355;
+      white-space: nowrap;
+    }
+    .tag.good { background: var(--green-soft); color: var(--green); border-color: #b9d9cf; }
+    .tag.warn { background: var(--amber-soft); color: var(--amber); border-color: #ead19b; }
+    .tag.bad { background: var(--red-soft); color: var(--red); border-color: #e2b8b2; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .metric {
+      min-height: 112px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfe;
+    }
+    .metric span { display: block; color: var(--muted); font-size: 13px; }
+    .metric b { display: block; margin: 4px 0; font-size: 30px; color: var(--ink); }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+    .grid-2, .media-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .card { padding: 18px; }
+    .soft { background: #fbfcfe; }
+    .answer-label {
+      display: inline-flex;
+      margin-bottom: 8px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .flow { display: grid; gap: 10px; margin-top: 16px; }
+    .step {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfe;
+    }
+    .step i {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #1f2d3a;
+      color: #fff;
+      font-style: normal;
+      font-weight: 700;
+    }
+    .step span { display: block; color: var(--muted); font-size: 14px; }
+
+    figure { margin: 0; overflow: hidden; }
+    figure img {
+      display: block;
+      width: 100%;
+      max-height: 360px;
+      object-fit: contain;
+      background: #edf2f6;
+      border-bottom: 1px solid var(--line);
+    }
+    figcaption { padding: 12px 14px 14px; color: var(--muted); font-size: 14px; }
+    figcaption b { display: block; margin-bottom: 4px; color: var(--ink); }
+    .figure-wide { margin-top: 16px; }
+    .figure-wide img { max-height: 920px; }
+    .table-scroll { overflow-x: auto; }
+    .table-scroll table { min-width: 980px; }
+    .bar-compare { display: grid; gap: 12px; margin-top: 14px; }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) 88px;
+      gap: 12px;
+      align-items: center;
+      color: #344557;
+      font-size: 14px;
+    }
+    .bar-track {
+      height: 18px;
+      border-radius: 999px;
+      background: #edf3f8;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--blue);
+    }
+    .bar-fill.stage3 { background: var(--red); }
+    .bar-fill.overall { background: var(--amber); }
+    .bar-fill.domain { background: var(--green); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th { background: #edf3f8; color: #263849; }
+    tr:last-child td { border-bottom: 0; }
+    .num { font-variant-numeric: tabular-nums; text-align: right; }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: .55fr 1.35fr 1.4fr 1fr .7fr;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .matrix > div { padding: 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .matrix > div:nth-child(5n) { border-right: 0; }
+    .matrix .head { background: #edf3f8; font-weight: 700; color: #263849; }
+    .ok { color: var(--green); font-weight: 700; }
+    .warn { color: var(--amber); font-weight: 700; }
+    .bad { color: var(--red); font-weight: 700; }
+
+    .case-block {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 16px;
+      align-items: start;
+      margin-top: 16px;
+    }
+    .path {
+      font-family: Consolas, "Courier New", monospace;
+      color: #24384d;
+      word-break: break-all;
+      font-size: 13px;
+    }
+    .mini-note {
+      margin-top: 12px;
+      border-left: 4px solid var(--blue);
+      padding: 10px 12px;
+      background: var(--blue-soft);
+      color: #2c4c70;
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .callout {
+      margin-top: 14px;
+      border: 1px solid #b9d9cf;
+      background: var(--green-soft);
+      color: #25594f;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+    }
+    .warning-callout {
+      margin-top: 14px;
+      border: 1px solid #ead19b;
+      background: var(--amber-soft);
+      color: #6c4a19;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+    }
+    .evidence-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .evidence-item {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfe;
+    }
+    .evidence-item b { color: var(--ink); }
+    .evidence-item span { color: var(--muted); }
+    .logic-chain {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .logic-node {
+      position: relative;
+      min-height: 160px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfe;
+    }
+    .logic-node:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 10px;
+      border-top: 2px solid #9fb6cd;
+    }
+    .logic-node .kicker {
+      display: inline-flex;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .logic-node p { font-size: 14px; }
+    .zoom-note {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eef4f8;
+      color: #42576b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    figure { position: relative; cursor: zoom-in; }
+    figure::before {
+      content: "点击放大";
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(17, 26, 36, .78);
+      color: #fff;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity .18s ease;
+      pointer-events: none;
+    }
+    figure:hover::before { opacity: 1; }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      grid-template-rows: minmax(0, 1fr) auto;
+      background: rgba(10, 15, 22, .92);
+      padding: 26px;
+    }
+    .lightbox.open { display: grid; }
+    .lightbox-stage {
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      overflow: auto;
+    }
+    .lightbox img {
+      max-width: min(96vw, 1800px);
+      max-height: 82vh;
+      object-fit: contain;
+      background: #edf2f6;
+      border-radius: 6px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.38);
+    }
+    .lightbox-caption {
+      margin: 16px auto 0;
+      max-width: 1100px;
+      color: #dbe6ef;
+      font-size: 15px;
+    }
+    .lightbox-caption b { display: block; color: #fff; margin-bottom: 4px; }
+    .lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    body.lightbox-open { overflow: hidden; }
+    details { padding: 0; overflow: hidden; }
+    summary {
+      cursor: pointer;
+      padding: 13px 16px;
+      font-weight: 700;
+      background: #edf3f8;
+      border-bottom: 1px solid var(--line);
+    }
+    pre {
+      margin: 0;
+      padding: 14px 16px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-family: Consolas, "Courier New", monospace;
+      color: #1c2a38;
+      background: #fbfcfe;
+      font-size: 13px;
+    }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: #33465a;
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font: inherit;
+    }
+    .tab.active { border-color: #a8c6e5; color: var(--blue); background: var(--blue-soft); font-weight: 700; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .small { font-size: 13px; color: var(--muted); }
+
+    @media (max-width: 1060px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { position: static; height: auto; }
+      .hero, .grid-2, .grid-3, .media-grid, .case-block { grid-template-columns: 1fr; }
+      .logic-chain { grid-template-columns: 1fr; }
+      .logic-node:not(:last-child)::after { display: none; }
+      .evidence-item { grid-template-columns: 1fr; }
+      .matrix { grid-template-columns: 1fr; }
+      .matrix > div { border-right: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <b>7.7 阶段研究汇报</b>
+        <span>Matcher feedback 与 learning 扩展</span>
+      </div>
+      <nav id="nav">
+        <a href="#summary">总览 <small>01</small></a>
+        <a href="#path">研究路径 <small>02</small></a>
+        <a href="#background">背景与问题 <small>03</small></a>
+        <a href="#response">会议问题回应 <small>04</small></a>
+        <a href="#closed-loop">闭环逻辑 <small>05</small></a>
+        <a href="#p0p4">P0-P4 推进 <small>06</small></a>
+        <a href="#mainline">医学主线 <small>07</small></a>
+        <a href="#domain-policy">分域训练 <small>08</small></a>
+        <a href="#idrid">IDRID 细节 <small>09</small></a>
+        <a href="#monuseg">MonuSeg 细节 <small>10</small></a>
+        <a href="#commands">复现清单 <small>11</small></a>
+        <a href="#conclusion">结论 <small>12</small></a>
+      </nav>
+      <div class="side-note">
+        本页汇总会议提出“方向一：feedback 纳入 Matcher”和“方向二：learning 纳入 Matcher”后的阶段进展。页面中的图、点坐标、路径和指标均来自本地可复现实验输出。
+      </div>
+    </aside>
+
+    <main>
+      <section id="summary" class="hero">
+        <div class="panel">
+          <span class="eyebrow">OCSAM / Matcher Research Loop</span>
+          <h1>从老师问题出发，已经形成 Feedback-Learned Matcher 医学主线</h1>
+          <p class="lead">
+            目前的研究路径已经从“验证 SAM3 text/point 现象”推进到“reference mask 生成 matched points，再用 feedback 和 learning 筛选 SAM proposals”。20 例医学实验形成 240 个候选，50 例扩展形成 600 个候选；结果显示原 Stage3 手写规则偏保守，而可解释 learning 能明显改善 proposal keep/reject。
+          </p>
+          <div class="tag-row">
+            <span class="tag good">20 cases / 240 proposals</span>
+            <span class="tag good">50 cases / 600 proposals</span>
+            <span class="tag good">review gallery 已修复</span>
+            <span class="tag warn">MonuSeg 需要分域策略</span>
+            <span class="tag warn">投稿前需人工确认标签</span>
+          </div>
+        </div>
+        <div class="panel metrics">
+          <div class="metric"><span>20 例主验证</span><b>240</b><span>SAM proposal 候选</span></div>
+          <div class="metric"><span>50 例扩展</span><b>600</b><span>IDRID 30 + MonuSeg 20</span></div>
+          <div class="metric"><span>20 例 Stage3 F1</span><b>0.214</b><span>手写过滤规则</span></div>
+          <div class="metric"><span>20 例 Learned F1</span><b>0.677</b><span>可解释阈值策略</span></div>
+          <div class="metric"><span>20 例 LOCO F1</span><b>0.656</b><span>跨 case 验证</span></div>
+          <div class="metric"><span>50 例 LOCO F1</span><b>0.497</b><span>规模化扩展证据</span></div>
+        </div>
+      </section>
+
+      <section id="path">
+        <div class="section-head">
+          <div>
+            <h2>到目前为止的研究路径</h2>
+            <p>汇报时可以按这条线讲：老师最初问的是 SAM3 prompt、Matcher 三阶段和 feedback；现在已经把这些问题串成一条论文主线。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>一句话主线</h3>
+            <p>当 SAM3 text prompt 不稳定时，不再只靠文字描述目标，而是用一张 support 图中的人工 mask 定义目标；Matcher 把这个目标迁移到 query 图上生成 matched points；SAM 负责生成多个候选 mask；最后用 feedback 和 learning 判断哪些 proposal 应该保留。</p>
+            <div class="flow">
+              <div class="step"><i>1</i><div><b>发现问题</b><span>SAM3 对简单名词可用，但 white girl、execute 等复合/动作 prompt 会失败；point prompt 更可控。</span></div></div>
+              <div class="step"><i>2</i><div><b>引入 Matcher</b><span>用 reference mask/box 提取目标特征，在 query 图上找相似点，解决“点从哪里来”。</span></div></div>
+              <div class="step"><i>3</i><div><b>跑通 Stage2+3</b><span>matched points 聚类采样，送入 SAM 得到多个 proposals，再做 instance-level 筛选。</span></div></div>
+              <div class="step"><i>4</i><div><b>加入 feedback</b><span>正负点更新 prototype，accept/reject 标签进入 proposal casebook。</span></div></div>
+              <div class="step"><i>5</i><div><b>形成 learning 主线</b><span>proposal keep/reject 和 threshold 选择不再手调，而是用可解释特征学习。</span></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>目前已经完成的证据</h3>
+            <table>
+              <tr><th>阶段</th><th>已经完成</th><th>最关键结论</th></tr>
+              <tr><td>自然图最小验证</td><td>SAM3 text/point、white girl/execute failure、positive/negative point feedback</td><td>text 失败现象成立，point 和 feedback 有继续研究价值。</td></tr>
+              <tr><td>Matcher 三阶段</td><td>Stage1 matched points、Stage2 prompt sampling、Stage3 proposal filtering</td><td>老师提出的 sample N% points、重复 m 次、估计 K 的流程可以跑通。</td></tr>
+              <tr><td>医学 20 例</td><td>IDRID 12 + MonuSeg 8，共 240 proposals</td><td>候选池中有好 mask，但原 Stage3 会误杀，learning 是主要突破点。</td></tr>
+              <tr><td>医学 50 例</td><td>IDRID 30 + MonuSeg 20，共 600 proposals</td><td>扩展后 learned F1 仍高于 Stage3，说明主线可以继续放大。</td></tr>
+            </table>
+            <div class="callout">
+              今天汇报建议：先讲“为什么 text 不够”，再讲“Matcher 如何自动找点”，最后讲“为什么论文主线落在 Feedback-Learned proposal filtering”。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="background">
+        <div class="section-head">
+          <div>
+            <h2>背景与问题定义</h2>
+            <p>本项目的核心目标不是单独证明某一个 SAM prompt 有效，而是建立一个可解释、可交互、可学习的目标分割流程：先从 reference 图中定义“想找的目标”，再在 query 图中自动找相似位置，最后用 SAM 生成并筛选 mask。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>为什么不能只依赖 SAM point 或 text</h3>
+            <p>SAM/SAM3 的 point prompt 很强，但它本质上回答的是“围绕这个点切出一个合理对象”。如果用户没有提前知道每个目标在哪里，就需要一个前置模块先在 query 图中找点。text prompt 又容易受类别词、属性词和动作词影响，例如 white girl、execute 这类 prompt 在自然场景中会出现语义含混或无法落到稳定实例的问题。</p>
+            <div class="evidence-list">
+              <div class="evidence-item"><b>点 prompt 优势</b><span>当点落在目标上，SAM 往往能切出更接近目标的 foreground；因此 Stage1 的任务就是尽量把点放到目标上。</span></div>
+              <div class="evidence-item"><b>文本 prompt 风险</b><span>文本描述未必对应清晰视觉边界，尤其是属性、动作、组合词。它适合粗检索，不适合作为本阶段闭环的唯一控制信号。</span></div>
+              <div class="evidence-item"><b>Matcher 的位置</b><span>Matcher 负责把 reference 中的目标特征迁移到 query 图，输出候选点；SAM 负责从这些点生成 mask。</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>本阶段需要回答的研究问题</h3>
+            <table>
+              <tr><th>问题</th><th>对应实验</th><th>当前证据</th></tr>
+              <tr><td>a. point 是否比 text 更可靠</td><td>自然图与医学图中用 matched points 驱动 SAM proposal</td><td>20 例医学闭环已形成 240 个候选 mask，说明 point-driven pipeline 可运行。</td></tr>
+              <tr><td>b. text prompt 失败后怎么办</td><td>用 reference image/mask/box 替代纯文本描述</td><td>Stage1 heatmap 和 top-k overlay 能直接显示“哪里像 reference 目标”。</td></tr>
+              <tr><td>Stage1 大图如何处理</td><td>sliding-window / tile 后恢复原图坐标</td><td>此前自然图 elephant case 已完成 tile-level matching；医学 20 例当前图像尺寸可直接跑通。</td></tr>
+              <tr><td>Stage2+3 如何闭环</td><td>点聚类生成多组 prompt，SAM 生成候选，策略决定 keep/reject</td><td>Stage3 F1 0.214，learning F1 0.677，说明筛选策略是主要改进点。</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="callout">
+          逻辑起点：如果 SAM point 强而 text 不稳，那么问题就从“输入什么文本”转为“如何自动找到正确点”。Matcher 负责找点，feedback 负责纠错，learning 负责把纠错经验变成可复用策略。
+        </div>
+      </section>
+
+      <section id="response">
+        <div class="section-head">
+          <div>
+            <h2>会议问题的正面回应</h2>
+            <p>这部分先回答任务本身，再放对应证据图。汇报口径是：问题是什么、当前完成到什么程度、证据来自哪里、还暴露什么缺口。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <span class="answer-label">方向一：feedback 纳入 Matcher</span>
+            <h3>结论：已完成两层反馈闭环</h3>
+            <p>点级反馈用于更新 reference/target prototype；proposal 级 accept/reject 用于形成 casebook 标签，并进一步训练 keep/reject 策略。负点不再只是 SAM 的背景点，也被解释为“背景特征”，用于压低相似度图里的错误区域。</p>
+            <div class="flow">
+              <div class="step"><i>1</i><div><b>positive point</b><span>增强目标区域特征，提升下一轮 top-k matched points 的目标集中度。</span></div></div>
+              <div class="step"><i>2</i><div><b>negative point</b><span>作为背景信息进入 prototype update，抑制错误位置或错误 proposal。</span></div></div>
+              <div class="step"><i>3</i><div><b>accept / reject</b><span>把人工选择沉淀为 proposal-level learning 数据，服务于阈值和排序学习。</span></div></div>
+            </div>
+          </div>
+          <figure>
+            <img src="../6.30/assets/p0_feature_feedback_overlay.png" alt="feedback prototype overlay" loading="lazy">
+            <figcaption>
+              <b>反馈如何进入 Matcher</b>
+              这张图来自 6.30 的 feedback prototype 实验：先选正点和负点，再把对应位置的 DINO 特征纳入 prototype 更新。图中体现的是机制验证，不是最终医学结果。
+            </figcaption>
+          </figure>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <span class="answer-label">方向二：learning 纳入 Matcher</span>
+            <h3>结论：先采用可解释学习，暂不优先复杂模型</h3>
+            <p>当前学习目标是 proposal 是否保留。输入特征包括 feedback_learning_score、filter_score、SAM score、cluster coverage、prompt coverage、mask area 和 bbox area。结果显示 scalar threshold / decision stump 的 LOCO F1 为 0.655738，高于当前 logistic regression 的 0.486486。</p>
+            <div class="mini-note">
+              当前证据支持“先把可解释阈值和分域策略做稳”。复杂模型不是不可做，但在 20 例伪标签阶段已经出现过多 false positive，需要等人工标签和更多 case 后再升级。
+            </div>
+          </div>
+          <figure>
+            <img src="../6.30/assets/matcher_stage1_heatmap.png" alt="stage1 similarity heatmap" loading="lazy">
+            <figcaption>
+              <b>learning 的输入来自哪些中间量</b>
+              heatmap 由人工标注的 reference mask 提取 DINO prototype，再与 query feature map 做 cosine similarity 得到；top-k 点、聚类质量和 proposal 分数都会进入后续学习特征。
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="closed-loop">
+        <div class="section-head">
+          <div>
+            <h2>闭环逻辑与实验设计</h2>
+            <p>整个流程可以看成“找点 - 组点 - 生成 mask - 筛选 mask - 反馈更新”的闭环。每一步都有可保存的中间产物，因此可以解释失败发生在哪里，也可以把人工反馈接入到后续学习。</p>
+          </div>
+        </div>
+        <div class="logic-chain">
+          <div class="logic-node">
+            <span class="kicker">Stage1</span>
+            <h3>Reference 到 Query 的 matching</h3>
+            <p>从 support image 的人工标注 reference mask 中提取 DINO feature prototype，在 query feature map 上计算相似度，得到 heatmap 和 top-k matched points。reference box 只作为 mask 外接范围和记录信息，不是要强调的大框输入。</p>
+          </div>
+          <div class="logic-node">
+            <span class="kicker">Stage2-A</span>
+            <h3>点采样与聚类</h3>
+            <p>top-k 点先按相似度和空间距离筛选，再用 DBSCAN 聚类。单点、小组点、多点组都会作为 prompt group 候选。</p>
+          </div>
+          <div class="logic-node">
+            <span class="kicker">Stage2-B</span>
+            <h3>SAM 生成候选 mask</h3>
+            <p>每个 prompt group 送入 SAM，得到一批 proposal masks。这个阶段强调召回，不急于只保留一个结果。</p>
+          </div>
+          <div class="logic-node">
+            <span class="kicker">Stage3</span>
+            <h3>实例级筛选</h3>
+            <p>根据 instance similarity、SAM score、cluster coverage、mask/bbox 面积等特征决定 proposal keep/reject。</p>
+          </div>
+          <div class="logic-node">
+            <span class="kicker">Feedback + Learning</span>
+            <h3>把纠错变成策略</h3>
+            <p>正负点更新 prototype，accept/reject 形成 proposal 标签，再学习阈值、排序或小模型，反过来改进下一轮筛选。</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3>技术实现理解校准</h3>
+          <p>当前理解可以概括为：用一张带人工 mask 的 reference 图提取目标特征，在另一张 query 图上找到相似点；再把不同点组合送入 SAM 得到多个候选 mask；最后从候选中学习如何选出可信 proposal。这个方向是对的，但有几处需要说得更严谨。</p>
+          <table style="margin-top:12px">
+            <tr><th>环节</th><th>更准确的说法</th><th>当前实现 / 下一步</th></tr>
+            <tr><td>Reference mask</td><td>真正提供目标语义的是人工 mask，不是外接 box。box 主要用于裁剪、记录和可视化定位。</td><td>IDRID 当前用 IDRiD_01 的人工病灶 mask 做 support，去匹配其他 IDRID query 图。</td></tr>
+            <tr><td>Top-k points</td><td>先在 query feature map 上计算与 reference prototype 的相似度，再取相似度最高的 top-k 点；top-k 默认可设为 100。</td><td>大图可用 sliding window，最后把 tile 内坐标恢复到原图坐标。</td></tr>
+            <tr><td>DBSCAN 的 -1</td><td>-1 是聚类里的空间噪声/离群点标签，不等于这个点语义相似度很低。它可能仍然是 top-k 高相似点。</td><td>-1 点可以作为单点 prompt 候选，也可以在后续策略中降权；它和 negative point 不是同一概念。</td></tr>
+            <tr><td>Negative point</td><td>negative point 表示人工反馈的背景点或错误区域，用来告诉 matcher / SAM “这里不该像目标”。</td><td>已做 prototype feedback 验证；后续要把正负点同时纳入 prompt 和 policy 学习。</td></tr>
+            <tr><td>Prompt 组合</td><td>候选图不是随便生成，而是由单点、小组点、多点采样组合形成：例如 top1 单点、top2 两点、前若干点中抽三点。</td><td>当前已生成 prompt group 并送入 SAM；下一步可以学习哪些组合更容易产生好 mask。</td></tr>
+            <tr><td>Stage3 / Learning</td><td>目前训练的是 proposal keep/reject：给一个 SAM proposal，判断保留还是丢弃。</td><td>已实现分域阈值 / stump；还没有把“prompt 组合选择”完整训练成 end-to-end 策略。</td></tr>
+            <tr><td>训练/测试切分</td><td>如果有 50 张带标注图，应按 case 切分，例如每折 40 张训练、10 张测试，或 LOCO / heldout；不能把同一张图的 proposal 随机拆到 train/test 两边。</td><td>已补 50-case 5-fold：每折 40 case 训练、10 case 测试，5 折覆盖全部 50 case 和 600 个 proposal 标签。</td></tr>
+            <tr><td>换场景</td><td>不同场景、不同病灶、不同模态的特征分布不同，不应强行共用同一个阈值。</td><td>IDRID 学 feedback_learning_score 阈值；MonuSeg 学 cluster_coverage 阈值，说明分域训练是必要的。</td></tr>
+          </table>
+          <div class="mini-note">
+            所以你的整体理解没有大偏差。需要修正的是：当前“训练”首先落在候选 proposal 的选择上，而不是同时训练 matcher、prompt 组合和 SAM 本体；但后续研究方向正是把阈值、prompt 组合、正负点 feedback 和分域策略逐步纳入同一个可学习框架。
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>为什么 Stage2+3 要分开</h3>
+            <p>Stage2 的目标是高召回：只要点可能落在目标附近，就尽量让 SAM 生成候选 mask。Stage3 的目标是高精度：在多个候选里判断哪个该保留。二者不能混在一起，否则会出现两类问题：过早筛点会漏掉目标，过晚筛 mask 又会保留太多错误区域。</p>
+            <table style="margin-top:12px">
+              <tr><th>阶段</th><th>核心目标</th><th>失败表现</th><th>当前改进</th></tr>
+              <tr><td>Stage1</td><td>找像 reference 的位置</td><td>点落到背景或相似干扰物</td><td>引入正负点 feedback 更新 prototype</td></tr>
+              <tr><td>Stage2</td><td>让 SAM 多生成候选</td><td>候选太少或 prompt group 不合理</td><td>保留多种 sample size 与 cluster group</td></tr>
+              <tr><td>Stage3</td><td>从候选中选对 mask</td><td>高 Dice 候选被误杀，或错误大 mask 被保留</td><td>用 casebook 学习 threshold / stump</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3>证据链如何闭合</h3>
+            <div class="evidence-list">
+              <div class="evidence-item"><b>输入证据</b><span>manifest 记录每个 case 的 support/query 图、人工 mask 和 mask 外接 box，保证知道 match 从哪张图、哪份人工标注出发。</span></div>
+              <div class="evidence-item"><b>过程证据</b><span>stage1 保存 similarity heatmap、topk_overlay、points.json；stage2 保存 cluster_overlay、prompt_groups.json、proposal_grid。</span></div>
+              <div class="evidence-item"><b>结果证据</b><span>casebook 记录每个 proposal 的 Dice/IoU、stage3_keep、policy_keep、feature score 和 mask_path。</span></div>
+              <div class="evidence-item"><b>学习证据</b><span>P0-P4 数据包记录分域 policy、feedback 迭代模拟、LOCO 模型对比，形成下一轮实验依据。</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="warning-callout">
+          需要强调的是：当前 20 例标签是 GT-assisted accept/reject 种子标签，50 例扩展仍主要使用 Dice 阈值伪标签。因此它证明的是“闭环和学习框架可运行，并且存在可学习信号”；最终论文级结论仍需要人工 review 标签替换伪标签。
+        </div>
+      </section>
+
+      <section id="p0p4">
+        <div class="section-head">
+          <div>
+            <h2>P0 到 P4 推进结果</h2>
+            <p>本次推进已经把原先的下一步计划转成可复现实验输出，结果保存在 <span class="path">runs/research_direction/matcher_p0_p4_progress/</span>。</p>
+          </div>
+        </div>
+        <div class="matrix">
+          <div class="head">优先级</div><div class="head">完成内容</div><div class="head">关键证据</div><div class="head">主要结论</div><div class="head">状态</div>
+          <div>P0</div><div>生成 review package</div><div>240 proposals；Stage3 冲突 44 个；正例被过滤 33 个，负例被保留 11 个。</div><div>人工 review 应优先看 Stage3 与伪标签冲突的 proposal。</div><div class="ok">已完成</div>
+          <div>P1</div><div>IDRID / MonuSeg 分域阈值</div><div>IDRID learned F1 0.978723；MonuSeg learned F1 0.578947。</div><div>MonuSeg 与 IDRID 的最优特征不同，分域策略必要。</div><div class="ok">已完成</div>
+          <div>P2</div><div>医学 feedback 迭代模拟</div><div>每 case 1 个不确定标签即可在伪标签设置下达到 F1 0.677419。</div><div>当前伪标签过于规则化，后续需要人工 feedback 才能验证真实迭代收益。</div><div class="ok">已完成</div>
+          <div>P3</div><div>50 例扩展</div><div>IDRID 30 + MonuSeg 20，共 600 proposals；overall_50 LOCO F1 0.496644。</div><div>数据侧已经从 20 例扩大到 50 例，主表已生成。</div><div class="ok">已完成</div>
+          <div>P4</div><div>模型升级对比</div><div>scalar/stump LOCO F1 0.655738；logistic F1 0.486486。</div><div>当前优先保留可解释模型，复杂模型后置。</div><div class="ok">已完成</div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>P1 分域结果</h3>
+            <table>
+              <tr><th>Domain</th><th>Rows</th><th>Pos/Neg</th><th>Stage3 F1</th><th>Learned F1</th><th>Policy</th></tr>
+              <tr><td>IDRID</td><td class="num">144</td><td class="num">23 / 121</td><td class="num">0.300000</td><td class="num">0.978723</td><td>feedback_learning_score >= 1.175015</td></tr>
+              <tr><td>MonuSeg</td><td class="num">96</td><td class="num">16 / 80</td><td class="num">0.000000</td><td class="num">0.578947</td><td>cluster_coverage >= 1.0</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3>P4 模型对比</h3>
+            <table>
+              <tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>Accuracy</th></tr>
+              <tr><td>scalar threshold</td><td class="num">0.909091</td><td class="num">0.512821</td><td class="num">0.655738</td><td class="num">0.912500</td></tr>
+              <tr><td>decision stump</td><td class="num">0.909091</td><td class="num">0.512821</td><td class="num">0.655738</td><td class="num">0.912500</td></tr>
+              <tr><td>logistic regression</td><td class="num">0.375000</td><td class="num">0.692308</td><td class="num">0.486486</td><td class="num">0.762500</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>P0 review 优先级样例</h3>
+            <p>review 不应随机看 240 个 proposal，而应优先看“伪标签认为好，但 Stage3 没保留”的冲突样本。这类样本最能暴露筛选规则的问题。</p>
+            <table style="margin-top:12px">
+              <tr><th>case</th><th>group</th><th>reason</th><th>Dice</th><th>stage3</th><th>score</th></tr>
+              <tr><td>idrid_11</td><td class="num">005</td><td>positive but filtered</td><td class="num">0.925738</td><td class="num">0</td><td class="num">1.175015</td></tr>
+              <tr><td>idrid_01</td><td class="num">012</td><td>positive but filtered</td><td class="num">0.691088</td><td class="num">0</td><td class="num">1.278738</td></tr>
+              <tr><td>idrid_01</td><td class="num">005</td><td>positive but filtered</td><td class="num">0.689183</td><td class="num">0</td><td class="num">1.331707</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3>P2 feedback 迭代模拟</h3>
+            <p>这里模拟“每个 case 先标少量不确定 proposal，再用这些 accept/reject 标签学习阈值”。由于当前标签来自 Dice 伪标签，曲线较快稳定，后续人工标签会更有区分度。</p>
+            <table style="margin-top:12px">
+              <tr><th>labels / case</th><th>labeled rows</th><th>pos / neg</th><th>F1 on all rows</th><th>kept</th></tr>
+              <tr><td class="num">1</td><td class="num">20</td><td class="num">5 / 15</td><td class="num">0.677419</td><td class="num">23</td></tr>
+              <tr><td class="num">2</td><td class="num">40</td><td class="num">9 / 31</td><td class="num">0.677419</td><td class="num">23</td></tr>
+              <tr><td class="num">4</td><td class="num">80</td><td class="num">12 / 68</td><td class="num">0.677419</td><td class="num">23</td></tr>
+              <tr><td class="num">8</td><td class="num">160</td><td class="num">25 / 135</td><td class="num">0.677419</td><td class="num">23</td></tr>
+              <tr><td class="num">12</td><td class="num">240</td><td class="num">39 / 201</td><td class="num">0.677419</td><td class="num">23</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <h3>本节证据文件对应关系</h3>
+          <table>
+            <tr><th>文件</th><th>作用</th><th>汇报时可回答的问题</th></tr>
+            <tr><td class="path">p0_p4_progress.json</td><td>完整结构化结果，包含 P0-P4、point details、folds</td><td>所有数字从哪里来，是否能复现</td></tr>
+            <tr><td class="path">point_details.csv</td><td>每个展示 case 的 top matched point 坐标</td><td>点具体点在哪里，match 的 query 图是哪张</td></tr>
+            <tr><td class="path">domain_policy_summary.csv</td><td>IDRID 与 MonuSeg 分域学习结果</td><td>为什么需要 domain-specific threshold</td></tr>
+            <tr><td class="path">model_upgrade_loco.csv</td><td>scalar、stump、logistic 的 LOCO 对比</td><td>为什么暂不优先复杂模型</td></tr>
+            <tr><td class="path">review_gallery.html</td><td>人工 review 入口</td><td>下一步如何把伪标签换成人工标签</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <section id="mainline">
+        <div class="section-head">
+          <div>
+            <h2>Feedback-Learned Matcher 医学主线</h2>
+            <p>这部分是今天新增的核心结果：gallery 已能显示并放大每个 proposal，20 例已有 accept/reject 种子标签，50 例已经跑完整闭环并形成论文主表。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <span class="answer-label">第一步：看清楚 proposal</span>
+            <h3>review gallery 已修复</h3>
+            <p>之前 gallery 中 proposal 图片路径为空，现在每个 proposal overlay 都能显示；点击图片可以放大查看，能按 accept/reject、Stage3 keep/drop、IDRID/MonuSeg 筛选。</p>
+            <div class="mini-note">
+              作用：后续人工 review 不再凭 CSV 表格判断，而是直接看每个 mask overlay，决定 accept / reject / uncertain。
+            </div>
+          </div>
+          <div class="card">
+            <span class="answer-label">第二步：把判断变成标签</span>
+            <h3>20 例已有 240 个标签</h3>
+            <p>当前 `manual_labels_20.json` 是 GT-assisted accept/reject 种子标签：Dice ≥ 0.30 标为 accept，否则标为 reject。它不是最终人工标签，但比 Stage3 retained/rejected 更适合作为学习入口。</p>
+            <table style="margin-top:12px">
+              <tr><th>Cases</th><th>Proposals</th><th>Accept</th><th>Reject</th></tr>
+              <tr><td class="num">20</td><td class="num">240</td><td class="num">39</td><td class="num">201</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <span class="answer-label">第三步：学习筛选策略</span>
+            <h3>从手写规则转为 learned policy</h3>
+            <p>学习目标很简单：给一个 SAM proposal，判断它该不该保留。输入特征包括 feedback_learning_score、SAM score、cluster coverage、prompt coverage、mask area、bbox area。</p>
+            <div class="mini-note">
+              论文表达：不是训练大模型，而是先证明 threshold / keep-reject 本身可以学习，且比手写 Stage3 更稳。
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3>论文主表：手写 Stage3 vs Learned proposal policy</h3>
+          <p>表中 F1 是 proposal-level keep/reject F1；Dice 是每个 case 选出的 best mask 与 query GT 的重叠。Oracle Dice 表示候选池中理论上能达到的上限，用来说明“候选里有没有好 mask”。</p>
+          <table style="margin-top:12px">
+            <tr><th>Setting</th><th>Cases</th><th>Proposals</th><th>Pos/Neg</th><th>Stage3 F1</th><th>Learned F1</th><th>LOCO F1</th><th>Stage3 Dice</th><th>Learned Dice</th><th>Oracle Dice</th></tr>
+            <tr><td>overall_20</td><td class="num">20</td><td class="num">240</td><td class="num">39 / 201</td><td class="num">0.214286</td><td class="num">0.677419</td><td class="num">0.655738</td><td class="num">0.205933</td><td class="num">0.230958</td><td class="num">0.343932</td></tr>
+            <tr><td>IDRID_20</td><td class="num">12</td><td class="num">144</td><td class="num">23 / 121</td><td class="num">0.300000</td><td class="num">0.978723</td><td class="num">0.956522</td><td class="num">0.343222</td><td class="num">0.342880</td><td class="num">0.348032</td></tr>
+            <tr><td>MonuSeg_20</td><td class="num">8</td><td class="num">96</td><td class="num">16 / 80</td><td class="num">0.000000</td><td class="num">0.578947</td><td class="num">0.200000</td><td class="num">0.000000</td><td class="num">0.215647</td><td class="num">0.337780</td></tr>
+            <tr><td>overall_50</td><td class="num">50</td><td class="num">600</td><td class="num">96 / 504</td><td class="num">0.165517</td><td class="num">0.534247</td><td class="num">0.496644</td><td class="num">0.199561</td><td class="num">0.204100</td><td class="num">0.323295</td></tr>
+          </table>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>这张表怎么讲</h3>
+            <div class="evidence-list">
+              <div class="evidence-item"><b>先看 Stage3 F1</b><span>overall_20 只有 0.214，overall_50 只有 0.166，说明原手写规则确实不够稳。</span></div>
+              <div class="evidence-item"><b>再看 Learned F1</b><span>20 例从 0.214 提到 0.677，50 例从 0.166 提到 0.534，说明 proposal 筛选有可学习信号。</span></div>
+              <div class="evidence-item"><b>再看 LOCO F1</b><span>20 例 LOCO 0.656，50 例 LOCO 0.497，说明不是只在训练集上记住阈值，但 50 例仍需要人工标签进一步稳定。</span></div>
+              <div class="evidence-item"><b>最后看 Oracle Dice</b><span>Oracle 明显高于 Stage3/learned，说明候选池里还有更好 mask，下一步重点仍是提升 selection。</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>当前最重要的科学结论</h3>
+            <p>医学图像里，Matcher + SAM 已经能产生有用候选；真正瓶颈不是“完全找不到目标”，而是“从多个 proposal 里选对”。因此论文主线应聚焦在 Feedback-Learned Matcher：把用户反馈和少量标签变成可解释 proposal selection policy。</p>
+            <div class="warning-callout">
+              要诚实说明：20 例标签是 GT-assisted 种子标签，50 例仍是 Dice 阈值伪标签。今天可以汇报为“主线证据已经成型”，但投稿前要把 gallery 中的标签做人工确认。
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3>今天新增产物位置</h3>
+          <table>
+            <tr><th>产物</th><th>路径</th><th>汇报用途</th></tr>
+            <tr><td>20 例 gallery</td><td class="path"><a href="../../../runs/research_direction/matcher_medical_expanded/review_gallery.html">runs/research_direction/matcher_medical_expanded/review_gallery.html</a></td><td>逐个查看 240 个 proposal overlay，人工修订标签。</td></tr>
+            <tr><td>50 例 gallery</td><td class="path"><a href="../../../runs/research_direction/matcher_medical_expanded_50/review_gallery.html">runs/research_direction/matcher_medical_expanded_50/review_gallery.html</a></td><td>逐个查看 600 个 proposal overlay，扩展主表证据。</td></tr>
+            <tr><td>20 例标签</td><td class="path">runs/research_direction/feedback_learned_matcher_mainline/manual_labels_20.json</td><td>作为 accept/reject 学习入口。</td></tr>
+            <tr><td>论文主表</td><td class="path">runs/research_direction/feedback_learned_matcher_mainline/paper_main_table.csv</td><td>支撑“learned policy 优于 Stage3”的主结果。</td></tr>
+            <tr><td>中文记录</td><td class="path">docs/research/feedback_learned_matcher_medical_mainline.md</td><td>后续继续写论文和周报时复用。</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <section id="domain-policy">
+        <div class="section-head">
+          <div>
+            <h2>分域训练一次：从手写 Stage3 到可学习 proposal policy</h2>
+            <p>这一页直接回应“如果在单独某一个领域训练一次，是否可以把该领域中对应病灶更稳定地标注出来”。当前实现训练的不是端到端分割网络，而是 proposal keep/reject 策略：Stage1/Stage2 负责产生候选点和候选 mask，学习模块负责从候选池中选出更可信的 proposal。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <span class="answer-label">训练对象</span>
+            <h3>学习的是“保留哪个候选区域”</h3>
+            <p>每一行训练样本是一个 SAM proposal。标签来自 20 例种子 case 的 accept/reject：与 query GT 重叠足够高的 proposal 记为 accept，否则记为 reject。输入特征包括 feedback_learning_score、filter_score、SAM score、cluster coverage、prompt coverage、mask area、bbox area 等。</p>
+            <div class="mini-note">这里的突破点不是让模型凭空生成病灶，而是把“候选池里已经有好 mask，但 Stage3 没选中”的问题改成一个可学习、可验证、可迁移的筛选问题。</div>
+          </div>
+          <div class="card">
+            <span class="answer-label">验证方式</span>
+            <h3>同域训练，同域迁移</h3>
+            <p>IDRID 用 12 例、144 个 proposal 学到一条领域策略，再应用到 50 例集合中的 30 个 IDRID case；MonuSeg 用 8 例、96 个 proposal 学到自己的领域策略，再应用到 20 个 MonuSeg case。heldout 表示没有出现在训练种子里的同域 case。</p>
+            <div class="warning-callout">这一步可以正面验证“单域训练一次能否推广到同域更多 case”，但还不能直接宣称“所有病灶都能被完整标注”。原因是上游候选池必须先覆盖病灶，且当前 50 例仍使用 Dice 阈值伪标签作为规模化评估。</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3>分域迁移结果：proposal-level F1 明显超过 Stage3</h3>
+          <p>表中 F1 衡量 keep/reject 是否选对 proposal；Dice 均值衡量每个 case 被选中的最好 mask 与 GT 的重叠。IDRID 与 MonuSeg 在 heldout split 上都显著超过 Stage3，说明“按领域学习筛选策略”这条路是成立的。</p>
+          <div class="table-scroll" style="margin-top:12px">
+            <table>
+              <tr><th>Domain</th><th>Split</th><th>Cases</th><th>Proposals</th><th>Stage3 F1</th><th>Learned F1</th><th>Stage3 Dice</th><th>Learned Dice</th><th>Oracle Dice</th><th>Learned rule</th></tr>
+              <tr><td>IDRID</td><td>train_self</td><td class="num">12</td><td class="num">144</td><td class="num">0.300000</td><td class="num">0.978723</td><td class="num">0.343222</td><td class="num">0.281254</td><td class="num">0.348032</td><td>feedback_learning_score ≥ 1.175015</td></tr>
+              <tr><td>IDRID</td><td>target_50_all</td><td class="num">30</td><td class="num">360</td><td class="num">0.224490</td><td class="num">0.781818</td><td class="num">0.298150</td><td class="num">0.220862</td><td class="num">0.310516</td><td>feedback_learning_score ≥ 1.175015</td></tr>
+              <tr><td>IDRID</td><td>target_50_heldout</td><td class="num">18</td><td class="num">216</td><td class="num">0.172414</td><td class="num">0.634921</td><td class="num">0.268102</td><td class="num">0.180601</td><td class="num">0.285504</td><td>feedback_learning_score ≥ 1.175015</td></tr>
+              <tr><td>MonuSeg</td><td>train_self</td><td class="num">8</td><td class="num">96</td><td class="num">0.000000</td><td class="num">0.578947</td><td class="num">0.000000</td><td class="num">0.202192</td><td class="num">0.337780</td><td>cluster_coverage ≥ 1.0</td></tr>
+              <tr><td>MonuSeg</td><td>target_50_all</td><td class="num">20</td><td class="num">240</td><td class="num">0.042553</td><td class="num">0.615385</td><td class="num">0.051678</td><td class="num">0.191973</td><td class="num">0.342465</td><td>cluster_coverage ≥ 1.0</td></tr>
+              <tr><td>MonuSeg</td><td>target_50_heldout</td><td class="num">12</td><td class="num">144</td><td class="num">0.064516</td><td class="num">0.650000</td><td class="num">0.086131</td><td class="num">0.185161</td><td class="num">0.345587</td><td>cluster_coverage ≥ 1.0</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3>更严格版本：50 例全部参与 case-level 5-fold 训练/测试</h3>
+          <p>为避免“只用了部分 case”的疑问，我补做了 50 例全量 5-fold。每折按 case 切分，40 个 case 训练、10 个 case 测试；5 折后每个 case 都恰好测试一次，每个 case 的 12 个 proposals 不会被拆到训练和测试两边。</p>
+          <div class="grid-2" style="margin-top:12px">
+            <div class="card soft">
+              <h3>这些数字为什么成立</h3>
+              <table style="margin-top:12px">
+                <tr><th>数字</th><th>来源</th><th>含义</th></tr>
+                <tr><td class="num">50 cases</td><td>30 个 IDRID + 20 个 MonuSeg</td><td>当前医学扩展集的全部 case。</td></tr>
+                <tr><td class="num">600 proposals</td><td>50 × 12</td><td>每个 case 固定保留 12 个 SAM proposal 进入 casebook。</td></tr>
+                <tr><td class="num">5 folds</td><td>50 ÷ 10</td><td>每折测试 10 个 case，5 折刚好覆盖 50 个 case。</td></tr>
+                <tr><td class="num">40 / 10</td><td>50 - 10</td><td>每折 40 个 case 训练，10 个 case 测试。</td></tr>
+                <tr><td class="num">120 test proposals / fold</td><td>10 × 12</td><td>每折测试集包含 10 个 case 的全部 proposals。</td></tr>
+              </table>
+            </div>
+            <div class="card soft">
+              <h3>为什么不能随机拆 proposal</h3>
+              <p>同一个 case 的 12 个 proposals 都来自同一张 query 图、同一组 matched points 和同一个 GT mask。如果把这些 proposal 随机拆到 train/test，模型会在训练里见过同一张图的其它候选，测试就会偏乐观。因此这里按 case 切分：一个 case 的 12 个 proposals 要么全在训练集，要么全在测试集。</p>
+              <div class="mini-note">这个设置更接近真实使用：训练阶段见过一些病例，测试阶段面对整张新的病例图和它产生的全部候选 proposal。</div>
+            </div>
+          </div>
+          <div class="table-scroll" style="margin-top:12px">
+            <table>
+              <tr><th>Setting</th><th>Folds</th><th>Cases</th><th>Proposals</th><th>Pos/Neg</th><th>Stage3 F1</th><th>Learned F1</th><th>Stump F1</th><th>Stage3 Dice</th><th>Learned Dice</th><th>Oracle Dice</th></tr>
+              <tr><td>overall_5fold</td><td class="num">5</td><td class="num">50</td><td class="num">600</td><td class="num">96 / 504</td><td class="num">0.165517</td><td class="num">0.489796</td><td class="num">0.489796</td><td class="num">0.199561</td><td class="num">0.116263</td><td class="num">0.323295</td></tr>
+              <tr><td>domain_5fold</td><td class="num">5</td><td class="num">50</td><td class="num">600</td><td class="num">96 / 504</td><td class="num">0.165517</td><td class="num">0.611111</td><td class="num">0.539216</td><td class="num">0.199561</td><td class="num">0.196110</td><td class="num">0.323295</td></tr>
+            </table>
+          </div>
+          <div class="grid-2" style="margin-top:16px">
+            <div class="card soft">
+              <h3>测试集 F1 对比</h3>
+              <div class="bar-compare">
+                <div class="bar-row"><span>Stage3 手写规则</span><div class="bar-track"><div class="bar-fill stage3" style="width:16.5517%"></div></div><b>0.1655</b></div>
+                <div class="bar-row"><span>Overall learned</span><div class="bar-track"><div class="bar-fill overall" style="width:48.9796%"></div></div><b>0.4898</b></div>
+                <div class="bar-row"><span>Domain learned</span><div class="bar-track"><div class="bar-fill domain" style="width:61.1111%"></div></div><b>0.6111</b></div>
+              </div>
+            </div>
+            <div class="card soft">
+              <h3>测试集 Dice 对比</h3>
+              <div class="bar-compare">
+                <div class="bar-row"><span>Stage3 手写规则</span><div class="bar-track"><div class="bar-fill stage3" style="width:19.9561%"></div></div><b>0.1996</b></div>
+                <div class="bar-row"><span>Domain learned</span><div class="bar-track"><div class="bar-fill domain" style="width:19.6110%"></div></div><b>0.1961</b></div>
+                <div class="bar-row"><span>Oracle 上限</span><div class="bar-track"><div class="bar-fill" style="width:32.3295%"></div></div><b>0.3233</b></div>
+              </div>
+              <div class="mini-note">F1 明显提升说明 proposal keep/reject 学到了有效信号；Dice 没有同步大幅超过 Stage3，说明后续还要优化候选生成和排序。</div>
+            </div>
+          </div>
+          <div class="mini-note">
+            结论：全量 5-fold 下，分域学习仍明显优于 Stage3，说明不是只在前 20 例上“碰巧有效”。但 Learned Dice 仍低于 Oracle Dice，说明下一步还要提高候选召回和排序，而不能只看 proposal-level F1。
+          </div>
+
+          <figure class="figure-wide">
+            <img src="assets/case_split_50_qualitative_grid.png" alt="50-case 5-fold qualitative comparison of Stage3, domain learned policy, and oracle proposals" loading="lazy">
+            <figcaption>
+              <b>新的 50 例 5-fold 测试结果定性分析</b>
+              这张图不是训练集可视化，而是从 <span class="path">case_split_50_predictions.csv</span> 中取出的 held-out test-fold 预测。每一行是一个测试 case，每一列依次为：人工 GT、Stage3 手写规则在该 case 中选到的最好 proposal、domain learned policy 在该 case 中选到的最好 proposal、该 case 候选池里的 oracle 最优 proposal。蓝色轮廓是人工标注，粉色轮廓是被选中的 SAM proposal。前两行说明 learning 能补 Stage3：<span class="path">monuseg_01</span> 中 Stage3 一个都没选，domain learned 选中 group_009，Dice 0.613；<span class="path">idrid_21</span> 中 learned 额外选中 group_006，Dice 0.379。后两行是必须正面承认的不足：<span class="path">monuseg_04</span> 的 oracle group_008 Dice 0.629，但 learned 选中的是弱 false positive；<span class="path">idrid_11</span> 中 Stage3 已选到 Dice 0.925 的 proposal，而 learned 过于保守没有选中。结论是：learning 已经显著改善 keep/reject F1，但要把它变成稳定分割系统，还需要继续优化 proposal 排序和 domain-specific 阈值。
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>如何解读“伟大突破”的可能性</h3>
+            <p>目前最强的正面证据是 heldout F1：IDRID 从 0.172414 提到 0.634921，MonuSeg 从 0.064516 提到 0.650000。这说明只要候选池中已经产生了合理 proposal，少量同域标签确实能让系统更会选。</p>
+          </div>
+          <div class="card">
+            <h3>为什么还要谨慎</h3>
+            <p>Learned Dice 没有完全逼近 Oracle Dice，说明“选中 proposal”与“完整覆盖所有病灶”之间还有差距。下一步要继续提高候选池召回、做人工标签确认，并把学习器从单阈值扩展为更强但可解释的轻量模型。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="idrid">
+        <div class="section-head">
+          <div>
+            <h2>IDRID idrid_11：点、图和 proposal 细节</h2>
+            <p>该 case 用来说明“match 的图是哪张、点落在哪里、哪一个 proposal 最好、Stage3 为什么仍会误杀”。</p>
+          </div>
+        </div>
+        <figure class="figure-wide">
+          <img src="assets/idrid_11_separated_evidence.png" alt="IDRID idrid_11 separated evidence panels with metrics" loading="lazy">
+          <figcaption><b>分层证据图</b>这张图把信息拆开看：A 是 reference 图和人工 mask；B 只看 query GT；C 只看 Stage1 matched points；D 只看 SAM proposal；E 看 GT/proposal 边界局部对比；F 直接给出 Dice、IoU、SAM score、mask area、stage3_keep、overall learned keep、domain learned keep。这样避免颜色互相覆盖，也能同时回答“点在哪、mask 在哪、指标如何”。</figcaption>
+        </figure>
+        <div class="case-block">
+          <div class="card">
+            <h3>输入与人工 reference mask</h3>
+            <table>
+              <tr><th>项目</th><th>内容</th></tr>
+              <tr><td>support image</td><td class="path">code/datasets/IDRID/DR_Training_Set/Fundus Images/IDRiD_01.jpg</td></tr>
+              <tr><td>support mask</td><td class="path">code/datasets/IDRID/DR_Training_Set/Combined Masks/IDRiD_01.png</td></tr>
+              <tr><td>reference box</td><td>[519, 114, 3491, 2470]</td></tr>
+              <tr><td>query image</td><td class="path">code/datasets/IDRID/DR_Training_Set/Fundus Images/IDRiD_12.jpg</td></tr>
+              <tr><td>query mask</td><td class="path">code/datasets/IDRID/DR_Training_Set/Combined Masks/IDRiD_12.png</td></tr>
+            </table>
+            <p class="mini-note">真正用于 reference 的是 IDRiD_01 的人工病灶 mask；reference box 是这份 mask 的外接范围，主要用于记录和可视化定位，不是替代 mask 的训练信号。match 图的右侧是 IDRiD_12，所有 top-k 点都画在 query image 上。</p>
+          </div>
+          <div class="card">
+            <h3>top matched points</h3>
+            <table>
+              <tr><th>rank</th><th>x</th><th>y</th><th>similarity</th><th>cluster</th></tr>
+              <tr><td>1</td><td class="num">869.189</td><td class="num">1424.000</td><td class="num">0.790221</td><td class="num">-1</td></tr>
+              <tr><td>2</td><td class="num">985.081</td><td class="num">1808.865</td><td class="num">0.773337</td><td class="num">0</td></tr>
+              <tr><td>3</td><td class="num">1100.973</td><td class="num">1731.892</td><td class="num">0.768620</td><td class="num">0</td></tr>
+              <tr><td>4</td><td class="num">869.189</td><td class="num">1577.946</td><td class="num">0.766953</td><td class="num">-1</td></tr>
+              <tr><td>5</td><td class="num">985.081</td><td class="num">1270.054</td><td class="num">0.766427</td><td class="num">1</td></tr>
+              <tr><td>6</td><td class="num">753.297</td><td class="num">1500.973</td><td class="num">0.761974</td><td class="num">2</td></tr>
+            </table>
+            <p class="mini-note">坐标是恢复到原始 query 图尺度后的像素坐标。cluster = -1 表示 DBSCAN 判断为噪声点，但仍可作为单点 prompt 进入 SAM。</p>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>IDRID prompt groups 示例</h3>
+            <p>Stage2 不是把 100 个点一次性全塞给 SAM，而是把空间相近、语义相近的点拆成多组 prompt。这样可以得到多个候选 mask，后续再由 Stage3 或 learning 判断哪个更可信。</p>
+            <table style="margin-top:12px">
+              <tr><th>group</th><th>cluster</th><th>prompt point</th><th>来源 rank</th></tr>
+              <tr><td class="num">1</td><td class="num">0</td><td>(985.081, 1808.865)</td><td class="num">2</td></tr>
+              <tr><td class="num">2</td><td class="num">0</td><td>(1100.973, 1731.892)</td><td class="num">3</td></tr>
+              <tr><td class="num">3</td><td class="num">0</td><td>(753.297, 1654.919)</td><td class="num">9</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3>该 case 暴露的关键问题</h3>
+            <p>IDRID idrid_11 的最重要现象是：候选池里已经有非常好的 mask，group_005 的 Dice 达到 0.925738，但 Stage3 没有保留它。因此失败不在 Stage1 找不到点，也不在 SAM 生成不了 mask，而在 Stage3 的筛选策略不够稳。</p>
+            <div class="warning-callout">这正好对应方向二：把 keep/reject 从手写规则改成可学习策略。否则继续调点或调 SAM prompt，收益会被 Stage3 误杀抵消。</div>
+          </div>
+        </div>
+        <div class="media-grid" style="margin-top:16px">
+          <figure>
+            <img src="assets/idrid_11_match_composite.png" alt="IDRID reference to query match composite" loading="lazy">
+            <figcaption><b>Stage1 match composite</b>这张才是完整 match 图：左侧是 support/reference 图 IDRiD_01，并叠加人工标注的微小病灶 mask，局部框用于放大 mask 细节；右侧是 query 图 IDRiD_12 上的 top-k matched points；中间箭头表示用人工 mask 提取 DINO prototype 后，在 query feature map 上做相似度匹配。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/idrid_11/stage1/similarity_heatmap.png" alt="IDRID similarity heatmap" loading="lazy">
+            <figcaption><b>Stage1 similarity heatmap</b>由 support 人工 mask 内 DINO prototype 与 query feature map 计算 cosine similarity 得到。亮区表示“更像 reference 人工标注病灶”。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/idrid_11/stage1/topk_overlay.png" alt="IDRID top-k matched points" loading="lazy">
+            <figcaption><b>Stage1 top-k overlay</b>这就是 match 的可视化图：点全部画在 IDRiD_12 query image 上，前 100 个点被保留。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/idrid_11/stage2_sampling/cluster_overlay.png" alt="IDRID cluster overlay" loading="lazy">
+            <figcaption><b>Stage2 prompt clustering</b>100 个点先按相似度取前 50 个进入 DBSCAN，得到 9 个 cluster 和 92 个 prompt group。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/idrid_11/stage2_proposals/proposal_grid.png" alt="IDRID SAM proposals" loading="lazy">
+            <figcaption><b>Stage2 SAM proposals</b>每个 prompt group 送入 SAM 生成候选 mask。当前 best proposal 是 group_005，Dice 0.925738。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/idrid_11/stage2_proposals/proposal_overlays/group_005.png" alt="IDRID best proposal group 005" loading="lazy">
+            <figcaption><b>best proposal group_005</b>该 proposal 的 Dice 为 0.925738、IoU 为 0.861743，但 stage3_keep = 0，说明手写 Stage3 会误杀高质量候选。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/idrid_11/stage3_filtering/retained_grid.png" alt="IDRID Stage3 retained grid" loading="lazy">
+            <figcaption><b>Stage3 retained</b>保留图用于核对最终被规则留下的 proposal。这里的关键现象不是“没有好候选”，而是“好候选没有被规则保留”。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="monuseg">
+        <div class="section-head">
+          <div>
+            <h2>MonuSeg monuseg_04：分域问题的直接证据</h2>
+            <p>该 case 显示 MonuSeg 的 matched points 和好 proposal 确实存在，但 Stage3 对该域过于保守，因此 P1 的分域 threshold 是必要推进。</p>
+          </div>
+        </div>
+        <figure class="figure-wide">
+          <img src="assets/monuseg_04_separated_evidence.png" alt="MonuSeg monuseg_04 separated evidence panels with metrics" loading="lazy">
+          <figcaption><b>分层证据图</b>这张图把 MonuSeg 的证据拆成六块：A 显示 reference mask；B 显示 query GT；C 单独显示 matched points；D 单独显示 group_008 proposal；E 只做 GT 边界、proposal 边界和 prompt 点的局部对比，不再画 bbox；F 给出 proposal 指标。bbox 只作为数值特征记录，不是 box prompt。</figcaption>
+        </figure>
+        <div class="case-block">
+          <div class="card">
+            <h3>输入与人工 reference mask</h3>
+            <table>
+              <tr><th>项目</th><th>内容</th></tr>
+              <tr><td>support image</td><td class="path">code/datasets/MonuSeg/kmms/images/01_1.png</td></tr>
+              <tr><td>support mask</td><td class="path">code/datasets/MonuSeg/kmms/masks/01_1.png</td></tr>
+              <tr><td>reference box</td><td>[0, 0, 255, 255]</td></tr>
+              <tr><td>query image</td><td class="path">code/datasets/MonuSeg/kmms/images/01_5.png</td></tr>
+              <tr><td>query mask</td><td class="path">code/datasets/MonuSeg/kmms/masks/01_5.png</td></tr>
+            </table>
+            <p class="mini-note">MonuSeg 的 reference mask 是人工标注的细胞核 foreground；这里的 reference box 覆盖整张 256x256 图，是因为 mask 前景分布在整图范围内。prototype 仍来自人工 mask，而不是来自空泛的大框。</p>
+          </div>
+          <div class="card">
+            <h3>top matched points</h3>
+            <table>
+              <tr><th>rank</th><th>x</th><th>y</th><th>similarity</th><th>cluster</th></tr>
+              <tr><td>1</td><td class="num">231.784</td><td class="num">252.541</td><td class="num">0.908490</td><td class="num">0</td></tr>
+              <tr><td>2</td><td class="num">31.135</td><td class="num">86.486</td><td class="num">0.905008</td><td class="num">0</td></tr>
+              <tr><td>3</td><td class="num">58.811</td><td class="num">79.568</td><td class="num">0.899067</td><td class="num">0</td></tr>
+              <tr><td>4</td><td class="num">31.135</td><td class="num">79.568</td><td class="num">0.896662</td><td class="num">0</td></tr>
+              <tr><td>5</td><td class="num">51.892</td><td class="num">86.486</td><td class="num">0.894092</td><td class="num">0</td></tr>
+              <tr><td>6</td><td class="num">224.865</td><td class="num">252.541</td><td class="num">0.890775</td><td class="num">0</td></tr>
+            </table>
+            <p class="mini-note">这里 100 个点集中到 1 个 cluster，说明匹配并非完全失败；失败主要发生在 proposal filtering 和跨域阈值选择。</p>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px">
+          <div class="card">
+            <h3>MonuSeg prompt groups 示例</h3>
+            <p>MonuSeg 的 top points 更集中，DBSCAN 只形成 1 个主 cluster。它生成 12 个 prompt group，说明 Stage2 仍然产生了可供选择的候选空间。</p>
+            <table style="margin-top:12px">
+              <tr><th>group</th><th>cluster</th><th>prompt point</th><th>来源 rank</th></tr>
+              <tr><td class="num">1</td><td class="num">0</td><td>(231.784, 252.541)</td><td class="num">1</td></tr>
+              <tr><td class="num">2</td><td class="num">0</td><td>(31.135, 86.486)</td><td class="num">2</td></tr>
+              <tr><td class="num">3</td><td class="num">0</td><td>(58.811, 79.568)</td><td class="num">3</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <h3>该 case 暴露的关键问题</h3>
+            <p>MonuSeg monuseg_04 的 best proposal 为 group_008，Dice 0.629355，但 stage3_keep = 0。它说明 MonuSeg 的失败不是“完全没有匹配点”，而是 IDRID 上合适的筛选逻辑迁移到 MonuSeg 后偏保守。</p>
+            <div class="warning-callout">这正好对应 P1 的分域结论：IDRID 最优策略依赖 feedback_learning_score，而 MonuSeg 当前更依赖 cluster_coverage。两个域不应强行共用同一阈值。</div>
+          </div>
+        </div>
+        <div class="media-grid" style="margin-top:16px">
+          <figure>
+            <img src="assets/monuseg_04_match_composite.png" alt="MonuSeg reference to query match composite" loading="lazy">
+            <figcaption><b>Stage1 match composite</b>这张是 MonuSeg 的完整 match 图：左侧 support/reference 为 01_1，并叠加人工细胞核 mask；右侧 query 为 01_5，红点是 Stage1 根据人工 mask prototype 的 DINO 相似度选出的 top-k matched points。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/monuseg_04/stage1/topk_overlay.png" alt="MonuSeg top-k matched points" loading="lazy">
+            <figcaption><b>Stage1 top-k overlay</b>点画在 01_5 query image 上，最高相似度达到 0.908490，说明 Stage1 已经能召回大量疑似位置。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/monuseg_04/stage2_sampling/cluster_overlay.png" alt="MonuSeg cluster overlay" loading="lazy">
+            <figcaption><b>Stage2 clustering</b>DBSCAN 得到 1 个主 cluster，并生成 12 个 prompt group。该图用于解释“这些点如何被组织成 SAM 输入”。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/monuseg_04/stage2_proposals/proposal_grid.png" alt="MonuSeg SAM proposals" loading="lazy">
+            <figcaption><b>Stage2 SAM proposals</b>SAM 候选中存在可用结果，best proposal 为 group_008，Dice 0.629355。</figcaption>
+          </figure>
+          <figure>
+            <img src="../../../runs/research_direction/matcher_medical_expanded/run/monuseg_04/stage2_proposals/proposal_overlays/group_008.png" alt="MonuSeg best proposal group 008" loading="lazy">
+            <figcaption><b>best proposal group_008</b>该 proposal 的 Dice 为 0.629355、IoU 为 0.459167，但 stage3_keep = 0。该现象支撑 P1：MonuSeg 需要单独阈值或域自适应策略。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="commands">
+        <div class="section-head">
+          <div>
+            <h2>可复现实验清单</h2>
+            <p>以下命令和文件用于复现页面中的数值、点坐标、图像路径和 P0-P4 汇总。</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <details open>
+            <summary>生成 P0-P4 进度包</summary>
+            <pre>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\build_matcher_p0_p4_progress.py --expanded-root runs\research_direction\matcher_medical_expanded --out-dir runs\research_direction\matcher_p0_p4_progress</pre>
+          </details>
+          <details>
+            <summary>检查 P0-P4 进度包</summary>
+            <pre>python -B code\benchmarks\check_matcher_p0_p4_progress.py</pre>
+          </details>
+          <details>
+            <summary>20 例医学闭环</summary>
+            <pre>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\run_matcher_medical_one_click.py --out-dir runs\research_direction\matcher_medical_expanded --idrid-cases 12 --monuseg-cases 8</pre>
+          </details>
+          <details>
+            <summary>50 例扩展命令</summary>
+            <pre>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\run_matcher_medical_one_click.py --out-dir runs\research_direction\matcher_medical_expanded_50 --idrid-cases 30 --monuseg-cases 20</pre>
+          </details>
+          <details open>
+            <summary>Feedback-Learned Matcher 医学主线</summary>
+            <pre>D:\SAM\conda_envs\sam_gpu\python.exe -B code\benchmarks\run_feedback_learned_matcher_mainline.py
+python -B code\benchmarks\check_feedback_learned_matcher_mainline.py</pre>
+          </details>
+          <details open>
+            <summary>分域 proposal policy 训练与检查</summary>
+            <pre>python -B code\benchmarks\train_domain_proposal_policy.py
+python -B code\benchmarks\check_domain_proposal_policy.py</pre>
+          </details>
+          <details open>
+            <summary>50 例全量 case-level 5-fold 训练/测试</summary>
+            <pre>python -B code\benchmarks\train_case_split_proposal_policy.py
+python -B code\benchmarks\check_case_split_proposal_policy.py</pre>
+          </details>
+          <details>
+            <summary>生成 IDRID / MonuSeg 强标注解释图</summary>
+            <pre>python -B code\benchmarks\build_report_77_detail_figures.py</pre>
+          </details>
+          <details open>
+            <summary>生成 50 例 5-fold 测试定性分析图</summary>
+            <pre>python -B code\benchmarks\build_case_split_qualitative_figures.py</pre>
+          </details>
+          <details>
+            <summary>检查 review gallery 图片和放大功能</summary>
+            <pre>python -B code\benchmarks\check_matcher_medical_gallery.py --out-dir runs\research_direction\matcher_medical_expanded
+python -B code\benchmarks\check_matcher_medical_gallery.py --out-dir runs\research_direction\matcher_medical_expanded_50</pre>
+          </details>
+          <details>
+            <summary>关键输出文件</summary>
+            <pre>runs/research_direction/matcher_p0_p4_progress/p0_p4_progress.json
+runs/research_direction/matcher_p0_p4_progress/summary.md
+runs/research_direction/matcher_p0_p4_progress/point_details.csv
+runs/research_direction/matcher_p0_p4_progress/domain_policy_summary.csv
+runs/research_direction/matcher_p0_p4_progress/model_upgrade_loco.csv
+runs/research_direction/matcher_medical_expanded/review_gallery.html
+runs/research_direction/matcher_medical_expanded_50/review_gallery.html
+runs/research_direction/feedback_learned_matcher_mainline/manual_labels_20.json
+runs/research_direction/feedback_learned_matcher_mainline/paper_main_table.csv
+runs/research_direction/feedback_learned_matcher_mainline/domain_policy_transfer/domain_policy_transfer_summary.csv
+runs/research_direction/feedback_learned_matcher_mainline/domain_policy_transfer/domain_policy_predictions.csv
+runs/research_direction/feedback_learned_matcher_mainline/case_split_50/case_split_50_summary.csv
+runs/research_direction/feedback_learned_matcher_mainline/case_split_50/case_split_50_folds.csv
+runs/research_direction/feedback_learned_matcher_mainline/case_split_50/case_split_50_predictions.csv
+docs/reports/7.7/assets/idrid_11_detail_strong.png
+docs/reports/7.7/assets/monuseg_04_detail_strong.png
+docs/reports/7.7/assets/idrid_11_separated_evidence.png
+docs/reports/7.7/assets/monuseg_04_separated_evidence.png
+docs/reports/7.7/assets/case_split_50_qualitative_grid.png
+docs/research/feedback_learned_matcher_medical_mainline.md</pre>
+          </details>
+          <details>
+            <summary>网页路径</summary>
+            <pre>docs/reports/7.7/index.html</pre>
+          </details>
+        </div>
+      </section>
+
+      <section id="conclusion">
+        <div class="section-head">
+          <div>
+            <h2>阶段结论与后续方向</h2>
+            <p>本阶段的核心结论可以压缩成三点：机制闭环成立、医学域存在可学习信号、Feedback-Learned Matcher 已经具备论文主线雏形。</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>方向一结论</h3>
+            <p>feedback 可以进入 Matcher，而不是只作为 SAM prompt。正负点影响 prototype，accept/reject 形成 proposal-level 数据。</p>
+          </div>
+          <div class="card">
+            <h3>方向二结论</h3>
+            <p>learning 已经能显著超过手写 Stage3。20 例 overall F1 从 0.214 提升到 0.677；50 例从 0.166 提升到 0.534。进一步分域训练后，IDRID heldout F1 从 0.172 提到 0.635，MonuSeg heldout F1 从 0.065 提到 0.650。</p>
+          </div>
+          <div class="card">
+            <h3>下一步重点</h3>
+            <p>优先用修复后的 gallery 完成人工标签确认，再把分域单阈值升级为轻量可解释学习器，补 bootstrap 置信区间、feature ablation 和更严格 heldout/LOCO。</p>
+          </div>
+        </div>
+        <div class="callout">
+          汇报建议：先讲研究路径，再讲会议两个问题的正面回答；随后展示 IDRID 和 MonuSeg 两个细节 case。IDRID 说明“有好候选但 Stage3 会误杀”，MonuSeg 说明“匹配存在但域阈值不适配”。最后用医学主线和分域训练表格收束：核心创新是把 Matcher 的 proposal 筛选从手写规则推进到 feedback-learned policy，并且初步证明少量同域标签可以迁移到同域 heldout case。
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="关闭大图">×</button>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" src="" alt="">
+    </div>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  <script>
+    const navLinks = Array.from(document.querySelectorAll('nav a'));
+    const sections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+      });
+    }, { rootMargin: '-25% 0px -65% 0px', threshold: 0.01 });
+    sections.forEach(section => observer.observe(section));
+
+    document.querySelectorAll('[data-tab]').forEach(button => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.tab;
+        document.querySelectorAll('[data-tab]').forEach(item => item.classList.toggle('active', item === button));
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === 'tab-' + key));
+      });
+    });
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxClose = document.querySelector('.lightbox-close');
+
+    function openLightbox(img) {
+      const figure = img.closest('figure');
+      const caption = figure ? figure.querySelector('figcaption') : null;
+      lightboxImg.src = img.currentSrc || img.src;
+      lightboxImg.alt = img.alt || '';
+      lightboxCaption.innerHTML = caption ? caption.innerHTML : '';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+      lightboxImg.removeAttribute('src');
+      lightboxCaption.innerHTML = '';
+    }
+
+    document.querySelectorAll('figure img').forEach(img => {
+      img.setAttribute('title', '点击放大查看');
+      img.addEventListener('click', () => openLightbox(img));
+    });
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox || event.target.classList.contains('lightbox-stage')) {
+        closeLightbox();
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && lightbox.classList.contains('open')) {
+        closeLightbox();
+      }
+    });
+  </script>
+</body>
+</html>

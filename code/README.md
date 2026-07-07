@@ -2,6 +2,10 @@
 
 OCSAM is a medical image segmentation reproduction workspace built around Matcher, SAM, DINOv2, and medical SAM-style evaluation scripts.
 
+Current canonical code entrypoints are tracked in `..\docs\code_entrypoints.md`.
+
+Most new project-specific work should happen under this `code\` tree. Treat `..\Matcher`, `..\sam2`, `..\sam3`, `..\MedSAM`, `..\SAM-Med2D`, `..\Medical-SAM-Adapter`, and `..\nnUNet` as external/reference baselines unless a task explicitly targets them.
+
 Current local workspace layout:
 
 ```text

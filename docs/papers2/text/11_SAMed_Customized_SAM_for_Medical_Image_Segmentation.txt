@@ -1,0 +1,764 @@
+                                               Customized Segment Anything Model for
+                                                    Medical Image Segmentation
+
+                                                                  Kaidong Zhang and Dong Liu
+
+                                                           University of Science and Technology of China
+                                                         richu@mail.ustc.edu.cn, dongeliu@ustc.edu.cn
+arXiv:2304.13785v2 [cs.CV] 17 Oct 2023
+
+
+
+
+                                               Abstract. We propose SAMed, a general solution for medical image seg-
+                                               mentation. Different from the previous methods, SAMed is built upon the
+                                               large-scale image segmentation model, Segment Anything Model (SAM),
+                                               to explore the new research paradigm of customizing large-scale mod-
+                                               els for medical image segmentation. SAMed applies the low-rank-based
+                                               (LoRA) finetuning strategy to the SAM image encoder and finetunes it
+                                               together with the prompt encoder and the mask decoder on labeled medi-
+                                               cal image segmentation datasets. We also observe the warmup finetuning
+                                               strategy and the AdamW optimizer lead SAMed to successful conver-
+                                               gence and lower loss. Different from SAM, SAMed could perform seman-
+                                               tic segmentation on medical images. Our trained SAMed model achieves
+                                               81.88 DSC and 20.64 HD on the Synapse multi-organ segmentation
+                                               dataset, which is on par with the state-of-the-art methods. We conduct
+                                               extensive experiments to validate the effectiveness of our design. Since
+                                               SAMed only updates a small fraction of the SAM parameters, its deploy-
+                                               ment cost and storage cost are quite marginal in practical usage. The
+                                               code of SAMed is available at https://github.com/hitachinsk/SAMed.
+
+                                               Keywords: Medical image segmentation · SAM · Finetune.
+
+
+
+
+                                         1   Introduction
+
+                                         Medical image segmentation aims at indicating the anatomical or pathological
+                                         structure of the corresponding tissues as required to facilitate computer-aided
+                                         diagnosis and intelligent clinical surgery [20]. Owing to the rapid expansion of
+                                         computation power and medical data resources, deep learning based medical im-
+                                         age segmentation have achieved massive progress in accuracy and speed against
+                                         traditional counterparts.
+                                             Compared with CNN-based methods [29,17,30], the integration of trans-
+                                         former blocks [4,3,2,1] makes it possible to attend and aggregate similar features
+                                         in global manner, which leads to unprecedented performance in medical image
+                                         segmentation. However, designing such networks towards a specific dataset re-
+                                         quires massive amount of network engineering. What’s more, the overhead in
+                                         deploying and storing these models for a specific usage is non-negligible due
+2      Zhang and Liu
+
+
+                                                                   aorta         left kidney
+              SAM                             SAMed                liver         spleen
+
+                                                                   gallbladder   right kidney
+                                                                   pancreas      stomach
+
+
+
+
+Fig. 1: SAMed inherits the remarkable image segmentation performance from
+SAM and further refines the segmentation boundaries with the anatomical prior
+knowledge from the professional medical data during customization process.
+Moreover, SAMed can fully understand the semantic class of each segmentation
+regions by classifying these regions to different meaningful tissues for automatic
+medical image semantic segmentation.
+
+
+
+to their considerable model size, which presents a huge challenge towards the
+practical usage.
+    Nowadays, AI research community is experiencing a dramatic revolution. A
+proliferation of large-scale models, such as DALL-E [28], GPT-4 [26], SAM [19]
+and SegGPT [34] make it possible for researchers to solve multiple kinds of prob-
+lems in a unified framework. Deploying such large-scale models is more promising
+on the purpose of industrial usage because of their remarkable generalization ca-
+pability. In the field of medical image segmentation, if large-scale CV models,
+such as SAM or SegGPT can achieve highly competitive performance, it will be
+not necessary to deploy a single medical image segmentation model and the so-
+lution to medical image segmentation can be integrated into the large-scale CV
+models directly. Moreover, the burden of network engineering for medical image
+segmentation will be not necessary and the deployment and storage overhead of
+an individual model for medical image segmentation can also be greatly saved.
+    Unfortunately, due to the lack of medical image data and their corresponding
+semantic labels, the large-scale CV models cannot be utilized to solve medical
+image segmentation directly. First, the large-scale CV models make the decisions
+of boundaries between different segmentation regions based on the variance of
+intensity [15,24], which is reasonable in natural images but not medical images
+because the analysis of anatomical or pathological structure plays a critical role
+in medical image segmentation. Second, the large-scale CV models are incapable
+of associating the segmentation regions to meaningful semantic classes. In other
+words, they cannot perform semantic segmentation for medical images, which
+hinders their usage in computer-aided diagnosis.
+    Based on the above analysis, we explore the methods to customize one of
+the representative large-scale CV models - SAM (Segment Anything Model) for
+medical image segmentation and conclude some useful strategies to improve its
+performance. Our method, SAMed (Segment Anything Model for Medical),
+is built upon SAM and only add and update a small fraction of parameters
+during the customization process, which means the deployment and storage
+of SAMed is marginal on the segment anything system. What’s more, SAMed
+      Customized Segment Anything Model for Medical Image Segmentation        3
+
+can perform semantic segmentation for medical images and achieve remarkable
+performance. We illustrate the difference of the segmentation results in Fig. 1.
+Technically, We freeze the image encoder and adopt low-rank-based finetuning
+strategy (LoRA) [12] to approximate the low rank update of the parameters
+in image encoder, and finetune the lightweight prompt encoder and the mask
+decoder of SAM. In “vit_b" mode, the updated model size (18.81M) only oc-
+cupies 5.25% of the original model size (358M). If we apply LoRA to both of
+the image encoder and mask decoder, the model size will get further reduced
+to 6.32M but the performance slightly drops. In terms of training strategies, we
+observe warmup [9,36] and AdamW [23] optimizer could greatly stabilize the
+finetuning process, which leads to higher segmentation precision. After finetun-
+ing only 160 epochs on Synapse multi-organ segmentation dataset (Synapse),
+SAMed achieves 81.88 DSC and 20.64 HD, which is on par with the current
+state-of-the-art (SOTA) baselines. SAMed can be regarded as a plugin of SAM
+and is fully compatible with SAM. During inference, we just switch the updated
+layers of SAMed to empower SAM with the ability to process medical images.
+    We summarize the contributions of this paper as:
+ – We firstly extend SAM to explore its capability on medical image segmen-
+   tation with semantic labels.
+ – We present the adaptation of image encoder and a series of finetuning strate-
+   gies in the consideration of performance and deployment and storage over-
+   head.
+ – Our method, SAMed, achieves highly competitive results against previous
+   well-designed medical image segmentation methods in both DSC and HD.
+
+
+2     Related Works
+2.1   Medical image segmentation models
+Early medical image segmentation methods empirically adopt explicit contour
+features [32] or Markov random field [11] to obtain decent performance. With
+the rapid progress of deep learning, U-Net [29], as the seminal work, initiates
+a new era for medical image segmentation. Following U-Net, researchers de-
+sign multiple variants to increase the performance of medical image segmenta-
+tion, including Res-UNet [35], Dense-UNet [21], U-Net++ [37], 3D-Unet [5], etc.
+Recently, the application of Transformer [33] in nature image also sparks the
+research in medical image segmentation. The mainstream network design strat-
+egy is to integrate the transformer blocks to the U-Net framework, including
+TransUnet [4], SwinUnet [3], MiSSFormer [13], Hi-Former [10], DAE-Former [1],
+etc. Compared with these methods, SAMed does not require elaborate network
+engineering, and can still achieve highly competitive performance. A concurrent
+work, MedSAM [24], also adapts SAM for medical image segmentation. Different
+from MedSAM, SAMed can perform semantic segmentation for medical images,
+and the adaptation of image encoder also helps SAMed to extract the specific
+features for more accurate medical image segmentation.
+4       Zhang and Liu
+
+2.2   Large-scale models
+The remarkable extension ability of Transformer makes it possible to construct
+large-scale models with billions of parameters. Large-scale models firstly make
+breakthrough in natural language processing, such as BeRT [18], InstructGPT [27],
+LLaMA [31], GPT-4 [26], etc. They all achieve awesome performance against
+previous methods. Nowadays, large-scale model in computer vision. including
+SAM [19], SegGPT [34], STU-Net [14] and their extended applications receive a
+huge amount of attention. Although these large-scale models equip with aston-
+ishing zero-shot generalization ability, they fail to understand and provide precise
+anatomical structure of the target tissues due to the lack of professional data.
+SAMed designs specific strategies to customize SAM for medical image segmen-
+tation with semantic labels while balancing segmentation accuracy, deployment
+and storage overhead.
+
+2.3   Finetuning strategies
+Pretrained large-scale models could learn and extract excellent features due to
+the high quality learning from large-scale data. Therefore, how to utilize the abil-
+ity of large-scale models and instruct the downstream tasks with new knowledge
+becomes a valuable problem. Current solutions tend to improve the finetuning
+strategies to inject the new knowledge to the pretrained large-scale models. Com-
+pared with finetuning all the parameters in large-scale models, visual prompt
+tuning [16] proposes to finetune the prompt and the head to achieve excellent
+performance while reducing the training cost. LoRA [12] argues the update of
+parameters in transformer blocks is gradual and designs the low rank approx-
+imation to finetune the large-scale language model. SAMed also adopts LoRA
+to customize SAM for medical image segmentation and explores several variants
+to design the LoRA in SAM to strike the balance between performance and
+efficiency.
+
+
+3     Method
+3.1   Overview
+Given a medical image x ∈ RH×W ×C whose spatial resolution is H × W and
+channel number is C, respectively, our goal is to predict its corresponding seg-
+mentation map Ŝ with resolution H × W where each pixel belongs to an element
+in a predefined class list Y = {y0 , y1 , ..., yk } as close to the ground truth S
+as possible. We regard y0 as the background class and yi , i ∈ {1, ..., k} as the
+classes of different organs. As illustrated in Fig. 2, the overall architecture of
+SAMed inherits from SAM. We freeze all the parameters in the image encoder
+and design an trainable bypass to each of the transformer block. As indicated in
+LoRA, these bypasses condense the transformer features to the low rank space
+first and reproject the squeezed features to align with the channels of the output
+features in the freezed transformer blocks. As for the prompt encoder, SAMed
+      Customized Segment Anything Model for Medical Image Segmentation                                                                                           5
+
+
+                                                     Frozen image encoder
+
+
+
+
+                                             Transformer block
+
+
+
+                                                                    Transformer block
+
+
+
+
+                                                                                            Transformer block
+                           Patch Embedding
+               Upsampler
+                                                                                        …                                    Mask decoder
+
+
+
+                                                                                                                            Prompt encoder
+
+
+                                                                                                                  Image
+                                                                                                                embedding
+                                                                                                                                             Default embedding
+
+                                                                 LoRA layers
+
+
+
+
+Fig. 2: The pipeline of SAMed. The framework of SAMed is consistent with
+SAM. We freeze the image encoder, and insert additional trainable LoRA layers
+to SAM for medical image feature extraction. Moreover, we finetune prompt
+encoder with default embeddings and mask decoder to achieve precise semantic
+segmentation on medical images.
+
+
+does not need any prompt during inference to perform automatic segmentation,
+which greatly benefits automatic medical diagnosis. We note if we strip away all
+the prompts in SAM, SAM will update a default a default embedding, there-
+fore SAMed also finetunes this embedding during training. The mask decoder of
+SAM can be roughly categorized into a lightweight transformer decoder and a
+segmentation head. Finetuning the transformer decoder with LoRA is optional
+in SAMed. If we freeze the transformer decoder and finetune it with LoRA layers
+but not finetune all its parameters, we can further shrink the model size of the
+updated parameters for easier deployment but the performance will drop slightly.
+The original segmentation head of SAM outputs multiple segmentation masks
+to solve the ambiguity in segmentation prompt, which is crutial in prompt engi-
+neering. To align with the original design of SAM, SAMed also predicts multiple
+segmentation masks, but each mask represents one class in Y , therefore SAMed
+predicts k segmentation masks. Following SAM, the predicted segmentation logit
+size h × w is smaller than the input size, therefore we utilize bilinear upsample
+to align it with the original input size.
+
+3.2   LoRA in image encoder
+Compared with finetuning all the parameters in SAM, LoRA allows SAM to up-
+date a small fraction of parameters during training on medical image, which not
+only saves computation overhead but also reduces the difficulty in deployment
+and storage of the finetuned models while guaranteeing the segmentation per-
+formance simultaneously. The LoRA strategy in SAMed is illustrated in Fig. 3.
+Given the encoded token sequence F ∈ RB×N ×Cin and the output token se-
+quence F̂ ∈ RB×N ×Cout operated by a projection layer W ∈ RCout ×Cin , LoRA
+assumes the update of W should be gradual and stable, therefore it proposes to
+6      Zhang and Liu
+
+
+
+                                             Proj. o
+
+
+
+                               Softmax
+
+
+
+
+         LoRA layer      Proj. q         Proj. k       Proj. v   LoRA layer
+
+
+
+
+                                     Image tokens
+
+
+Fig. 3: The LoRA design adopted in SAMed. We apply LoRA layer to the q and
+v projection layers of each of the transformer block in image encoder. “Proj.q",
+“Proj.k", “Proj.v" and “Proj.o" represent the projection layer of q, k, v and o,
+respectively.
+
+
+apply low rank approximation to delineate this gradual update. Following this
+strategy, SAMed first freezes the transformer layers to keep W fixed, and then
+adds a bypass to accomplish the low rank approximation. This bypass contains
+two linear layers A ∈ Rr×Cin and B ∈ RCout ×r , where r ≪ min{Cin , Cout }.
+Therefore, the processing of the updated layer Ŵ can be described as
+                           F̂ = Ŵ F,
+                                                                              (1)
+                          Ŵ = W + ∆W = W + BA.
+    Since the multi-head self attention mechanism determines the regions to focus
+on with cosine similarity, it’s sensible to apply LoRA to the projection layers
+of query, key or value to influence the attention scores. We observe SAMed
+can achieve better performance when we apply LoRA to the query and value
+projection layers, therefore the processing strategy of multi-head self attention
+will become
+                                               QK T
+                     Att(Q, K, V ) = Softmax( √       + B)V,
+                                                 Cout
+                                   Q = Ŵq F = Wq F + Bq Aq F,                (2)
+                               K = Wk F,
+                               V = Ŵv F = Wv F + Bv Av F.
+   Where Wq , Wk and Wv are freezed projection layers from SAM, and Aq , Bq ,
+Av and Bv are trainable LoRA parameters.
+         Customized Segment Anything Model for Medical Image Segmentation                                                                  7
+
+                                                                  IOU 0    IOU 1       IOU 2     IOU 3         IOU k
+
+
+
+
+                                 Transformer      Segmentation
+             C                      layer             head                                                 …             Postprocessing
+
+
+
+
+                                                                 Background Class 1    Class 2   Class 3       Class k
+           Sparse      Dense
+         embedding   embedding
+   Image
+ embedding
+
+
+                                               Element-wise summation              C      Concatenation
+
+
+
+
+Fig. 4: The detailed framework of mask decoder. SAMed integrates the sparse and
+dense embedding into the encoded image embedding. After processing by trans-
+former layer, the segmentation maps together with their IOUs of each classes
+are generated individually. We adopt postprocessing to aggregate these segmen-
+tation maps to the final segmentation result.
+
+
+
+3.3      Prompt encoder and mask decoder
+
+
+
+To pursue fast and automatic medical diagnosis, SAMed does not need any
+prompt during inference. Since the prompt encoder in SAM utilizes a default
+embedding when there is not prompt provided, SAMed retains this default em-
+bedding and makes it trainable during finetuning process.
+    The mask decoder in SAM consists of a lightweight transformer layer and a
+segmentation head. It’s optional to apply LoRA to this lightweight transformer
+layer and finetune the segmentation head or finetune all the parameters in the
+mask decoder directly. These two strategies are all acceptable in terms of training
+and deployment overhead, and the latter could lead to a smaller model size for
+easier deployment but lower performance. SAMed modifies the segmentation
+head of SAM slightly to customize the output for each semantic classes in Y .
+The customization is illustrated in Fig. 4. Different from the ambiguity prediction
+of SAM, SAMed predicts each semantic class of Y in a deterministic manner.
+Assume there are k classes for segmentation, including 1 background class and
+k−1 classes corresponding each meaningful medical tissues. The mask decoder of
+SAMed predicts k semantic masks Ŝl ∈ Rh×w×k simultaneously, corresponding
+to each semantic label. Finally, the predicted segmentation map is generated as
+
+
+                                 Ŝ = argmax(Softmax(Ŝl , d = −1), d = −1).                                                              (3)
+
+
+   Where d = −1 indicates the Softmax and argmax operation are performed
+across the last dimension (the channel dimension).
+8       Zhang and Liu
+
+3.4    Training strategies
+
+Loss function. SAMed adopts cross entropy and dice losses to supervise the
+finetuning process. The loss function can be described as
+
+                   L = λ1 CE(Ŝl , D(S)) + λ2 Dice(Ŝl , D(S)).               (4)
+
+   Where CE and Dice represents cross entropy loss and Dice loss, respectively.
+D denotes as the downsample operation to make the resolution of the ground
+truth the same as that of the output from SAMed because its spatial resolution
+is much lower. λ1 and λ2 represent the loss weights to balance the influence
+between these two loss terms.
+
+
+Warmup. Warmup is first proposed by ResNet [9] and its efficacy in trans-
+former architecture is demonstrated by Xiong et al. [36]. SAMed adopts warmup
+to stabilize the training process and familiar with the medical data in the early
+training period. After the warmup period, following TransUnet [4] and Swin-
+Unet [3], SAMed utilizes exponential learning rate decay to make the training
+process converge gradually. The learning rate adjustment strategy can be de-
+scribed as
+                                 Ilr
+                           
+                           T
+                                    ,           T <= W P,
+                      lr =     WP                                             (5)
+                           I (1 − T − W P ),
+                           
+                                                   T > W P.
+                              lr
+                                       MI
+    Where Ilr indicates the initial learning rate. T , W P and M I indicates the
+training iterations, warmup period and the maximal iterations, respectively.
+
+
+AdamW optimizer. During experiments, we observe the AdamW [23] opti-
+mizer leads to performance improvement compared with SGD in SAMed. We
+attribute this phenomenon to the consistency of the optimizing recipe between
+SAM and its improved version on medical image: SAMed.
+
+
+4     Experiments
+
+4.1    Dataset and evaluation
+
+We adopt Synapse multi-organ segmentation dataset 1 for evaluation. 30 abdom-
+inal CT scans in the MICCAI 2015 Multi-Atlas Abdomen Labeling Challenge is
+divided into 18 training cases and 12 test cases. There are 3779 axial contrast-
+enhanced abdominal CT images in total and the training set contains 2212 axial
+slices. All the CT volumes contain 85∼198 slices and each slices includes 512×512
+pixels with a spatial resolution of ([0.54∼0.54]×[0.98∼0.98]×[2.5∼5.0]mm3 ). The
+1
+    https://www.synapse.org/#!Synapse:syn3193805/wiki/217789
+       Customized Segment Anything Model for Medical Image Segmentation                         9
+
+
+Table 1: Quantitative comparison between SOTA methods and SAMed on the
+Synapse multi-organ CT dataset.
+      Methods   DSC↑ HD↓ Aorta Gallbladder Kidney(L) Kidney(R) Liver Pancreas Spleen Stomach
+   U-Net [29]    76.85 39.70 89.07   69.72    77.77     68.60   93.43   53.98   86.67   75.58
+  Att-UNet [25] 77.77 36.02 89.55    68.88    77.98     71.11   93.57   58.04   87.30   75.75
+  TransUnet [4] 77.48 31.69 87.23    63.13    81.87     77.02   94.08   55.86   85.08   75.62
+  SwinUnet [3]   79.13 21.55 85.47   66.53    83.28     79.61   94.29   56.58   90.66   76.60
+ MissFormer [13] 81.96 18.20 86.99   68.65    85.21     82.00   94.41   65.67   91.92   80.81
+TransDeepLab [2] 80.16 21.25 86.04   69.16    84.08     79.88   93.53   61.19   89.00   78.40
+  HiFormer [10] 80.39 14.70 86.21    65.69    85.23     79.77   94.61   59.52   90.99   81.08
+ DAE-Former [1] 82.43 17.46 88.96    72.30    86.08     80.88   94.98   65.12   91.94   79.19
+      SAMed     81.88 20.64 87.77    69.11    80.45     79.95   94.80   72.17   88.72   82.06
+
+
+
+
+division between training and test cases is kept the same as TransUnet [4]. Fol-
+lowing Fu et al. [8], we adopt the average DSC and the average Hausdorff dis-
+tance (HD) on eight abdominal organs (aorta, gallbladder, spleen, left kidney,
+right kidney, liver, pancreas, stomach) as the metric to evaluate the performance
+of SAMed and other medical image segmentation models.
+
+4.2     Implementation details
+We adopt the same strategies of data augmentation as TransUnet [4] and conduct
+all the experiments based on the “vit_b" version of SAM. As for a 224×224 CT
+image, we first upsample it to 512×512 and then input this upsampled image
+to SAMed in order to maintain the decent image resolution of the predicted
+segmentation logits. The output resolution of segmentation logit for each class is
+128×128, which is smaller than that of UNet-based medical image segmentation
+models. There are 9 predicted segmentation logits, including one background
+class and 8 organ classes.
+     We adopt LoRA to finetune the freezed q and v projection layers of the
+transformer blocks. The rank of LoRA is set to 4 for efficiency and performance
+optimization. The loss weight of cross entropy is set to 0.2 and the that of Dice
+loss is set to 0.8. As for Warmup, we set the initial learning rate Ilr to 0.005, the
+warmup period W P to 250 and the maximal iterations to 18600 (200 epochs).
+β1 , β2 and weight decay of AdamW optimizer are set to 0.9, 0.999 and 0.1. We
+adopt early stop at 14880 iterations (160 epochs).
+
+4.3     Comparison with SOTAs
+Quantitative comparison. We compare SAMed with current SOTA methods
+on Synapse dataset, including U-Net [29], Att-UNet [25], TransUnet [4], Swin-
+Unet [3], MissFormer [13], TransDeepLab [2], HiFormer [10] and DAE-Former [1].
+The results are shown in Tab. 1. We acknowledge the performance of SAMed is
+highly competitive but not the best among these SOTA methods, which demon-
+strates the SAM-based models are capable of achieving quite promising per-
+formance on medical image semantic segmentation with suitable customization
+10     Zhang and Liu
+
+                  aorta        liver       pancreas      spleen     stomach
+
+                          gallbladder      left kidney    right kidney
+
+
+
+
+     (a)GT          (b)Ours             (c)DAE-Former      (d)SwinUnet        (e)TransUnet
+
+
+Fig. 5: The qualitative comparisons between SAMed and the SOTA methods,
+including TransUnet [4], SwinUnet [3] and DAE-Former [1].
+
+
+
+strategies. Especially, SAMed achieves SOTA performance on the segmentation
+of pancreas and stomach. Different from the previous elaborate medical image
+segmentation methods that treat medical image segmentation as a total individ-
+ual problem and require entire model deployment and storage, SAMed bridges
+the gap between nature image segmentation and medical image segmentation
+under a unified framework with the customization on only a small fraction of
+the parameters in SAM, which brings only marginal increment on the overhead
+of the original segment anything system.
+
+
+
+Qualitative comparison. We compare the segmentation masks between SAMed
+and current state-of-the-art methods including TransUnet [4], SwinUnet [3] and
+DAE-Former [1] qualitatively. The comparison result is shown in Fig. 5. Com-
+pared with other methods, the segmentation regions predicted by SAMed are
+more smooth and correct. We attribute this phenomenon to the powerful feature
+extraction ability of the large-scale SAM model and the reasonable finetuning
+strategies adopted by SAMed, which benefit the customization of SAM.
+      Customized Segment Anything Model for Medical Image Segmentation                             11
+
+
+Table 2: Ablation study on finetuning method of SAMed (The embedding in
+prompt encoder is finetuned by default).
+          Methods            DSC↑ Aorta Gallbladder Kidney(L) Kidney(R) Liver Pancreas Spleen Stomach
+        Mask decoder         67.95 79.94   39.49      76.72      73.55   90.87 44.15    73.79 65.11
+Image encoder + mask decoder 81.88 87.77   69.11      80.45      79.95   94.80 72.17    88.72 82.06
+
+
+
+
+Table 3: Ablation study on applying LoRA finetuning to the transformer of mask
+decoder.
+ Methods DSC↑ Model size Aorta Gallbladder Kidney(L) Kidney(R) Liver Pancreas Spleen Stomach
+ SAMed 81.88        18.81M   87.77   69.11         80.45      79.95   94.80 72.17      88.72 82.06
+SAMed_s 77.78       6.32M    83.62   57.11         79.63      78.92   93.98 65.66      85.81 77.49
+
+
+
+
+4.4   Ablation study
+Lora finetuning in SAMed. Compared with the traditional finetuning on
+the segmentation head, SAMed finetunes not only the mask decoder but also
+the image encoder with LoRA. Tab. 2 shows such strategy can lead to higher
+segmentation accuracy. We think the data domain of SAM is mainly nature im-
+age, which differs a lot from the medical images. Therefore, the customization of
+the image encoder helps SAMed to extract meaningful features from the medical
+images, which benefits the subsequent processing in the mask decoder.
+    The mask decoder of SAM also contains a light-weight transformer layer to
+decode the extracted image tokens. We also explore the performance variance
+when we finetune this transformer layer together with the image encoder with
+LoRA. Since the resulting updated parameter shape is obviously smaller than
+the original SAMed, we denote this version as SAMed_s. The performance com-
+parison between SAMed and SAMed_s is shown in Tab. 3. The performance of
+SAMed_s is not as good as SAMed, which means all the parameters in the
+mask decoder should be updated during customization process. However, since
+SAMed_s contains fewer updated parameters, the overhead in deployment and
+storage of SAMed_s is smaller. If the practical usage has a strict limit over the
+deployment and storage, SAMed_s can become a substitute of SAMed.
+    Tab. 4 presents the performance of SAMed when we adjust the rank size
+in the LoRA layers. We discover the performance of SAMed increases steadily
+in a certain rank range, but the performance drops significantly when the rank
+is too large. We think the LoRA layers in SAMed need the basic amount of
+parameters to accomplish the customization process on medical image dataset,
+but too many trainable parameters may undermine the ability of SAMed to
+adopt the original capabilities of SAM in image segmentation, which increases
+the training difficulty.
+    Finally, we study the recipe of integrating LoRA to the projection layers in
+the original transformer blocks in SAMed and report the results in Tab. 5. Our
+recipe to adopt LoRA to q and v projection layers is reasonable and enjoys the
+best performance among the candidates. If we adopt LoRA to all of the projec-
+12         Zhang and Liu
+
+
+
+
+Fig. 6: The comparisons of loss curves between different training strategies. “base-
+line" indicates the SAMed model trained without warmup and AdamW optimizer
+(we use SGD optimizer instead). The result illustrates warmup can lead to suc-
+cessful convergence of SAMed, and the AdamW optimizer can further reduce the
+training loss in the later stage.
+
+
+             Table 4: Ablation study on the rank size on the LoRA layer
+ Rank size DSC↑ Aorta Gallbladder Kidney(L) Kidney(R) Liver Pancreas Spleen Stomach
+      1      78.26 81.86   64.54    81.97     81.18     93.79 60.80   88.33 73.64
+      4      81.88 87.77   69.11    80.45     79.95     94.80 72.17   88.72 82.06
+      16     69.03 78.74   55.54    71.98     65.08     91.38 45.01   81.39 63.11
+
+
+
+     Table 5: Ablation study on the LoRA applied to different projection layers
+  Proj layer DSC↑ Aorta Gallbladder Kidney(L) Kidney(R) Liver Pancreas Spleen Stomach
+   Q    73.76 84.73         58.68     76.25     70.58   91.16 53.69    83.54 71.47
+  Q+V   81.88 87.77         69.11     80.45     79.95   94.80 72.17    88.72 82.06
+Q+K+V+O 50.93 46.51         46.92     51.38     47.33   86.55 22.23    64.98 41.51
+
+
+
+tion layers (q,k,v and o), the performance drops significantly, which confirms our
+argument: too much LoRA customization may undermines the ability of SAMed
+to utilize the intrinsic image segmentation power of SAM, which brings extra
+obstacles during customization process.
+
+
+The effect of training strategies. In this part, we mainly verify the efficacy
+of warmup and AdamW optimizer in the customization process of SAMed. As
+shown in Tab. 6, these training strategies brings significant performance boost
+      Customized Segment Anything Model for Medical Image Segmentation                     13
+
+
+          Table 6: Ablation study on the training strategies of SAMed.
+ Training strategies DSC↑ Aorta Gallbladder Kidney(L) Kidney(R) Liver Pancreas Spleen Stomach
+  No strategies 56.54 57.28       31.60      67.58      58.14   86.66 26.02   75.27 49.79
+   +warmup      75.29 81.45       61.23      81.67      77.68   92.51 53.29   85.92 68.57
++warmup+AdamW 81.88 87.77         69.11      80.45      79.95   94.80 72.17   88.72 82.06
+
+
+
+Table 7: Ablation study about our training strategies on other medical image
+segmentation methods.
+                                          TransUnet [4] SwinUnet [3]
+                          Method
+                                          DSC↑    HD↓     DSC↑ HD↓
+                        Original     77.78       31.69    79.13 21.55
+                     +LoRA finetune 74.67        33.52    69.61 41.47
+                     +Our strategies 77.49       44.94    71.22 31.24
+
+
+
+
+for SAMed. We show the loss curves in Fig. 6. With the training strategies, the
+training process of SAMed stabilizes a lot and can converge to a obviously lower
+loss value.
+    What’s more, we find the training strategies can even benefit other medical
+image segmentation methods. We adopt two representative methods - Tran-
+sUnet [4] and SwinUnet [3] to demonstrate this argument. We also freeze all the
+transformer layers in TransUnet and SwinUnet with LoRA and customize these
+models on Synapse dataset (We can do this because TransUnet and SwinUnet
+are adapted from the corresponding pretrained models [7,22] on ImageNet [6]).
+Tab. 7 provides the performance of the original models, LoRA finetuned models
+and LoRA finetuned models with our training strategies. Compared with the
+original models, the performance of LoRA finetuned models drops a lot. This
+phenomenon is reasonable because the pretrained models used in these methods
+are not trained for image segmentation specifically. With our training strate-
+gies, the performance of these methods increases significantly (except HD of
+TransUnet), which demonstrates the validity of our training strategies. These
+strategies may potentially benefit to other models with LoRA finetuning, and
+we will explore this theme in the future work.
+
+
+5    Conclusion
+
+In this paper, we explore the feasibility of customizing the large-scale model to
+medical image segmentation and demonstrate the customized large-scale model
+with suitable customization strategies can achieve highly competitive and re-
+markable results compared with the previous well-designed medical image seg-
+mentation models. We select SAM as the large-scale model due to its outstanding
+segmentation capability on openset images and the multi-organ segmentation as
+14      Zhang and Liu
+
+the target task for its ubiquitous application in computer-assisted medical di-
+agnosis. Our method, SAMed, which equips with LoRA adapted image encoder
+and the suitable training strategies, is capable of achieving competitive results
+on Synapse dataset. Moreover, SAMed is fully compatible with SAM, and the
+deployment and storage overhead of SAM on the segment anything system is
+quite marginal, which is acceptable for practical usage.
+
+References
+ 1. Azad, R., Arimond, R., Aghdam, E.K., Kazerouni, A., Merhof, D.: Dae-former:
+    Dual attention-guided efficient transformer for medical image segmentation (2023)
+ 2. Azad, R., Heidari, M., Shariatnia, M., Aghdam, E.K., Karimijafarbigloo, S., Adeli,
+    E., Merhof, D.: Transdeeplab: Convolution-free transformer-based deeplab v3+
+    for medical image segmentation. In: Rekik, I., Adeli, E., Park, S.H., Cintas, C.
+    (eds.) Predictive Intelligence in Medicine. pp. 91–102. Springer Nature Switzerland,
+    Cham (2022)
+ 3. Cao, H., Wang, Y., Chen, J., Jiang, D., Zhang, X., Tian, Q., Wang, M.: Swin-unet:
+    Unet-like pure transformer for medical image segmentation. In: ECCVW (2022)
+ 4. Chen, J., Lu, Y., Yu, Q., Luo, X., Adeli, E., Wang, Y., Lu, L., Yuille, A.L., Zhou,
+    Y.: Transunet: Transformers make strong encoders for medical image segmentation.
+    arXiv preprint arXiv:2102.04306 (2021)
+ 5. Çiçek, Ö., Abdulkadir, A., Lienkamp, S.S., Brox, T., Ronneberger, O.: 3d u-net:
+    learning dense volumetric segmentation from sparse annotation. In: MICCAI. pp.
+    424–432. Springer (2016)
+ 6. Deng, J., Dong, W., Socher, R., Li, L.J., Li, K., Fei-Fei, L.: Imagenet: A large-scale
+    hierarchical image database. In: CVPR. pp. 248–255. Ieee (2009)
+ 7. Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner,
+    T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., Uszkoreit, J., Houlsby, N.:
+    An image is worth 16x16 words: Transformers for image recognition at scale. In:
+    ICLR (2021), https://openreview.net/forum?id=YicbFdNTTy
+ 8. Fu, S., Lu, Y., Wang, Y., Zhou, Y., Shen, W., Fishman, E., Yuille, A.: Domain
+    adaptive relational reasoning for 3d multi-organ segmentation. In: MICCAI. pp.
+    656–666. Springer (2020)
+ 9. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition.
+    In: CVPR. pp. 770–778 (2016)
+10. Heidari, M., Kazerouni, A., Soltany, M., Azad, R., Aghdam, E.K., Cohen-Adad, J.,
+    Merhof, D.: Hiformer: Hierarchical multi-scale representations using transformers
+    for medical image segmentation. In: WACV. pp. 6202–6212 (2023)
+11. Held, K., Kops, E.R., Krause, B.J., Wells, W.M., Kikinis, R., Muller-Gartner,
+    H.W.: Markov random field segmentation of brain mr images. TMI 16(6), 878–886
+    (1997)
+12. Hu, E.J., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., Chen, W., et al.:
+    Lora: Low-rank adaptation of large language models. In: ICLR
+13. Huang, X., Deng, Z., Li, D., Yuan, X., Fu, Y.: Missformer: An effective transformer
+    for 2d medical image segmentation. TMI pp. 1–1 (2022). https://doi.org/10.
+    1109/TMI.2022.3230943
+14. Huang, Z., Wang, H., Deng, Z., Ye, J., Su, Y., Sun, H., He, J., Gu, Y., Gu,
+    L., Zhang, S., et al.: Stu-net: Scalable and transferable medical image segmen-
+    tation models empowered by large-scale supervised pre-training. arXiv preprint
+    arXiv:2304.06716 (2023)
+      Customized Segment Anything Model for Medical Image Segmentation               15
+
+15. Ji, G.P., Fan, D.P., Xu, P., Cheng, M.M., Zhou, B., Van Gool, L.: Sam strug-
+    gles in concealed scenes–empirical study on" segment anything". arXiv preprint
+    arXiv:2304.06022 (2023)
+16. Jia, M., Tang, L., Chen, B.C., Cardie, C., Belongie, S., Hariharan, B., Lim, S.N.:
+    Visual prompt tuning. In: ECCV (2022)
+17. Jin, Q., Meng, Z., Sun, C., Cui, H., Su, R.: Ra-unet: A hybrid deep attention-
+    aware network to extract liver and tumor in ct scans. Frontiers in Bioengineering
+    and Biotechnology 8, 1471 (2020)
+18. Kenton, J.D.M.W.C., Toutanova, L.K.: Bert: Pre-training of deep bidirectional
+    transformers for language understanding. In: NAACL. pp. 4171–4186 (2019)
+19. Kirillov, A., Mintun, E., Ravi, N., Mao, H., Rolland, C., Gustafson, L., Xiao, T.,
+    Whitehead, S., Berg, A.C., Lo, W.Y., et al.: Segment anything. arXiv preprint
+    arXiv:2304.02643 (2023)
+20. Lei, T., Wang, R., Wan, Y., Du, X., Meng, H., Nandi, A.K.: Medical image seg-
+    mentation using deep learning: A survey. (2020)
+21. Li, X., Chen, H., Qi, X., Dou, Q., Fu, C.W., Heng, P.A.: H-denseunet: hybrid
+    densely connected unet for liver and tumor segmentation from ct volumes. TMI
+    37(12), 2663–2674 (2018)
+22. Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., Guo, B.: Swin trans-
+    former: Hierarchical vision transformer using shifted windows. In: ICCV (2021)
+23. Loshchilov, I., Hutter, F.: Decoupled weight decay regularization. In: ICLR
+24. Ma, J., Wang, B.: Segment anything in medical images. arXiv preprint
+    arXiv:2304.12306 (2023)
+25. Oktay, O., Schlemper, J., Le Folgoc, L., Lee, M., Heinrich, M., Misawa, K., Mori,
+    K., McDonagh, S., Hammerla, N.Y., Kainz, B., et al.: Attention u-net: Learning
+    where to look for the pancreas. In: MIDL
+26. OpenAI: Gpt-4 technical report (2023)
+27. Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., Zhang,
+    C., Agarwal, S., Slama, K., Ray, A., et al.: Training language models to follow
+    instructions with human feedback. NeurIPS 35, 27730–27744 (2022)
+28. Ramesh, A., Pavlov, M., Goh, G., Gray, S., Voss, C., Radford, A., Chen, M.,
+    Sutskever, I.: Zero-shot text-to-image generation. In: ICML. pp. 8821–8831. PMLR
+    (2021)
+29. Ronneberger, O., Fischer, P., Brox, T.: U-net: Convolutional networks for biomed-
+    ical image segmentation. In: MICCAI. pp. 234–241. Springer (2015)
+30. Schlemper, J., Oktay, O., Schaap, M., Heinrich, M., Kainz, B., Glocker, B., Rueck-
+    ert, D.: Attention gated networks: Learning to leverage salient regions in medical
+    images. Medical image analysis 53, 197–207 (2019)
+31. Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M.A., Lacroix, T.,
+    Rozière, B., Goyal, N., Hambro, E., Azhar, F., Rodriguez, A., Joulin, A., Grave,
+    E., Lample, G.: Llama: Open and efficient foundation language models. arXiv
+    preprint arXiv:2302.13971 (2023)
+32. Tsai, A., Yezzi, A., Wells, W., Tempany, C., Tucker, D., Fan, A., Grimson, W., Will-
+    sky, A.: A shape-based approach to the segmentation of medical imagery using level
+    sets. TMI 22(2), 137–154 (2003). https://doi.org/10.1109/TMI.2002.808355
+33. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser,
+    Ł., Polosukhin, I.: Attention is all you need. NeurIPS 30 (2017)
+34. Wang, X., Zhang, X., Cao, Y., Wang, W., Shen, C., Huang, T.: Seggpt: Segmenting
+    everything in context. arXiv preprint arXiv:2304.03284 (2023)
+16      Zhang and Liu
+
+35. Xiao, X., Lian, S., Luo, Z., Li, S.: Weighted res-unet for high-quality retina vessel
+    segmentation. In: 2018 9th international conference on information technology in
+    medicine and education (ITME). pp. 327–331. IEEE (2018)
+36. Xiong, R., Yang, Y., He, D., Zheng, K., Zheng, S., Xing, C., Zhang, H., Lan,
+    Y., Wang, L., Liu, T.: On layer normalization in the transformer architecture. In:
+    ICML. pp. 10524–10533. PMLR (2020)
+37. Zhou, Z., Siddiquee, M.M.R., Tajbakhsh, N., Liang, J.: Unet++: Redesigning skip
+    connections to exploit multiscale features in image segmentation. TMI (2019)
+
