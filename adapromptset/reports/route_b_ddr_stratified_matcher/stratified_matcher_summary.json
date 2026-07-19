@@ -4,7 +4,7 @@
   "date": "2026-07-19",
   "device": "cuda:0",
   "formal_test_access": false,
-  "gpu_hours": 0.002261580305510304,
+  "gpu_hours": 0.0022232231667213558,
   "issues": [],
   "matcher": "DINOv2-L",
   "matcher_checkpoint": "D:\\SAM\\assets\\checkpoints\\dinov2_vitl14_pretrain.pth",
@@ -15,7 +15,7 @@
   },
   "queries_per_intent": 2,
   "route": "B_reference_promptability_benchmark",
-  "runtime_seconds": 8.141689099837095,
+  "runtime_seconds": 8.00360340019688,
   "schema_version": "adapromptset.route_b.ddr_stratified_matcher.v1",
   "segmenter_inference": false,
   "selected_counts": {

@@ -16,6 +16,7 @@ Date: 2026-07-19
 | DDR Route B episode manifests | `manifests/phase4plus/ddr_route_b_train_reference_query_episodes.csv`; `manifests/phase4plus/ddr_route_b_valid_reference_query_episodes.csv` | Train/valid reference/query pairings are observed; valid references are train-only; DDR test remains unobserved. |
 | DDR Route B matcher smoke | `reports/route_b_ddr_development_smoke/` | One valid MA query and one train MA reference were used for DINOv2-L development smoke; query GT was used only for evaluation metrics, not generation; DDR test remains unobserved. |
 | DDR Route B stratified matcher smoke | `reports/route_b_ddr_stratified_matcher/` | Sixteen train/valid query-intent units were used for DINOv2-L development evidence; query GT was used only for evaluation metrics, not generation; DDR test remains unobserved. |
+| DDR Route B failure taxonomy | `reports/route_b_ddr_failure_taxonomy/` | CPU-only taxonomy over the same 16 train/valid rows; query GT used only for evaluation/control labels; DDR test remains unobserved. |
 
 ## Locked Formal Tests
 

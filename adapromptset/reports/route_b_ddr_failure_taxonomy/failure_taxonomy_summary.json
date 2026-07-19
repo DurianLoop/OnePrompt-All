@@ -1,0 +1,29 @@
+{
+  "claim_boundary": "control_aware_development_taxonomy_not_benchmark_result",
+  "dataset": "DDR",
+  "date": "2026-07-19",
+  "failure_flag_counts": {
+    "diffuse_matching_map": 16,
+    "low_score_margin": 10,
+    "no_candidate_hit": 15,
+    "no_component_covered": 15,
+    "random_not_beaten": 15,
+    "small_sparse_target": 16
+  },
+  "formal_test_access": false,
+  "issues": [],
+  "mean_component_coverage": 0.0025,
+  "mean_point_precision": 0.0125,
+  "mean_random_component_coverage": 0.0,
+  "mean_random_point_precision": 0.0,
+  "n": 16,
+  "next_recommended_action": "register Route B failure-taxonomy benchmark assets and add prompt-interface controls before any formal test",
+  "random_control_seed": "route-b-ddr-failure-taxonomy-v1",
+  "route": "B_reference_promptability_benchmark",
+  "schema_version": "adapromptset.route_b.ddr_failure_taxonomy.v1",
+  "source": "reports/route_b_ddr_stratified_matcher/query_metrics.csv",
+  "status": "PASS_ROUTE_B_DDR_FAILURE_TAXONOMY",
+  "test_files_read": false,
+  "uses_query_gt_for_evaluation": true,
+  "uses_query_gt_for_generation": false
+}

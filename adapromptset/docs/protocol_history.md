@@ -121,3 +121,11 @@
 - Output: `reports/route_b_ddr_stratified_matcher/stratified_matcher_summary.json`, `stratified_matcher_summary.md`, `selected_episodes.csv`, and `query_metrics.csv`.
 - Status: `PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE` for legal execution; mean point precision `0.0125`, mean component coverage `0.0025`, zero precision fraction `0.9375`.
 - Interpretation: the candidate-only DINOv2 matching route is mostly nonlocalizing on this DDR development slice. Route B should now emphasize failure taxonomy, matched controls, and benchmark diagnostics rather than expanding this exact smoke as a method-positive path.
+
+## 2026-07-19 Route B DDR Failure Taxonomy
+
+- `scripts/analyze_route_b_ddr_failure_taxonomy.py --project-root D:\SAM\adapromptset` produced CPU-only control-aware taxonomy from the 16-row stratified matcher evidence.
+- Output: `reports/route_b_ddr_failure_taxonomy/failure_taxonomy_summary.json`, `failure_taxonomy_summary.md`, and `failure_taxonomy.csv`.
+- Status: `PASS_ROUTE_B_DDR_FAILURE_TAXONOMY`; mean DINOv2 point precision `0.0125`, mean random point precision `0.0`, mean DINOv2 component coverage `0.0025`, mean random component coverage `0.0`.
+- Failure flags: small sparse target `16/16`, diffuse matching map `16/16`, no candidate hit `15/16`, no component covered `15/16`, random not beaten `15/16`.
+- Interpretation: this strengthens the benchmark/failure-taxonomy direction and closes candidate-only DINOv2 matching as a method-positive DDR route unless a separately registered representation/control redesign is justified.

@@ -18,6 +18,8 @@ Current development smoke: `PASS_ROUTE_B_DDR_MATCHER_SMOKE`
 
 Current stratified development evidence: `PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE`
 
+Current failure taxonomy: `PASS_ROUTE_B_DDR_FAILURE_TAXONOMY`
+
 ## Frozen Prior States
 
 | Route | State |
@@ -58,6 +60,7 @@ Latest legal progress:
 - DDR Route B episodes: train 2892 reference rows for 964 positive queries; valid 1203 reference rows for 401 positive queries.
 - One DDR valid MA matcher smoke ran with train support under DINOv2-L only; point precision and component coverage were both 0.0, so this is a pipeline/failure-taxonomy signal rather than positive benchmark evidence.
 - Stratified DDR DINOv2-L matcher evidence covered 16 train/valid query-intent units, two per split/intent. Mean point precision was 0.0125 and zero precision fraction was 0.9375.
+- Control-aware DDR failure taxonomy records `small_sparse_target=16/16`, `diffuse_matching_map=16/16`, `no_candidate_hit=15/16`, `no_component_covered=15/16`, and `random_not_beaten=15/16`.
 
 ## Current Prohibitions
 
@@ -71,3 +74,4 @@ Latest legal progress:
 - No independent-sample claim from reference rows or image-intent rows.
 - No method-positive claim from the one-episode DDR matcher smoke.
 - No direct expansion of the same candidate-only DINOv2 matcher smoke as if it were a promising method route; the next step must be failure-taxonomy/control-aware benchmark analysis.
+- No benchmark-ready claim until prompt-interface controls, broader datasets, model/representation combinations, and statistics exist.

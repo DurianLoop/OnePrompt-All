@@ -32,6 +32,8 @@
   "route_b_ddr_matcher_smoke_report": "reports/route_b_ddr_development_smoke/route_b_ddr_matcher_smoke.json",
   "route_b_ddr_stratified_matcher_status": "PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE",
   "route_b_ddr_stratified_matcher_report": "reports/route_b_ddr_stratified_matcher/stratified_matcher_summary.json",
+  "route_b_ddr_failure_taxonomy_status": "PASS_ROUTE_B_DDR_FAILURE_TAXONOMY",
+  "route_b_ddr_failure_taxonomy_report": "reports/route_b_ddr_failure_taxonomy/failure_taxonomy_summary.json",
   "route_b_ddr_matcher_smoke_signal": {
     "intent": "MA",
     "query_image_id": "007-2846-100",
@@ -51,6 +53,19 @@
     "segmenter_inference": false,
     "claim_boundary": "stratified_development_smoke_only_not_benchmark_result"
   },
+  "route_b_ddr_failure_taxonomy_signal": {
+    "n": 16,
+    "mean_point_precision": 0.0125,
+    "mean_random_point_precision": 0.0,
+    "mean_component_coverage": 0.0025,
+    "mean_random_component_coverage": 0.0,
+    "small_sparse_target": 16,
+    "diffuse_matching_map": 16,
+    "no_candidate_hit": 15,
+    "no_component_covered": 15,
+    "random_not_beaten": 15,
+    "claim_boundary": "control_aware_development_taxonomy_not_benchmark_result"
+  },
   "route_b_ddr_dev_manifest_counts": {
     "train_images": 383,
     "train_positive_queries": 964,
@@ -62,7 +77,7 @@
     "train_episode_rows": 2892,
     "valid_episode_rows": 1203
   },
-  "next_required_action": "register Route B failure-taxonomy/control-aware benchmark expansion because candidate-only DINOv2 matching is mostly nonlocalizing on DDR stratified development smoke",
+  "next_required_action": "add prompt-interface controls or second-domain development evidence for Route B; candidate-only DINOv2 matching on DDR should be treated as a failure-taxonomy benchmark signal, not a method-positive route",
   "new_model_inference_since_preregistration": true,
   "formal_test_access": false,
   "submission_ready": false
