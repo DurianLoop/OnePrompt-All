@@ -1,2 +1,4 @@
 timestamp,phase,command,artifact,status,gpu_hours,cumulative_gpu_hours,notes
 2026-07-19T17:20:00+08:00,phase4plus_preregistration,"manual control-file creation","docs/phase4plus_goal_read_receipt.md;reports/research_program_status.json",PHASE4PLUS_PREREGISTRATION_IN_PROGRESS,0,0,"CPU/file-only. No new matcher or segmenter inference."
+2026-07-19T17:30:00+08:00,phase4_read_only_audit,"scripts/audit_phase4_read_only.py --project-root D:\SAM\adapromptset","reports/phase4_read_only_audit",PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK,0,0,"Read-only CPU audit of existing Phase 2D/Phase 3 artifacts. No new matcher or segmenter inference; no formal test access."
+2026-07-19T17:35:00+08:00,research_track_selection,"manual weighted scoring from Phase 4 audit","reports/research_track_selection.json",PRIMARY_TRACK_B_SELECTED,0,0,"Primary Route B, fallback Route A, deferred Route C."

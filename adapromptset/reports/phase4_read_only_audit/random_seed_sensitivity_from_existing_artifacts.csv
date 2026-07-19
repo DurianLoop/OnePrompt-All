@@ -1,0 +1,4 @@
+family,random_samples_per_query,seed_pattern,mean_improvement,median_improvement,min_improvement,max_improvement,strict_seed_sensitivity_available,reason
+R03_automatic_union_box,1,phase3-r1:{family}:{query_case_id},0.025965,0.000000,-0.007108,0.292548,false,Only one deterministic size-matched random placement was generated per query/family in the existing R1 artifact.
+R04_automatic_largest_component_box,1,phase3-r1:{family}:{query_case_id},0.002199,0.000000,0.000000,0.028475,false,Only one deterministic size-matched random placement was generated per query/family in the existing R1 artifact.
+R05_automatic_top3_component_boxes,1,phase3-r1:{family}:{query_case_id},0.016568,0.000000,0.000000,0.307051,false,Only one deterministic size-matched random placement was generated per query/family in the existing R1 artifact.

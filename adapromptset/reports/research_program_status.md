@@ -4,7 +4,9 @@ Date: 2026-07-19
 
 Branch: `phase4plus-submission-program`
 
-Top-level state: `PHASE4PLUS_PREREGISTERED_NOT_COMMITTED`
+Phase 4+ preregistration commit: `b4ee8e2`
+
+Top-level state: `PRIMARY_TRACK_B_SELECTED`
 
 ## Frozen Prior States
 
@@ -18,11 +20,23 @@ Top-level state: `PHASE4PLUS_PREREGISTERED_NOT_COMMITTED`
 
 ## Current Phase
 
-Phase 4+ preregistration/control files are being created before any new model inference.
+Phase 4 read-only audit is complete and supports the benchmark/diagnostic track.
 
-Next legal state after commit:
+Selected primary track:
 
-`PHASE4_READ_ONLY_AUDIT_IN_PROGRESS`
+`Route B -- Reference Promptability Benchmark`
+
+Selected fallback track:
+
+`Route A -- Promptability-Aware Routing`
+
+Deferred track:
+
+`Route C -- Direct Reference Segmentation`
+
+Next legal state:
+
+`TRACK_B_BENCHMARK_READY` or `TRACK_B_INSUFFICIENT_BREADTH`, after fresh-data benchmark protocol and legal development evidence.
 
 ## Current Prohibitions
 

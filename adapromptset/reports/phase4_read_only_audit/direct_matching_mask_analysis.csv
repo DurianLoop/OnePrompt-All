@@ -1,0 +1,2 @@
+query_count,mean_raw_mask_dice,mean_control_dice,mean_improvement,win_rate,mean_precision,mean_recall,mean_component_coverage,mean_area_ratio,interpretation
+30,0.178754,0.595075,-0.416321,0.066667,0.934351,0.099628,0.617762,0.053842,High precision but very low recall; direct thresholded matching is not yet a viable whole-image segmentation method.

@@ -2,8 +2,10 @@
   "schema_version": "adapromptset.research_program_status.v1",
   "date": "2026-07-19",
   "branch": "phase4plus-submission-program",
-  "state": "PHASE4PLUS_PREREGISTERED_NOT_COMMITTED",
+  "state": "PRIMARY_TRACK_B_SELECTED",
+  "phase4_audit_status": "PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK",
   "base_commit": "9f33382",
+  "phase4plus_preregistration_commit": "b4ee8e2",
   "frozen_prior_states": {
     "monusac": "PIVOT_ORACLE_ANALYSIS",
     "glas_grouped_point": "STOP_GLAS_GROUPED_POINT_PROMPT_PATH_CONFIRMED",
@@ -16,10 +18,10 @@
     "B": "Reference Promptability Benchmark",
     "C": "Direct Reference Segmentation"
   },
-  "primary_track": null,
-  "fallback_track": null,
-  "deferred_track": null,
-  "next_required_action": "commit preregistration before any new inference",
+  "primary_track": "B_reference_promptability_benchmark",
+  "fallback_track": "A_promptability_aware_routing",
+  "deferred_track": "C_direct_reference_segmentation",
+  "next_required_action": "prepare Route B fresh-data protocol and benchmark infrastructure without formal test access",
   "new_model_inference_since_preregistration": false,
   "formal_test_access": false,
   "submission_ready": false

@@ -1,0 +1,13 @@
+{
+  "paper_hash_reported": "B75339E91F5F9BCE1F77DA8FA84E3E1F9095DB2623954D78E376B9FB14B0DD2A",
+  "paper_pdf": "paper_phase3/build/main.pdf",
+  "phase3_final_state": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+  "prohibited_hits": [],
+  "required_boundary_phrases_present": {
+    "no automatic region family passes": true,
+    "not establish an automatic method": true,
+    "stops before sam refinement": true,
+    "testa/testb access": true
+  },
+  "status": "PASS"
+}

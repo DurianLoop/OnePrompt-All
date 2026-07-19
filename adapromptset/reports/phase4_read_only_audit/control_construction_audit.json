@@ -1,0 +1,14 @@
+{
+  "full_image_box_recorded_in_r1": false,
+  "has_gt_box_eval": true,
+  "has_random_box_like": true,
+  "r03_box_iou_definition": "IoU between the automatic proposal bounding box and the query GT union bounding box, computed by _box_iou(proposal_box, target_box).",
+  "random_box_width_height_source": "The random box uses width and height copied from the corresponding automatic proposal bounding box.",
+  "random_control_gt_usage_note": "Query GT is used only after proposal generation for evaluation of IoU/Dice/recall, not for random-box placement.",
+  "random_control_inherits_automatic_scale": "_random_box_like(box, seed_text) copies x/y span from the automatic proposal box.",
+  "random_control_uses_gt_for_generation": false,
+  "random_samples_per_query_per_family": 1,
+  "random_seed_pattern": "phase3-r1:{family}:{query_case_id}",
+  "source_confirms_single_sample": "rng.randrange is called once for x and y in _random_box_like; no loop over multiple random samples exists.",
+  "source_hash": "6CF0B56286F14DCAD279618B2FF5EF455378F0B91DAA4692D62BB7C5146639AD"
+}

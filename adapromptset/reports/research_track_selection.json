@@ -1,0 +1,68 @@
+{
+  "schema_version": "adapromptset.research_track_selection.v1",
+  "date": "2026-07-19",
+  "phase4_audit_status": "PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK",
+  "weights": {
+    "novelty_difference": 20,
+    "current_evidence_support": 15,
+    "fresh_data_availability": 15,
+    "technical_contribution_ceiling": 15,
+    "execution_feasibility": 10,
+    "cross_dataset_potential": 10,
+    "top_conference_narrative_clarity": 10,
+    "compute_cost": 5
+  },
+  "tracks": {
+    "A_promptability_aware_routing": {
+      "role": "fallback",
+      "score": 78,
+      "dimension_scores": {
+        "novelty_difference": 16,
+        "current_evidence_support": 11,
+        "fresh_data_availability": 12,
+        "technical_contribution_ceiling": 14,
+        "execution_feasibility": 7,
+        "cross_dataset_potential": 8,
+        "top_conference_narrative_clarity": 8,
+        "compute_cost": 2
+      },
+      "reason": "Conceptually unifies MoNuSAC oracle-gap failure, GlaS point failure, privileged region upper bounds, and automatic proposal failure, but it still needs legal promptability labels and separability evidence before router training."
+    },
+    "B_reference_promptability_benchmark": {
+      "role": "primary",
+      "score": 90,
+      "dimension_scores": {
+        "novelty_difference": 18,
+        "current_evidence_support": 15,
+        "fresh_data_availability": 13,
+        "technical_contribution_ceiling": 13,
+        "execution_feasibility": 9,
+        "cross_dataset_potential": 10,
+        "top_conference_narrative_clarity": 10,
+        "compute_cost": 2
+      },
+      "reason": "Phase 4 directly exposes a measurement/control problem: candidate precision, privileged promptability, and absolute box IoU do not imply automatic prompt success. This naturally becomes a benchmark/diagnostic contribution with fresh DDR and locked GlaS formal tests available later."
+    },
+    "C_direct_reference_segmentation": {
+      "role": "deferred",
+      "score": 70,
+      "dimension_scores": {
+        "novelty_difference": 15,
+        "current_evidence_support": 8,
+        "fresh_data_availability": 12,
+        "technical_contribution_ceiling": 14,
+        "execution_feasibility": 7,
+        "cross_dataset_potential": 8,
+        "top_conference_narrative_clarity": 4,
+        "compute_cost": 2
+      },
+      "reason": "R00 is precise but has raw Dice 0.178754 and recall 0.099628, so direct segmentation may be promising only after a new structured dense mechanism, not as the immediate evidence-backed route."
+    }
+  },
+  "selected_primary_track": "B_reference_promptability_benchmark",
+  "selected_fallback_track": "A_promptability_aware_routing",
+  "deferred_track": "C_direct_reference_segmentation",
+  "selection_rule": "Highest weighted score after Phase 4 read-only audit; no formal test data used.",
+  "formal_test_access": false,
+  "new_model_inference": false
+}
