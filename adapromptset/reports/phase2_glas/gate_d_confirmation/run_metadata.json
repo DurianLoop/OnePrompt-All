@@ -1,0 +1,10 @@
+{
+  "candidate_csv": "D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates_redesign_v1\\candidate_pilot_candidates.csv",
+  "candidate_csv_sha256": "E5F00AE23E9C2092B63A9B0EAA2032F6CFA23305C344AA43CA045D62614F1C18",
+  "device": "cuda:0",
+  "episodes_csv": "D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\episodes_val.csv",
+  "episodes_csv_sha256": "18291E9E9A1CFACCCC4395B2333B57034D65C3DF8AC5ED5AA1DEFF74581AF3EA",
+  "query_count": 30,
+  "schema_version": "adapromptset.phase2d.run_metadata.v1",
+  "testA_testB_access": false
+}

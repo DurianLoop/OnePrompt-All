@@ -1,22 +1,20 @@
 {
-  "schema_version": "adapromptset.phase2.final_report.v1",
+  "schema_version": "adapromptset.phase2.final_report.v2",
   "date": "2026-07-19",
   "project_root": "D:\\SAM\\adapromptset",
   "branch": "phase2-glas-strict",
-  "commit_at_report_time": "3c1695e8c1805aafbdd0a4834dee941cbafa81c5",
-  "working_tree_contains_uncommitted_phase2_artifacts": false,
-  "phase2_final_status": "STOP_GLAS_SEGMENTER_FAILURE",
-  "current_research_direction": "GlaS strict diagnostic and policy-gate re-evaluation",
+  "commit_before_confirmation": "f5c2de3",
+  "phase2_previous_status": "STOP_GLAS_SEGMENTER_FAILURE",
+  "phase2d_final_status": "STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED",
+  "current_research_direction": "GlaS segmenter viability boundary after preregistered 30-query Gate D confirmation",
   "monusac_freeze": {
     "status": "PIVOT_ORACLE_ANALYSIS",
     "gate_f_status": "FAIL_ORACLE_GAP_SMALL",
     "dice_oracle_gap": 0.0050113301616486194,
     "min_required_dice_gap": 0.01,
-    "policy_training_allowed": false,
-    "artifact": "docs/monusac_freeze_notice.md"
+    "policy_training_allowed": false
   },
   "glas_data_split": {
-    "local_root": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)",
     "official_train_pairs": 85,
     "utility_train_queries": 55,
     "strict_validation_queries": 30,
@@ -26,88 +24,121 @@
     "testA_testB_used": false,
     "manifest_dir": "manifests/phase2/glas"
   },
-  "gates": {
-    "C_candidate_quality": {
-      "frozen_status": "FAIL",
-      "frozen_component_coverage": 0.41882027248255316,
-      "redesign_status": "PASS",
-      "redesign": "local_peaks; positive_limits=5,10,20; min_positive_distance=2.0",
-      "query_count": 30,
-      "episode_count": 90,
-      "precision_delta": 0.4338888888888889,
-      "precision_ratio": 1.8068181818181819,
-      "component_coverage": 0.6302209965148562,
-      "negative_blank_fraction": 0.13555555555555557,
-      "decision": "CONTINUE_TO_GATE_D",
-      "artifacts": [
-        "reports/phase2_glas/candidates/gate_c_summary.json",
-        "reports/phase2_glas/candidates_redesign_v1/gate_c_summary.json",
-        "paper_phase2/figures/candidate_diagnostics_redesign_v1/precision_vs_pool.png",
-        "paper_phase2/figures/candidate_diagnostics_redesign_v1/coverage_vs_pool.png",
-        "paper_phase2/figures/candidate_diagnostics_redesign_v1/negative_blank_vs_pool.png"
-      ]
-    },
-    "D_segmenter_smoke": {
-      "samb_status": "FAIL",
-      "samb_mean_privileged_best_dice": 0.7339083299512503,
-      "samb_mean_control_best_dice": 0.6382742739483346,
-      "saml_status": "FAIL",
-      "saml_mean_privileged_best_dice": 0.7629047245142232,
-      "saml_mean_control_best_dice": 0.41267108896960986,
-      "failure_reason": "privileged prompts did not clearly exceed random/mismatched controls on at least one selected case",
-      "decision": "STOP_GLAS_SEGMENTER_FAILURE",
-      "artifacts": [
-        "reports/phase2_glas/gate_d_segmenter_smoke/gate_d_summary.json",
-        "reports/phase2_glas/gate_d_segmenter_smoke_saml/gate_d_summary.json"
-      ]
-    },
-    "E_action_bank": "BLOCKED_BY_GATE_D",
-    "F_oracle_gap": "BLOCKED_BY_GATE_D",
-    "G_utility_reliability": "BLOCKED_BY_GATE_D",
-    "H_policy_learning": "PROHIBITED_BY_GATE_D",
-    "I_formal_test": "PROHIBITED_BY_GATE_D"
+  "previous_gate_d_6case": {
+    "preserved_as": "EXPLORATORY_GATE_D_FAIL_UNDER_ALL_CASE_MARGIN_RULE",
+    "samb_status": "FAIL",
+    "samb_cases": 6,
+    "samb_mean_privileged_best_dice": 0.7339083299512503,
+    "samb_mean_control_best_dice": 0.6382742739483346,
+    "saml_status": "FAIL",
+    "saml_cases": 6,
+    "saml_mean_privileged_best_dice": 0.7629047245142232,
+    "saml_mean_control_best_dice": 0.41267108896960986,
+    "artifacts": [
+      "reports/phase2_glas/gate_d_segmenter_smoke/gate_d_summary.json",
+      "reports/phase2_glas/gate_d_segmenter_smoke_saml/gate_d_summary.json"
+    ]
   },
-  "statistics": {
-    "bootstrap_ci": "not_run_blocked_by_gate_d",
-    "formal_test_results": "not_run_blocked_by_gate_d",
-    "statistical_unit": "query image for Gate C; selected validation case for Gate D smoke"
+  "protocol_amendment": {
+    "rationale": "The original 6-case all-case-must-win criterion was too strong for an execution/viability gate, so one preregistered 30-query validation-only confirmation was allowed before any Gate E/F reopening.",
+    "protocol": "docs/glas_gate_d_confirmation_protocol_v1.md",
+    "rationale_artifact": "docs/glas_gate_d_amendment_rationale.md",
+    "config": "configs/segmenter/glas_gate_d_confirmation_v1.yaml",
+    "primary_prompt_family": "P3_component_grouped_centroids",
+    "primary_matched_control": "mean(C1_random_coordinate,C2_mismatched_reference)",
+    "c2_mapping": "first_frozen_episode_support_mask",
+    "statistical_unit": "query image",
+    "thresholds": {
+      "mean_paired_dice_margin_min": 0.05,
+      "query_win_rate_min": 0.7,
+      "catastrophic_failure_rate_max": 0.1,
+      "catastrophic_dice_min": 0.2
+    },
+    "no_second_gate_d_revision_allowed": true
+  },
+  "gate_d_confirmation": {
+    "summary": "reports/phase2_glas/gate_d_confirmation/gate_d_confirmation_summary.json",
+    "query_count": 30,
+    "testA_testB_access": false,
+    "coordinate_audit": "PASS",
+    "cost_matching_audit": "PASS",
+    "sam_b": {
+      "status": "FAIL",
+      "p3_mean_privileged_dice": 0.5095610236224194,
+      "p3_mean_matched_control_dice": 0.6674982702719765,
+      "p3_mean_margin": -0.15793724664955716,
+      "p3_win_rate": 0.43333333333333335,
+      "p3_bootstrap_ci": [
+        -0.25007364389739445,
+        -0.07614586890654239
+      ],
+      "p3_catastrophic_failure_rate": 0.6666666666666666
+    },
+    "sam_l": {
+      "status": "FAIL",
+      "p3_mean_privileged_dice": 0.47070481149007765,
+      "p3_mean_matched_control_dice": 0.5676135334449932,
+      "p3_mean_margin": -0.09690872195491557,
+      "p3_win_rate": 0.4666666666666667,
+      "p3_bootstrap_ci": [
+        -0.19615653998994545,
+        -0.0017729250564387556
+      ],
+      "p3_catastrophic_failure_rate": 0.4
+    },
+    "morphology_summary": {
+      "benign": {
+        "queries": 13,
+        "mean_p3_margin": -0.220299,
+        "catastrophic_rate": 0.538462
+      },
+      "malignant": {
+        "queries": 17,
+        "mean_p3_margin": -0.0564,
+        "catastrophic_rate": 0.529412
+      },
+      "high_component_count": {
+        "queries": 16,
+        "mean_p3_margin": -0.224595,
+        "catastrophic_rate": 0.71875
+      },
+      "large_foreground": {
+        "queries": 15,
+        "mean_p3_margin": -0.095095,
+        "catastrophic_rate": 0.6
+      }
+    },
+    "prompt_family_table": "paper_phase2/tables/table_prompt_family_viability.tex",
+    "gate_table": "paper_phase2/tables/table_gate_d_confirmation.tex",
+    "morphology_table": "paper_phase2/tables/table_morphology_failures.tex",
+    "paper_section": "paper_phase2/sections/gate_d_confirmation.tex"
+  },
+  "gate_decisions_after_phase2d": {
+    "Gate C candidate quality": "PASS_AFTER_PREDECLARED_REDESIGN",
+    "Gate D segmenter viability": "STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED",
+    "Gate E action bank": "CLOSED_BY_CONFIRMED_GATE_D_FAILURE",
+    "Gate F oracle gap": "CLOSED_BY_CONFIRMED_GATE_D_FAILURE",
+    "Gate G utility reliability": "CLOSED_BY_CONFIRMED_GATE_D_FAILURE",
+    "Gate H policy learning": "PROHIBITED_BY_CONFIRMED_GATE_D_FAILURE",
+    "Gate I formal test": "PROHIBITED_BY_CONFIRMED_GATE_D_FAILURE"
   },
   "compute": {
-    "phase2_gpu_hours_recorded": 0.039522,
-    "budget_limit_gpu_hours": 100,
-    "ledger": "reports/phase2_compute_ledger.csv"
+    "phase2_gpu_hours_before_phase2d": 0.039522,
+    "phase2d_confirmation_gpu_hours": 0.091388,
+    "total_recorded_gpu_hours": 0.13091,
+    "budget_limit_gpu_hours": 16,
+    "ledger": "reports/phase2_compute_ledger.csv",
+    "local_confirmation_ledger": "reports/phase2_glas/gate_d_confirmation/compute_ledger.csv"
   },
-  "paper_claim_boundary": {
+  "claim_boundary": {
+    "allowed_claim": "On all 30 GlaS strict-validation queries, both SAM-B and SAM-L fail the preregistered P3 privileged-vs-matched-control viability criterion; the GlaS AdaPromptSet policy path remains closed and testA/testB remain unused.",
     "phase2_policy_success_claim": false,
+    "automatic_prompting_claim": false,
     "formal_test_claim": false,
-    "allowed_claim": "GlaS Gate C can be passed by a predeclared local-peak candidate redesign, but the branch stops at Gate D because SAM-B and the one allowed SAM-L alternative fail the privileged-control margin rule.",
-    "pdf_path": "paper/archive/monusac_oracle_analysis/main.pdf",
-    "clean_latexmk_status": "FAIL_MIKTEX_LOG_PERMISSION",
-    "clean_latexmk_artifact": "reports/latexmk_audit.json"
+    "gate_e_open": false
   },
-  "archived_monusac_oracle_analysis_paper": {
-    "archive_dir": "paper/archive/monusac_oracle_analysis",
-    "pdf": "paper/archive/monusac_oracle_analysis/main.pdf",
-    "source": "paper/archive/monusac_oracle_analysis/main.tex",
-    "sections": "paper/archive/monusac_oracle_analysis/sections",
-    "tables": "paper/archive/monusac_oracle_analysis/tables",
-    "figures": "paper/archive/monusac_oracle_analysis/figures",
-    "build_log": "paper/archive/monusac_oracle_analysis/main.log",
-    "claim_audits": "paper/archive/monusac_oracle_analysis/reports"
-  },
-  "unresolved_blockers": [
-    "Gate D segmenter sanity/control separation failed after SAM-B and the single predeclared SAM-L alternative.",
-    "No GlaS action bank, oracle-gap, policy, or formal test result is allowed under the current gate state.",
-    "Clean latexmk audit still fails because MiKTeX cannot write its latexmk.log, although the clean copy produced an 8-page PDF.",
-    "Existing MoNuSAC oracle-analysis PDF remains archived/current but does not become a positive policy paper."
-  ],
   "reproduction_commands": [
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\build_glas_phase2_splits.py --project-root D:\\SAM\\adapromptset --seed 20260719 --train-count 55 --val-count 30 --references-per-query 3",
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_candidate_pilot.py --project-root D:\\SAM\\adapromptset --dataset-name GlaS --episodes-csv D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\episodes_val.csv --out-dir D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates --max-episodes 90 --device auto",
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_glas_phase2_gate_c.py --project-root D:\\SAM\\adapromptset",
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_candidate_pilot.py --project-root D:\\SAM\\adapromptset --dataset-name GlaS --episodes-csv D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\episodes_val.csv --out-dir D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates_redesign_v1 --max-episodes 90 --device auto --positive-layout local_peaks --positive-limits 5 10 20 --min-positive-distance 2.0",
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_glas_phase2_gate_c.py --project-root D:\\SAM\\adapromptset --metrics-path D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates_redesign_v1\\candidate_pilot_metrics.csv --candidates-path D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates_redesign_v1\\candidate_pilot_candidates.csv --out-dir D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates_redesign_v1 --figure-dir D:\\SAM\\adapromptset\\paper_phase2\\figures\\candidate_diagnostics_redesign_v1 --cache-dir D:\\SAM\\adapromptset\\cache\\glas_candidates_redesign_v1",
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_glas_phase2_gate_d.py --project-root D:\\SAM\\adapromptset --episodes-csv D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\episodes_val.csv --out-dir D:\\SAM\\adapromptset\\reports\\phase2_glas\\gate_d_segmenter_smoke --device cuda:0",
-    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_glas_phase2_gate_d.py --project-root D:\\SAM\\adapromptset --episodes-csv D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\episodes_val.csv --out-dir D:\\SAM\\adapromptset\\reports\\phase2_glas\\gate_d_segmenter_smoke_saml --device cuda:0 --checkpoint D:\\SAM\\assets\\checkpoints\\sam_vit_l_0b3195.pth"
-  ]
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_glas_gate_d_confirmation.py --project-root D:\\SAM\\adapromptset --device cuda:0"
+  ],
+  "deviations": []
 }

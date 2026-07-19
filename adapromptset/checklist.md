@@ -70,14 +70,19 @@
   - 2026-07-19: Added `configs/segmenter/glas_gate_d_confirmation_v1.yaml` and `reports/phase2_glas/gate_d_confirmation/{protocol_snapshot,input_hashes,compute_plan}.json`. GlaS testA/testB remain locked and not used.
 - [x] Implement CPU-verifiable confirmation runner scaffolding and focused tests.
   - 2026-07-19: Added `src/adapromptset/scripts/run_glas_gate_d_confirmation.py`, `scripts/run_glas_gate_d_confirmation.py`, and `tests/test_run_glas_gate_d_confirmation.py`. SAM confirmation inference has not run yet.
-- [ ] Create preregistration git commit before SAM inference.
+- [x] Create preregistration git commit before SAM inference.
   - Required commit message: `phase2d: preregister glas gate d confirmation`.
-- [ ] Run SAM-B 30-query confirmation.
-- [ ] Run SAM-L 30-query confirmation.
-- [ ] Generate required Phase 2D metrics, audits, tables, figures, and paper section.
-- [ ] Write the unique final Gate D state and update `reports/phase2_final_report.{md,json}`, `reports/phase2_gate_status.md`, `docs/decision_log.md`, `docs/protocol_history.md`, and this checklist.
+  - 2026-07-19: Commit `f5c2de3` created before SAM confirmation inference.
+- [x] Run SAM-B 30-query confirmation.
+  - 2026-07-19: `reports/phase2_glas/gate_d_confirmation/gate_d_confirmation_summary.json` records SAM-B status `FAIL`, P3 margin `-0.157937`, win rate `0.433333`, catastrophic failure rate `0.666667`.
+- [x] Run SAM-L 30-query confirmation.
+  - 2026-07-19: The same summary records SAM-L status `FAIL`, P3 margin `-0.096909`, win rate `0.466667`, catastrophic failure rate `0.400000`.
+- [x] Generate required Phase 2D metrics, audits, tables, figures, and paper section.
+  - 2026-07-19: Generated confirmation reports under `reports/phase2_glas/gate_d_confirmation/`, 10 figures under `paper_phase2/figures/gate_d_confirmation/`, tables under `paper_phase2/tables/`, and `paper_phase2/sections/gate_d_confirmation.tex`.
+- [x] Write the unique final Gate D state and update `reports/phase2_final_report.{md,json}`, `reports/phase2_gate_status.md`, `docs/decision_log.md`, `docs/protocol_history.md`, and this checklist.
+  - 2026-07-19: Final Phase 2D state is `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`; Gate E/F/G/H/I remain closed/prohibited and testA/testB remain locked/unused.
 
-Current Phase 2D status: `PHASE2D_GATE_D_CONFIRMATION_PREREGISTERED_NOT_RUN`.
+Current Phase 2D status: `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`.
 
 ## Phase -1 — 当前工作区可行性核对（2026-07-17 已审）
 

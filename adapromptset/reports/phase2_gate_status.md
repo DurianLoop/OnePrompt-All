@@ -18,11 +18,11 @@ Branch: `phase2-glas-strict`
 | Gate G utility reliability | `BLOCKED_BY_GATE_D` | Requires Gate F continuation state, which cannot be reached. |
 | Gate H policy learning | `PROHIBITED_BY_GATE_D` | Policy training prohibited because Gate D failed. |
 | Gate I formal test | `PROHIBITED_BY_GATE_D` | Formal testA/testB evaluation prohibited because Gate D failed. |
-| Phase 2D Gate D confirmation | `PREREGISTERED_NOT_RUN` | One 30-query strict-validation viability confirmation is preregistered to test whether the 6-case all-case Gate D criterion was too strong. SAM inference is prohibited until the preregistration commit is created. |
+| Phase 2D Gate D confirmation | `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED` | The preregistered 30-query strict-validation confirmation ran after commit `f5c2de3`. SAM-B and SAM-L both failed the P3 privileged-vs-matched-control viability criterion. |
 
 Previous Phase 2 status: `STOP_GLAS_SEGMENTER_FAILURE`
 
-Current overall status: `PHASE2D_GATE_D_CONFIRMATION_PREREGISTERED_NOT_RUN`
+Current overall status: `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`
 
 ## Gate C Evidence
 
@@ -87,4 +87,28 @@ Primary confirmation rule:
 - evaluate SAM-B and SAM-L independently;
 - require P3 mean paired Dice margin `>= 0.05`, query win rate `>= 0.70`, catastrophic failure rate `<= 0.10`, positive bootstrap point estimate, coordinate validation, cost matching, and no hidden oracle.
 
-SAM confirmation has not been run yet. Gate E/F/G/H/I must remain closed until the final Phase 2D state is written.
+SAM confirmation has now run. Gate E/F/G/H/I remain closed because the final Phase 2D state is `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`.
+
+## Phase 2D Confirmation Result
+
+| Metric | SAM-B | SAM-L |
+| --- | ---: | ---: |
+| Query count | `30` | `30` |
+| P3 mean privileged Dice | `0.509561` | `0.470705` |
+| P3 matched control Dice | `0.667498` | `0.567614` |
+| P3 paired margin | `-0.157937` | `-0.096909` |
+| P3 win rate | `0.433333` | `0.466667` |
+| P3 bootstrap CI | `[-0.250074, -0.076146]` | `[-0.196157, -0.001773]` |
+| P3 catastrophic failure rate | `0.666667` | `0.400000` |
+| Coordinate audit | `PASS` | `PASS` |
+| Cost audit | `PASS` | `PASS` |
+| Status | `FAIL` | `FAIL` |
+
+Final consequence:
+
+- Gate E action-bank validation: `CLOSED_BY_CONFIRMED_GATE_D_FAILURE`
+- Gate F oracle-gap analysis: `CLOSED_BY_CONFIRMED_GATE_D_FAILURE`
+- Gate H policy learning: `PROHIBITED_BY_CONFIRMED_GATE_D_FAILURE`
+- Gate I formal test: `PROHIBITED_BY_CONFIRMED_GATE_D_FAILURE`
+
+GlaS testA/testB remain locked and unused.

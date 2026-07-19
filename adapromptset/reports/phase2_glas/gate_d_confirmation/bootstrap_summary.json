@@ -1,0 +1,48 @@
+{
+  "SAM-B": {
+    "checks": {
+      "bootstrap_direction": false,
+      "catastrophic_failure_rate": false,
+      "coordinate_validation": true,
+      "cost_matching": true,
+      "mean_paired_dice_margin": false,
+      "no_hidden_oracle": true,
+      "query_win_rate": false
+    },
+    "p3_bootstrap_ci_high": -0.07614586890654239,
+    "p3_bootstrap_ci_low": -0.25007364389739445,
+    "p3_catastrophic_failure_rate": 0.6666666666666666,
+    "p3_mean_margin": -0.15793724664955716,
+    "p3_mean_matched_control_dice": 0.6674982702719765,
+    "p3_mean_privileged_dice": 0.5095610236224194,
+    "p3_win_rate": 0.43333333333333335,
+    "prompt_family_count": 5,
+    "query_count": 30,
+    "segmenter": "SAM-B",
+    "status": "FAIL",
+    "uncertainty_warning": true
+  },
+  "SAM-L": {
+    "checks": {
+      "bootstrap_direction": false,
+      "catastrophic_failure_rate": false,
+      "coordinate_validation": true,
+      "cost_matching": true,
+      "mean_paired_dice_margin": false,
+      "no_hidden_oracle": true,
+      "query_win_rate": false
+    },
+    "p3_bootstrap_ci_high": -0.0017729250564387556,
+    "p3_bootstrap_ci_low": -0.19615653998994545,
+    "p3_catastrophic_failure_rate": 0.4,
+    "p3_mean_margin": -0.09690872195491557,
+    "p3_mean_matched_control_dice": 0.5676135334449932,
+    "p3_mean_privileged_dice": 0.47070481149007765,
+    "p3_win_rate": 0.4666666666666667,
+    "prompt_family_count": 5,
+    "query_count": 30,
+    "segmenter": "SAM-L",
+    "status": "FAIL",
+    "uncertainty_warning": true
+  }
+}

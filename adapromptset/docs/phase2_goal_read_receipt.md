@@ -242,6 +242,19 @@ Phase 2D primary protocol:
 - query count: `30`;
 - pass thresholds: P3 mean paired Dice margin `>= 0.05`, win rate `>= 0.70`, catastrophic failure rate `<= 0.10`, positive bootstrap point estimate, coordinate/cost audits passing.
 
-Current Phase 2D state:
+Phase 2D confirmation result after preregistration commit `f5c2de3`:
 
-`PHASE2D_GATE_D_CONFIRMATION_PREREGISTERED_NOT_RUN`
+| Metric | SAM-B | SAM-L |
+| --- | ---: | ---: |
+| P3 mean paired Dice margin | `-0.157937` | `-0.096909` |
+| P3 win rate | `0.433333` | `0.466667` |
+| P3 catastrophic failure rate | `0.666667` | `0.400000` |
+| Coordinate audit | `PASS` | `PASS` |
+| Cost audit | `PASS` | `PASS` |
+| Status | `FAIL` | `FAIL` |
+
+Final Phase 2D state:
+
+`STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`
+
+GlaS testA/testB remain locked and unused. Gate E/F/G/H/I remain closed/prohibited.
