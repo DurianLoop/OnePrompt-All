@@ -66,3 +66,12 @@
 - The protocol snapshot, input hashes, and compute plan are stored under `reports/phase2_glas/gate_d_confirmation/`. SAM-B/SAM-L confirmation inference has not yet run and must wait for the preregistration commit `phase2d: preregister glas gate d confirmation`.
 - After preregistration commit `f5c2de3`, `scripts/run_glas_gate_d_confirmation.py --project-root D:\SAM\adapromptset --device cuda:0` ran the full 30-query confirmation. Both SAM-B and SAM-L failed the preregistered P3 primary criterion: SAM-B margin `-0.157937`, win rate `0.433333`, catastrophic rate `0.666667`; SAM-L margin `-0.096909`, win rate `0.466667`, catastrophic rate `0.400000`. Coordinate and cost audits passed, and testA/testB access remained `false`.
 - The final Phase 2D state is `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`. Gate E/F/G/H/I remain closed/prohibited for GlaS, and no second Gate D criterion revision is allowed.
+
+## 2026-07-19 Phase 3 GlaS Region Prompt Preregistration
+
+- Branch `phase3-glas-region-prompts` was created from Phase 2D artifact commit `93b319e`.
+- A CPU-only interpretation audit was added through `src/adapromptset/scripts/audit_phase3_interpretation.py` and `scripts/audit_phase3_interpretation.py`. It writes `reports/phase3_interpretation_audit/*` without new SAM inference and relabels C2 scientifically as `alternative_reference_control`.
+- The historical Phase 2D operational state remains `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`, while the Phase 3 interpretation state is `PIVOT_GLAS_REGION_PROMPT_REQUIRED`.
+- A 40/15 split inside the 55-image GlaS utility pool was added through `src/adapromptset/scripts/build_glas_phase3_region_splits.py`. It writes `manifests/phase3/glas_region_calibration_40.csv`, `glas_region_selection_15.csv`, and `glas_region_references.csv`; testA/testB access remains false.
+- Region bank v1 was frozen in `configs/actions/glas_region_bank_v1.{yaml,json}` with R00-R09 automatic actions and U01-U03 privileged upper bounds. The strict validation pool cannot select thresholds or add actions.
+- Phase 3 protocol, claim registry, exposure audit, gate status, compute ledger, protocol snapshot, and input hashes were created before any new SAM region-prompt inference.

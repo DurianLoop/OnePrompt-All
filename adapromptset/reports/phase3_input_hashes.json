@@ -1,0 +1,32 @@
+{
+  "base_commit": "93b319e",
+  "date": "2026-07-19",
+  "files": {
+    "configs/actions/glas_region_bank_v1.json": "EE1D9780075EC084BB1AE6658712C2CC135B0D671C891A4EB0B5511325990B3B",
+    "configs/actions/glas_region_bank_v1.yaml": "FBC141051E24C4121BF9C033103F4F011A445F0968AF003610046D3AE2D54A4C",
+    "docs/glas_gate_d_interpretation_addendum.md": "25684C926FDDFEDCBAD99950EF1E5027EBD196DB0CB738168BB6F187C545A67E",
+    "docs/glas_region_prompt_claim_registry.md": "B0D4F29E970CC5A09B68ACEB7D51E20C2CCBF3E37FD2FBB918C9A110430F59F8",
+    "docs/glas_region_prompt_exposure_audit.md": "A8281C0483CD8A115F5744205B7427A94E251D24060F215CFE27BA5915436EEB",
+    "docs/glas_region_prompt_protocol_v1.md": "4F143B7B22898A2E2BDDB5DDDC1F35CAD4CE64A2709FD49130A6440F7A12F60D",
+    "docs/phase3_goal_read_receipt.md": "4693B4333423B89A73CFF4B3D7B5A0B3ACDF9F5BF5360AEDCC516CCCDEA153EE",
+    "docs/phase3_scientific_pivot.md": "8CDFCB100497591D8983FC30E7043AB516995E28A688B28C89D0195178E5EE04",
+    "manifests/phase2/glas/case_assignments.csv": "0E3B35444993DE858DA59F92E1F00DB126A5E7A85E2FC77252C347FF3E322A34",
+    "manifests/phase2/glas/episodes_val.csv": "18291E9E9A1CFACCCC4395B2333B57034D65C3DF8AC5ED5AA1DEFF74581AF3EA",
+    "manifests/phase3/glas_region_calibration_40.csv": "7ADCCE2CEB23593B306B413A955A85E9FCA5F17147CCE54AA0641A677B95C116",
+    "manifests/phase3/glas_region_references.csv": "7CB21A6F1456874343BA9AFF419830112477DBCD2A4633A03CE6BF5C1D5D72DA",
+    "manifests/phase3/glas_region_selection_15.csv": "9E79F04A879409DABE86289F8FF39CB732D8B1F37A862110578E31AE9C7AF1C3",
+    "reports/phase2_glas/candidates_redesign_v1/gate_c_summary.json": "7A33C513EBD96984D4720D282F712B2B025D711BADB4377E81EF5FFC5093F13C",
+    "reports/phase2_glas/gate_d_confirmation/gate_d_confirmation_summary.json": "493CE2EEBF059B2F58F71D866154118DB3650FD45331034056C1F9DBFF843AB6",
+    "reports/phase3_glas/split/region_split_report.json": "4FB1DF9A47D60A45240FA0B289F5DA13C31414A9330C574FBA3021439FEDDD2F",
+    "reports/phase3_interpretation_audit/interpretation_summary.json": "EFDDC4AC9E02762C91BADFDAA103454E362C7EC3E757B869990715C5847D9423",
+    "reports/phase3_protocol_snapshot.json": "900DE20A297325E27E025C6C8E4ABD426A00E36680AE76CF286B5DCA30077912",
+    "src/adapromptset/scripts/audit_phase3_interpretation.py": "3DC9D5A492F6768F19B1BD9B8693981982F22A9A39E3CD8311A482C1A9B2B14E",
+    "src/adapromptset/scripts/build_glas_phase3_region_splits.py": "578A101679A364BA2B8FA72B347B3256AD713FEDC39F2ED5AC04C4333843F306"
+  },
+  "schema_version": "adapromptset.phase3.input_hashes.v1",
+  "test_access_guard": {
+    "testA_read_allowed": false,
+    "testB_read_allowed": false,
+    "testA_testB_used_for_method_selection": false
+  }
+}

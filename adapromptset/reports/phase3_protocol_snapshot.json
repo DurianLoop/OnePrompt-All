@@ -1,0 +1,57 @@
+{
+  "allowed_states": [
+    "PHASE3_INTERPRETATION_AUDIT_COMPLETE",
+    "PHASE3_GATE_R1_PASS",
+    "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+    "PHASE3_GATE_R2_PASS",
+    "PIVOT_DIRECT_MATCHING_MASK",
+    "STOP_AUTOMATIC_REGION_GAP_TOO_LARGE",
+    "STOP_REGION_PROMPT_INTERFACE_FAILURE",
+    "CONTINUE_PROMPT_TYPE_ROUTER",
+    "PIVOT_DETERMINISTIC_REGION_PROMPT",
+    "PIVOT_REGION_ORACLE_ANALYSIS",
+    "PHASE3_ROUTER_PASS",
+    "PHASE3_ROUTER_FAIL",
+    "PHASE3_FORMAL_TEST_COMPLETE",
+    "PHASE3_BLOCKED_TECHNICAL"
+  ],
+  "base_commit": "93b319e",
+  "branch": "phase3-glas-region-prompts",
+  "date": "2026-07-19",
+  "dense_map_status": "not_cached_complete_dense_maps; frozen local_peaks candidate evidence is available; dense regeneration requires frozen DINOv2-L config/hash",
+  "gate_thresholds": {
+    "R1_box": {
+      "box_iou_improvement_min": 0.1,
+      "empty_proposal_rate_max": 0.1,
+      "foreground_recall_min": 0.7,
+      "query_win_rate_min": 0.7
+    },
+    "R1_mask": {
+      "control_improvement_min": 0.15,
+      "empty_proposal_rate_max": 0.1,
+      "foreground_recall_min": 0.6,
+      "raw_mask_dice_min": 0.3
+    },
+    "R2": {
+      "catastrophic_failure_rate_max": 0.2,
+      "mean_dice_margin_min": 0.05,
+      "query_win_rate_min": 0.7,
+      "region_recovery_min": 0.3
+    },
+    "R3": {
+      "non_global_fixed_oracle_fraction_min": 0.25,
+      "oracle_gap_min": 0.01
+    }
+  },
+  "interpretation_state": "PIVOT_GLAS_REGION_PROMPT_REQUIRED",
+  "phase2d_historical_state": "STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED",
+  "protocol": "adapromptset.phase3.glas_region_prompt.v1",
+  "region_bank": "configs/actions/glas_region_bank_v1.json",
+  "split": {
+    "calibration": 40,
+    "references_per_query": 3,
+    "selection": 15,
+    "strict_validation": 30
+  },
+  "testA_testB_access_allowed": false
+}

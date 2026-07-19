@@ -84,6 +84,34 @@
 
 Current Phase 2D status: `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`.
 
+## Phase 3 - GlaS Automatic Region Prompt Feasibility (2026-07-19)
+
+- [x] Create Phase 3 branch from Phase 2D artifact commit.
+  - 2026-07-19: Created `phase3-glas-region-prompts` from `93b319e`.
+- [x] Complete CPU-only Phase 2D interpretation audit before new SAM inference.
+  - 2026-07-19: Generated `reports/phase3_interpretation_audit/*`; status `PHASE3_INTERPRETATION_AUDIT_COMPLETE`; interpretation state `PIVOT_GLAS_REGION_PROMPT_REQUIRED`.
+- [x] Add GlaS Gate D interpretation addendum.
+  - 2026-07-19: Added `docs/glas_gate_d_interpretation_addendum.md`; original operational state remains `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`.
+- [x] Create Phase 3 scientific pivot and region protocol documents.
+  - 2026-07-19: Added `docs/phase3_scientific_pivot.md`, `docs/glas_region_prompt_protocol_v1.md`, `docs/glas_region_prompt_exposure_audit.md`, and `docs/glas_region_prompt_claim_registry.md`.
+- [x] Create 40/15 internal region split inside the 55-image utility pool.
+  - 2026-07-19: Added `manifests/phase3/glas_region_calibration_40.csv`, `manifests/phase3/glas_region_selection_15.csv`, `manifests/phase3/glas_region_references.csv`, and `reports/phase3_glas/split/region_split_report.{json,md}`.
+- [x] Freeze region action bank v1 and parameter grid.
+  - 2026-07-19: Added `configs/actions/glas_region_bank_v1.{yaml,json}` with R00-R09 automatic actions and U01-U03 privileged upper bounds.
+- [x] Create Phase 3 protocol snapshot, input hashes, gate status, and compute ledger before new SAM inference.
+  - 2026-07-19: Added `reports/phase3_protocol_snapshot.json`, `reports/phase3_input_hashes.json`, `reports/phase3_gate_status.md`, and `reports/phase3_compute_ledger.csv`.
+- [ ] Create preregistration git commit before new SAM inference.
+  - Required commit message: `phase3: preregister glas automatic region prompt study`.
+- [ ] Run internal parameter calibration.
+- [ ] Run Gate R1 proposal-quality evaluation.
+- [ ] Run SAM-B Gate R2 only if R1 passes.
+- [ ] Run R3 oracle only if R2 passes.
+- [ ] Train router only if R3 reaches `CONTINUE_PROMPT_TYPE_ROUTER`.
+- [ ] Access testA/testB only if a final method is frozen.
+- [ ] Generate `reports/phase3_final_report.{md,json}` and claim-safe `paper_phase3` PDF/source.
+
+Current Phase 3 status: `PHASE3_INTERPRETATION_AUDIT_COMPLETE`.
+
 ## Phase -1 — 当前工作区可行性核对（2026-07-17 已审）
 
 此阶段用于约束 `D:\SAM` 当前工作区的真实起点。它不是方法贡献本身，但必须先读完，避免把长期蓝图误当作已经具备的工程状态。
