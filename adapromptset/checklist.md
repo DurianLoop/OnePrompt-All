@@ -100,17 +100,25 @@ Current Phase 2D status: `STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED`.
   - 2026-07-19: Added `configs/actions/glas_region_bank_v1.{yaml,json}` with R00-R09 automatic actions and U01-U03 privileged upper bounds.
 - [x] Create Phase 3 protocol snapshot, input hashes, gate status, and compute ledger before new SAM inference.
   - 2026-07-19: Added `reports/phase3_protocol_snapshot.json`, `reports/phase3_input_hashes.json`, `reports/phase3_gate_status.md`, and `reports/phase3_compute_ledger.csv`.
-- [ ] Create preregistration git commit before new SAM inference.
+- [x] Create preregistration git commit before new SAM inference.
   - Required commit message: `phase3: preregister glas automatic region prompt study`.
-- [ ] Run internal parameter calibration.
-- [ ] Run Gate R1 proposal-quality evaluation.
-- [ ] Run SAM-B Gate R2 only if R1 passes.
-- [ ] Run R3 oracle only if R2 passes.
-- [ ] Train router only if R3 reaches `CONTINUE_PROMPT_TYPE_ROUTER`.
-- [ ] Access testA/testB only if a final method is frozen.
-- [ ] Generate `reports/phase3_final_report.{md,json}` and claim-safe `paper_phase3` PDF/source.
+  - 2026-07-19: Commit `471f529` created before the internal candidate calibration and Gate R1 evaluation.
+- [x] Run internal parameter calibration.
+  - 2026-07-19: Generated `reports/phase3_glas/region_candidate_calibration/*` from 165 internal reference episodes with frozen DINOv2-L/local-peaks candidate evidence. The reused Gate-C script returned a Gate-C-style FAIL, but artifacts were complete and used only for Phase 3 R1.
+- [x] Run Gate R1 proposal-quality evaluation.
+  - 2026-07-19: Generated `reports/phase3_glas/gate_r1_region_proposal/*`; final R1 state is `STOP_GLAS_REGION_PROPOSAL_FAILURE`.
+- [x] Run SAM-B Gate R2 only if R1 passes.
+  - 2026-07-19: R1 failed, so SAM-B R2 was correctly not run.
+- [x] Run R3 oracle only if R2 passes.
+  - 2026-07-19: R2 was blocked by R1 failure, so R3 was correctly not run.
+- [x] Train router only if R3 reaches `CONTINUE_PROMPT_TYPE_ROUTER`.
+  - 2026-07-19: R3 did not run, so router training was correctly prohibited.
+- [x] Access testA/testB only if a final method is frozen.
+  - 2026-07-19: No final method was frozen; testA/testB remained locked and unused.
+- [x] Generate `reports/phase3_final_report.{md,json}` and claim-safe `paper_phase3` PDF/source.
+  - 2026-07-19: `reports/phase3_final_report.{md,json}` exists; `paper_phase3/main.tex` and `paper_phase3/build/main.pdf` were built as a claim-safe 8-page negative/gated-study paper. PDF SHA256=`B75339E91F5F9BCE1F77DA8FA84E3E1F9095DB2623954D78E376B9FB14B0DD2A`; log scan passed for overfull/undefined/missing/rerun warnings; 8 rendered PNG pages were verified.
 
-Current Phase 3 status: `PHASE3_INTERPRETATION_AUDIT_COMPLETE`.
+Current Phase 3 status: `STOP_GLAS_REGION_PROPOSAL_FAILURE`.
 
 ## Phase -1 — 当前工作区可行性核对（2026-07-17 已审）
 

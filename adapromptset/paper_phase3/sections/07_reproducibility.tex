@@ -1,0 +1,25 @@
+\section{Reproducibility and Audit Trail}
+
+\subsection{Commit and Artifact Boundaries}
+
+Phase 3 starts from the Phase 2D artifact commit \texttt{93b319e}. The pre-registration commit is \texttt{471f529}, created before the internal candidate calibration and before Gate R1 evaluation. This matters because the R1 threshold grid, action bank, data roles, claim registry, and access rules were already fixed when strict validation was evaluated. The final state is therefore not a retrospective interpretation of a failed experiment; it is the direct output of the pre-registered state machine.
+
+The required Phase 3 documents are present as versioned project artifacts: the goal read receipt, scientific pivot, Gate-D interpretation addendum, region prompt protocol, exposure audit, claim registry, gate status, compute ledger, protocol snapshot, and input hashes. The split artifacts freeze the 40 calibration images, 15 internal selection images, and reference episodes. The R1 artifacts include full parameter-grid results, selected global configurations, query-level metrics, family summaries, and a JSON/Markdown gate summary.
+
+\subsection{Why R2 Was Not Run}
+
+The most important reproducibility decision is the absence of R2. R2 would have measured SAM-B automatic region prompt viability, SAM gain, and recovery relative to privileged GT upper bounds. Running it after R1 failure would violate the protocol because the automatic prompt input did not first clear proposal-quality thresholds. This is not an efficiency shortcut. It prevents a weak automatic proposal from being laundered into a segmenter claim, and it prevents qualitative cherry-picking after observing strict-validation behavior.
+
+The same logic applies downstream. R3 needs R2-passing automatic actions to construct a legal region-action utility matrix. The router needs R3 to demonstrate that query-level prompt representation preferences exist and are predictable. Formal testA/testB access needs either a validated router, a frozen deterministic region method, or a frozen direct-mask method. None of those states was reached, so all downstream quantities are recorded as blocked.
+
+\subsection{Claim Mapping}
+
+The allowed claim is limited to the gate evidence: frozen matching evidence and sparse local-peak candidates did not produce region proposals that beat pre-registered R1 controls on GlaS strict validation; the automatic region prompt route stops before SAM refinement. The forbidden claims are correspondingly explicit. The paper does not claim that automatic region prompting works, that SAM refinement adds value, that a region oracle gap exists, that a router improves performance, or that formal test performance has been measured.
+
+This mapping is conservative but useful. It converts an experimental failure into a boundary condition for prompt-interface research. The data show that the region interface is viable under privileged GT boxes, but the tested automatic proposal generator cannot supply that interface reliably enough. Any future positive result must therefore solve the automatic proposal gap under a new pre-registered protocol rather than tune the current strict-validation failure.
+
+\subsection{Command-Level Reproduction}
+
+The reproducible Phase 3 path is the following script sequence, each invoked with the project root fixed to \texttt{D:/SAM/adapromptset}: interpretation audit, 40/15 split builder, candidate-pilot evidence export, Gate R1 runner, and Phase 3 paper asset export.
+
+The first two commands are CPU-only artifact and manifest steps. The candidate-pilot command writes frozen matching evidence for the internal protocol and is logged as a Gate-C-style artifact producer, not as the R1 decision. The R1 command writes the unique Phase 3 stopping state. The paper asset exporter reads only those artifacts and emits the tables and figures used in this PDF.

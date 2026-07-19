@@ -41,6 +41,8 @@ adapromptset-audit-glas-phase2-gate-d = "adapromptset.scripts.audit_glas_phase2_
 adapromptset-run-glas-gate-d-confirmation = "adapromptset.scripts.run_glas_gate_d_confirmation:main"
 adapromptset-audit-phase3-interpretation = "adapromptset.scripts.audit_phase3_interpretation:main"
 adapromptset-build-glas-phase3-region-splits = "adapromptset.scripts.build_glas_phase3_region_splits:main"
+adapromptset-run-glas-phase3-gate-r1 = "adapromptset.scripts.run_glas_phase3_gate_r1:main"
+adapromptset-export-phase3-paper-assets = "adapromptset.scripts.export_phase3_paper_assets:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

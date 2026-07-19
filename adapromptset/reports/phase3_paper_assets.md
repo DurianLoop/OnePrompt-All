@@ -1,0 +1,22 @@
+# Phase 3 Paper Assets
+
+Status: `PASS_PHASE3_PAPER_ASSETS`
+
+Tables:
+- `paper_phase3\tables\table_compute_and_access.tex`
+- `paper_phase3\tables\table_control_decomposition.tex`
+- `paper_phase3\tables\table_downstream_gate_status.tex`
+- `paper_phase3\tables\table_phase2d_interpretation.tex`
+- `paper_phase3\tables\table_r1_region_proposal_quality.tex`
+- `paper_phase3\tables\table_region_action_definitions.tex`
+- `paper_phase3\tables\table_selected_region_configs.tex`
+
+Figures:
+- `paper_phase3\figures\p3_failure_taxonomy.png`
+- `paper_phase3\figures\phase2d_dice_vs_component_count.png`
+- `paper_phase3\figures\phase2d_point_vs_region_upper_bound.png`
+- `paper_phase3\figures\phase2d_representative_failure_panels.png`
+- `paper_phase3\figures\phase3_gate_state_flow.png`
+- `paper_phase3\figures\r1_automatic_vs_control_scatter.png`
+- `paper_phase3\figures\r1_family_metrics.png`
+- `paper_phase3\figures\r1_parameter_grid_curves.png`

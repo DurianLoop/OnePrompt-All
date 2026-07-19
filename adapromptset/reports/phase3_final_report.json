@@ -1,0 +1,122 @@
+{
+  "schema_version": "adapromptset.phase3.final_report.v1",
+  "date": "2026-07-19",
+  "branch": "phase3-glas-region-prompts",
+  "base_commit": "93b319e",
+  "preregistration_commit": "471f529",
+  "final_state": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+  "phase2d_frozen_history": {
+    "historical_operational_state": "STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED",
+    "interpretation_correction": "grouped sparse point prompting failed; region prompting remains viable as indicated by the privileged box upper bound",
+    "interpretation_state": "PIVOT_GLAS_REGION_PROMPT_REQUIRED",
+    "c2_label": "alternative_reference_control",
+    "testA_testB_used": false
+  },
+  "phase3_protocol": {
+    "protocol": "docs/glas_region_prompt_protocol_v1.md",
+    "region_bank": "configs/actions/glas_region_bank_v1.json",
+    "calibration_split": "manifests/phase3/glas_region_calibration_40.csv",
+    "selection_split": "manifests/phase3/glas_region_selection_15.csv",
+    "references": "manifests/phase3/glas_region_references.csv",
+    "strict_validation": "manifests/phase2/glas/episodes_val.csv",
+    "testA_testB_access": false
+  },
+  "interpretation_audit": {
+    "summary": "reports/phase3_interpretation_audit/interpretation_summary.json",
+    "sam_b_p4_gt_box_dice": 0.7276371435778408,
+    "sam_l_p4_gt_box_dice": 0.7234776769026617,
+    "sam_b_p3_margin": -0.15793724664955716,
+    "sam_l_p3_margin": -0.09690872195491557
+  },
+  "internal_region_calibration": {
+    "artifact_dir": "reports/phase3_glas/region_candidate_calibration",
+    "episode_count": 165,
+    "gpu_hours": 0.029398,
+    "note": "The reused candidate pilot script reports Gate-C-style FAIL due negative-blank logic, but the candidate evidence CSVs were complete and were used for Phase 3 R1 only."
+  },
+  "gate_r1": {
+    "summary": "reports/phase3_glas/gate_r1_region_proposal/r1_summary.json",
+    "state": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+    "strongest_automatic_method": "R03_automatic_union_box",
+    "strongest_automatic_metric": 0.7447848837766036,
+    "strongest_automatic_metric_type": "box_iou",
+    "strongest_automatic_improvement": 0.025965079074951342,
+    "strongest_automatic_win_rate": 0.2,
+    "raw_matching_mask_dice": 0.17875410077174622,
+    "sam_refined_dice": null,
+    "sam_refinement_gain": null,
+    "r1_family_states": {
+      "R00_direct_matching_mask": "FAIL",
+      "R03_automatic_union_box": "FAIL",
+      "R04_automatic_largest_component_box": "FAIL",
+      "R05_automatic_top3_component_boxes": "FAIL"
+    }
+  },
+  "gate_states": {
+    "interpretation": "PHASE3_INTERPRETATION_AUDIT_COMPLETE",
+    "R1": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+    "R2": "BLOCKED_BY_R1_FAILURE",
+    "R3": "BLOCKED_BY_R1_FAILURE",
+    "router": "PROHIBITED_BY_R1_FAILURE",
+    "formal_test": "PROHIBITED_BY_R1_FAILURE"
+  },
+  "gt_upper_bound_gap_and_recovery": {
+    "gt_region_upper_bound_available": true,
+    "sam_b_gt_box_dice": 0.7276371435778408,
+    "sam_l_gt_box_dice": 0.7234776769026617,
+    "automatic_region_recovery": null,
+    "reason": "R2 was not run because R1 failed; recovery requires SAM automatic region prompt Dice."
+  },
+  "oracle_gap": {
+    "R3_run": false,
+    "oracle_gap": null,
+    "reason": "R3 requires R2 pass; R2 was blocked by R1 failure."
+  },
+  "formal_test": {
+    "testA_status": "LOCKED_UNUSED",
+    "testB_status": "LOCKED_UNUSED",
+    "access_log": "No Phase 3 formal test access occurred."
+  },
+  "claim_boundary": {
+    "allowed": "Frozen matching evidence and sparse local-peak candidates did not produce region proposals that beat preregistered R1 controls on GlaS strict validation; the automatic region prompt route stops before SAM refinement.",
+    "not_allowed": [
+      "automatic region prompting works",
+      "SAM refinement gain",
+      "region action oracle gap",
+      "prompt-type router improvement",
+      "formal testA/testB result"
+    ]
+  },
+  "paper": {
+    "direction": "When Prompt Interfaces Fail: A Gated Study of Reference-Guided Foundation Segmentation in Pathology",
+    "source": "paper_phase3/main.tex",
+    "pdf": "paper_phase3/build/main.pdf",
+    "clean_latex_status": "PASS_8_PAGE_BUILD",
+    "artifact_verified": true,
+    "page_count": 8,
+    "pdf_sha256": "B75339E91F5F9BCE1F77DA8FA84E3E1F9095DB2623954D78E376B9FB14B0DD2A",
+    "log_scan": "PASS_NO_OVERFULL_UNDEFINED_MISSING_OR_RERUN_WARNINGS",
+    "rendered_png_pages": 8,
+    "asset_report": "reports/phase3_paper_assets.json",
+    "note": "Claim-safe Phase 3 negative-result paper was compiled and rendered for visual QA."
+  },
+  "compute": {
+    "phase3_gpu_hours": 0.029398,
+    "phase3_budget_gpu_hours": 40,
+    "phase2_plus_phase3_recorded_gpu_hours": 0.160308,
+    "ledger": "reports/phase3_compute_ledger.csv"
+  },
+  "reproducibility_commands": [
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_phase3_interpretation.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\build_glas_phase3_region_splits.py --assignments-csv D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\case_assignments.csv --out-dir D:\\SAM\\adapromptset\\manifests\\phase3 --report-dir D:\\SAM\\adapromptset\\reports\\phase3_glas\\split",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_candidate_pilot.py --project-root D:\\SAM\\adapromptset --dataset-name GlaS --episodes-csv D:\\SAM\\adapromptset\\manifests\\phase3\\glas_region_references.csv --out-dir D:\\SAM\\adapromptset\\reports\\phase3_glas\\region_candidate_calibration --max-episodes 165 --device auto --positive-layout local_peaks --positive-limits 5 10 20 --min-positive-distance 2.0",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_glas_phase3_gate_r1.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_phase3_paper_assets.py --project-root D:\\SAM\\adapromptset",
+    "cd D:\\SAM\\adapromptset\\paper_phase3; pdflatex -interaction=nonstopmode -halt-on-error -output-directory=build main.tex"
+  ],
+  "unresolved_blockers": [
+    "No automatic region proposal family passed R1.",
+    "Dense matching maps were not cached as complete maps; R1 used sparse candidate evidence from the frozen local-peaks redesign.",
+    "R2/R3/router/test are blocked by R1 failure."
+  ]
+}

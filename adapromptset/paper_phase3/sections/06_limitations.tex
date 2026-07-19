@@ -1,0 +1,7 @@
+\section{Limitations}
+
+This report is intentionally narrower than a success-method paper. It does not evaluate SAM-B automatic region prompts because R1 fails before SAM inference. It does not evaluate SAM-L replication, R3 oracle gap, a learned router, or formal testA/testB performance. Those omissions are protocol consequences, not hidden negative results.
+
+The R1 implementation uses sparse candidate evidence from the frozen local-peaks redesign rather than cached full dense maps for every reference. The report therefore supports a statement about the tested frozen local-peaks-derived proposals, not all possible dense matching-map segmentations. The region bank is finite and pre-registered; it does not cover learned proposal models, trainable medical segmenters, SAM-H, SAM2, MedSAM, or unrestricted search.
+
+The GT upper-bound rows are privileged and cannot be mixed with automatic results. They remain useful for interpreting the prompt interface, but they do not prove deployable automatic region prompting. Finally, the 30 strict-validation queries are a validation gate, not a formal test. testA/testB remain locked and unused.

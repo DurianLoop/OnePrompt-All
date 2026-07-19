@@ -1,0 +1,13 @@
+\section{Introduction}
+
+Frozen foundation models make a tempting promise for pathology segmentation: use a reference image to locate visually similar tissue in a query, then express that localization as prompts to a general segmentation model. AdaPromptSet was initially framed as budget-constrained prompt-set selection, but the MoNuSAC route reached \texttt{PIVOT\_ORACLE\_ANALYSIS}: the observed oracle gap was too small to justify adaptive policy training. The subsequent GlaS strict protocol asked a different question, namely whether a pre-registered prompt interface can make frozen SAM useful for whole-image gland segmentation.
+
+Phase 2D answered the grouped-point version of that question negatively. The primary registered prompt, P3 component-grouped centroids, used at most three GT component centroids, grouped them separately, invoked SAM once per group, and fused the masks. On the complete 30-query strict validation pool, SAM-B obtained Dice 0.510 against a matched-control Dice of 0.667, while SAM-L obtained Dice 0.471 against a matched-control Dice of 0.568. Those failures remain the historical operational Gate-D state.
+
+However, the same Phase 2D artifact contains an important boundary: the privileged P4 union-box prompt reaches Dice 0.728 for SAM-B and 0.723 for SAM-L. That upper bound does not license an automatic method claim, because it uses query GT. It does show that a region interface can be a viable SAM interface when the region is correct. Phase 3 therefore pivots from asking how many grouped points to select toward asking whether frozen reference-conditioned matching evidence can produce an automatic region prompt of sufficient quality.
+
+This paper reports the result of that pivot. We do not run a new SAM region experiment after Gate R1 fails. We instead report the gate failure, the allowed tables and diagnostics, and the downstream quantities that are necessarily not applicable. The contribution is a claim-safe audit of a prompt-interface failure, including explicit separation between automatic evidence, matched controls, and privileged upper bounds.
+
+\input{tables/table_phase2d_interpretation}
+
+The remainder of the paper is organized around the state machine. Section 2 places this study relative to promptable segmentation and frozen matching. Section 3 defines the frozen protocol, region bank, and gates. Section 4 reports the Phase 2D interpretation audit and Gate R1 proposal-quality results. Section 5 explains why R2/R3/router/test results are not present. Sections 6 and 7 give limitations and the final scientific direction.

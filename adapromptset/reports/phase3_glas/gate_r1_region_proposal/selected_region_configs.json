@@ -1,0 +1,30 @@
+{
+  "R00_direct_matching_mask": {
+    "closing_radius": 5,
+    "contrast_quantile": 0.7,
+    "min_component_area_ratio": 0.001,
+    "positive_limit": 20,
+    "top_component_count": 1
+  },
+  "R03_automatic_union_box": {
+    "closing_radius": 5,
+    "contrast_quantile": 0.7,
+    "min_component_area_ratio": 0.001,
+    "positive_limit": 20,
+    "top_component_count": 1
+  },
+  "R04_automatic_largest_component_box": {
+    "closing_radius": 5,
+    "contrast_quantile": 0.7,
+    "min_component_area_ratio": 0.001,
+    "positive_limit": 20,
+    "top_component_count": 1
+  },
+  "R05_automatic_top3_component_boxes": {
+    "closing_radius": 5,
+    "contrast_quantile": 0.7,
+    "min_component_area_ratio": 0.001,
+    "positive_limit": 20,
+    "top_component_count": 3
+  }
+}

@@ -1,0 +1,13 @@
+\section{Related Work}
+
+\textbf{Promptable segmentation.}
+SAM popularized a promptable segmentation interface using points, boxes, and masks as user-supplied inputs. Medical variants and adaptations show that this interface can be useful in medical images, but a key distinction matters here: a promptable model is not automatically a deployable automatic segmenter. The prompt source, prompt cost, and prompt validity must be audited separately from the model output.
+
+\textbf{Reference-guided dense prediction.}
+Reference-conditioned segmentation methods use support examples or visual correspondence to guide query segmentation. In this project, the matcher is frozen DINOv2-L rather than a trainable medical segmenter. That makes leakage and prompt construction easier to audit, but it also limits how much the system can recover when matching evidence is weak or fragmented.
+
+\textbf{Action banks and prompt policies.}
+AdaPromptSet originally organized prompts as a fixed action bank with cost-aware selection. The MoNuSAC evidence did not support a learned policy, so Phase 3 changes the unit of selection from prompt counts to prompt representation: point, box, mask, or direct matching mask. This is a scientific pivot rather than a retroactive success claim.
+
+\textbf{Upper bounds versus automatic methods.}
+GT boxes and GT coarse masks are informative upper bounds because they test whether the segmenter can use a region interface. They are not automatic methods. Phase 3 keeps this separation explicit: U01-U03 are privileged rows, while R00-R09 are automatic or control actions.

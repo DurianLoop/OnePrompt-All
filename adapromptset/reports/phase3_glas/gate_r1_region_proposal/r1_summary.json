@@ -1,0 +1,126 @@
+{
+  "artifacts": {
+    "family_summary": "reports/phase3_glas/gate_r1_region_proposal/r1_family_summary.csv",
+    "parameter_grid_results": "reports/phase3_glas/gate_r1_region_proposal/parameter_grid_results.csv",
+    "query_level_metrics": "reports/phase3_glas/gate_r1_region_proposal/r1_query_level_metrics.csv",
+    "selected_region_configs": "reports/phase3_glas/gate_r1_region_proposal/selected_region_configs.json"
+  },
+  "dense_map_status": "sparse_candidate_evidence_from_frozen_local_peaks_redesign",
+  "family_summaries": [
+    {
+      "area_ratio": 0.053841748532868224,
+      "closing_radius": 5,
+      "component_coverage": 0.6177618288144604,
+      "contrast_quantile": 0.7,
+      "empty_rate": 0.0,
+      "family": "R00_direct_matching_mask",
+      "foreground_recall": 0.09962777031101776,
+      "mean_control": 0.5950752888714109,
+      "mean_improvement": -0.4163211880996647,
+      "mean_metric": 0.17875410077174622,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "precision": 0.9343509598370808,
+      "query_count": 30,
+      "route": "mask",
+      "status": "FAIL",
+      "top_component_count": 1,
+      "win_rate": 0.06666666666666667
+    },
+    {
+      "area_ratio": 0.6980662681434883,
+      "closing_radius": 5,
+      "component_coverage": 0.8728888509151667,
+      "contrast_quantile": 0.7,
+      "empty_rate": 0.0,
+      "family": "R03_automatic_union_box",
+      "foreground_recall": 0.7906644112264579,
+      "mean_control": 0.7188198047016523,
+      "mean_improvement": 0.025965079074951342,
+      "mean_metric": 0.7447848837766036,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "precision": 0.6206042008948106,
+      "query_count": 30,
+      "route": "box",
+      "status": "FAIL",
+      "top_component_count": 1,
+      "win_rate": 0.2
+    },
+    {
+      "area_ratio": 0.017627072742902858,
+      "closing_radius": 5,
+      "component_coverage": 0.19857123870281765,
+      "contrast_quantile": 0.7,
+      "empty_rate": 0.0,
+      "family": "R04_automatic_largest_component_box",
+      "foreground_recall": 0.02980687849140077,
+      "mean_control": 0.017211203236751075,
+      "mean_improvement": 0.0021985447477975524,
+      "mean_metric": 0.019409747984548625,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "precision": 0.8842053302400809,
+      "query_count": 30,
+      "route": "box",
+      "status": "FAIL",
+      "top_component_count": 1,
+      "win_rate": 0.1
+    },
+    {
+      "area_ratio": 0.03606187544411483,
+      "closing_radius": 5,
+      "component_coverage": 0.3659963671805777,
+      "contrast_quantile": 0.7,
+      "empty_rate": 0.0,
+      "family": "R05_automatic_top3_component_boxes",
+      "foreground_recall": 0.06322369134932246,
+      "mean_control": 0.25517906758193165,
+      "mean_improvement": 0.016567779287186512,
+      "mean_metric": 0.2717468468691182,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "precision": 0.8894721613947951,
+      "query_count": 30,
+      "route": "box",
+      "status": "FAIL",
+      "top_component_count": 3,
+      "win_rate": 0.16666666666666666
+    }
+  ],
+  "schema_version": "adapromptset.phase3.gate_r1.v1",
+  "selected_configs": {
+    "R00_direct_matching_mask": {
+      "closing_radius": 5,
+      "contrast_quantile": 0.7,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "top_component_count": 1
+    },
+    "R03_automatic_union_box": {
+      "closing_radius": 5,
+      "contrast_quantile": 0.7,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "top_component_count": 1
+    },
+    "R04_automatic_largest_component_box": {
+      "closing_radius": 5,
+      "contrast_quantile": 0.7,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "top_component_count": 1
+    },
+    "R05_automatic_top3_component_boxes": {
+      "closing_radius": 5,
+      "contrast_quantile": 0.7,
+      "min_component_area_ratio": 0.001,
+      "positive_limit": 20,
+      "top_component_count": 3
+    }
+  },
+  "selection_pool_query_count": 15,
+  "status": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+  "strict_validation_query_count": 30,
+  "testA_testB_access": false
+}

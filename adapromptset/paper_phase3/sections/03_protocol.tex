@@ -1,0 +1,25 @@
+\section{Protocol}
+
+\subsection{Frozen Data Roles}
+
+GlaS official train remains divided into a 55-image utility pool and a 30-image strict-validation query pool. The 55 images are further split into 40 calibration images and 15 internal method-selection images. GlaS testA and testB remain locked and unused. The statistical unit is the query image; three references per query are repeated measurements and are not independent samples.
+
+\subsection{Frozen Evidence and Region Bank}
+
+The matcher is frozen DINOv2-L with the pre-registered local-peaks candidate redesign that passed GlaS Gate C. No new matcher, feature extractor, threshold grid, or region action is added after strict validation. Query-level evidence is defined by pre-registered aggregation over the three references. Region actions are bounded by the bank in Table~\ref{tab:region_actions}.
+
+\input{tables/table_region_action_definitions}
+\input{tables/table_selected_region_configs}
+
+\subsection{Gate R1}
+
+Gate R1 evaluates proposal quality before any new SAM region inference. A box route must improve mean box IoU over size-matched random boxes by at least 0.10, win on at least 70 percent of queries, reach foreground recall at least 0.70, and keep empty proposals at or below 0.10. A mask route must reach mean raw-mask Dice at least 0.30, improve over matched controls by at least 0.15, reach foreground recall at least 0.60, and keep empty proposals at or below 0.10.
+
+Failure of all automatic families triggers \texttt{STOP\_GLAS\_REGION\_PROPOSAL\_FAILURE}. Under that state, R2 SAM region inference, R3 oracle analysis, router training, and formal test access are prohibited.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=.95\textwidth]{figures/phase3_gate_state_flow.png}
+\caption{Phase 3 state flow. R1 proposal quality fails, so downstream SAM refinement, oracle analysis, router training, and formal tests are blocked by protocol.}
+\label{fig:gate_flow}
+\end{figure*}

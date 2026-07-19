@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Gate R1 proposal quality on 30 strict-validation queries. No automatic family passed the pre-registered thresholds.}
+\label{tab:r1_quality}
+\begin{tabular}{lllllllll}
+\hline
+Family & Route & Metric & Control & Improvement & Win & Recall & Empty & Status \\
+\hline
+R00 direct matching mask & mask & 0.179 & 0.595 & -0.416 & 0.067 & 0.100 & 0.000 & FAIL \\
+R03 automatic union box & box & 0.745 & 0.719 & 0.026 & 0.200 & 0.791 & 0.000 & FAIL \\
+R04 automatic largest component box & box & 0.019 & 0.017 & 0.002 & 0.100 & 0.030 & 0.000 & FAIL \\
+R05 automatic top3 component boxes & box & 0.272 & 0.255 & 0.017 & 0.167 & 0.063 & 0.000 & FAIL \\
+\hline
+\end{tabular}
+\end{table*}

@@ -75,3 +75,6 @@
 - A 40/15 split inside the 55-image GlaS utility pool was added through `src/adapromptset/scripts/build_glas_phase3_region_splits.py`. It writes `manifests/phase3/glas_region_calibration_40.csv`, `glas_region_selection_15.csv`, and `glas_region_references.csv`; testA/testB access remains false.
 - Region bank v1 was frozen in `configs/actions/glas_region_bank_v1.{yaml,json}` with R00-R09 automatic actions and U01-U03 privileged upper bounds. The strict validation pool cannot select thresholds or add actions.
 - Phase 3 protocol, claim registry, exposure audit, gate status, compute ledger, protocol snapshot, and input hashes were created before any new SAM region-prompt inference.
+- After preregistration commit `471f529`, frozen DINOv2-L/local-peaks candidate evidence was generated for the 40/15 internal pool under `reports/phase3_glas/region_candidate_calibration/`.
+- Gate R1 was evaluated under `reports/phase3_glas/gate_r1_region_proposal/` without SAM inference. All R1 families failed the preregistered thresholds; the final Phase 3 state is `STOP_GLAS_REGION_PROPOSAL_FAILURE`.
+- Because R1 failed, SAM-B R2, R3 oracle analysis, router training, and testA/testB evaluation remain blocked/prohibited.
