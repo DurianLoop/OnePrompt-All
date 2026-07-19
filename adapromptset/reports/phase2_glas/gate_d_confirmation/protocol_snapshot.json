@@ -1,0 +1,62 @@
+{
+  "schema_version": "adapromptset.phase2d.protocol_snapshot.v1",
+  "date": "2026-07-19",
+  "protocol_version": "adapromptset.phase2d.glas_gate_d_confirmation.v1",
+  "branch": "phase2-glas-strict",
+  "git_head_before_confirmation": "f37cf7c903e9d1156045d9d660615f8978da921b",
+  "previous_gate_d_status": "STOP_GLAS_SEGMENTER_FAILURE",
+  "previous_gate_d_preserved_as": "EXPLORATORY_GATE_D_FAIL_UNDER_ALL_CASE_MARGIN_RULE",
+  "query_pool": "manifests/phase2/glas/episodes_val.csv",
+  "query_count": 30,
+  "statistical_unit": "query_image",
+  "primary_prompt_family": "P3_component_grouped_centroids",
+  "primary_matched_control": "mean(C1_random_coordinate,C2_mismatched_reference)",
+  "c2_mismatched_reference_mapping": "first_frozen_episode_support_mask",
+  "secondary_prompt_families": [
+    "P1_largest_component_centroid",
+    "P2_fixed_multi_centroid_one_group",
+    "P4_union_mask_bounding_box",
+    "P5_positive_plus_controlled_negative"
+  ],
+  "segmenters": [
+    {
+      "name": "SAM-B",
+      "checkpoint": "D:\\SAM\\assets\\checkpoints\\sam_vit_b.pth"
+    },
+    {
+      "name": "SAM-L",
+      "checkpoint": "D:\\SAM\\assets\\checkpoints\\sam_vit_l_0b3195.pth"
+    }
+  ],
+  "thresholds": {
+    "p3_mean_paired_dice_margin_min": 0.05,
+    "p3_query_win_rate_min": 0.7,
+    "p3_catastrophic_failure_rate_max": 0.1,
+    "catastrophic_dice_min": 0.2,
+    "bootstrap_iterations": 2000,
+    "bootstrap_seed": 20260719
+  },
+  "locked_inference_rules": {
+    "multimask_selection": "highest_sam_score",
+    "resize": "RGB bicubic and mask nearest to 518x518",
+    "fusion": "binary_union",
+    "failed_call_handling": "count_failed_and_catastrophic"
+  },
+  "prohibited": [
+    "GlaS testA/testB access",
+    "candidate generator change",
+    "action bank change",
+    "policy training",
+    "third segmenter",
+    "posthoc threshold change"
+  ],
+  "allowed_final_states": [
+    "PHASE2_GATE_D_PASS_SAMB",
+    "PHASE2_GATE_D_PASS_SAML",
+    "PHASE2_GATE_D_PASS_BOTH_FREEZE_SAMB",
+    "PHASE2_GATE_D_PASS_BOTH_FREEZE_SAML",
+    "PIVOT_GLAS_MORPHOLOGY_CONDITIONAL",
+    "STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED",
+    "PHASE2_GATE_D_BLOCKED_TECHNICAL"
+  ]
+}

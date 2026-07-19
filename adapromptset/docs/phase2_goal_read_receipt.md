@@ -210,3 +210,38 @@ Gate D result:
 The current Phase 2 state is `STOP_GLAS_SEGMENTER_FAILURE`.
 
 The frozen candidate generator had strong positive precision enrichment but insufficient component coverage on GlaS strict validation. The single predeclared `local_peaks` redesign passed Gate C. Gate D then failed for SAM-B, and the only predeclared alternative SAM-L also failed. Action-bank execution, oracle-gap analysis, utility generation, policy training, and formal test are stopped/prohibited for this Phase 2 branch. GlaS testA/testB remain locked and unused.
+
+## Phase 2D Gate D Confirmation Preregistration
+
+Phase 2D is a preregistered confirmation of whether the original 6-case all-case Gate D criterion is too strong for a segmenter execution/viability gate. It does not erase the original Gate D result. The original SAM-B/SAM-L 6-case reports remain preserved as:
+
+`EXPLORATORY_GATE_D_FAIL_UNDER_ALL_CASE_MARGIN_RULE`
+
+Phase 2D is allowed to use only the 30 strict-validation GlaS query images from official train, the frozen utility/reference episodes, the frozen redesigned candidate outputs, SAM-B, and SAM-L. GlaS testA/testB remain locked and must not be read.
+
+Preregistration artifacts created before any new SAM confirmation inference:
+
+| Artifact | SHA256 |
+| --- | --- |
+| `docs/glas_gate_d_confirmation_protocol_v1.md` | `4D5C95F31C756147F066C7C9506B50292636293E73D78B47BE24FB60031FFECA` |
+| `docs/glas_gate_d_amendment_rationale.md` | `CB8252DDD40CC53BCF4B559971BC46C348BFC913796596628948279304495542` |
+| `configs/segmenter/glas_gate_d_confirmation_v1.yaml` | `3D0D7074394D0CAACF61B93F11B48A0B00DAD5D73F26B5E23746C4F21EA4A145` |
+| `reports/phase2_glas/gate_d_confirmation/protocol_snapshot.json` | `C5EFA51FBFF98E46B4A14F1313FB7C60A935C1125630848870FC94F0169882B6` |
+| `reports/phase2_glas/gate_d_confirmation/input_hashes.json` | `9FED471C54AF43630BBEC59032134A655B99C9AF442885D3421FEF0E39C697E9` |
+| `reports/phase2_glas/gate_d_confirmation/compute_plan.json` | `1FEE1C526FF70361EB5FDA59F7191780B0AFB7DC5CB279456C806586232DF014` |
+| `src/adapromptset/scripts/run_glas_gate_d_confirmation.py` | `C2520D144419495F5CCD9C621A60D59685156173B7AC0CF7882B284F697F264C` |
+| `scripts/run_glas_gate_d_confirmation.py` | `5FC8FB83373417E66E50DE4E37C231EDE4559B6DF87707663AD2136A65B68753` |
+| `tests/test_run_glas_gate_d_confirmation.py` | `3C7C91EE36959AC4B825250FBF554965A77BE6B8B8635AFEE95B8E86CFD66898` |
+
+Phase 2D primary protocol:
+
+- primary family: `P3_component_grouped_centroids`;
+- primary matched control: `mean(C1_random_coordinate, C2_mismatched_reference)`;
+- C2 mapping: `first_frozen_episode_support_mask`;
+- statistical unit: query image;
+- query count: `30`;
+- pass thresholds: P3 mean paired Dice margin `>= 0.05`, win rate `>= 0.70`, catastrophic failure rate `<= 0.10`, positive bootstrap point estimate, coordinate/cost audits passing.
+
+Current Phase 2D state:
+
+`PHASE2D_GATE_D_CONFIRMATION_PREREGISTERED_NOT_RUN`

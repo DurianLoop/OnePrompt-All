@@ -18,8 +18,11 @@ Branch: `phase2-glas-strict`
 | Gate G utility reliability | `BLOCKED_BY_GATE_D` | Requires Gate F continuation state, which cannot be reached. |
 | Gate H policy learning | `PROHIBITED_BY_GATE_D` | Policy training prohibited because Gate D failed. |
 | Gate I formal test | `PROHIBITED_BY_GATE_D` | Formal testA/testB evaluation prohibited because Gate D failed. |
+| Phase 2D Gate D confirmation | `PREREGISTERED_NOT_RUN` | One 30-query strict-validation viability confirmation is preregistered to test whether the 6-case all-case Gate D criterion was too strong. SAM inference is prohibited until the preregistration commit is created. |
 
-Current overall status: `STOP_GLAS_SEGMENTER_FAILURE`
+Previous Phase 2 status: `STOP_GLAS_SEGMENTER_FAILURE`
+
+Current overall status: `PHASE2D_GATE_D_CONFIRMATION_PREREGISTERED_NOT_RUN`
 
 ## Gate C Evidence
 
@@ -54,4 +57,34 @@ Current overall status: `STOP_GLAS_SEGMENTER_FAILURE`
 
 The SAM-L run was the only allowed segmenter alternative and was pre-registered in `docs/glas_gate_d_segmenter_alternative_v1.md`. No SAM2 matrix was run.
 
-All later gates are stopped/prohibited. GlaS testA/testB remain locked and were not used.
+All later Phase 2 gates remain stopped/prohibited unless the preregistered Phase 2D confirmation reaches a pass state. GlaS testA/testB remain locked and were not used.
+
+## Phase 2D Confirmation Preregistration
+
+The original 6-case Gate D reports remain preserved as:
+
+`EXPLORATORY_GATE_D_FAIL_UNDER_ALL_CASE_MARGIN_RULE`
+
+Phase 2D confirmation artifacts created before new SAM inference:
+
+| Artifact | Status |
+| --- | --- |
+| `docs/glas_gate_d_confirmation_protocol_v1.md` | frozen protocol |
+| `docs/glas_gate_d_amendment_rationale.md` | amendment rationale |
+| `configs/segmenter/glas_gate_d_confirmation_v1.yaml` | frozen config |
+| `reports/phase2_glas/gate_d_confirmation/protocol_snapshot.json` | protocol snapshot |
+| `reports/phase2_glas/gate_d_confirmation/input_hashes.json` | input hashes |
+| `reports/phase2_glas/gate_d_confirmation/compute_plan.json` | compute budget |
+| `src/adapromptset/scripts/run_glas_gate_d_confirmation.py` | confirmation runner |
+| `scripts/run_glas_gate_d_confirmation.py` | wrapper |
+| `tests/test_run_glas_gate_d_confirmation.py` | focused tests |
+
+Primary confirmation rule:
+
+- use all 30 strict-validation query images;
+- use `P3_component_grouped_centroids` as primary;
+- compare against `mean(C1_random_coordinate, C2_mismatched_reference)`;
+- evaluate SAM-B and SAM-L independently;
+- require P3 mean paired Dice margin `>= 0.05`, query win rate `>= 0.70`, catastrophic failure rate `<= 0.10`, positive bootstrap point estimate, coordinate validation, cost matching, and no hidden oracle.
+
+SAM confirmation has not been run yet. Gate E/F/G/H/I must remain closed until the final Phase 2D state is written.

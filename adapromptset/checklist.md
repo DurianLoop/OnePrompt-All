@@ -58,6 +58,27 @@
 - [x] 归档上一轮 MoNuSAC oracle-analysis 论文。
   - 2026-07-19：旧 8 页 oracle-analysis PDF 与 source/tables/figures/build log/claim audits 已复制到 `paper/archive/monusac_oracle_analysis/`；不删除原始 `paper/` 内容。
 
+## Phase 2D - GlaS Gate D confirmation preregistration (2026-07-19)
+
+- [x] Preserve previous 6-case Gate D failure as historical exploratory evidence.
+  - 2026-07-19: Previous SAM-B/SAM-L Gate D reports remain in `reports/phase2_glas/gate_d_segmenter_smoke/` and `reports/phase2_glas/gate_d_segmenter_smoke_saml/`, recorded as `EXPLORATORY_GATE_D_FAIL_UNDER_ALL_CASE_MARGIN_RULE`.
+- [x] Create Gate D confirmation amendment rationale before new SAM inference.
+  - 2026-07-19: Added `docs/glas_gate_d_amendment_rationale.md`; it explains why the 6-case all-case rule is too strong for an execution/viability gate and states that no second Gate D criterion revision is allowed after this confirmation.
+- [x] Create Gate D confirmation protocol before new SAM inference.
+  - 2026-07-19: Added `docs/glas_gate_d_confirmation_protocol_v1.md`; primary family is `P3_component_grouped_centroids`, primary control is `mean(C1_random_coordinate, C2_mismatched_reference)`, statistical unit is query image, and all 30 strict-validation queries must be included.
+- [x] Freeze Phase 2D config, protocol snapshot, input hashes, and compute plan.
+  - 2026-07-19: Added `configs/segmenter/glas_gate_d_confirmation_v1.yaml` and `reports/phase2_glas/gate_d_confirmation/{protocol_snapshot,input_hashes,compute_plan}.json`. GlaS testA/testB remain locked and not used.
+- [x] Implement CPU-verifiable confirmation runner scaffolding and focused tests.
+  - 2026-07-19: Added `src/adapromptset/scripts/run_glas_gate_d_confirmation.py`, `scripts/run_glas_gate_d_confirmation.py`, and `tests/test_run_glas_gate_d_confirmation.py`. SAM confirmation inference has not run yet.
+- [ ] Create preregistration git commit before SAM inference.
+  - Required commit message: `phase2d: preregister glas gate d confirmation`.
+- [ ] Run SAM-B 30-query confirmation.
+- [ ] Run SAM-L 30-query confirmation.
+- [ ] Generate required Phase 2D metrics, audits, tables, figures, and paper section.
+- [ ] Write the unique final Gate D state and update `reports/phase2_final_report.{md,json}`, `reports/phase2_gate_status.md`, `docs/decision_log.md`, `docs/protocol_history.md`, and this checklist.
+
+Current Phase 2D status: `PHASE2D_GATE_D_CONFIRMATION_PREREGISTERED_NOT_RUN`.
+
 ## Phase -1 — 当前工作区可行性核对（2026-07-17 已审）
 
 此阶段用于约束 `D:\SAM` 当前工作区的真实起点。它不是方法贡献本身，但必须先读完，避免把长期蓝图误当作已经具备的工程状态。

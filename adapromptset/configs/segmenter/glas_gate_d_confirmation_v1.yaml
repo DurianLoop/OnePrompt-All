@@ -1,0 +1,70 @@
+schema_version: adapromptset.phase2d.glas_gate_d_confirmation.config.v1
+protocol_version: adapromptset.phase2d.glas_gate_d_confirmation.v1
+primary_prompt_family: P3_component_grouped_centroids
+query_pool: manifests/phase2/glas/episodes_val.csv
+query_count: 30
+statistical_unit: query_image
+segmenters:
+  - name: SAM-B
+    checkpoint: D:\SAM\assets\checkpoints\sam_vit_b.pth
+  - name: SAM-L
+    checkpoint: D:\SAM\assets\checkpoints\sam_vit_l_0b3195.pth
+prompt_families:
+  P1_largest_component_centroid:
+    privileged: one positive point at the largest foreground component centroid
+    groups: 1
+    max_calls: 1
+  P2_fixed_multi_centroid_one_group:
+    privileged: up to three largest component centroids in one positive group
+    groups: 1
+    max_calls: 1
+  P3_component_grouped_centroids:
+    privileged: up to three largest component centroids, one group per component
+    groups: variable_up_to_3
+    max_calls: 3
+  P4_union_mask_bounding_box:
+    privileged: tight foreground-union bounding box
+    groups: 1
+    max_calls: 1
+  P5_positive_plus_controlled_negative:
+    privileged: largest component centroid plus one deterministic near-boundary negative point
+    groups: 1
+    max_calls: 1
+controls:
+  C1_random_coordinate:
+    role: primary_matched_control
+    seed: 20260719
+    uses_query_gt: false
+  C2_mismatched_reference:
+    role: primary_matched_control
+    mapping: first_frozen_episode_support_mask
+    uses_query_gt: false
+  C3_candidate_anchor:
+    role: diagnostic_only
+    source: reports/phase2_glas/candidates_redesign_v1/candidate_pilot_candidates.csv
+gate_thresholds:
+  primary_family: P3_component_grouped_centroids
+  mean_paired_dice_margin_min: 0.05
+  query_win_rate_min: 0.70
+  catastrophic_failure_rate_max: 0.10
+  catastrophic_dice_min: 0.20
+  bootstrap_iterations: 2000
+  bootstrap_seed: 20260719
+selection_rule:
+  if_samb_pass_saml_fail: PHASE2_GATE_D_PASS_SAMB
+  if_samb_fail_saml_pass: PHASE2_GATE_D_PASS_SAML
+  if_both_pass_default: PHASE2_GATE_D_PASS_BOTH_FREEZE_SAMB
+  if_both_pass_saml_override_margin_min: 0.03
+  if_both_pass_saml_override_catastrophic_rate_drop_min: 0.05
+  if_both_fail: STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED
+locked_rules:
+  multimask_selection: highest_sam_score
+  group_fusion: binary_union
+  resize: RGB and mask resized to 518x518; RGB bicubic; mask nearest
+  failed_call_handling: count as failed, invalid, and catastrophic
+prohibited:
+  - GlaS testA/testB access
+  - candidate generator changes
+  - action bank changes
+  - policy training
+  - SAM2/SAM-H/MedSAM/SAM-H matrix

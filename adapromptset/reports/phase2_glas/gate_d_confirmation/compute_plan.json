@@ -1,0 +1,30 @@
+{
+  "schema_version": "adapromptset.phase2d.compute_plan.v1",
+  "date": "2026-07-19",
+  "budget_gpu_hours": {
+    "protocol_and_audit": 0,
+    "sam_b_30_query_confirmation_max": 6,
+    "sam_l_30_query_confirmation_max": 10,
+    "statistics_and_figures": 0,
+    "total_new_max": 16,
+    "interim_report_at": 12
+  },
+  "reuse": [
+    "GlaS manifests",
+    "existing strict-validation query manifest",
+    "existing SAM-B checkpoint",
+    "existing SAM-L checkpoint",
+    "cached image preprocessing when protocol-compatible"
+  ],
+  "stop_conditions": [
+    "GlaS testA/testB access detected",
+    "manifest hash mismatch",
+    "need to change candidate generator",
+    "need for a third segmenter",
+    "projected GPU hours exceed 16",
+    "SAM checkpoint missing or hash mismatch",
+    "matched controls cannot be implemented"
+  ],
+  "ledger": "reports/phase2_compute_ledger.csv",
+  "confirmation_local_ledger": "reports/phase2_glas/gate_d_confirmation/compute_ledger.csv"
+}

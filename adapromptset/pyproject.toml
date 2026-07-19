@@ -38,6 +38,7 @@ adapromptset-export-related-work = "adapromptset.scripts.export_related_work:mai
 adapromptset-build-glas-phase2-splits = "adapromptset.scripts.build_glas_phase2_splits:main"
 adapromptset-audit-glas-phase2-gate-c = "adapromptset.scripts.audit_glas_phase2_gate_c:main"
 adapromptset-audit-glas-phase2-gate-d = "adapromptset.scripts.audit_glas_phase2_gate_d:main"
+adapromptset-run-glas-gate-d-confirmation = "adapromptset.scripts.run_glas_gate_d_confirmation:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
