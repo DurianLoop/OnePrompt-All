@@ -15,6 +15,7 @@ Date: 2026-07-19
 | Route B metric/control freeze | `configs/experiments/route_b_promptability_benchmark_v1.json`; `reports/route_b_benchmark_freeze/` | Freezes development metrics and controls; not an empirical result and not a formal-test access event. |
 | DDR Route B episode manifests | `manifests/phase4plus/ddr_route_b_train_reference_query_episodes.csv`; `manifests/phase4plus/ddr_route_b_valid_reference_query_episodes.csv` | Train/valid reference/query pairings are observed; valid references are train-only; DDR test remains unobserved. |
 | DDR Route B matcher smoke | `reports/route_b_ddr_development_smoke/` | One valid MA query and one train MA reference were used for DINOv2-L development smoke; query GT was used only for evaluation metrics, not generation; DDR test remains unobserved. |
+| DDR Route B stratified matcher smoke | `reports/route_b_ddr_stratified_matcher/` | Sixteen train/valid query-intent units were used for DINOv2-L development evidence; query GT was used only for evaluation metrics, not generation; DDR test remains unobserved. |
 
 ## Locked Formal Tests
 

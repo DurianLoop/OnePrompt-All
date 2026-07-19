@@ -48,6 +48,7 @@ adapromptset-build-route-b-ddr-manifests = "adapromptset.scripts.build_route_b_d
 adapromptset-audit-route-b-benchmark-freeze = "adapromptset.scripts.audit_route_b_benchmark_freeze:main"
 adapromptset-build-route-b-ddr-episodes = "adapromptset.scripts.build_route_b_ddr_episodes:main"
 adapromptset-run-route-b-ddr-matcher-smoke = "adapromptset.scripts.run_route_b_ddr_matcher_smoke:main"
+adapromptset-run-route-b-ddr-stratified-matcher = "adapromptset.scripts.run_route_b_ddr_stratified_matcher:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

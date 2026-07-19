@@ -114,3 +114,10 @@
 - Output: `reports/route_b_ddr_development_smoke/route_b_ddr_matcher_smoke.json` and `route_b_ddr_matcher_candidates.csv`.
 - Status: `PASS_ROUTE_B_DDR_MATCHER_SMOKE` for pipeline execution; point precision and component coverage were both 0.0.
 - Interpretation: this is development-smoke/failure-taxonomy evidence only. It is not a method-positive result and does not authorize DDR test access or a benchmark-ready claim.
+
+## 2026-07-19 Route B DDR Stratified Matcher Development Evidence
+
+- `scripts/run_route_b_ddr_stratified_matcher.py --project-root D:\SAM\adapromptset --queries-per-intent 2 --device auto` ran DINOv2-L matching on 16 DDR train/valid query-intent units: two per split and lesion intent.
+- Output: `reports/route_b_ddr_stratified_matcher/stratified_matcher_summary.json`, `stratified_matcher_summary.md`, `selected_episodes.csv`, and `query_metrics.csv`.
+- Status: `PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE` for legal execution; mean point precision `0.0125`, mean component coverage `0.0025`, zero precision fraction `0.9375`.
+- Interpretation: the candidate-only DINOv2 matching route is mostly nonlocalizing on this DDR development slice. Route B should now emphasize failure taxonomy, matched controls, and benchmark diagnostics rather than expanding this exact smoke as a method-positive path.

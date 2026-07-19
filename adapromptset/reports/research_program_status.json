@@ -30,6 +30,8 @@
   "route_b_ddr_episode_report": "reports/route_b_ddr_episodes/ddr_route_b_episode_report.json",
   "route_b_ddr_matcher_smoke_status": "PASS_ROUTE_B_DDR_MATCHER_SMOKE",
   "route_b_ddr_matcher_smoke_report": "reports/route_b_ddr_development_smoke/route_b_ddr_matcher_smoke.json",
+  "route_b_ddr_stratified_matcher_status": "PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE",
+  "route_b_ddr_stratified_matcher_report": "reports/route_b_ddr_stratified_matcher/stratified_matcher_summary.json",
   "route_b_ddr_matcher_smoke_signal": {
     "intent": "MA",
     "query_image_id": "007-2846-100",
@@ -38,6 +40,16 @@
     "component_coverage": 0.0,
     "segmenter_inference": false,
     "claim_boundary": "development_smoke_only_not_benchmark_result"
+  },
+  "route_b_ddr_stratified_matcher_signal": {
+    "selected_episode_count": 16,
+    "queries_per_intent": 2,
+    "mean_point_precision": 0.0125,
+    "mean_component_coverage": 0.0025,
+    "zero_precision_fraction": 0.9375,
+    "zero_component_coverage_fraction": 0.9375,
+    "segmenter_inference": false,
+    "claim_boundary": "stratified_development_smoke_only_not_benchmark_result"
   },
   "route_b_ddr_dev_manifest_counts": {
     "train_images": 383,
@@ -50,7 +62,7 @@
     "train_episode_rows": 2892,
     "valid_episode_rows": 1203
   },
-  "next_required_action": "expand Route B DDR development evidence with stratified train/valid smoke or pivot to failure-taxonomy benchmark if matching remains nonlocalizing",
+  "next_required_action": "register Route B failure-taxonomy/control-aware benchmark expansion because candidate-only DINOv2 matching is mostly nonlocalizing on DDR stratified development smoke",
   "new_model_inference_since_preregistration": true,
   "formal_test_access": false,
   "submission_ready": false
