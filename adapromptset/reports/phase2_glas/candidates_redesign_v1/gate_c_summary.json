@@ -1,0 +1,109 @@
+{
+  "artifacts": {
+    "cache_manifest": {
+      "path": "cache/glas_candidates_redesign_v1/candidate_cache_manifest.json",
+      "sha256": "D09266952C483B42599769941D9C610A199DD5F2025A6DA82A96F77C9854BA65"
+    },
+    "candidate_pool_curve_csv": {
+      "path": "reports/phase2_glas/candidates_redesign_v1/candidate_pool_curve.csv",
+      "sha256": "58B1D72C2E62B8DEC931501AA7E646305082E62704DCF6F3986C790A8D3C4E85"
+    },
+    "candidates_csv": {
+      "path": "reports/phase2_glas/candidates_redesign_v1/candidate_pilot_candidates.csv",
+      "sha256": "E5F00AE23E9C2092B63A9B0EAA2032F6CFA23305C344AA43CA045D62614F1C18"
+    },
+    "metrics_csv": {
+      "path": "reports/phase2_glas/candidates_redesign_v1/candidate_pilot_metrics.csv",
+      "sha256": "A9099D2F010E0E5ED2F8F7B1C72EF6D5990CE6D4F4E2517D4F1CBB379601F629"
+    },
+    "query_level_metrics_csv": {
+      "path": "reports/phase2_glas/candidates_redesign_v1/query_level_candidate_metrics.csv",
+      "sha256": "124055B0B70DE9179F1DE94BF04461EAC85F2B003D1009DF899D58BC9EC1F896"
+    }
+  },
+  "checks": {
+    "component_coverage": true,
+    "coordinate_validation": true,
+    "coverage_curve_nondecreasing": true,
+    "expected_query_count": true,
+    "expected_reference_episode_count": true,
+    "negative_pool_not_easy_blank": true,
+    "precision_enrichment": true
+  },
+  "coverage_curve": [
+    {
+      "mean_component_coverage": 0.3803780600491127,
+      "mean_negative_blank_fraction": 0.13555555555555557,
+      "mean_point_precision": 0.9755555555555555,
+      "mean_precision_delta": 0.42666666666666664,
+      "mean_random_precision": 0.5488888888888889,
+      "positive_limit": 5,
+      "query_count": 30
+    },
+    {
+      "mean_component_coverage": 0.49030510830949425,
+      "mean_negative_blank_fraction": 0.13666666666666666,
+      "mean_point_precision": 0.9733333333333334,
+      "mean_precision_delta": 0.44222222222222224,
+      "mean_random_precision": 0.5311111111111111,
+      "positive_limit": 10,
+      "query_count": 30
+    },
+    {
+      "mean_component_coverage": 0.6302209965148562,
+      "mean_negative_blank_fraction": 0.13555555555555557,
+      "mean_point_precision": 0.9716666666666667,
+      "mean_precision_delta": 0.4338888888888889,
+      "mean_random_precision": 0.5377777777777778,
+      "positive_limit": 20,
+      "query_count": 30
+    }
+  ],
+  "decision": "CONTINUE_TO_GATE_D",
+  "episode_count": 90,
+  "expected_episode_count": 90,
+  "expected_query_count": 30,
+  "figures": {
+    "coverage_vs_pool": {
+      "bytes": 42799,
+      "path": "paper_phase2/figures/candidate_diagnostics_redesign_v1/coverage_vs_pool.png",
+      "sha256": "FAF60FBAAF42E5D770F237BBBA02D376659C30F53019532E23FF8F044DAB0F04"
+    },
+    "negative_blank_vs_pool": {
+      "bytes": 55557,
+      "path": "paper_phase2/figures/candidate_diagnostics_redesign_v1/negative_blank_vs_pool.png",
+      "sha256": "EFD93262CA62FFCED03D09593FBEF0014687F2AC65019180FAF771AAF9AB2447"
+    },
+    "precision_vs_pool": {
+      "bytes": 45003,
+      "path": "paper_phase2/figures/candidate_diagnostics_redesign_v1/precision_vs_pool.png",
+      "sha256": "240AA32C8563E8583DE5EEC3608A6B02710BD5142F766AC81EBE3F7E7D362D4E"
+    }
+  },
+  "issues": [],
+  "max_pool_metrics": {
+    "mean_component_coverage": 0.6302209965148562,
+    "mean_negative_blank_fraction": 0.13555555555555557,
+    "mean_point_precision": 0.9716666666666667,
+    "mean_precision_delta": 0.4338888888888889,
+    "mean_random_precision": 0.5377777777777778,
+    "precision_ratio": 1.8068181818181819,
+    "validation_issue_count": 0
+  },
+  "max_positive_limit": 20,
+  "prohibited_next_actions": [
+    "glas_policy_training_before_gate_f",
+    "formal_testA_or_testB_before_freeze",
+    "posthoc_validation_oracle_action_addition"
+  ],
+  "query_count": 30,
+  "references_per_query": 3,
+  "schema_version": "adapromptset.phase2.glas_gate_c.v1",
+  "status": "PASS",
+  "thresholds": {
+    "max_negative_blank_fraction": 0.5,
+    "min_component_coverage": 0.6,
+    "min_precision_delta": 0.15,
+    "min_precision_ratio": 1.5
+  }
+}

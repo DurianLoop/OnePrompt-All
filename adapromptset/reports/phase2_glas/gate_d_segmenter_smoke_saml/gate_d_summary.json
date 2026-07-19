@@ -1,0 +1,87 @@
+{
+  "artifacts": {
+    "case_metrics_csv": "D:\\SAM\\adapromptset\\reports\\phase2_glas\\gate_d_segmenter_smoke_saml\\gate_d_case_metrics.csv"
+  },
+  "case_count": 6,
+  "device": "cuda:0",
+  "elapsed_seconds": 7.772,
+  "formal_gate_d": "FAIL",
+  "gpu_hours_estimate": 0.002159,
+  "issues": [
+    "privileged prompts did not clearly exceed controls on at least one case"
+  ],
+  "mean_control_best_dice": 0.41267108896960986,
+  "mean_privileged_best_dice": 0.7629047245142232,
+  "mean_privileged_margin": 0.35023363554461345,
+  "notes": [
+    "Privileged prompts are sanity checks only and are not fair automatic-method baselines.",
+    "GlaS testA/testB were not used.",
+    "vit_l is the segmenter used in this Gate D smoke."
+  ],
+  "schema_version": "adapromptset.phase2.glas_gate_d.v1",
+  "segmenter_checkpoint": {
+    "architecture": "vit_l",
+    "bytes": 1249524607,
+    "exists": true,
+    "path": "D:\\SAM\\assets\\checkpoints\\sam_vit_l_0b3195.pth",
+    "role": "segmenter",
+    "sha256": "3ADCC4315B642A4D2101128F611684E8734C41232A17C648ED1693702A49A622"
+  },
+  "selected_cases": [
+    {
+      "component_count": 5,
+      "episode_id": "glas_phase2_val_train_21_ref1_train_20",
+      "foreground_area": 89516,
+      "image_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_21.bmp",
+      "mask_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_21_anno.bmp",
+      "query_case_id": "train_21",
+      "query_grade": "benign"
+    },
+    {
+      "component_count": 7,
+      "episode_id": "glas_phase2_val_train_1_ref1_train_70",
+      "foreground_area": 114505,
+      "image_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_1.bmp",
+      "mask_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_1_anno.bmp",
+      "query_case_id": "train_1",
+      "query_grade": "malignant"
+    },
+    {
+      "component_count": 1,
+      "episode_id": "glas_phase2_val_train_64_ref1_train_62",
+      "foreground_area": 179138,
+      "image_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_64.bmp",
+      "mask_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_64_anno.bmp",
+      "query_case_id": "train_64",
+      "query_grade": "benign"
+    },
+    {
+      "component_count": 30,
+      "episode_id": "glas_phase2_val_train_33_ref1_train_32",
+      "foreground_area": 157235,
+      "image_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_33.bmp",
+      "mask_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_33_anno.bmp",
+      "query_case_id": "train_33",
+      "query_grade": "benign"
+    },
+    {
+      "component_count": 4,
+      "episode_id": "glas_phase2_val_train_30_ref1_train_25",
+      "foreground_area": 62984,
+      "image_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_30.bmp",
+      "mask_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_30_anno.bmp",
+      "query_case_id": "train_30",
+      "query_grade": "benign"
+    },
+    {
+      "component_count": 2,
+      "episode_id": "glas_phase2_val_train_11_ref1_train_23",
+      "foreground_area": 206930,
+      "image_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_11.bmp",
+      "mask_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS\\Warwick QU Dataset (Released 2016_07_08)\\train_11_anno.bmp",
+      "query_case_id": "train_11",
+      "query_grade": "malignant"
+    }
+  ],
+  "status": "FAIL"
+}

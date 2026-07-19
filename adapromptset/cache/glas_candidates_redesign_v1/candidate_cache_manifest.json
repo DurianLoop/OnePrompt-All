@@ -1,0 +1,12 @@
+{
+  "notes": [
+    "This cache records candidate coordinates and metrics generated under the Phase 2 GlaS protocol.",
+    "It is not a policy-training artifact by itself."
+  ],
+  "schema_version": "adapromptset.phase2.glas_candidate_cache.v1",
+  "source_candidates_csv": "reports/phase2_glas/candidates_redesign_v1/candidate_pilot_candidates.csv",
+  "source_candidates_sha256": "E5F00AE23E9C2092B63A9B0EAA2032F6CFA23305C344AA43CA045D62614F1C18",
+  "source_metrics_csv": "reports/phase2_glas/candidates_redesign_v1/candidate_pilot_metrics.csv",
+  "source_metrics_sha256": "A9099D2F010E0E5ED2F8F7B1C72EF6D5990CE6D4F4E2517D4F1CBB379601F629",
+  "status": "RECORDED_DIAGNOSTIC_CACHE"
+}

@@ -47,9 +47,9 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
-def _relative(path: Path) -> str:
+def _relative(path: Path, *, base: Path = WORKSPACE_ROOT) -> str:
     try:
-        return path.relative_to(WORKSPACE_ROOT).as_posix()
+        return path.relative_to(base).as_posix()
     except ValueError:
         return path.as_posix()
 
@@ -124,6 +124,7 @@ def build_phase2_assignments(
     train_count: int = DEFAULT_TRAIN_COUNT,
     val_count: int = DEFAULT_VAL_COUNT,
     seed: int = DEFAULT_SEED,
+    path_base: Path = WORKSPACE_ROOT,
 ) -> tuple[list[dict[str, str]], dict[str, Any]]:
     split_counts = Counter(case.source_split for case in cases)
     expected = {"train": 85, "testA": 60, "testB": 20}
@@ -151,8 +152,8 @@ def build_phase2_assignments(
                 "patient_id": case.patient_id,
                 "grade": case.grade,
                 "sirin_grade": case.sirin_grade,
-                "image_path": _relative(case.image_path),
-                "mask_path": _relative(case.mask_path),
+                "image_path": _relative(case.image_path, base=path_base),
+                "mask_path": _relative(case.mask_path, base=path_base),
                 "image_sha256": _sha256(case.image_path),
                 "mask_sha256": _sha256(case.mask_path),
             }
@@ -308,6 +309,7 @@ def build_outputs(
         train_count=train_count,
         val_count=val_count,
         seed=seed,
+        path_base=glas_root.parent,
     )
     episodes = build_reference_episodes(assignments, references_per_query=references_per_query, seed=seed)
     locked_tests = [

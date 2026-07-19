@@ -1,0 +1,27 @@
+\section{Current Results}
+Gate F selected an oracle-analysis pivot. The best fixed action is \OracleAnalysisBestFixed{} with mean Dice \OracleAnalysisBestFixedDice{}, while the oracle mean Dice is \OracleAnalysisOracleDice{} and the gap is \OracleAnalysisGap{}. Current result tables report Dice accuracy together with cost descriptors including SAM calls, prompt counts, runtime, and GPU-hour ledger status.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.47\textwidth]{figures/oracle_pareto.png}
+\hfill
+\includegraphics[width=0.47\textwidth]{figures/oracle_action_wins.png}
+\caption{Oracle-analysis figures generated from the current MoNuSAC Gate-F pivot artifacts. Left: matched-budget best-fixed and oracle Dice. Right: oracle action counts and mean Dice by action. These are analysis upper bounds, not deployable method outputs.}
+\label{fig:oracle-analysis}
+\end{figure*}
+\input{tables/table_oracle_pivot}
+\input{tables/table_action_summary}
+Representation diagnostics remain \RepresentationAnalysisClaim{}: the mean top-two action margin is \RepresentationAnalysisTopTwoMargin{}, with near-tie fraction \RepresentationAnalysisNearTieFraction{}.
+\input{tables/table_representation_pivot}
+\subsection{Gate-F Interpretation}
+The main numerical result is the absence of enough oracle headroom. The measured Dice gap is below the predeclared 0.010 threshold, and the AJI gap is also below the auxiliary threshold used for the pivot decision. The top oracle action fraction is 0.5, so the result is not a trivial one-action dominance story, but the available headroom is still too small to justify policy learning. The deterministic promotion check is also not satisfied, because the current analysis does not prove that one fixed action is a complete deterministic method across the intended domain.
+
+The action summary shows that the best fixed rule is a positive-negative prompt-set action. However, oracle wins are post-hoc labels. They should be read as a diagnostic of action-bank behavior, not as method outputs. Matched-budget analysis is especially important here: the oracle advantage cannot be written as an efficiency result, and higher-call actions do not create a clear quality gain in the current pilot.
+
+\subsection{Failure Diagnostics}
+The post-failure audit records three complementary diagnostics. Candidate coverage is low: mean component coverage at the maximum pilot pool is about 0.052, even though point precision at the same pool is above the random baseline. Action proposals are not all identical: the mean top-two Dice margin is about 0.020, and 40\% of episodes are near ties under the configured tolerance. SAM sensitivity does not favor more calls: the best high-call action is lower than the best one-call action by about 0.021 Dice in the diagnostic artifact. Together these facts support a cautious interpretation: the current evidence exposes limitations in candidates and grouping sensitivity, but it does not produce an actionable oracle gap for a MoNuSAC policy.
+
+\subsection{Statistics}
+The paired sign-flip diagnostic on query-level deltas records one win, one tie, and zero losses for oracle versus best fixed under the current tie threshold. The two-sided sign-flip $p$ value is 0.5, and patient-cluster bootstrap is marked pending because only one patient cluster is available. These statistics are included to prevent over-reading the mean gap. A future formal study would need enough independent patient or case clusters before confidence intervals could support a stronger result.
+
+\subsection{External Readiness}
+GlaS is the first registered external morphology-shift path, but the present evidence is a one-episode smoke only. Its Gate F status is pending because the gate minimum is ten episodes. DDR is ready for infrastructure-only stage-one checks with a binary union of EX, HE, MA, and SE lesion masks, but that stage is not a formal policy task. IDRID remains read-only because previous observations cannot be reused for method selection. CPM-17 is deferred until the missing or incomplete local assets are repaired under an approved protocol. These external records are useful because they define how the project can continue without reopening the failed MoNuSAC policy path.

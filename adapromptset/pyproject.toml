@@ -36,6 +36,8 @@ adapromptset-audit-new-domain-pilot-readiness = "adapromptset.scripts.audit_new_
 adapromptset-audit-phase0-scope-structure = "adapromptset.scripts.audit_phase0_scope_structure:main"
 adapromptset-export-related-work = "adapromptset.scripts.export_related_work:main"
 adapromptset-build-glas-phase2-splits = "adapromptset.scripts.build_glas_phase2_splits:main"
+adapromptset-audit-glas-phase2-gate-c = "adapromptset.scripts.audit_glas_phase2_gate_c:main"
+adapromptset-audit-glas-phase2-gate-d = "adapromptset.scripts.audit_glas_phase2_gate_d:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

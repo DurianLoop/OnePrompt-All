@@ -103,10 +103,10 @@ The Phase 2 GlaS split builder generated the following artifacts after protocol 
 
 | Artifact | SHA256 |
 | --- | --- |
-| `manifests/phase2/glas/case_assignments.csv` | `F3853E2FCA693C7D202BD003E3F3C01A33A3027C0B7428B718A288EEFE5F7F48` |
-| `manifests/phase2/glas/episodes_train.csv` | `07DF11179BFB944D9BAF2FA472224183E6BE30954286C38661627ED2612D9CE1` |
-| `manifests/phase2/glas/episodes_val.csv` | `B687AF2180D5468A3485F2860A1DE20D4F971AF643C4F84352B086CF8CDDD2DB` |
-| `manifests/phase2/glas/locked_test_cases.csv` | `71577640385F53224D03AFBB758BC72B39BA04E7D992BCBE87A10C29EE208CAE` |
+| `manifests/phase2/glas/case_assignments.csv` | `0E3B35444993DE858DA59F92E1F00DB126A5E7A85E2FC77252C347FF3E322A34` |
+| `manifests/phase2/glas/episodes_train.csv` | `D7184FBECC670F55038BCC2599C08B6CF800845AB2EAD430116C0F017D34E343` |
+| `manifests/phase2/glas/episodes_val.csv` | `18291E9E9A1CFACCCC4395B2333B57034D65C3DF8AC5ED5AA1DEFF74581AF3EA` |
+| `manifests/phase2/glas/locked_test_cases.csv` | `77D1D210B8A187873D4E1D93135228AE52510DD6D4338E462AA644DF9E71E260` |
 | `manifests/phase2/glas/protocol_metadata.json` | `28AC00279B7F76F26B43EC74262B5652DA438BCC8C8C7C6B8698623B280477BF` |
 | `reports/phase2_glas/split/split_report.json` | `7E3FA79B01F085715A586186432BB3C61C32BAA164371BC91A76967EDBD9EC3E` |
 
@@ -118,8 +118,95 @@ Manifest checks:
 - independent leakage check found `BadCount=0` for support-not-train, self-reference, and test-query leakage;
 - no testA/testB episode file was generated.
 
+## Gate C Candidate Diagnostics
+
+Gate C was run after the Phase 2 split was corrected to use GlaS-root-relative paths.
+
+### Frozen Candidate Generator
+
+| Artifact | SHA256 |
+| --- | --- |
+| `reports/phase2_glas/candidates/candidate_pilot_summary.json` | `C350FCA9FAFDBB75DE25C98BAAE7894EB5FC2571E5D0CFBE048CC8D97EF718BF` |
+| `reports/phase2_glas/candidates/gate_c_summary.json` | `194DEB4A47609766E245F7FD7C70F64F45D3C2046AA8786570998B456793C7AD` |
+| `reports/phase2_glas/candidates/gate_c_summary.md` | `7A80E166861520E9D09EC1CA20CC653178BCD92EE67F42FE1EA410AB2F0945EB` |
+| `paper_phase2/figures/candidate_diagnostics/precision_vs_pool.png` | `4072FAFE6BC07DE02A734FF37F3A91CC79C47FCA846B4ED5F9B2E8F16584A831` |
+| `paper_phase2/figures/candidate_diagnostics/coverage_vs_pool.png` | `8895F76801D10384A954D764C6466A42EDC0E4444BC425DEE036B9A2522C0C42` |
+| `paper_phase2/figures/candidate_diagnostics/negative_blank_vs_pool.png` | `7AF0B94D124F6A1750A3FA4F0C3E0C0EEC1051C7A8C50266EED571F72DA99A24` |
+
+Gate C query-level result:
+
+- validation query images: `30`;
+- reference episodes: `90`;
+- mean point precision: `0.971111`;
+- mean random precision: `0.548889`;
+- precision delta: `0.422222`;
+- precision ratio: `1.769231`;
+- mean component coverage: `0.418820`;
+- required component coverage: `0.600000`;
+- mean negative blank fraction: `0.135556`;
+- coordinate validation: `PASS`;
+- status: `FAIL`;
+- decision: `REDESIGN_GLAS_CANDIDATES_ONCE_ALLOWED`.
+
+### Predeclared Candidate Redesign v1
+
+The allowed redesign was pre-registered in `docs/glas_candidate_redesign_v1.md`.
+
+| Artifact | SHA256 |
+| --- | --- |
+| `reports/phase2_glas/candidates_redesign_v1/candidate_pilot_summary.json` | `2028D52F3919919142648385FEF1DA1848D005938951A0F6E9434AA188872109` |
+| `reports/phase2_glas/candidates_redesign_v1/gate_c_summary.json` | `7A33C513EBD96984D4720D282F712B2B025D711BADB4377E81EF5FFC5093F13C` |
+| `reports/phase2_glas/candidates_redesign_v1/gate_c_summary.md` | `757176C1C606D768B6A3D6B48DF7BD66D4BA188AC88A9990A58B101F2836494D` |
+| `paper_phase2/figures/candidate_diagnostics_redesign_v1/precision_vs_pool.png` | `240AA32C8563E8583DE5EEC3608A6B02710BD5142F766AC81EBE3F7E7D362D4E` |
+| `paper_phase2/figures/candidate_diagnostics_redesign_v1/coverage_vs_pool.png` | `FAF60FBAAF42E5D770F237BBBA02D376659C30F53019532E23FF8F044DAB0F04` |
+| `paper_phase2/figures/candidate_diagnostics_redesign_v1/negative_blank_vs_pool.png` | `EFD93262CA62FFCED03D09593FBEF0014687F2AC65019180FAF771AAF9AB2447` |
+
+Redesign v1 query-level result:
+
+- positive layout: `local_peaks`;
+- positive diagnostic pool sizes: `5,10,20`;
+- validation query images: `30`;
+- reference episodes: `90`;
+- mean point precision: `0.971667`;
+- mean random precision: `0.537778`;
+- precision delta: `0.433889`;
+- precision ratio: `1.806818`;
+- mean component coverage: `0.630221`;
+- required component coverage: `0.600000`;
+- mean negative blank fraction: `0.135556`;
+- coordinate validation: `PASS`;
+- status: `PASS`;
+- decision: `CONTINUE_TO_GATE_D`.
+
 ## Current Decision
 
-The current Phase 2 state is `PHASE2_GATE_C_READY`.
+## Gate D Segmenter Smoke
 
-Candidate diagnostics may start next. Segmenter smoke, action-bank execution, utility generation, policy training, and formal test remain gated.
+SAM-B Gate D smoke ran on 6 selected strict-validation cases. It produced target-related privileged masks but failed the per-case privileged-control margin rule.
+
+| Artifact | SHA256 |
+| --- | --- |
+| `reports/phase2_glas/gate_d_segmenter_smoke/gate_d_summary.json` | `069DD4097C4BF3F620B0E5CC9A5B698718EA4F04586BA5BB94CA2B1B966F150C` |
+| `reports/phase2_glas/gate_d_segmenter_smoke/gate_d_case_metrics.csv` | `E20C29A13455022EE36EEC497099365FA2A6D8CFE3AB07619D32B69A0F0325EF` |
+| `docs/glas_gate_d_segmenter_alternative_v1.md` | `DDB7D657EBDBC04621021B12096EAB79A6AAD3E7FC6D829CA88D34A0262990D3` |
+| `reports/phase2_glas/gate_d_segmenter_smoke_saml/gate_d_summary.json` | `8F76D4BC3FC5D56B8D17428D55FB8805103BBE869DE24A67B7944D75D8FA40AB` |
+| `reports/phase2_glas/gate_d_segmenter_smoke_saml/gate_d_case_metrics.csv` | `2209AF0786DC961E97DF3F44DBC0CE134AAC49E91C236D2D84DA2A2BACEDE646` |
+
+Gate D result:
+
+- SAM-B cases: `6`;
+- SAM-B mean privileged best Dice: `0.733908`;
+- SAM-B mean control best Dice: `0.638274`;
+- SAM-B status: `FAIL`;
+- single allowed alternative: `SAM-L`;
+- SAM-L cases: `6`;
+- SAM-L mean privileged best Dice: `0.762905`;
+- SAM-L mean control best Dice: `0.412671`;
+- SAM-L status: `FAIL`;
+- shared issue: privileged prompts did not clearly exceed random/mismatched controls on at least one selected case.
+
+## Current Decision
+
+The current Phase 2 state is `STOP_GLAS_SEGMENTER_FAILURE`.
+
+The frozen candidate generator had strong positive precision enrichment but insufficient component coverage on GlaS strict validation. The single predeclared `local_peaks` redesign passed Gate C. Gate D then failed for SAM-B, and the only predeclared alternative SAM-L also failed. Action-bank execution, oracle-gap analysis, utility generation, policy training, and formal test are stopped/prohibited for this Phase 2 branch. GlaS testA/testB remain locked and unused.
