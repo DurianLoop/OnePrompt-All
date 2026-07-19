@@ -93,3 +93,9 @@
 - `scripts/build_route_b_ddr_manifests.py --project-root D:\SAM\adapromptset --splits train valid` generated all-intent and positive-query manifests under `manifests/phase4plus/`.
 - The report `reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json` records `PASS_DDR_ROUTE_B_DEV_MANIFEST`, train 383 images / 964 positive image-intent queries, valid 149 images / 401 positive image-intent queries, and no issues.
 - The builder rejects any requested split outside `train`/`valid`; DDR test files were not read and no matcher/segmenter inference was run.
+
+## 2026-07-19 Route B Metric/Control Freeze
+
+- `docs/route_b_benchmark_metric_control_protocol_v1.md` and `configs/experiments/route_b_promptability_benchmark_v1.json` froze the Route B row families, prompt representations, controls, metrics, statistical units, and query-level output schema.
+- `scripts/audit_route_b_benchmark_freeze.py --project-root D:\SAM\adapromptset` wrote `reports/route_b_benchmark_freeze/route_b_benchmark_freeze_audit.{json,md}` with status `PASS_ROUTE_B_B1_PREREQ_FREEZE`.
+- The freeze authorizes only development evidence generation on legal train/valid data. It does not authorize formal test access, a method-positive claim, or a submission-ready claim.

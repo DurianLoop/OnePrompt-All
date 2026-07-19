@@ -10,6 +10,8 @@ Top-level state: `PRIMARY_TRACK_B_SELECTED`
 
 Current development gate: `PASS_DDR_ROUTE_B_DEV_MANIFEST`
 
+Current prereq freeze: `PASS_ROUTE_B_B1_PREREQ_FREEZE`
+
 ## Frozen Prior States
 
 | Route | State |
@@ -46,6 +48,7 @@ Latest legal progress:
 - DDR train: 383 images, 964 positive image-intent queries.
 - DDR valid: 149 images, 401 positive image-intent queries.
 - DDR test remains locked; no test files were read.
+- Route B metric/control config is frozen for development-only evidence generation.
 
 ## Current Prohibitions
 
@@ -55,3 +58,4 @@ Latest legal progress:
 - No MoNuSAC policy training.
 - No submission-ready claim.
 - No DDR formal claim or DDR test tuning.
+- No Route B method-positive claim from the B1 prereq freeze alone.

@@ -45,6 +45,7 @@ adapromptset-run-glas-phase3-gate-r1 = "adapromptset.scripts.run_glas_phase3_gat
 adapromptset-export-phase3-paper-assets = "adapromptset.scripts.export_phase3_paper_assets:main"
 adapromptset-audit-phase4-read-only = "adapromptset.scripts.audit_phase4_read_only:main"
 adapromptset-build-route-b-ddr-manifests = "adapromptset.scripts.build_route_b_ddr_manifests:main"
+adapromptset-audit-route-b-benchmark-freeze = "adapromptset.scripts.audit_route_b_benchmark_freeze:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

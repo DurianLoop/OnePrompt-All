@@ -1,0 +1,113 @@
+{
+  "schema_version": "adapromptset.route_b.promptability_benchmark.v1",
+  "date": "2026-07-19",
+  "route": "B_reference_promptability_benchmark",
+  "status": "FROZEN_DEVELOPMENT_PROTOCOL",
+  "formal_test_access_allowed": false,
+  "development_datasets": [
+    {
+      "dataset": "DDR",
+      "splits": ["train", "valid"],
+      "manifest_report": "reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json",
+      "positive_query_manifests": {
+        "train": "manifests/phase4plus/ddr_route_b_train_positive_queries.csv",
+        "valid": "manifests/phase4plus/ddr_route_b_valid_positive_queries.csv"
+      },
+      "intents": ["EX", "HE", "MA", "SE"],
+      "formal_test_split": "test",
+      "formal_test_status": "LOCKED_UNUSED"
+    }
+  ],
+  "row_families": [
+    "automatic",
+    "matched_control",
+    "privileged_upper_bound",
+    "direct_matching",
+    "diagnostic_baseline"
+  ],
+  "prompt_representations": [
+    "point",
+    "multi_point",
+    "grouped_point",
+    "box",
+    "multi_box",
+    "hard_mask",
+    "soft_mask",
+    "direct_matching_mask",
+    "privileged_gt_point",
+    "privileged_gt_box",
+    "privileged_gt_mask"
+  ],
+  "controls": [
+    "spatial_random_point",
+    "size_matched_random_box",
+    "full_image_box",
+    "alternative_reference_control",
+    "strongest_fixed_representation",
+    "raw_matching_baseline",
+    "privileged_gt_upper_bound"
+  ],
+  "metrics": [
+    {
+      "name": "promptability_gap",
+      "formula": "U_privileged(q,t) - U_automatic(q,t)",
+      "primary_use": "prompt_interface_headroom"
+    },
+    {
+      "name": "localization_advantage",
+      "formula": "U_automatic(q,t) - U_matched_control(q,t)",
+      "primary_use": "reference_evidence_vs_support_matched_control"
+    },
+    {
+      "name": "interface_gain",
+      "formula": "U_segmenter(q,t) - U_raw_proposal(q,t)",
+      "primary_use": "prompt_interface_effect"
+    },
+    {
+      "name": "oracle_adaptation_value",
+      "formula": "max_t U(q,t) - max_t mean_q U(q,t)",
+      "primary_use": "per_query_representation_choice_value"
+    },
+    {
+      "name": "promptability_reliability",
+      "formula": "calibration(predicted_viability, observed_viability)",
+      "primary_use": "diagnostic_prediction_calibration"
+    }
+  ],
+  "statistical_units": {
+    "primary_independent_unit": "image_case",
+    "repeated_task_view": "image_intent",
+    "forbidden_independent_units": ["patch", "reference_episode", "prompt_call"]
+  },
+  "output_schema": {
+    "query_level_required_columns": [
+      "dataset",
+      "split",
+      "image_id",
+      "intent",
+      "representation",
+      "row_family",
+      "control_family",
+      "matcher",
+      "segmenter",
+      "dice",
+      "iou",
+      "sam_calls",
+      "runtime_seconds",
+      "valid_automatic_row",
+      "uses_query_gt_for_generation",
+      "formal_test_row"
+    ]
+  },
+  "development_gate": {
+    "name": "B1_metric_control_freeze",
+    "pass_status": "PASS_ROUTE_B_B1_PREREQ_FREEZE",
+    "authorizes": "development_only_evidence_generation",
+    "does_not_authorize": [
+      "formal_test_access",
+      "submission_ready_claim",
+      "method_positive_claim",
+      "test_tuned_thresholds"
+    ]
+  }
+}
