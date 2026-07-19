@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adapromptset"
+version = "0.1.0"
+description = "Gated reproducible package for AdaPromptSet MVP experiments."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+adapromptset-audit-data = "adapromptset.scripts.audit_data:main"
+adapromptset-audit-data-profile = "adapromptset.scripts.audit_data_profile:main"
+adapromptset-audit-reference-exposure = "adapromptset.scripts.audit_reference_exposure:main"
+adapromptset-audit-optimizer-guard = "adapromptset.scripts.audit_optimizer_guard:main"
+adapromptset-audit-statistical-units = "adapromptset.scripts.audit_statistical_units:main"
+adapromptset-run-bootstrap = "adapromptset.scripts.run_bootstrap:main"
+adapromptset-write-run-metadata = "adapromptset.scripts.write_run_metadata:main"
+adapromptset-export-gate-reports = "adapromptset.scripts.export_gate_reports:main"
+adapromptset-analyze-representation-pivot = "adapromptset.scripts.analyze_representation_pivot:main"
+adapromptset-export-oracle-analysis-figures = "adapromptset.scripts.export_oracle_analysis_figures:main"
+adapromptset-export-method-overview-figure = "adapromptset.scripts.export_method_overview_figure:main"
+adapromptset-export-action-bank-figure = "adapromptset.scripts.export_action_bank_figure:main"
+adapromptset-export-final-report = "adapromptset.scripts.export_final_report:main"
+adapromptset-audit-scientific-claims = "adapromptset.scripts.audit_scientific_claims:main"
+adapromptset-audit-paper-sections = "adapromptset.scripts.audit_paper_sections:main"
+adapromptset-audit-latexmk-build = "adapromptset.scripts.audit_latexmk_build:main"
+adapromptset-audit-pdf-metadata = "adapromptset.scripts.audit_pdf_metadata:main"
+adapromptset-audit-gate-f-failure-diagnostics = "adapromptset.scripts.audit_gate_f_failure_diagnostics:main"
+adapromptset-audit-ddr-protocol = "adapromptset.scripts.audit_ddr_protocol:main"
+adapromptset-audit-new-domain-pilot-readiness = "adapromptset.scripts.audit_new_domain_pilot_readiness:main"
+adapromptset-audit-phase0-scope-structure = "adapromptset.scripts.audit_phase0_scope_structure:main"
+adapromptset-export-related-work = "adapromptset.scripts.export_related_work:main"
+adapromptset-build-glas-phase2-splits = "adapromptset.scripts.build_glas_phase2_splits:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+    ".test_tmp",
+    ".tmp-tests",
+    "tmp",
+    "tmpjxy40czp",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

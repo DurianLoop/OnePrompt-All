@@ -1,0 +1,85 @@
+{
+  "episode_counts": {
+    "train": 165,
+    "val": 90
+  },
+  "formal_test_boundary": "locked_not_fully_blind_due_to_prior_manifest_profile_exposure",
+  "grade_counts_by_role": {
+    "locked_testA": {
+      "benign": 33,
+      "malignant": 27
+    },
+    "locked_testB": {
+      "benign": 4,
+      "malignant": 16
+    },
+    "strict_val": {
+      "benign": 13,
+      "malignant": 17
+    },
+    "utility_train": {
+      "benign": 24,
+      "malignant": 31
+    }
+  },
+  "locked_test_case_counts": {
+    "locked_testA": 60,
+    "locked_testB": 20
+  },
+  "patient_counts_by_role": {
+    "locked_testA": 9,
+    "locked_testB": 5,
+    "strict_val": 10,
+    "utility_train": 13
+  },
+  "phase2_role_counts": {
+    "locked_testA": 60,
+    "locked_testB": 20,
+    "strict_val": 30,
+    "utility_train": 55
+  },
+  "protocol_version": "adapromptset.phase2.glas_strict.v2",
+  "query_counts": {
+    "train": 55,
+    "val": 30
+  },
+  "references_per_query": 3,
+  "seed": 20260719,
+  "source_split_counts": {
+    "testA": 60,
+    "testB": 20,
+    "train": 85
+  },
+  "train_locked_test_patient_overlap": [
+    "1",
+    "10",
+    "11",
+    "13",
+    "2",
+    "3",
+    "4",
+    "5",
+    "7",
+    "9"
+  ],
+  "train_val_patient_overlap": [
+    "1",
+    "10",
+    "2",
+    "3",
+    "5",
+    "6",
+    "7",
+    "9"
+  ],
+  "val_locked_test_patient_overlap": [
+    "1",
+    "10",
+    "15",
+    "2",
+    "3",
+    "5",
+    "7",
+    "9"
+  ]
+}
