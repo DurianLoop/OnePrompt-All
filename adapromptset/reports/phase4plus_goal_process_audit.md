@@ -81,7 +81,8 @@ These are evidence tables, but not yet the final submission tables requested by 
 | 2026-07-19 18:05 | Route B DDR development manifest gate | `reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json` | `PASS_DDR_ROUTE_B_DEV_MANIFEST` | This creates train/valid benchmark inputs only; model evidence, controls, statistics, and multi-dataset breadth are still missing. |
 | 2026-07-19 18:15 | Route B benchmark metric/control freeze | `reports/route_b_benchmark_freeze/route_b_benchmark_freeze_audit.json` | `PASS_ROUTE_B_B1_PREREQ_FREEZE` | This freezes metrics/controls but still does not create empirical model evidence. |
 | 2026-07-19 18:25 | Route B DDR reference/query episode gate | `reports/route_b_ddr_episodes/ddr_route_b_episode_report.json` | `PASS_DDR_ROUTE_B_EPISODES` | This freezes deterministic support/query rows but still does not create empirical model evidence. |
-| Current next span | Route B development-only evidence generation | Not started after episode gate | Next legal action: run train/valid-only benchmark evidence under the frozen schema | Required before new benchmark tables/figures can be generated. |
+| 2026-07-19 18:40 | Route B DDR matcher development smoke | `reports/route_b_ddr_development_smoke/route_b_ddr_matcher_smoke.json` | `PASS_ROUTE_B_DDR_MATCHER_SMOKE` | Pipeline ran legally, but the first MA query had point precision/component coverage 0.0, so this is failure-taxonomy evidence, not positive benchmark evidence. |
+| Current next span | Route B stratified development evidence | Not started after one-episode smoke | Next legal action: run a stratified train/valid development smoke or failure-taxonomy expansion under the frozen schema | Required before new benchmark tables/figures can be generated. |
 
 ## Current Evidence Boundary
 

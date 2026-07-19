@@ -14,6 +14,8 @@ Current prereq freeze: `PASS_ROUTE_B_B1_PREREQ_FREEZE`
 
 Current episode gate: `PASS_DDR_ROUTE_B_EPISODES`
 
+Current development smoke: `PASS_ROUTE_B_DDR_MATCHER_SMOKE`
+
 ## Frozen Prior States
 
 | Route | State |
@@ -52,6 +54,7 @@ Latest legal progress:
 - DDR test remains locked; no test files were read.
 - Route B metric/control config is frozen for development-only evidence generation.
 - DDR Route B episodes: train 2892 reference rows for 964 positive queries; valid 1203 reference rows for 401 positive queries.
+- One DDR valid MA matcher smoke ran with train support under DINOv2-L only; point precision and component coverage were both 0.0, so this is a pipeline/failure-taxonomy signal rather than positive benchmark evidence.
 
 ## Current Prohibitions
 
@@ -63,3 +66,4 @@ Latest legal progress:
 - No DDR formal claim or DDR test tuning.
 - No Route B method-positive claim from the B1 prereq freeze alone.
 - No independent-sample claim from reference rows or image-intent rows.
+- No method-positive claim from the one-episode DDR matcher smoke.

@@ -106,3 +106,11 @@
 - `scripts/build_route_b_ddr_episodes.py --project-root D:\SAM\adapromptset --references-per-query 3` generated `manifests/phase4plus/ddr_route_b_train_reference_query_episodes.csv` and `manifests/phase4plus/ddr_route_b_valid_reference_query_episodes.csv`.
 - Status is `PASS_DDR_ROUTE_B_EPISODES`: train has 964 covered positive queries / 2892 reference rows; valid has 401 covered positive queries / 1203 reference rows.
 - Valid references come only from train; train references exclude the query image; DDR test files were not read.
+
+## 2026-07-19 Route B DDR Matcher Development Smoke
+
+- `scripts/run_route_b_ddr_matcher_smoke.py --project-root D:\SAM\adapromptset --device auto` ran one DINOv2-L matcher smoke on the first DDR valid episode row.
+- Query: `DDR:valid:007-2846-100:MA`; reference: `DDR:train:007-4668-200:MA`.
+- Output: `reports/route_b_ddr_development_smoke/route_b_ddr_matcher_smoke.json` and `route_b_ddr_matcher_candidates.csv`.
+- Status: `PASS_ROUTE_B_DDR_MATCHER_SMOKE` for pipeline execution; point precision and component coverage were both 0.0.
+- Interpretation: this is development-smoke/failure-taxonomy evidence only. It is not a method-positive result and does not authorize DDR test access or a benchmark-ready claim.

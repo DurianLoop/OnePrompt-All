@@ -47,6 +47,7 @@ adapromptset-audit-phase4-read-only = "adapromptset.scripts.audit_phase4_read_on
 adapromptset-build-route-b-ddr-manifests = "adapromptset.scripts.build_route_b_ddr_manifests:main"
 adapromptset-audit-route-b-benchmark-freeze = "adapromptset.scripts.audit_route_b_benchmark_freeze:main"
 adapromptset-build-route-b-ddr-episodes = "adapromptset.scripts.build_route_b_ddr_episodes:main"
+adapromptset-run-route-b-ddr-matcher-smoke = "adapromptset.scripts.run_route_b_ddr_matcher_smoke:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

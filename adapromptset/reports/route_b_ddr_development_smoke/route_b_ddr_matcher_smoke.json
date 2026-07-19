@@ -1,0 +1,78 @@
+{
+  "candidate_metrics": {
+    "component_coverage": 0.0,
+    "negative_count": 5,
+    "point_precision": 0.0,
+    "positive_count": 5,
+    "validation_issues": []
+  },
+  "claim_boundary": "development_smoke_only_not_benchmark_result",
+  "dataset": "DDR",
+  "date": "2026-07-19",
+  "device": "cuda:0",
+  "episode_csv": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_valid_reference_query_episodes.csv",
+  "formal_test_access": false,
+  "gpu_hours": 0.0011937241944380932,
+  "intent": "MA",
+  "matcher": "DINOv2-L",
+  "matcher_checkpoint": "D:\\SAM\\assets\\checkpoints\\dinov2_vitl14_pretrain.pth",
+  "matcher_checkpoint_sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+  "outputs": {
+    "candidate_csv": "D:\\SAM\\adapromptset\\reports\\route_b_ddr_development_smoke\\route_b_ddr_matcher_candidates.csv"
+  },
+  "query_image_id": "007-2846-100",
+  "query_unit_id": "DDR:valid:007-2846-100:MA",
+  "reference_image_id": "007-4668-200",
+  "reference_source_split": "train",
+  "reference_unit_id": "DDR:train:007-4668-200:MA",
+  "route": "B_reference_promptability_benchmark",
+  "runtime_seconds": 4.297407099977136,
+  "schema_version": "adapromptset.route_b.ddr_matcher_smoke.v1",
+  "score_map_features": {
+    "s_bg": {
+      "high_score_area_fraction": 0.10007304698228836,
+      "high_score_threshold": 0.7218262553215027,
+      "matching_entropy": 0.9986140242835939,
+      "score_count": 1369,
+      "score_mean": 0.5417566895484924,
+      "score_std": 0.14409781992435455,
+      "second_score": 0.7828403115272522,
+      "top_index_col": 16,
+      "top_index_row": 33,
+      "top_margin": 0.011786341667175293,
+      "top_score": 0.7946266531944275
+    },
+    "s_ctr": {
+      "high_score_area_fraction": 0.10007304698228836,
+      "high_score_threshold": -0.012335414066910744,
+      "matching_entropy": 0.9999024779127659,
+      "score_count": 1369,
+      "score_mean": -0.0584549605846405,
+      "score_std": 0.037479087710380554,
+      "second_score": 0.1358168125152588,
+      "top_index_col": 17,
+      "top_index_row": 18,
+      "top_margin": 0.003002464771270752,
+      "top_score": 0.13881927728652954
+    },
+    "s_fg": {
+      "high_score_area_fraction": 0.10007304698228836,
+      "high_score_threshold": 0.6950253844261169,
+      "matching_entropy": 0.9981509759438696,
+      "score_count": 1369,
+      "score_mean": 0.48330172896385193,
+      "score_std": 0.16561998426914215,
+      "second_score": 0.8466370105743408,
+      "top_index_col": 21,
+      "top_index_row": 17,
+      "top_margin": 0.025809168815612793,
+      "top_score": 0.8724461793899536
+    }
+  },
+  "segmenter_inference": false,
+  "split": "valid",
+  "status": "PASS_ROUTE_B_DDR_MATCHER_SMOKE",
+  "test_files_read": false,
+  "uses_query_gt_for_evaluation": true,
+  "uses_query_gt_for_generation": false
+}
