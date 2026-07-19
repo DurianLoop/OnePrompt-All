@@ -21,7 +21,15 @@
   "primary_track": "B_reference_promptability_benchmark",
   "fallback_track": "A_promptability_aware_routing",
   "deferred_track": "C_direct_reference_segmentation",
-  "next_required_action": "prepare Route B fresh-data protocol and benchmark infrastructure without formal test access",
+  "route_b_ddr_dev_manifest_status": "PASS_DDR_ROUTE_B_DEV_MANIFEST",
+  "route_b_ddr_dev_manifest_report": "reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json",
+  "route_b_ddr_dev_manifest_counts": {
+    "train_images": 383,
+    "train_positive_queries": 964,
+    "valid_images": 149,
+    "valid_positive_queries": 401
+  },
+  "next_required_action": "prepare Route B benchmark metric/control protocol and development-only evidence generation without formal test access",
   "new_model_inference_since_preregistration": false,
   "formal_test_access": false,
   "submission_ready": false

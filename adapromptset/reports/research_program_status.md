@@ -8,6 +8,8 @@ Phase 4+ preregistration commit: `b4ee8e2`
 
 Top-level state: `PRIMARY_TRACK_B_SELECTED`
 
+Current development gate: `PASS_DDR_ROUTE_B_DEV_MANIFEST`
+
 ## Frozen Prior States
 
 | Route | State |
@@ -36,7 +38,14 @@ Deferred track:
 
 Next legal state:
 
-`TRACK_B_BENCHMARK_READY` or `TRACK_B_INSUFFICIENT_BREADTH`, after fresh-data benchmark protocol and legal development evidence.
+`TRACK_B_BENCHMARK_READY` or `TRACK_B_INSUFFICIENT_BREADTH`, after multi-dataset benchmark protocol, legal development evidence, and required breadth checks.
+
+Latest legal progress:
+
+- DDR train/valid manifest gate passed under Route B.
+- DDR train: 383 images, 964 positive image-intent queries.
+- DDR valid: 149 images, 401 positive image-intent queries.
+- DDR test remains locked; no test files were read.
 
 ## Current Prohibitions
 
@@ -45,3 +54,4 @@ Next legal state:
 - No same-validation action/grid expansion for GlaS R1.
 - No MoNuSAC policy training.
 - No submission-ready claim.
+- No DDR formal claim or DDR test tuning.

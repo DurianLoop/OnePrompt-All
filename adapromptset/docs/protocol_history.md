@@ -86,3 +86,10 @@
 - Frozen states are preserved: MoNuSAC `PIVOT_ORACLE_ANALYSIS`, GlaS grouped sparse point `STOP_GLAS_GROUPED_POINT_PROMPT_PATH_CONFIRMED`, GlaS region scientific state `STOP_GLAS_REGION_LOCALIZATION_ADVANTAGE_NOT_ESTABLISHED`, and GlaS testA/testB `LOCKED_UNUSED`.
 - Routes A/B/C are registered for evidence-based selection after Phase 4 audit: Promptability-Aware Routing, Reference Promptability Benchmark, and Direct Reference Segmentation.
 - Phase 4 read-only audit produced `PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK`. It found that R03's high absolute box IoU is confounded by large automatic box scale and high size-matched random-box control performance; R00 is high precision but low recall. Route B was selected as primary, Route A as fallback, and Route C as deferred.
+
+## 2026-07-19 Route B DDR Development Manifest Gate
+
+- `docs/route_b_ddr_dev_protocol_v1.md` registered DDR train/valid as the first fresh-data development entry for Route B and kept DDR test locked.
+- `scripts/build_route_b_ddr_manifests.py --project-root D:\SAM\adapromptset --splits train valid` generated all-intent and positive-query manifests under `manifests/phase4plus/`.
+- The report `reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json` records `PASS_DDR_ROUTE_B_DEV_MANIFEST`, train 383 images / 964 positive image-intent queries, valid 149 images / 401 positive image-intent queries, and no issues.
+- The builder rejects any requested split outside `train`/`valid`; DDR test files were not read and no matcher/segmenter inference was run.

@@ -13,3 +13,12 @@ Date: 2026-07-19
 | CPM-17 | `D:\SAM\external\research_data\raw\CPM17` | deferred incomplete data | Not ready | Requires user approval for repair/download and license/source confirmation. |
 
 No network download or new model acquisition is allowed by this registry.
+
+## 2026-07-19 Route B DDR Development Manifest
+
+- Protocol: `docs/route_b_ddr_dev_protocol_v1.md`
+- Report: `reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json`
+- Status: `PASS_DDR_ROUTE_B_DEV_MANIFEST`
+- Generated splits: `train`, `valid`
+- DDR test status: `LOCKED_UNUSED`; no test files were read.
+- Positive-query counts: train 964, valid 401.

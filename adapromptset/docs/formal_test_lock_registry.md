@@ -11,3 +11,9 @@ Date: 2026-07-19
 | IDRID | `READ_ONLY_NON_TUNABLE` | proof of unobserved subset if any formal claim is desired | Any tuning or new method-selection influence. |
 
 No formal test may be used to decide between Routes A/B/C.
+
+## 2026-07-19 DDR Lock Check
+
+Route B DDR development manifests were generated only for `train` and `valid`.
+The builder records `formal_test_access=false`, `test_split_requested=false`, and `test_files_read=false`.
+DDR test remains unavailable until `docs/test_freeze_ddr.md`, frozen final config, code commit, metrics, statistics, qualitative sampling, and cost accounting are complete.

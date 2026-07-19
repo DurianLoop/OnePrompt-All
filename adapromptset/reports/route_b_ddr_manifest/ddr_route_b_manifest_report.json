@@ -1,0 +1,92 @@
+{
+  "allowed_next_actions": [
+    "Route B train/valid benchmark infrastructure",
+    "train-only promptability label generation after protocol freeze",
+    "valid-only gate evaluation after preregistered metrics"
+  ],
+  "allowed_splits": [
+    "train",
+    "valid"
+  ],
+  "data_root": "D:\\SAM\\code\\ddr_datasets\\DDR-dataset-01\\lesion_segmentation",
+  "dataset": "DDR",
+  "date": "2026-07-19",
+  "formal_test_access": false,
+  "formal_test_locked": true,
+  "generated_splits": [
+    "train",
+    "valid"
+  ],
+  "intents": [
+    "EX",
+    "HE",
+    "MA",
+    "SE"
+  ],
+  "issues": [],
+  "output_sha256": {
+    "train_all_intents": "52D1DCA6A0F9BD30B6C4A05DB580FE489DB5BCDBECE522E5EC3069DA411FD340",
+    "train_positive_queries": "CCC54ABC69C7FD9F4CB11E3D33623B530FB29D3A0FF1EE1E1171FDD8D2E97E49",
+    "valid_all_intents": "C59D2B75A0AB71A8D298BEF6FDDA50D7848679E3930B5C7C29BB41A8FBCAA79E",
+    "valid_positive_queries": "04549F8FBCDE1E895BCA26BFE57F1A981B579115CD4A5D4B17A7749820DC28AA"
+  },
+  "outputs": {
+    "train_all_intents": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_train_all_intents.csv",
+    "train_positive_queries": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_train_positive_queries.csv",
+    "valid_all_intents": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_valid_all_intents.csv",
+    "valid_positive_queries": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_valid_positive_queries.csv"
+  },
+  "positive_query_protocol": true,
+  "prohibited_next_actions": [
+    "DDR test access",
+    "formal DDR claim",
+    "threshold/action/prompt tuning from DDR test"
+  ],
+  "route": "B_reference_promptability_benchmark",
+  "schema_version": "adapromptset.route_b.ddr_dev_manifest.v1",
+  "split_summaries": {
+    "train": {
+      "all_intent_counts": {
+        "EX": 383,
+        "HE": 383,
+        "MA": 383,
+        "SE": 383
+      },
+      "all_intent_rows": 1532,
+      "image_count": 383,
+      "mean_positive_area_ratio": 0.002483004391272288,
+      "positive_query_counts": {
+        "EX": 245,
+        "HE": 294,
+        "MA": 314,
+        "SE": 111
+      },
+      "positive_query_rows": 964
+    },
+    "valid": {
+      "all_intent_counts": {
+        "EX": 149,
+        "HE": 149,
+        "MA": 149,
+        "SE": 149
+      },
+      "all_intent_rows": 596,
+      "image_count": 149,
+      "mean_positive_area_ratio": 0.0011976893240506828,
+      "positive_query_counts": {
+        "EX": 70,
+        "HE": 113,
+        "MA": 132,
+        "SE": 86
+      },
+      "positive_query_rows": 401
+    }
+  },
+  "statistical_unit_note": "Primary independent unit is image/case; image-intent rows are repeated task views and must not be treated as independent patients.",
+  "status": "PASS_DDR_ROUTE_B_DEV_MANIFEST",
+  "test_files_read": false,
+  "test_split_requested": false,
+  "total_all_intent_rows": 2128,
+  "total_image_units": 532,
+  "total_positive_query_rows": 1365
+}
