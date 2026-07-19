@@ -109,5 +109,14 @@
       "method_positive_claim",
       "test_tuned_thresholds"
     ]
+  },
+  "episode_generation": {
+    "dataset": "DDR",
+    "references_per_query": 3,
+    "selection_seed": "route-b-ddr-episode-v1",
+    "train_query_reference_rule": "same_intent_train_excluding_query",
+    "valid_query_reference_rule": "same_intent_train_only",
+    "test_as_query_or_reference": false,
+    "episode_report": "reports/route_b_ddr_episodes/ddr_route_b_episode_report.json"
   }
 }

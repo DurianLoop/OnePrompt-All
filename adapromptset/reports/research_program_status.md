@@ -12,6 +12,8 @@ Current development gate: `PASS_DDR_ROUTE_B_DEV_MANIFEST`
 
 Current prereq freeze: `PASS_ROUTE_B_B1_PREREQ_FREEZE`
 
+Current episode gate: `PASS_DDR_ROUTE_B_EPISODES`
+
 ## Frozen Prior States
 
 | Route | State |
@@ -49,6 +51,7 @@ Latest legal progress:
 - DDR valid: 149 images, 401 positive image-intent queries.
 - DDR test remains locked; no test files were read.
 - Route B metric/control config is frozen for development-only evidence generation.
+- DDR Route B episodes: train 2892 reference rows for 964 positive queries; valid 1203 reference rows for 401 positive queries.
 
 ## Current Prohibitions
 
@@ -59,3 +62,4 @@ Latest legal progress:
 - No submission-ready claim.
 - No DDR formal claim or DDR test tuning.
 - No Route B method-positive claim from the B1 prereq freeze alone.
+- No independent-sample claim from reference rows or image-intent rows.

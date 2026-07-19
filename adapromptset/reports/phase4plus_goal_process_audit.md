@@ -80,7 +80,8 @@ These are evidence tables, but not yet the final submission tables requested by 
 | 2026-07-19 17:30 to 17:44 | Phase 4 read-only audit and track selection | `cfd2faf` | `PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK`, then `PRIMARY_TRACK_B_SELECTED` | Audit showed the strongest evidence is benchmark/control diagnostic value, not a validated method route. |
 | 2026-07-19 18:05 | Route B DDR development manifest gate | `reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json` | `PASS_DDR_ROUTE_B_DEV_MANIFEST` | This creates train/valid benchmark inputs only; model evidence, controls, statistics, and multi-dataset breadth are still missing. |
 | 2026-07-19 18:15 | Route B benchmark metric/control freeze | `reports/route_b_benchmark_freeze/route_b_benchmark_freeze_audit.json` | `PASS_ROUTE_B_B1_PREREQ_FREEZE` | This freezes metrics/controls but still does not create empirical model evidence. |
-| Current next span | Route B development-only evidence generation | Not started after B1 prereq freeze | Next legal action: run train/valid-only benchmark evidence under the frozen schema | Required before new benchmark tables/figures can be generated. |
+| 2026-07-19 18:25 | Route B DDR reference/query episode gate | `reports/route_b_ddr_episodes/ddr_route_b_episode_report.json` | `PASS_DDR_ROUTE_B_EPISODES` | This freezes deterministic support/query rows but still does not create empirical model evidence. |
+| Current next span | Route B development-only evidence generation | Not started after episode gate | Next legal action: run train/valid-only benchmark evidence under the frozen schema | Required before new benchmark tables/figures can be generated. |
 
 ## Current Evidence Boundary
 

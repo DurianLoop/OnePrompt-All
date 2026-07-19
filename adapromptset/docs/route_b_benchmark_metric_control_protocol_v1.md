@@ -6,6 +6,8 @@ Route: `B -- Reference Promptability Benchmark`
 
 Config: `configs/experiments/route_b_promptability_benchmark_v1.json`
 
+Episode protocol: `docs/route_b_ddr_episode_protocol_v1.md`
+
 ## Scope
 
 This protocol freezes the measurement layer for Route B before any new matcher or segmenter inference. It does not define a final method and does not authorize formal test access.

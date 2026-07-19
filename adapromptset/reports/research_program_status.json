@@ -26,11 +26,18 @@
   "route_b_b1_prereq_freeze_status": "PASS_ROUTE_B_B1_PREREQ_FREEZE",
   "route_b_b1_prereq_freeze_report": "reports/route_b_benchmark_freeze/route_b_benchmark_freeze_audit.json",
   "route_b_benchmark_config": "configs/experiments/route_b_promptability_benchmark_v1.json",
+  "route_b_ddr_episode_status": "PASS_DDR_ROUTE_B_EPISODES",
+  "route_b_ddr_episode_report": "reports/route_b_ddr_episodes/ddr_route_b_episode_report.json",
   "route_b_ddr_dev_manifest_counts": {
     "train_images": 383,
     "train_positive_queries": 964,
     "valid_images": 149,
     "valid_positive_queries": 401
+  },
+  "route_b_ddr_episode_counts": {
+    "references_per_query": 3,
+    "train_episode_rows": 2892,
+    "valid_episode_rows": 1203
   },
   "next_required_action": "run Route B development-only evidence generation on DDR train/valid without formal test access",
   "new_model_inference_since_preregistration": false,

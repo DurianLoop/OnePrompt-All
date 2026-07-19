@@ -99,3 +99,10 @@
 - `docs/route_b_benchmark_metric_control_protocol_v1.md` and `configs/experiments/route_b_promptability_benchmark_v1.json` froze the Route B row families, prompt representations, controls, metrics, statistical units, and query-level output schema.
 - `scripts/audit_route_b_benchmark_freeze.py --project-root D:\SAM\adapromptset` wrote `reports/route_b_benchmark_freeze/route_b_benchmark_freeze_audit.{json,md}` with status `PASS_ROUTE_B_B1_PREREQ_FREEZE`.
 - The freeze authorizes only development evidence generation on legal train/valid data. It does not authorize formal test access, a method-positive claim, or a submission-ready claim.
+
+## 2026-07-19 Route B DDR Episode Manifest Gate
+
+- `docs/route_b_ddr_episode_protocol_v1.md` froze same-intent reference/query episode construction for DDR Route B development.
+- `scripts/build_route_b_ddr_episodes.py --project-root D:\SAM\adapromptset --references-per-query 3` generated `manifests/phase4plus/ddr_route_b_train_reference_query_episodes.csv` and `manifests/phase4plus/ddr_route_b_valid_reference_query_episodes.csv`.
+- Status is `PASS_DDR_ROUTE_B_EPISODES`: train has 964 covered positive queries / 2892 reference rows; valid has 401 covered positive queries / 1203 reference rows.
+- Valid references come only from train; train references exclude the query image; DDR test files were not read.

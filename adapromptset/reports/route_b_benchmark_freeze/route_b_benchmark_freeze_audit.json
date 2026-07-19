@@ -1,7 +1,7 @@
 {
   "authorizes": "development_only_evidence_generation",
   "config": "configs\\experiments\\route_b_promptability_benchmark_v1.json",
-  "config_sha256": "28C16AF117B94EDD001C2E3B8187D4F606FBF2B016301DED282E1926B9910B31",
+  "config_sha256": "F0A29F270103935289A27BB81A09279A7207114568F134403148C73A7F76CE66",
   "date": "2026-07-19",
   "ddr_manifest_report": "reports\\route_b_ddr_manifest\\ddr_route_b_manifest_report.json",
   "ddr_manifest_report_sha256": "161E082CEB0855AB891C02CCA01009FB7171BA2570316C7A5BF248000D7386B3",

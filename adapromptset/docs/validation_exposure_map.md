@@ -13,6 +13,7 @@ Date: 2026-07-19
 | Phase 3 paper/report | `paper_phase3/`, `reports/phase3_final_report.*` | Negative/gated artifact only; not a method-selection source for test. |
 | DDR Route B manifest gate | `manifests/phase4plus/ddr_route_b_train_*`; `manifests/phase4plus/ddr_route_b_valid_*`; `reports/route_b_ddr_manifest/` | DDR train/valid are now observed for file hashes, mask dimensions, and positive-query prevalence; DDR test remains unobserved for Phase 4+. |
 | Route B metric/control freeze | `configs/experiments/route_b_promptability_benchmark_v1.json`; `reports/route_b_benchmark_freeze/` | Freezes development metrics and controls; not an empirical result and not a formal-test access event. |
+| DDR Route B episode manifests | `manifests/phase4plus/ddr_route_b_train_reference_query_episodes.csv`; `manifests/phase4plus/ddr_route_b_valid_reference_query_episodes.csv` | Train/valid reference/query pairings are observed; valid references are train-only; DDR test remains unobserved. |
 
 ## Locked Formal Tests
 
