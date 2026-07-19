@@ -78,3 +78,10 @@
 - After preregistration commit `471f529`, frozen DINOv2-L/local-peaks candidate evidence was generated for the 40/15 internal pool under `reports/phase3_glas/region_candidate_calibration/`.
 - Gate R1 was evaluated under `reports/phase3_glas/gate_r1_region_proposal/` without SAM inference. All R1 families failed the preregistered thresholds; the final Phase 3 state is `STOP_GLAS_REGION_PROPOSAL_FAILURE`.
 - Because R1 failed, SAM-B R2, R3 oracle analysis, router training, and testA/testB evaluation remain blocked/prohibited.
+
+## 2026-07-19 Phase 4+ Research Program Preregistration
+
+- Branch `phase4plus-submission-program` was created from Phase 3 final commit `9f33382`.
+- Phase 4+ is not a continuation of same-validation GlaS method repair. It is a research-program layer for submission-readiness, with Phase 4 limited to read-only evidence audit before any new matcher/segmenter inference.
+- Frozen states are preserved: MoNuSAC `PIVOT_ORACLE_ANALYSIS`, GlaS grouped sparse point `STOP_GLAS_GROUPED_POINT_PROMPT_PATH_CONFIRMED`, GlaS region scientific state `STOP_GLAS_REGION_LOCALIZATION_ADVANTAGE_NOT_ESTABLISHED`, and GlaS testA/testB `LOCKED_UNUSED`.
+- Routes A/B/C are registered for evidence-based selection after Phase 4 audit: Promptability-Aware Routing, Reference Promptability Benchmark, and Direct Reference Segmentation.

@@ -1,0 +1,26 @@
+{
+  "schema_version": "adapromptset.research_program_status.v1",
+  "date": "2026-07-19",
+  "branch": "phase4plus-submission-program",
+  "state": "PHASE4PLUS_PREREGISTERED_NOT_COMMITTED",
+  "base_commit": "9f33382",
+  "frozen_prior_states": {
+    "monusac": "PIVOT_ORACLE_ANALYSIS",
+    "glas_grouped_point": "STOP_GLAS_GROUPED_POINT_PROMPT_PATH_CONFIRMED",
+    "glas_region_scientific": "STOP_GLAS_REGION_LOCALIZATION_ADVANTAGE_NOT_ESTABLISHED",
+    "glas_region_operational": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+    "glas_testA_testB": "LOCKED_UNUSED"
+  },
+  "registered_tracks": {
+    "A": "Promptability-Aware Routing",
+    "B": "Reference Promptability Benchmark",
+    "C": "Direct Reference Segmentation"
+  },
+  "primary_track": null,
+  "fallback_track": null,
+  "deferred_track": null,
+  "next_required_action": "commit preregistration before any new inference",
+  "new_model_inference_since_preregistration": false,
+  "formal_test_access": false,
+  "submission_ready": false
+}
