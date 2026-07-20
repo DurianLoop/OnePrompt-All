@@ -1,2 +1,7 @@
 phase,stage,gpu_hours,command,notes
 phaseX-preregistration,historical_audit,0.0,scripts/build_phasex_preregistration.py,CPU-only read of historical artifacts; no new SAM inference.
+phaseX-stage-S2-single-variable-kpos,scripts/run_phasex_single_variable_kpos.py,0.000000,Phase X Stage S2: single-variable K+ scaling with SAM-B on MoNuSAC validation.
+phaseX-stage-S2-single-variable-kpos,scripts/run_phasex_single_variable_kpos.py,0.000000,Phase X Stage S2: single-variable K+ scaling with SAM-B on MoNuSAC validation.
+phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000,Phase X Stage S3: grouping scaling with SAM-B on MoNuSAC validation.
+phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000,Phase X Stage S3: grouping scaling with SAM-B on MoNuSAC validation.
+phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000,Phase X Stage S3: grouping scaling with SAM-B on MoNuSAC validation.

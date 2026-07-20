@@ -168,6 +168,60 @@ Will report one of:
 
 ## Gate X4 — Action-Space Saturation
 
+Status: `PARTIAL` (grouping axis complete, negative + nested bank pending).
+
+### Stage S3 (grouping scaling) — preliminary Gate X4 (grouping axis)
+
+Status: `GROUPING_ONE_GROUP_DOMINATES`.
+
+Stage S3 ran SAM-B on 10 MoNuSAC validation episodes with K+ in
+{10, 20, 30, 50, 100} and all 12 frozen grouping families. CPU-only:
+4159.8 seconds (69.3 minutes), 0 GPU-hours.
+
+Best grouping per K+:
+
+| K+ | Best grouping | Mean Dice | Mean calls | Next best (non-tied) |
+|---|---|---|---|---|
+| 10 | G_ONE_GROUP | 0.467 | 1 | G_KMEANS_3 (0.333, 3 calls) |
+| 20 | G_ONE_GROUP | 0.524 | 1 | G_KMEANS_3 (0.356, 3 calls) |
+| 30 | G_ONE_GROUP | 0.517 | 1 | G_KMEANS_3 (0.479, 3 calls) |
+| 50 | G_ONE_GROUP | 0.442 | 1 | G_KMEANS_5 (0.414, 5 calls) |
+| 100 | G_ONE_GROUP | 0.423 | 1 | G_KMEANS_3 (0.395, 3 calls) |
+
+Key findings:
+
+1. **G_ONE_GROUP dominates at every K+.** No other grouping beats it by
+   >= 0.01 Dice at the S2 peak (K=20). Gain = 0.0000 < 0.010.
+2. **G_ONE_POINT_PER_GROUP is the worst at every K+.** Splitting into
+   individual points drastically reduces Dice while increasing calls
+   (e.g., K=100: 0.315 Dice, 100 calls vs G_ONE_GROUP 0.423 Dice, 1 call).
+3. **Multi-group strategies generally hurt Dice.** They produce multiple
+   masks that get fused (NMS + union), causing over-segmentation.
+   Component recall is often high (1.0) but Dice is low — the
+   "cost-only gain" pattern.
+4. **Historical claim at directive line 36 CONFIRMED**: "其他分组、聚类
+   或多次调用策略无效" (other grouping, clustering, or multi-call
+   strategies are invalid). G_ONE_GROUP with 1 call is the best at every
+   K+.
+5. **BUT** the historical claim was made without testing K+ > 5. The
+   finding is: grouping strategies ARE invalid (confirmed), BUT K+
+   scaling IS valid (S2 showed K=20 gives 60.7% relative improvement
+   over K=5). The 0.005 gap was NOT evidence of action-space saturation
+   — it was evidence of an inadequate action space (K+ <= 5).
+
+Artifacts (under `reports/phaseX_grouping_scaling/`):
+
+- `grouping_scaling_query_metrics.csv`
+- `grouping_scaling_curve.csv`
+- `grouping_scaling_summary.md`
+- `grouping_scaling_summary.json`
+
+### Stage S4 (negative scaling) — preliminary Gate X4 (negative axis)
+
+Status: `NOT_RUN_YET`.
+
+### Nested bank saturation — full Gate X4
+
 Status: `NOT_RUN_YET`.
 
 Will report one of:
