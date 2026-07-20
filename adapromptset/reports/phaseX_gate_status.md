@@ -104,13 +104,67 @@ Will report one of:
 
 ## Gate X3 — Dense Prompt Viability
 
-Status: `NOT_RUN_YET`.
+Status: `DENSE_PROMPT_VIABILITY_ESTABLISHED`.
+
+Stage S2 (single-variable K+ scaling) ran SAM-B on 10 MoNuSAC validation
+episodes with K+ in {1, 3, 5, 10, 20, 30, 50, 75, 100}, selection=Top-K,
+negative=none, grouping=one group, calls=1. CPU-only: 59.5 seconds, 0
+GPU-hours.
+
+K+ scaling curve:
+
+| K+ | Mean Dice | Mean IoU | Mean AJI | Mean component recall |
+|---|---|---|---|---|
+| 1  | 0.029 | 0.016 | 0.016 | 0.013 |
+| 3  | 0.256 | 0.152 | 0.152 | 0.656 |
+| 5  | 0.326 | 0.197 | 0.197 | 0.892 |
+| 10 | 0.467 | 0.315 | 0.315 | 0.942 |
+| 20 | 0.524 | 0.364 | 0.364 | 0.968 |  <- Dice peak
+| 30 | 0.517 | 0.357 | 0.357 | 1.000 |  <- recall saturated
+| 50 | 0.442 | 0.286 | 0.286 | 1.000 |
+| 75 | 0.397 | 0.248 | 0.248 | 1.000 |
+| 100| 0.423 | 0.269 | 0.269 | 1.000 |
+
+Key findings:
+
+1. **Historical 12-action bank was inadequate.** Dice at K=5 (historical max)
+   is 0.326. Dice at K=20 is 0.524 — a 60.7% relative improvement. The
+   historical bank never tested K+ > 5.
+2. **Dice peaks at K=20, then decreases.** Beyond K=20, adding more points
+   causes SAM to predict larger masks that include too much background
+   (false positives), reducing Dice. This is the "mask over-expansion"
+   failure mode.
+3. **Component recall saturates at K=30 (1.000).** All GT components are
+   hit by SAM's predicted mask from K=30 onwards.
+4. **Gate X2 (CANDIDATE_UNIVERSE_INADEQUATE) was misleading.** Even though
+   candidate points themselves only cover 0.433 of components at K=100,
+   SAM's mask prediction reaches all components by K=30. The candidate
+   coverage metric was too conservative — it measured point-level coverage,
+   but SAM's mask prediction is much more powerful.
+5. **The historical 0.005 oracle gap was an artifact.** The historical
+   "oracle" (0.3762) was the best of 12 actions all limited to K+ <= 5.
+   The real oracle (K=20) gives 0.524 Dice — 39.6% higher. The 0.005 gap
+   was measuring saturation within an inadequate action space, not true
+   action-space saturation.
+
+This is the central Phase X finding: the historical conclusion that the
+action space was "close to Oracle" was wrong. The action space was
+inadequate, and dense prompts (K=20) provide a significant improvement.
+
+Artifacts (under `reports/phaseX_single_variable_kpos/`):
+
+- `single_variable_kpos_query_metrics.csv`
+- `single_variable_kpos_curve.csv`
+- `single_variable_kpos_summary.md`
+- `single_variable_kpos_summary.json`
 
 Will report one of:
 
 - `DENSE_PROMPT_VIABILITY_ESTABLISHED`
 - `DENSE_PROMPT_NO_GAIN`
 - `DENSE_PROMPT_COST_ONLY_GAIN`
+- `DENSE_PROMPT_ABSOLUTE_PERFORMANCE_LOW`
+- `DENSE_PROMPT_INSUFFICIENT_DATA`
 
 ## Gate X4 — Action-Space Saturation
 
