@@ -168,8 +168,8 @@ Will report one of:
 
 ## Gate X4 — Action-Space Saturation
 
-Status: `OLD_ACTION_BANK_INADEQUATE` (grouping + negative axes complete;
-nested bank re-running with corrected cumulative grids).
+Status: `OLD_ACTION_BANK_INADEQUATE` (grouping + negative + nested bank
+axes complete).
 
 ### Stage S3 (grouping scaling) — preliminary Gate X4 (grouping axis)
 
@@ -263,44 +263,56 @@ Artifacts (under `reports/phaseX_negative_scaling/`):
 
 ### Nested bank saturation — full Gate X4
 
-Status: `OLD_ACTION_BANK_INADEQUATE` (re-running with corrected cumulative
-K+/K- grids to preserve strict nesting; preliminary run with non-cumulative
-grids gave the same gate verdict with A_large best_fixed=0.5237,
-oracle_gap=0.0415).
+Status: `OLD_ACTION_BANK_INADEQUATE`.
 
-Preliminary saturation curve (non-cumulative grids, 10 episodes, CPU-only
-450.7s, 0 GPU-hours):
+Nested bank saturation ran SAM-B on 10 MoNuSAC validation episodes with
+3 nested banks using cumulative K+/K- grids (strict nesting
+A_small ⊂ A_medium ⊂ A_large). CPU-only: 647.3 seconds (10.8 minutes),
+0 GPU-hours.
 
-| Bank | Actions | Best fixed action | Best fixed Dice | Oracle Dice | Oracle gap | Win/Tie/Loss |
-|---|---|---|---|---|---|---|
-| A_small (K+≤5) | 12 | K5/N3/N_BOTTOMK | 0.3713 | 0.3842 | 0.0129 | 5/5/0 |
-| A_medium (K+≤20) | 27 | K20/N1/N_BOTTOMK | 0.5411 | 0.5668 | 0.0257 | 8/2/0 |
-| A_large (K+≤100) | 33 | K20/N0/N_NONE | 0.5237 | 0.5652 | 0.0415 | 5/5/0 |
+Saturation curve (corrected, cumulative grids):
 
-Note: the preliminary run used non-cumulative K+/K- grids (A_large grid did
-not include K-=1 from A_medium). This was corrected to cumulative grids
-(A_large now includes all of A_medium's K+ and K- values) to honor the
-strict nesting property A_small ⊂ A_medium ⊂ A_large. The re-run is in
-progress; the gate verdict `OLD_ACTION_BANK_INADEQUATE` is expected to
-hold because A_large best_fixed - A_small best_fixed = 0.1525 ≥ 0.05.
+| Bank | Actions | Best fixed action | Best fixed Dice | Oracle Dice | Oracle gap | Best fixed calls | Oracle calls | Win/Tie/Loss |
+|---|---|---|---|---|---|---|---|---|
+| A_small (K+≤5, K-≤4, calls≤3) | 12 | K5/N3/N_BOTTOMK | 0.3713 | 0.3842 | 0.0129 | 1 | 1.2 | 5/5/0 |
+| A_medium (K+≤20, K-≤10, calls≤5) | 45 | K20/N1/N_BOTTOMK | 0.5411 | 0.5668 | 0.0257 | 1 | 1.0 | 8/2/0 |
+| A_large (K+≤100, K-≤30, calls≤20) | 91 | K20/N1/N_BOTTOMK | 0.5411 | 0.6119 | 0.0708 | 1 | 1.5 | 8/2/0 |
 
-Key findings (preliminary):
+Nesting verification (strict):
+- A_large best_fixed (0.5411) = A_medium best_fixed (0.5411) ✓
+- A_large oracle (0.6119) > A_medium oracle (0.5668) ✓
+- A_large oracle gap (0.0708) > A_medium oracle gap (0.0257) ✓
+
+Key findings (final):
 
 1. **Historical 12-action bank (A_small) was inadequate.** A_large
-   best_fixed (0.5237) - A_small best_fixed (0.3713) = 0.1525 ≥ 0.05 →
+   best_fixed (0.5411) - A_small best_fixed (0.3713) = 0.1699 ≥ 0.05 →
    `OLD_ACTION_BANK_INADEQUATE`.
-2. **A_large oracle gap = 0.0415** — 8.3× the historical 0.005 gap. The
+2. **A_large oracle gap = 0.0708** — 14.2× the historical 0.005 gap. The
    historical "0.005 oracle gap" was an artifact of the inadequate A_small
    action space, not true action-space saturation.
 3. **A_medium oracle gap = 0.0257** — even at K+≤20, the oracle
    significantly exceeds the best fixed action.
-4. **Win/tie/loss**: A_large oracle wins 5/10 episodes, ties 5/10. The
-   best fixed action (K20/N0/N_NONE) is optimal for half the episodes;
-   the other half benefit from query-specific action selection.
-5. **Best fixed action at A_large is still K20/N0/N_NONE** (the S2 peak).
-   K+ scaling beyond 20 does not improve the best fixed action, but it
-   expands the oracle's per-episode options (e.g., K100 with KMEANS_5
-   wins 1 episode).
+4. **Win/tie/loss at A_large: 8/2/0** — oracle wins 8/10 episodes, ties
+   2/10. Strong query-specific variability: the per-episode oracle actions
+   span K+∈{1,3,5,10,20,100}, K-∈{0,1,20,30}, and multiple groupings
+   (G_ONE_GROUP, G_KMEANS_3, G_SPATIAL_GRID). This is evidence for
+   `POLICY_SPACE_POTENTIALLY_MEANINGFUL`.
+5. **Best fixed action at A_large is K20/N1/N_BOTTOMK** (the S4 best).
+   This is the same as A_medium's best, confirming K+>20 does not improve
+   the *best fixed* action — but it expands the *oracle* (per-episode
+   best) substantially (gap grew from 0.0257 to 0.0708).
+6. **A_large oracle uses diverse configs**: K1/N20/N_BOTTOMK (very sparse
+   + many negatives), K100 with KMEANS_3/SPATIAL_GRID (dense + grouped),
+   K5/N30/N_BOTTOMK (sparse + max negatives). Different episodes have
+   fundamentally different optimal prompt structures.
+
+Artifacts (under `reports/phaseX_nested_bank_saturation/`):
+
+- `nested_bank_query_metrics.csv`
+- `nested_bank_saturation_curve.csv`
+- `nested_bank_summary.md`
+- `nested_bank_summary.json`
 
 Will report one of:
 
