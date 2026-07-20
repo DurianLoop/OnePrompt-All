@@ -21,13 +21,42 @@ Failure code if any artifact is missing: `BLOCKED_HISTORICAL_ARTIFACT_INCOMPLETE
 
 ## Gate X2 — Candidate Scaling
 
-Status: `NOT_RUN_YET`.
+Status: `CANDIDATE_UNIVERSE_INADEQUATE`.
+
+Ran on 10 MoNuSAC validation episodes against the historical candidate pool
+(`reports/candidate_pilot/candidate_pilot_candidates.csv`). The pool maxes out
+at 9 positives and 9 negatives per episode (historical pilot was run with
+`positive_limits=(1,3,5)`). Component coverage at K+=10 (the smallest grid
+K+ that can use all 9 distinct positives) is 0.052 — well below the 0.5
+threshold. Point precision at K+=10 is 0.511.
+
+The candidate universe itself is the bottleneck. Per directive section 7,
+this finding is attributed to the matcher / candidate generator (DINOv2-L
+`spread` layout with `min_positive_distance=4.0`), **not** to the policy.
+Before Gate X3 (Dense Prompt Viability) can be evaluated, the candidate pool
+must be regenerated with `positive_limit >= 100` so that K+=100 coverage can
+be measured with 100 distinct positives per episode.
+
+Artifacts:
+
+- `reports/phaseX_candidate_scaling/positive_scaling_query_metrics.csv`
+- `reports/phaseX_candidate_scaling/negative_scaling_query_metrics.csv`
+- `reports/phaseX_candidate_scaling/positive_coverage_curve.csv`
+- `reports/phaseX_candidate_scaling/negative_quality_curve.csv`
+- `reports/phaseX_candidate_scaling/component_coverage_by_k.csv`
+- `reports/phaseX_candidate_scaling/spatial_dispersion_by_k.csv`
+- `reports/phaseX_candidate_scaling/scaling_summary.md`
+- `reports/phaseX_candidate_scaling/scaling_summary.json`
 
 Will report one of:
 
 - `CANDIDATE_SCALING_SUPPORTS_LARGE_K`
 - `CANDIDATE_SCALING_SATURATES_SMALL_K`
 - `CANDIDATE_UNIVERSE_INADEQUATE`
+- `CANDIDATE_SCALING_INSUFFICIENT_DATA` (pool maxes below 100 but coverage at
+  the pool max is already >= 0.5; regenerate pool to draw a saturation
+  conclusion at K+=100)
+- `OLD_SMALL_K_BANK_INADEQUATE` (K+=5 coverage is low but K+=100 reaches high)
 
 ## Gate X3 — Dense Prompt Viability
 
