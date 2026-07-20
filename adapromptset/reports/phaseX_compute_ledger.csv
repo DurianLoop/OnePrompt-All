@@ -8,3 +8,5 @@ phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000
 phaseX-stage-S4-negative-scaling,scripts/run_phasex_negative_scaling.py,0.000000,Phase X Stage S4: negative scaling with SAM-B on MoNuSAC validation.
 phaseX-nested-bank-saturation,scripts/run_phasex_nested_bank_saturation.py,0.000000,Phase X: nested action bank saturation and finite-bank oracle (section 11).
 phaseX-nested-bank-saturation,scripts/run_phasex_nested_bank_saturation.py,0.000000,Phase X: nested action bank saturation and finite-bank oracle (section 11).
+search_oracle,1,139.8,0.0,cpu,2026-07-20T13:48:01Z
+search_oracle,10,966.0,0.0,cpu,2026-07-20T14:04:29Z

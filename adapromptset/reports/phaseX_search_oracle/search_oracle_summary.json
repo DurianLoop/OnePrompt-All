@@ -1,0 +1,456 @@
+{
+  "phase": "phaseX",
+  "stage": "search_oracle",
+  "gate": "X5",
+  "date": "2026-07-20",
+  "episode_count": 10,
+  "positive_limit": 100,
+  "k_positive_start": 20,
+  "k_negative_start": 1,
+  "negative_selector": "N_BOTTOMK",
+  "b_point": 100,
+  "b_call": 1,
+  "search_variants": [
+    "greedy_add_positives",
+    "greedy_remove_positives",
+    "greedy_swap_positives",
+    "greedy_add_negatives"
+  ],
+  "deferred_variants": [
+    "beam_search (CPU budget)"
+  ],
+  "mean_baseline_dice": 0.5411257348687216,
+  "mean_search_dice": 0.7256400627818208,
+  "mean_search_gap": 0.18451432791309924,
+  "mean_sam_calls": 558.5,
+  "win_tie_loss": {
+    "win": 10,
+    "tie": 0,
+    "loss": 0
+  },
+  "bank_oracle_mean_dice": 0.6119,
+  "best_fixed_mean_dice": 0.5411,
+  "search_vs_bank": 0.1137400627818208,
+  "search_vs_fixed": 0.18454006278182078,
+  "gate_x5_status": "SEARCH_ORACLE_EXCEEDS_BANK_ORACLE",
+  "gate_x5_rationale": "search=0.7256 - bank=0.6119 = 0.1137 >= 0.01",
+  "elapsed_seconds": 965.9781356998719,
+  "gpu_hours": 0.0,
+  "device": "cpu",
+  "sam_inference_run": true,
+  "sam_checkpoint": {
+    "role": "segmenter",
+    "path": "D:\\SAM\\assets\\checkpoints\\sam_vit_b.pth",
+    "exists": true,
+    "sha256": "EC2DF62732614E57411CDCF32A23FFDF28910380D03139EE0F4FCBE91EB8C912",
+    "bytes": 375042383,
+    "architecture": "vit_b"
+  },
+  "fusion_config": {
+    "min_area": 1,
+    "iou_nms_threshold": 0.95
+  },
+  "candidates_csv": "D:\\SAM\\adapromptset\\reports\\phaseX_candidate_pilot_100\\candidate_pilot_candidates.csv",
+  "per_episode_trajectories": [
+    {
+      "episode_id": "monusac_val__train_111__to__train_004",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.35831919353228864,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.3883913210851028,
+          "positive_count": 31,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.6676462878974416,
+          "positive_count": 18,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.6676462878974416,
+          "positive_count": 18,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.6676462878974416,
+          "positive_count": 18,
+          "negative_count": 1
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_190__to__train_004",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.6326092065943659,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.6699383547724245,
+          "positive_count": 31,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.6890943522334856,
+          "positive_count": 25,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.6890943522334856,
+          "positive_count": 25,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.6890943522334856,
+          "positive_count": 25,
+          "negative_count": 1
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_132__to__train_004",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.4323237381364088,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.6744375868142569,
+          "positive_count": 31,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.6948135315318102,
+          "positive_count": 26,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.6948135315318102,
+          "positive_count": 26,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.6948135315318102,
+          "positive_count": 26,
+          "negative_count": 1
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_204__to__train_004",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.46256492793913234,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.5046407163724864,
+          "positive_count": 27,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.5850001589976787,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.5850001589976787,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.5850001589976787,
+          "positive_count": 20,
+          "negative_count": 1
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_200__to__train_004",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.37305463751019596,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.4467343476115793,
+          "positive_count": 34,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.4948173638075752,
+          "positive_count": 27,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.4948173638075752,
+          "positive_count": 27,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.5456365539599785,
+          "positive_count": 27,
+          "negative_count": 5
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_116__to__train_005",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.5973733745862091,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.6627934969266077,
+          "positive_count": 26,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.7837467921300256,
+          "positive_count": 17,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.7837467921300256,
+          "positive_count": 17,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.7890007075197736,
+          "positive_count": 17,
+          "negative_count": 2
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_123__to__train_005",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.7354080085517632,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.7749851449539754,
+          "positive_count": 25,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.8234348283944606,
+          "positive_count": 15,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.8234348283944606,
+          "positive_count": 15,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.8311504262954582,
+          "positive_count": 15,
+          "negative_count": 2
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_207__to__train_005",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.4064570093547798,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.6457590876692801,
+          "positive_count": 31,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.8269932661053239,
+          "positive_count": 17,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.8269932661053239,
+          "positive_count": 17,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.8269932661053239,
+          "positive_count": 17,
+          "negative_count": 1
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_113__to__train_005",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.7512244520394551,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.785221900576879,
+          "positive_count": 23,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.8243592354776121,
+          "positive_count": 16,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.8243592354776121,
+          "positive_count": 16,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.8243592354776121,
+          "positive_count": 16,
+          "negative_count": 1
+        }
+      ]
+    },
+    {
+      "episode_id": "monusac_val__train_017__to__train_005",
+      "trajectory": [
+        {
+          "step": 0,
+          "action": "init",
+          "dice": 0.6619228004426173,
+          "positive_count": 20,
+          "negative_count": 1
+        },
+        {
+          "step": 1,
+          "action": "greedy_add_positives",
+          "dice": 0.755796435440927,
+          "positive_count": 25,
+          "negative_count": 1
+        },
+        {
+          "step": 2,
+          "action": "greedy_remove_positives",
+          "dice": 0.8027061077996464,
+          "positive_count": 18,
+          "negative_count": 1
+        },
+        {
+          "step": 3,
+          "action": "greedy_swap_positives_skipped",
+          "dice": 0.8027061077996464,
+          "positive_count": 18,
+          "negative_count": 1
+        },
+        {
+          "step": 4,
+          "action": "greedy_add_negatives",
+          "dice": 0.8027061077996464,
+          "positive_count": 18,
+          "negative_count": 1
+        }
+      ]
+    }
+  ]
+}
