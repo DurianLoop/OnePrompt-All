@@ -5,3 +5,5 @@ phaseX-stage-S2-single-variable-kpos,scripts/run_phasex_single_variable_kpos.py,
 phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000,Phase X Stage S3: grouping scaling with SAM-B on MoNuSAC validation.
 phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000,Phase X Stage S3: grouping scaling with SAM-B on MoNuSAC validation.
 phaseX-stage-S3-grouping-scaling,scripts/run_phasex_grouping_scaling.py,0.000000,Phase X Stage S3: grouping scaling with SAM-B on MoNuSAC validation.
+phaseX-stage-S4-negative-scaling,scripts/run_phasex_negative_scaling.py,0.000000,Phase X Stage S4: negative scaling with SAM-B on MoNuSAC validation.
+phaseX-nested-bank-saturation,scripts/run_phasex_nested_bank_saturation.py,0.000000,Phase X: nested action bank saturation and finite-bank oracle (section 11).

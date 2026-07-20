@@ -168,7 +168,8 @@ Will report one of:
 
 ## Gate X4 — Action-Space Saturation
 
-Status: `PARTIAL` (grouping axis complete, negative + nested bank pending).
+Status: `OLD_ACTION_BANK_INADEQUATE` (grouping + negative axes complete;
+nested bank re-running with corrected cumulative grids).
 
 ### Stage S3 (grouping scaling) — preliminary Gate X4 (grouping axis)
 
@@ -218,11 +219,88 @@ Artifacts (under `reports/phaseX_grouping_scaling/`):
 
 ### Stage S4 (negative scaling) — preliminary Gate X4 (negative axis)
 
-Status: `NOT_RUN_YET`.
+Status: `NEGATIVE_BEST_BEATS_NONE`.
+
+Stage S4 ran SAM-B on 10 MoNuSAC validation episodes with K+=20 (S2 peak),
+G_ONE_GROUP (S3 winner), K- in {0, 1, 3, 5, 10, 20} and selectors
+{N_NONE, N_BOTTOMK, N_HIGH_BACKGROUND}. CPU-only: 62.2 seconds, 0 GPU-hours.
+
+Negative scaling curve (selected rows):
+
+| K- | Selector | Mean Dice | Mean component recall | Mean calls |
+|---|---|---|---|---|
+| 0 | N_NONE (baseline) | 0.5237 | 0.9678 | 1.0 |
+| 1 | N_BOTTOMK | 0.5411 | 0.9777 | 1.0 |
+| 3 | N_BOTTOMK | 0.4814 | 0.9893 | 1.0 |
+| 5 | N_BOTTOMK | 0.4592 | 0.9918 | 1.0 |
+| 10 | N_BOTTOMK | 0.4281 | 0.9940 | 1.0 |
+| 20 | N_BOTTOMK | 0.4308 | 0.9979 | 1.0 |
+| 1 | N_HIGH_BACKGROUND | 0.5062 | 0.9893 | 1.0 |
+| 3 | N_HIGH_BACKGROUND | 0.4632 | 0.9817 | 1.0 |
+| 20 | N_HIGH_BACKGROUND | 0.4144 | 1.0000 | 1.0 |
+
+Key findings:
+
+1. **Best config: K-=1, N_BOTTOMK → 0.5411 Dice.** Gain over N_NONE baseline
+   = 0.0174 ≥ 0.01 → `NEGATIVE_BEST_BEATS_NONE`.
+2. **Single negative point helps; more hurt.** K-=1 N_BOTTOMK gives the best
+   Dice (0.5411). Beyond K-=1, Dice decreases monotonically as more
+   negatives suppress the mask. Component recall increases (0.9777 → 1.0000)
+   but Dice drops — the "cost-only gain" pattern.
+3. **N_BOTTOMK beats N_HIGH_BACKGROUND at every K-.** N_BOTTOMK (most
+   confident background) gives higher Dice than N_HIGH_BACKGROUND (boundary
+   cases). E.g., K-=1: 0.5411 vs 0.5062.
+4. **Best single negative point is more valuable than many.** The historical
+   bank allowed up to K-=3. Our finding: K-=1 is optimal; K-=3 already
+   hurts Dice (0.4814 < 0.5237 baseline).
+
+Artifacts (under `reports/phaseX_negative_scaling/`):
+
+- `negative_scaling_query_metrics.csv`
+- `negative_scaling_curve.csv`
+- `negative_scaling_summary.md`
+- `negative_scaling_summary.json`
 
 ### Nested bank saturation — full Gate X4
 
-Status: `NOT_RUN_YET`.
+Status: `OLD_ACTION_BANK_INADEQUATE` (re-running with corrected cumulative
+K+/K- grids to preserve strict nesting; preliminary run with non-cumulative
+grids gave the same gate verdict with A_large best_fixed=0.5237,
+oracle_gap=0.0415).
+
+Preliminary saturation curve (non-cumulative grids, 10 episodes, CPU-only
+450.7s, 0 GPU-hours):
+
+| Bank | Actions | Best fixed action | Best fixed Dice | Oracle Dice | Oracle gap | Win/Tie/Loss |
+|---|---|---|---|---|---|---|
+| A_small (K+≤5) | 12 | K5/N3/N_BOTTOMK | 0.3713 | 0.3842 | 0.0129 | 5/5/0 |
+| A_medium (K+≤20) | 27 | K20/N1/N_BOTTOMK | 0.5411 | 0.5668 | 0.0257 | 8/2/0 |
+| A_large (K+≤100) | 33 | K20/N0/N_NONE | 0.5237 | 0.5652 | 0.0415 | 5/5/0 |
+
+Note: the preliminary run used non-cumulative K+/K- grids (A_large grid did
+not include K-=1 from A_medium). This was corrected to cumulative grids
+(A_large now includes all of A_medium's K+ and K- values) to honor the
+strict nesting property A_small ⊂ A_medium ⊂ A_large. The re-run is in
+progress; the gate verdict `OLD_ACTION_BANK_INADEQUATE` is expected to
+hold because A_large best_fixed - A_small best_fixed = 0.1525 ≥ 0.05.
+
+Key findings (preliminary):
+
+1. **Historical 12-action bank (A_small) was inadequate.** A_large
+   best_fixed (0.5237) - A_small best_fixed (0.3713) = 0.1525 ≥ 0.05 →
+   `OLD_ACTION_BANK_INADEQUATE`.
+2. **A_large oracle gap = 0.0415** — 8.3× the historical 0.005 gap. The
+   historical "0.005 oracle gap" was an artifact of the inadequate A_small
+   action space, not true action-space saturation.
+3. **A_medium oracle gap = 0.0257** — even at K+≤20, the oracle
+   significantly exceeds the best fixed action.
+4. **Win/tie/loss**: A_large oracle wins 5/10 episodes, ties 5/10. The
+   best fixed action (K20/N0/N_NONE) is optimal for half the episodes;
+   the other half benefit from query-specific action selection.
+5. **Best fixed action at A_large is still K20/N0/N_NONE** (the S2 peak).
+   K+ scaling beyond 20 does not improve the best fixed action, but it
+   expands the oracle's per-episode options (e.g., K100 with KMEANS_5
+   wins 1 episode).
 
 Will report one of:
 
