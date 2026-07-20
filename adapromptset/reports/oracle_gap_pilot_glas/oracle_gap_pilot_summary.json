@@ -1,0 +1,62 @@
+{
+  "gate_f_status": "PENDING_INSUFFICIENT_EPISODES",
+  "episode_count": 1,
+  "record_count": 12,
+  "valid_record_count": 12,
+  "best_fixed_action_id": "R_top5_independent_localneg",
+  "mean_oracle_dice": 0.7180205482567982,
+  "mean_best_fixed_dice": 0.7180205482567982,
+  "dice_oracle_gap": 0.0,
+  "oracle_action_counts": {
+    "R_top5_independent_localneg": 1
+  },
+  "oracle_family_counts": {
+    "rescue_group_specific_negatives": 1
+  },
+  "top_oracle_action_fraction": 1.0,
+  "best_fixed_sam_calls": 5,
+  "mean_oracle_sam_calls": 5.0,
+  "budget_gaps": {
+    "1": {
+      "best_fixed_action_id": "A_top3_one_group",
+      "mean_oracle_dice": 0.7173256061581311,
+      "mean_best_fixed_dice": 0.7173256061581311,
+      "dice_oracle_gap": 0.0
+    },
+    "2": {
+      "best_fixed_action_id": "A_top3_one_group",
+      "mean_oracle_dice": 0.7173256061581311,
+      "mean_best_fixed_dice": 0.7173256061581311,
+      "dice_oracle_gap": 0.0
+    },
+    "3": {
+      "best_fixed_action_id": "A_top3_one_group",
+      "mean_oracle_dice": 0.7173256061581311,
+      "mean_best_fixed_dice": 0.7173256061581311,
+      "dice_oracle_gap": 0.0
+    },
+    "5": {
+      "best_fixed_action_id": "R_top5_independent_localneg",
+      "mean_oracle_dice": 0.7180205482567982,
+      "mean_best_fixed_dice": 0.7180205482567982,
+      "dice_oracle_gap": 0.0
+    }
+  },
+  "gate_f_min_dice_gap": 0.01,
+  "gate_f_max_top_oracle_fraction": 0.7,
+  "max_sam_calls": 5,
+  "decoder_calls": 19,
+  "cache_hits": 5,
+  "status": "PENDING_INSUFFICIENT_EPISODES",
+  "max_episodes": 1,
+  "gate_min_episodes": 10,
+  "dataset_slug": "glas",
+  "positive_limit": 5,
+  "max_actions": null,
+  "action_bank": "configs\\actions\\prompt_set_bank_v2.json",
+  "episodes_csv": "D:\\SAM\\adapromptset\\manifests\\episodes\\glas\\episodes_val.csv",
+  "candidates_csv": "D:\\SAM\\adapromptset\\reports\\candidate_pilot_glas\\candidate_pilot_candidates.csv",
+  "elapsed_seconds": 2.115,
+  "gpu_hours_estimate": 0.000587,
+  "utility_csv": "reports\\oracle_gap_pilot_glas\\action_utility_pilot.csv"
+}

@@ -1,0 +1,446 @@
+{
+  "schema_version": "adapromptset.final_report.v1",
+  "status": "PIVOT_ORACLE_ANALYSIS",
+  "claim_boundary": "oracle_analysis_only",
+  "gate_f": {
+    "status": "FAIL_ORACLE_GAP_SMALL",
+    "pass_fail": "FAIL",
+    "dice_oracle_gap": 0.0050113301616486194,
+    "aji_available": true,
+    "aji_oracle_gap": 0.0038202062471413,
+    "min_required_gap": 0.01,
+    "episode_count": 10,
+    "record_count": 120
+  },
+  "fixed_oracle": {
+    "best_fixed_action_id": "B_top5_pos3neg",
+    "mean_best_fixed_dice": 0.37123847211635835,
+    "mean_oracle_dice": 0.376249802278007,
+    "mean_regret_to_oracle": 0.0050113301616486194,
+    "aji_available": true,
+    "mean_best_fixed_aji": 0.22834095079987268,
+    "mean_oracle_aji": 0.23216115704701398,
+    "mean_aji_regret_to_oracle": 0.0038202062471413,
+    "deterministic_promotion_status": "NOT_PROMOTED"
+  },
+  "representation": {
+    "status": "PIVOT_REPRESENTATION_ANALYSIS",
+    "claim": "oracle_analysis_only_insufficient_separation",
+    "mean_top2_dice_margin": 0.02044071753259889,
+    "near_tie_episode_fraction": 0.4
+  },
+  "gate_f_failure_diagnostics": {
+    "status": "PASS_DIAGNOSTIC_ONLY",
+    "policy_training_allowed": false,
+    "coverage_status": "LOW_COMPONENT_COVERAGE",
+    "mean_component_coverage_at_max_pool": 0.052004904966278354,
+    "proposal_status": "ACTIONS_SEPARATED",
+    "mean_top2_dice_margin": 0.02044071753259889,
+    "near_tie_episode_fraction": 0.4,
+    "sam_sensitivity_status": "NO_HIGHER_CALL_GAIN",
+    "best_high_call_minus_best_one_call": -0.020569709494256128,
+    "interpretation_flags": [
+      "candidate_pool_limited_coverage",
+      "no_clear_sam_call_grouping_gain"
+    ]
+  },
+  "external_pilots": {
+    "glas": {
+      "status": "PENDING_INSUFFICIENT_EPISODES",
+      "episode_count": 1,
+      "gate_min_episodes": 10,
+      "dice_oracle_gap": 0.0
+    }
+  },
+  "reference_exposure": {
+    "status": "PASS",
+    "checks": {
+      "reference_pool_train_only": true,
+      "reference_test_leakage_zero": true
+    },
+    "dataset_count": 3,
+    "total_issues": 0
+  },
+  "data_profile": {
+    "status": "PASS",
+    "dataset_count": 3,
+    "row_count": 526,
+    "datasets": [
+      {
+        "case_count": 165,
+        "dataset": "GlaS",
+        "height": {
+          "max": 522.0,
+          "mean": 515.5090909090909,
+          "min": 430.0
+        },
+        "instance_count": {
+          "max": 32.0,
+          "mean": 9.272727272727273,
+          "min": 1.0
+        },
+        "mask_area_fraction": {
+          "max": 0.8935137807440365,
+          "mean": 0.5071091895535301,
+          "min": 0.10557409467309356
+        },
+        "mask_area_pixels": {
+          "max": 361471.0,
+          "mean": 198095.86666666667,
+          "min": 42710.0
+        },
+        "roles": [
+          "excluded_overlap",
+          "test",
+          "train"
+        ],
+        "width": {
+          "max": 775.0,
+          "mean": 758.739393939394,
+          "min": 567.0
+        }
+      },
+      {
+        "case_count": 310,
+        "dataset": "MoNuSAC",
+        "height": {
+          "max": 2500.0,
+          "mean": 558.7032258064517,
+          "min": 33.0
+        },
+        "instance_count": {
+          "max": 870.0,
+          "mean": 159.07096774193548,
+          "min": 2.0
+        },
+        "mask_area_fraction": {
+          "max": 0.5971558456696585,
+          "mean": 0.22037757919945541,
+          "min": 0.008195891677026761
+        },
+        "mask_area_pixels": {
+          "max": 674566.0,
+          "mean": 92084.8935483871,
+          "min": 919.0
+        },
+        "roles": [
+          "excluded_overlap",
+          "test",
+          "train"
+        ],
+        "width": {
+          "max": 2162.0,
+          "mean": 602.3774193548387,
+          "min": 35.0
+        }
+      },
+      {
+        "case_count": 51,
+        "dataset": "MoNuSeg",
+        "height": {
+          "max": 1000.0,
+          "mean": 1000.0,
+          "min": 1000.0
+        },
+        "instance_count": {
+          "max": 1.0,
+          "mean": 1.0,
+          "min": 1.0
+        },
+        "mask_area_fraction": {
+          "max": 0.426618,
+          "mean": 0.25305372549019606,
+          "min": 0.102576
+        },
+        "mask_area_pixels": {
+          "max": 426618.0,
+          "mean": 253053.72549019608,
+          "min": 102576.0
+        },
+        "roles": [
+          "test",
+          "train"
+        ],
+        "width": {
+          "max": 1000.0,
+          "mean": 1000.0,
+          "min": 1000.0
+        }
+      }
+    ]
+  },
+  "ddr_protocol": {
+    "status": "PASS_PROTOCOL_DEFINED",
+    "total_image_count": 757,
+    "total_complete_case_count": 757,
+    "total_missing_label_count": 0,
+    "stage1_mask_rule": "binary_union_of_EX_HE_MA_SE",
+    "stage1_allowed_use": "infrastructure_only",
+    "stage2_intents": [
+      "EX",
+      "HE",
+      "MA",
+      "SE"
+    ],
+    "formal_policy_training_allowed": false
+  },
+  "new_domain_pilot_readiness": {
+    "status": "READY_WITH_BLOCKED_FORMAL_DATASETS",
+    "blocked_datasets": [
+      "glas",
+      "cpm17"
+    ],
+    "infrastructure_ready_datasets": [
+      "ddr"
+    ],
+    "glas_status": "BLOCKED_INSUFFICIENT_EPISODES",
+    "glas_episode_count": 1,
+    "glas_gate_min_episodes": 10,
+    "ddr_status": "READY_FOR_INFRASTRUCTURE_ONLY",
+    "idrid_status": "READ_ONLY_NON_TUNABLE",
+    "cpm17_status": "DEFERRED_MISSING_OR_INCOMPLETE",
+    "global_allowed_next_actions": [
+      "fixed_rule_oracle_analysis_assets",
+      "predeclare_glas_trainval_diagnostic_without_official_test",
+      "ddr_stage1_infrastructure_smoke",
+      "cpm17_missing_asset_report"
+    ],
+    "global_prohibited_next_actions": [
+      "monusac_policy_training",
+      "posthoc_monusac_action_redesign",
+      "test_time_action_search",
+      "promote_insufficient_episode_smoke_to_gate_pass",
+      "formal_new_domain_policy_training_without_predeclared_gate_f"
+    ]
+  },
+  "oracle_analysis_figures": {
+    "status": "PASS_ORACLE_ANALYSIS_FIGURES",
+    "claim_boundary": "oracle_analysis_only",
+    "source_rows": {
+      "budget_pareto": 4,
+      "action_summary": 12
+    },
+    "figures": {
+      "pareto_png": {
+        "path": "paper/figures/oracle_pareto.png",
+        "bytes": 37371,
+        "sha256": "94F5DCB5F3A6565CB9922403CCE170D32250698A23E775E7E8DBF71F35F4D0EF"
+      },
+      "oracle_wins_png": {
+        "path": "paper/figures/oracle_action_wins.png",
+        "bytes": 76090,
+        "sha256": "A9855828C15E596DBD77426CE1C74306C34A3AD55F48D329F0356F37077CE032"
+      }
+    }
+  },
+  "method_overview_figure": {
+    "status": "PASS_METHOD_OVERVIEW_FIGURE",
+    "claim_boundary": "oracle_analysis_only",
+    "figure": {
+      "bytes": 2310,
+      "path": "paper/figures/method_overview.tex",
+      "sha256": "E2D4CEB312CD4FC67FCD54B051D2FEC4397590D7E6F1991E6C124AA0C280E6D6"
+    },
+    "checks": {
+      "frozen_matcher_present": true,
+      "frozen_segmenter_present": true,
+      "gate_f_policy_prohibition_present": true,
+      "test_time_safe_path_present": true,
+      "tikz_present": true,
+      "train_only_utility_labels_present": true
+    }
+  },
+  "action_bank_figure": {
+    "status": "PASS_ACTION_BANK_FIGURE",
+    "claim_boundary": "oracle_analysis_only_current_mvp_subset",
+    "source_bank": {
+      "action_count": 13,
+      "bank_hash": "35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8",
+      "invalid_action_count": 1,
+      "name": "prompt_set_bank_v2",
+      "path": "configs/actions/prompt_set_bank_v2.json",
+      "sha256": "9A04120FBD18A77DA617CD61E14FC7EFC7BCDA6009AC8BF156FF10178BBA5ADE",
+      "valid_action_count": 12
+    },
+    "family_counts": {
+      "independent_positive_groups": 2,
+      "rescue_group_specific_negatives": 2,
+      "rescue_split_groups": 1,
+      "single_group_positive": 3,
+      "single_group_positive_negative": 4
+    },
+    "figure": {
+      "bytes": 2598,
+      "path": "paper/figures/action_bank.tex",
+      "sha256": "290AB62437347460BCB8F2D5BB85C21A4539B245180E67955C0A18FE3155F862"
+    },
+    "checks": {
+      "complete_prompt_set_boundary_present": true,
+      "deferred_families_disclosed": true,
+      "independent_groups_family_present": true,
+      "positive_negative_family_present": true,
+      "rescue_family_present": true,
+      "sam_calls_and_points_present": true,
+      "source_bank_present": true,
+      "tikz_present": true,
+      "topk_family_present": true,
+      "valid_counts_match_source": true
+    },
+    "deferred_families": [
+      "kmeans_groups",
+      "density_groups",
+      "gf_sam_style_graph_groups"
+    ]
+  },
+  "phase0_scope_structure": {
+    "status": "PASS_SCOPE_STRUCTURE",
+    "structure_status": "PASS",
+    "toolchain_status": "PASS",
+    "policy_training_allowed": false,
+    "research_question": "Under frozen DINOv2-L and SAM-B, does budget-constrained structured prompt-set selection show enough query-specific oracle heterogeneity to justify learned selection?",
+    "research_question_does_not_claim_first": true,
+    "similar_work_boundaries": {
+      "gf_sam": {
+        "label": "GF-SAM",
+        "present": true
+      },
+      "synpo": {
+        "label": "SynPo",
+        "present": true
+      },
+      "alignsam": {
+        "label": "AlignSAM",
+        "present": true
+      },
+      "ppd": {
+        "label": "Point Prompt Defender",
+        "present": true
+      }
+    },
+    "rq_count": 3,
+    "hypothesis_count": 5,
+    "non_mainline_exclusions": {
+      "sequential_rl": {
+        "present": true,
+        "mainline": false
+      },
+      "continuous_coordinate_generation": {
+        "present": true,
+        "mainline": false
+      },
+      "online_sam_response_refinement": {
+        "present": true,
+        "mainline": false
+      }
+    }
+  },
+  "paper_section_audit": {
+    "status": "PASS",
+    "checks": {
+      "abstract_claim_free": true,
+      "conclusion_oracle_analysis_only": true,
+      "experiments_statistical_units_present": true,
+      "limitations_action_bank_upper_bound": true,
+      "limitations_frozen_matcher_irrecoverable": true,
+      "limitations_reference_quality": true,
+      "limitations_utility_generation_cost": true,
+      "method_action_bank_figure_current_subset": true,
+      "method_figure_frozen_learned_train_only": true,
+      "method_no_end_to_end_differentiable": true,
+      "oracle_privileged_caption_boundaries": true,
+      "related_work_boundaries_present": true,
+      "required_sections_present": true,
+      "results_cost_and_accuracy_present": true
+    },
+    "violation_count": 0
+  },
+  "pdf_metadata_audit": {
+    "status": "PASS",
+    "checks": {
+      "main_tex_exists": true,
+      "pdf_author_matches": true,
+      "pdf_exists": true,
+      "pdf_keywords_match": true,
+      "pdf_subject_matches": true,
+      "pdf_title_matches": true,
+      "pdfinfo_available": true,
+      "visible_author_present": true,
+      "visible_date_present": true,
+      "visible_title_present": true
+    },
+    "expected": {
+      "author": "Internal MVP Draft",
+      "date": "2026-07-17",
+      "keywords": "AdaPromptSet, oracle analysis, prompt set selection, medical segmentation",
+      "subject": "Oracle-analysis-only AdaPromptSet MVP artifact after Gate-F pivot",
+      "title": "AdaPromptSet: Cost-Aware Prompt Set Selection for Reference-Guided Dense Medical Segmentation"
+    },
+    "violation_count": 0
+  },
+  "statistics": {
+    "status": "PENDING_INSUFFICIENT_CLUSTERS",
+    "query_count": 2,
+    "cluster_count": 1,
+    "observed_mean_delta": 0.0050113301616486194,
+    "paired_sign_flip_p": 0.5
+  },
+  "compute": {
+    "path": "D:\\SAM\\adapromptset\\reports\\compute_ledger.csv",
+    "row_count": 73,
+    "total_gpu_hours": 0.053352000000000004
+  },
+  "run_metadata": {
+    "run_id": "phase0_reproducibility_1DD5A11E2C6A",
+    "config_hash": "1DD5A11E2C6A897F0EDA671F0E10A77B0F5C3FB9F706341F0EFDB98383954F60",
+    "python_executable": "D:\\SAM\\conda_envs\\sam_gpu\\python.exe",
+    "gpu_name": "NVIDIA GeForce RTX 5090 D v2",
+    "torch": "2.11.0+cu128"
+  },
+  "pdf": {
+    "path": "D:\\SAM\\adapromptset\\paper\\main.pdf",
+    "exists": true,
+    "bytes": 292317,
+    "sha256": "B6E8E628BA04CA64E8A1E6E45BE3A2C749E88C9030A832C8A77EE0EC365CB9C1"
+  },
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "predeclared_new_domain_pilot"
+  ],
+  "prohibited_next_actions": [
+    "monusac_policy_training",
+    "policy_training_on_monusac",
+    "posthoc_monusac_action_redesign",
+    "test_time_action_search"
+  ],
+  "reproduction_commands": [
+    "cd D:\\SAM\\adapromptset",
+    "$env:PYTHONPATH = \"D:\\SAM\\adapromptset\\src\"",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe -m unittest discover -s tests",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_phase0_scope_structure.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_data.py",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_data_profile.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\build_episodes.py",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_reference_exposure.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_ddr_protocol.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_new_domain_pilot_readiness.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_candidate_pilot.py --max-episodes 5",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_oracle_gap_pilot.py --max-episodes 10",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\build_action_bank.py --bank-version v2",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_oracle_gap_pilot.py --max-episodes 10 --action-bank D:\\SAM\\adapromptset\\configs\\actions\\prompt_set_bank_v2.json --out-dir D:\\SAM\\adapromptset\\reports\\oracle_gap_pilot_v2",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\write_decision_checkpoint.py",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\analyze_fixed_oracle_pivot.py",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\analyze_representation_pivot.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_gate_f_failure_diagnostics.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\run_bootstrap.py --episode-regret-csv D:\\SAM\\adapromptset\\reports\\fixed_oracle_analysis\\episode_regret.csv --episode-manifest-csv D:\\SAM\\adapromptset\\manifests\\episodes\\monusac\\episodes_val.csv --out-dir D:\\SAM\\adapromptset\\reports\\bootstrap",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_oracle_analysis_tables.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_oracle_analysis_figures.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_method_overview_figure.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_action_bank_figure.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_gate_reports.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_paper_sections.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\build_paper.py --project-root D:\\SAM\\adapromptset --mode submission --compile",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_pdf_metadata.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\export_final_report.py --project-root D:\\SAM\\adapromptset",
+    "D:\\SAM\\conda_envs\\sam_gpu\\python.exe scripts\\audit_scientific_claims.py --project-root D:\\SAM\\adapromptset"
+  ]
+}

@@ -1,0 +1,261 @@
+                                         M ATCHER : S EGMENT A NYTHING WITH O NE S HOT U S -
+                                         ING A LL -P URPOSE F EATURE M ATCHING
+
+                                           Yang Liu1∗ † Muzhi Zhu1∗ Hengtao Li1∗ Hao Chen1 Xinlong Wang2 Chunhua Shen1
+                                          1
+                                            Zhejiang University, China
+                                          {yangliu9610,zhumuzhi,liht,haochen.cad,chunhuashen}@zju.edu.cn
+                                          2
+                                            Beijing Academy of Artificial Intelligence
+                                          wangxinlong@baai.ac.cn
+arXiv:2305.13310v2 [cs.CV] 19 Jan 2024
+
+
+
+
+                                                                                       A BSTRACT
+                                                  Powered by large-scale pre-training, vision foundation models exhibit significant
+                                                  potential in open-world image understanding. However, unlike large language mod-
+                                                  els that excel at directly tackling various language tasks, vision foundation models
+                                                  require a task-specific model structure followed by fine-tuning on specific tasks. In
+                                                  this work, we present Matcher, a novel perception paradigm that utilizes off-the-
+                                                  shelf vision foundation models to address various perception tasks. Matcher can
+                                                  segment anything by using an in-context example without training. Additionally,
+                                                  we design three effective components within the Matcher framework to collaborate
+                                                  with these foundation models and unleash their full potential in diverse perception
+                                                  tasks. Matcher demonstrates impressive generalization performance across various
+                                                  segmentation tasks, all without training. For example, it achieves 52.7% mIoU
+                                                  on COCO-20i with one example, surpassing the state-of-the-art specialist model
+                                                  by 1.6%. In addition, Matcher achieves 33.0% mIoU on the proposed LVIS-92i
+                                                  for one-shot semantic segmentation, outperforming the state-of-the-art generalist
+                                                  model by 14.4%. Our visualization results further showcase the open-world gener-
+                                                  ality and flexibility of Matcher when applied to images in the wild. Our code can
+                                                  be found at https://github.com/aim-uofa/Matcher.
+
+
+                                         1    I NTRODUCTION
+                                         Pre-trained on web-scale datasets, large language models (LLMs) (Brown et al., 2020; Ouyang
+                                         et al., 2022; Chowdhery et al., 2022; Zhang et al., 2022b; Zeng et al., 2022; Touvron et al., 2023),
+                                         like ChatGPT (OpenAI, 2023), have revolutionized natural language processing (NLP). These
+                                         foundation models (Bommasani et al., 2021) show remarkable transfer capability on tasks and
+                                         data distributions beyond their training scope. LLMs demonstrate powerful zero-shot and few-
+                                         shot generalization (Brown et al., 2020) and solve various language tasks well, e.g., language
+                                         understanding, generation, interaction, and reasoning.
+                                         Research of vision foundation models (VFMs) is catching up with NLP. Driven by large-scale image-
+                                         text contrastive pre-training, CLIP (Radford et al., 2021) and ALIGN (Jia et al., 2021) perform strong
+                                         zero-shot transfer ability to various classification tasks. DINOv2 (Oquab et al., 2023) demonstrates
+                                         impressive visual feature matching ability by learning to capture complex information at the image
+                                         and pixel level from raw image data alone. Recently, the Segment Anything Model (SAM) (Kirillov
+                                         et al., 2023) has achieved impressive class-agnostic segmentation performance by training on the
+                                         SA-1B dataset, including 1B masks and 11M images. Unlike LLMs (Brown et al., 2020; Touvron
+                                         et al., 2023), which seamlessly incorporate various language tasks through a unified model structure
+                                         and pre-training method, VFMs face limitations when directly addressing diverse perception tasks.
+                                         For example, these methods often require a task-specific model structure followed by fine-tuning on a
+                                         specific task (He et al., 2022; Oquab et al., 2023).
+                                         In this work, we aim to find a new visual research paradigm: investigating the utilization of VFMs for
+                                         effectively addressing a wide range of perception tasks, e.g., semantic segmentation, part segmentation,
+                                            ∗
+                                              Equal contribution. † Part of the work was done when YL was an intern at Beijing Academy of Artificial
+                                         Intelligence. CS is the corresponding author.
+
+
+                                                                                             1
+and video object segmentation, without training. Using foundation models is non-trivial due to the
+following challenges: 1) Although VFMs contain rich knowledge, it remains challenging to directly
+leverage individual models for downstream perception tasks. Take SAM as an example. While SAM
+can perform impressive zero-shot class-agnostic segmentation performance across various tasks, it
+cannot provide the semantic categories for the predicted masks. Besides, SAM prefers to predict
+multiple ambiguous mask outputs. It is difficult to select the appropriate mask as the final result for
+different tasks. 2) Various tasks involve complex and diverse perception requirements. For example,
+semantic segmentation predicts pixels with the same semantics. However, video object segmentation
+needs to distinguish individual instances within those semantic categories. Additionally, the structural
+distinctions of different tasks need to be considered, encompassing diverse semantic granularities
+ranging from individual parts to complete entities and multiple instances. Thus, naively combining
+the foundation models can lead to subpar performance.
+To address these challenges, we present Matcher, a novel perception framework that effectively
+incorporates different foundation models for tackling diverse perception tasks by using a single
+in-context example. We draw inspiration from the remarkable generalization capabilities exhibited
+by LLMs in various NLP tasks through in-context learning (Brown et al., 2020). Prompted by
+the in-context example, Matcher can understand the specific task and utilizes DINOv2 to locate
+the target by matching the corresponding semantic feature. Subsequently, leveraging this coarse
+location information, Matcher employs SAM to predict accurate perceptual results. In addition, we
+design three effective components within the Matcher framework to collaborate with foundation
+models and fully unleash their potential in diverse perception tasks. First, we devise a bidirectional
+matching strategy for accurate cross-image semantic dense matching and a robust prompt sampler for
+mask proposal generation. This strategy increases the diversity of mask proposals and suppresses
+fragmented false-positive masks induced by matching outliers. Furthermore, we perform instance-
+level matching between the reference mask and mask proposals to select high-quality masks. We
+utilize three effective metrics, i.e., emd, purity, and coverage, to estimate the mask proposals based
+on semantic similarity and the quality of the mask proposals, respectively. Finally, by controlling the
+number of merged masks, Matcher can produce controllable mask output to instances of the same
+semantics in the target image.
+Our comprehensive experiments demonstrate that Matcher has superior generalization performance
+across various segmentation tasks, all without the need for training. For one-shot semantic seg-
+mentation, Matcher achieves 52.7% mIoU on COCO-20i (Nguyen & Todorovic, 2019), surpassing
+the state-of-the-art specialist model by 1.6%, and achieves 33.0% mIoU on the proposed LVIS-
+92i , outperforming the state-of-the-art generalist model SegGPT (Wang et al., 2023b) by 14.4%.
+And Matcher outperforms concurrent PerSAM (Zhang et al., 2023) by a large margin (+29.2%
+mean mIoU on COCO-20i , +11.4% mIoU on FSS-1000 (Li et al., 2020), and +10.7% mean
+mIoU on LVIS-92i ), suggesting that depending solely on SAM limits the generalization capabilities
+for semantically-driven tasks, e.g., semantic segmentation. Moreover, evaluated on two proposed
+benchmarks, Matcher shows outstanding generalization on one-shot object part segmentation tasks.
+Specifically, Matcher outperforms other methods by about 10.0% mean mIoU on both benchmarks.
+Matcher also achieves competitive performance for video object segmentation on both DAVIS 2017
+val (Pont-Tuset et al., 2017) and DAVIS 2016 val (Perazzi et al., 2016). In addition, exhaustive abla-
+tion studies verify the effectiveness of the proposed components of Matcher. Finally, our visualization
+results show robust generality and flexibility never seen before.
+Our main contributions are summarized as follows:
+
+       • We present Matcher, one of the first perception frameworks for exploring the potential
+         of vision foundation models in tackling diverse perception tasks, e.g., one-shot semantic
+         segmentation, one-shot object part segmentation, and video object segmentation.
+
+       • We design three components, i.e., bidirectional matching, robust prompt sampler, and
+         instance-level matching, which can effectively unleash the ability of vision foundation
+         models to improve both the segmentation quality and open-set generality.
+
+       • Our comprehensive results demonstrate the impressive performance and powerful gener-
+         alization of Matcher. Sufficient ablation studies show the effectiveness of the proposed
+         components.
+
+
+                                                   2
+                   Correspondence Matrix Extraction                                             Prompts Generation
+                                                                  𝑯×𝑾
+
+                       ❄                                𝑯×𝑾
+                                                                  (𝒊, 𝒋)        Patch-Level                        Robust Prompt
+       Reference        Image                                                    Matching                            Sampler
+                       Encoder                                                    (PLM)                               (RPS)
+
+                                                          Correspondence                          Matched Points
+                                                               Matrix
+        Target                        Features
+
+
+
+
+                      Controllable                            Instance-Level
+                                                                                                  ❄
+                     Masks Merging           …                                      …             Promptable
+                                                                 Matching
+                        (CMM)                                                                     Segmenter
+                                                                   (ILM)
+     Target Mask
+                                                                                                                     point   center   box
+                                       Selected Masks                          Mask Proposals
+                                                                                                                         Prompts
+                                     Controllable Masks Generation
+
+Figure 1: An overview of Matcher. Our training-free framework addresses various segmentation tasks
+through three operations: Correspondence Matrix Extraction, Prompts Generation, and Controllable
+Masks Generation.
+
+
+2    R ELATED W ORK
+
+Vision Foundation Models Powered by large-scale pre-training, vision foundation models have
+achieved great success in computer vision. Motivated by masked language modeling (Devlin et al.,
+2019; Liu et al., 2019) in natural language processing, MAE (He et al., 2022) uses an asymmetric
+encoder-decoder and conducts masked image modeling to effectively and efficiently train scalable
+vision Transformer (Dosovitskiy et al., 2020) models. CLIP (Radford et al., 2021) learns image
+representations from scratch on 400 million image-text pairs and demonstrates impressive zero-shot
+image classification ability. By performing image and patch level discriminative self-supervised
+learning, DINOv2 (Oquab et al., 2023) learns all-purpose visual features for various downstream tasks.
+Recently, pre-trained with 1B masks and 11M images, Segment Anything Model (SAM) (Kirillov
+et al., 2023) emerges with impressive zero-shot class-agnostic segmentation performance. Although
+vision foundation models have shown exceptional fine-tuning performance, they have limited ca-
+pabilities in various visual perception tasks. However, large language models (Brown et al., 2020;
+Chowdhery et al., 2022; Touvron et al., 2023), like ChatGPT (OpenAI, 2023), can solve a wide range
+of language tasks without training. Motivated by this, this work shows that various perception tasks
+can be solved training-free by utilizing off-the-shelf vision foundation models to perform in-context
+inference.
+Vision Generalist for Segmentation Recently, a growing effort has been made to unify various
+segmentation tasks under a single model using Transformer architecture (Vaswani et al., 2017). The
+generalist Painter (Wang et al., 2023a) redefines the output of different vision tasks as images and
+utilizes masked image modeling on continuous pixels to perform in-context training with supervised
+datasets. As a variant of Painter, SegGPT (Wang et al., 2023b) introduces a novel random coloring
+approach for in-context training to improve the model’s generalization ability. By prompting spatial
+queries, e.g., points, and text queries, e.g., textual prompts, SEEM (Zou et al., 2023) performs various
+segmentation tasks effectively. More recently, PerSAM and PerSAM-F (Zhang et al., 2023) adapt
+SAM for personalized segmentation and video object segmentation without training or with two
+trainable parameters. This work presents Matcher, a training-free framework for segmenting anything
+with one shot. Unlike these methods, Matcher demonstrates impressive generalization performance
+across various segmentation tasks by integrating different foundation models.
+
+
+3    M ETHOD
+
+Matcher is a training-free framework that segments anything with one shot by integrating an all-
+purpose feature extraction model (e.g., DINOv2 (Oquab et al., 2023)) and a class-agnostic segmenta-
+tion model (e.g., SAM (Kirillov et al., 2023)). For the given in-context example, including reference
+image xr and mask mr , Matcher can segment the objects or parts of a target image xt with the
+same semantics. The overview of Matcher is depicted in Fig. 1. Our framework consists of three
+
+
+                                                                           3
+                                                         Step 1. forward matching
+
+
+
+
+                                                                         %       𝐒 → = sim(𝑃" , 𝐳# )         %
+                                    target                𝑃! = 𝐩"! "#$                             𝑃&→ = 𝐩"( "#$
+                reference                                                         Hungarian
+
+           Step 3. mask filtering                         Step 2. reverse matching
+
+
+
+
+                                                                            ←            →
+                                                                         % 𝐒 = sim(𝐳" , 𝑃# )                 %
+                                                          𝑃!← = 𝐩"! "#$                            𝑃&→ = 𝐩"( "#$
+                𝑃$ =   𝐩"( ∈ 𝑃&→ |𝐩"! in 𝑚!                                        Hungarian
+
+Figure 2: Illustration of the proposed bidirectional matching. Bidirectional matching consists of three
+steps: forward matching, reverse matching, and mask filtering. Purple points denote the matched
+points. Red points denote the outliers.
+components: Correspondence Matrix Extraction (CME), Prompts Generation (PG), and Controllable
+Masks Generation (CMG). First, Matcher extracts a correspondence matrix by calculating the simi-
+larity between the image features of xr and xt . Then, we conduct patch-level matching, followed
+by sampling multiple groups of prompts from the matched points. These prompts serve as inputs to
+SAM, enabling the generation of mask proposals. Finally, we perform an instance-level matching
+between the reference mask and mask proposals to select high-quality masks. We elaborate on the
+three components in the following subsections.
+
+3.1   C ORRESPONDENCE M ATRIX E XTRACTION
+
+We rely on off-the-self image encoders to extract features for both the reference and target images.
+Given inputs xr and xt , the encoder outputs patch-level features zr , zt ∈ RH×W ×C . Patch-wise
+similarity between the two features is computed to discovery the best matching regions of the
+reference mask on the target image. We define a correspondence matrix S ∈ RHW ×HW as follows,
+                                                             zir · zjt
+                                              (S)ij =                        ,                                     (1)
+                                                        ∥zir ∥ · ∥zjt ∥
+where (S)ij denotes the cosine similarity between i-th patch feature zir of zr and j-th patch feature
+zjt of zt . We can denote the above formulation in a compact form as S = sim(zr , zt ).
+Ideally, the matched patches should have the highest similarity. This could be challenging in practice,
+since the reference and target objects could have different appearances or even belong to different
+categories. This requires the encoder to embed rich and detailed information in these features.
+
+3.2   P ROMPTS G ENERATION
+
+Given the dense correspondence matrix, we can get a coarse segmentation mask by selecting the most
+similar patches in the target image. However, this naive approach leads to inaccurate, fragmented
+result with many outliers. Hence, we use the correspondence feature to generate high quality point
+and box guidance for promptable segmentation. The process involves a bidirectional patch matching
+and a diverse prompt sampler.
+Patch-Level Matching The encoder tends to produce wrong matches in hard cases such as ambiguous
+context and multiple instances. We propose a bidirectional matching strategy to eliminate the matching
+outliers.
+       • As shown in Fig. 2, we first perform bipartite matching between the points on the reference
+         mask Pr = {pir }L  i=1 and zt to obtain the forward matched points on the target image
+         Pt→ = {pit }Li=1 using the forward correspondence matrix S→ = sim(Pr , zt ).
+       • Then, we perform another bipartite matching, named the reverse matching between Pt→ and
+         zr to obtain the reverse matched points on the reference image Pr← = {pir }L i=1 using the
+         reverse correspondence matrix S← = sim(zr , Pt→ ).
+
+
+                                                         4
+

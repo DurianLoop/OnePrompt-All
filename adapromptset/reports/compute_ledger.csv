@@ -1,0 +1,82 @@
+phase,command,gpu_hours,notes
+0-1,scripts/audit_data.py,0.0,"CPU-only manifest, hash, exposure, and Gate-A audit."
+3-runtime-audit,scripts/audit_matcher_runtime.py,0.0,CPU-only checkpoint/dependency audit; no DINOv2 forward pass.
+2,scripts/build_episodes.py,0.0,CPU-only deterministic reference-query episode manifests and Gate-B audit.
+3-smoke,scripts/run_candidate_smoke.py,0.0,CPU-only synthetic candidate kernel smoke; formal Gate C still pending real matcher evidence.
+3-real-matcher-smoke,scripts/run_real_matcher_smoke.py,0.001287,Single validation episode DINOv2-L forward smoke; formal Gate C still requires larger pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.001784,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.001752,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.001922,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
+4-sam-smoke,scripts/run_sam_smoke.py,0.001374,Validation-only SAM-B prompt API and coordinate smoke.
+4-sam-smoke,scripts/run_sam_smoke.py,0.001154,Validation-only SAM-B prompt API and coordinate smoke.
+4-sam-smoke,scripts/run_sam_smoke.py,0.001108,Validation-only SAM-B prompt API and coordinate smoke.
+4-sam-smoke,scripts/run_sam_smoke.py,0.001090,Validation-only SAM-B prompt API and coordinate smoke.
+6-action-utility-smoke,scripts/run_action_utility_smoke.py,0.000188,Validation-only SAM-B action utility smoke on MVP subset actions.
+6-action-utility-smoke,scripts/run_action_utility_smoke.py,0.000574,Validation-only SAM-B action utility smoke on MVP subset actions.
+6-action-utility-smoke,scripts/run_action_utility_smoke.py,0.000566,Validation-only SAM-B action utility smoke on MVP subset actions.
+6-action-utility-smoke,scripts/run_action_utility_smoke.py,0.000561,Validation-only SAM-B action utility smoke on MVP subset actions.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.002468,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.005594,MoNuSAC validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.005537,MoNuSAC validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.005588,MoNuSAC validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.008595,MoNuSAC validation subset action utility and oracle-gap pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.001261,GlaS validation multi-episode DINOv2-L candidate quality pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000578,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000587,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+3-real-matcher-smoke,scripts/run_real_matcher_smoke.py,0.001088,Single validation episode DINOv2-L forward smoke; formal Gate C still requires larger pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.008696,monusac validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.017943,GlaS validation multi-episode DINOv2-L candidate quality pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.018039,GlaS validation multi-episode DINOv2-L candidate quality pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.029398,GlaS validation multi-episode DINOv2-L candidate quality pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.000000,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
+3-candidate-pilot,scripts/run_candidate_pilot.py,0.000000,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.

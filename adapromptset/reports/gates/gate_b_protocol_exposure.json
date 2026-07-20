@@ -1,0 +1,26 @@
+{
+  "allowed_next_actions": [
+    "candidate_quality_gate"
+  ],
+  "commands": [
+    "scripts/build_episodes.py"
+  ],
+  "deviations": [],
+  "diagnostics": {
+    "contains_fail": false,
+    "status_table_present": true
+  },
+  "gate": "B",
+  "input_hashes": [
+    {
+      "path": "reports/gate_b_status.md",
+      "sha256": "0DAF8E02633DDDDDF8E2F366B32BE8AF3B3606507D9E893499BCE2065554B043"
+    }
+  ],
+  "name": "protocol_exposure",
+  "pass_fail": "PASS",
+  "prohibited_next_actions": [],
+  "rule_applied": "Reference-query episodes must be deterministic, versioned, and free of test-support leakage.",
+  "status": "PASS",
+  "title": "Protocol and Exposure Integrity"
+}

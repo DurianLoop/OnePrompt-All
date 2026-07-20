@@ -1,0 +1,2 @@
+episode_id,dataset,role,support_role,support_case_id,support_patient,support_image_path,support_mask_path,query_case_id,query_patient,query_source_split,query_image_path,query_mask_path
+glas_val__train_60__to__train_41,GlaS,val,train,train_60,6,Warwick QU Dataset (Released 2016_07_08)/train_60.bmp,Warwick QU Dataset (Released 2016_07_08)/train_60_anno.bmp,train_41,8,train,Warwick QU Dataset (Released 2016_07_08)/train_41.bmp,Warwick QU Dataset (Released 2016_07_08)/train_41_anno.bmp

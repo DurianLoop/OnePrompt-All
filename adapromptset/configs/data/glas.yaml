@@ -1,0 +1,6 @@
+name: GlaS
+role: first_morphology_shift_extension
+root: D:\SAM\external\research_data\extracted\GlaS\Warwick QU Dataset (Released 2016_07_08)
+tuning_allowed: false
+leakage_policy: exclude_source_train_patients_seen_in_official_test
+

@@ -1,0 +1,4 @@
+name: e0_data_audit
+command: D:\SAM\conda_envs\sam_gpu\python.exe D:\SAM\adapromptset\scripts\audit_data.py
+gpu_hours: 0.0
+

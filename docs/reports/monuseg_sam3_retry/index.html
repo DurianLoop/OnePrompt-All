@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonuSeg SAM3 Retry</title>
+  <style>
+    body { margin:0; background:#f6f8fb; color:#182230; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
+    main { max-width:1260px; margin:0 auto; padding:34px 24px 72px; }
+    h1 { margin:0 0 8px; font-size:32px; }
+    h2 { margin-top:34px; padding-top:16px; border-top:1px solid #d8e0ea; font-size:22px; }
+    h3 { font-size:18px; margin:20px 0 8px; }
+    p { line-height:1.72; margin:8px 0; }
+    table { width:100%; border-collapse:collapse; background:#fff; margin:12px 0 22px; box-shadow:0 1px 2px rgba(16,24,40,.05); }
+    th,td { border:1px solid #d9e2ec; padding:8px 9px; font-size:13px; text-align:left; }
+    th { background:#eaf1f8; }
+    .callout { background:#e9f7ef; border:1px solid #b8e2c8; padding:12px 14px; border-radius:8px; }
+    .warn { background:#fff7e6; border-color:#f3d19c; }
+    .bad { background:#fdecec; border-color:#f1b7b7; }
+    code { background:#eef3f8; padding:2px 5px; border-radius:4px; }
+    .grid { display:grid; grid-template-columns:1fr 220px 1fr; gap:12px; align-items:stretch; }
+    figure { margin:0; background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:8px; }
+    img { width:100%; height:auto; display:block; border-radius:5px; }
+    figcaption { font-size:13px; color:#536173; line-height:1.5; margin-top:8px; }
+    .filebox { height:180px; display:flex; align-items:center; justify-content:center; text-align:center; border-radius:6px; background:#eef4fb; color:#234; font-weight:700; }
+    @media(max-width:900px) { .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body><main>
+  <h1>MonuSeg Dense Point Prompt：SAM3 重测报告</h1>
+  <p>这次重测专门修正上一版问题：上一版主实验用的是 <code>SAM ViT-B</code>，不是 SAM3。本版使用本地 <code>assets/checkpoints/sam3_modelscope/sam3.pt</code>，并把 K/lambda 网格补密。</p>
+
+  <section class="callout warn">
+    <p><b>模型说明：</b>上一版 340 candidates 是 SAM baseline；本版 1460 candidates 是 SAM3。两者不能混写成同一个结论。</p>
+  </section>
+  <section class="callout bad">
+    <p><b>核心发现：</b>SAM3 在 MonuSeg dense positive point 上明显弱于 SAM baseline。SAM3 候选池 oracle Dice 只有 0.1287，而 SAM baseline 是 0.4464。这说明“dense matched points 对 SAM 有效”不能直接推出“对 SAM3 也有效”。</p>
+  </section>
+
+  <h2>1. SAM vs SAM3 总表</h2>
+  <table><thead><tr><th>模型</th><th>cases</th><th>candidates</th><th>best K</th><th>best lambda</th><th>best layout</th><th>固定策略 Dice</th><th>候选池 oracle Dice</th></tr></thead><tbody><tr><td>SAM ViT-B</td><td>20.0000</td><td>340.0000</td><td>20.0000</td><td>0.2500</td><td>local_maxima</td><td>0.3861</td><td>0.4464</td></tr><tr><td>SAM3</td><td>20.0000</td><td>1460.0000</td><td>10.0000</td><td>0.7500</td><td>dbscan_medoid</td><td>0.0742</td><td>0.1287</td></tr></tbody></table>
+
+  <h2>2. SAM3 text/point 冒烟验证</h2>
+  <p>这一步回应老师最早截图：SAM3 text 对 <code>white girl</code>、<code>execute</code> 会失败；point prompt 能出 mask，累计点也会改变输出。说明 SAM3 本地运行没有问题，失败来自 prompt/model 行为本身。</p>
+  <table><thead><tr><th>case</th><th>prompt type</th><th>text prompt</th><th>points</th><th>instances</th><th>best score</th><th>union area %</th><th>error</th></tr></thead><tbody><tr><td>elephant_text_elephant</td><td>text</td><td>elephant</td><td></td><td>2.0000</td><td>0.9531</td><td>54.3559</td><td></td></tr><tr><td>elephant_text_execute</td><td>text</td><td>execute</td><td></td><td>0.0000</td><td></td><td>0.0000</td><td></td></tr><tr><td>elephant_point_single</td><td>point</td><td></td><td>120,220,1</td><td>3.0000</td><td>0.6523</td><td>11.5739</td><td></td></tr><tr><td>elephant_point_cumulative_fg</td><td>point</td><td></td><td>120,220,1;160,260,1</td><td>2.0000</td><td>0.6758</td><td>54.4333</td><td></td></tr><tr><td>elephant_point_posneg</td><td>point</td><td></td><td>120,220,1;160,260,1;395,220,0</td><td>2.0000</td><td>0.7383</td><td>54.4120</td><td></td></tr><tr><td>person_text_person</td><td>text</td><td>person</td><td></td><td>0.0000</td><td></td><td>0.0000</td><td></td></tr><tr><td>person_text_girl</td><td>text</td><td>girl</td><td></td><td>3.0000</td><td>0.9062</td><td>5.7631</td><td></td></tr><tr><td>person_text_white_girl</td><td>text</td><td>white girl</td><td></td><td>0.0000</td><td></td><td>0.0000</td><td></td></tr><tr><td>person_text_execute</td><td>text</td><td>execute</td><td></td><td>0.0000</td><td></td><td>0.0000</td><td></td></tr><tr><td>person_point_girl_single</td><td>point</td><td></td><td>540,470,1</td><td>4.0000</td><td>0.6836</td><td>2.0126</td><td></td></tr><tr><td>person_point_girl_posneg</td><td>point</td><td></td><td>540,470,1;630,470,0;430,460,0</td><td>2.0000</td><td>0.7656</td><td>0.4669</td><td></td></tr></tbody></table>
+
+  <h2>3. SAM3 K 网格：K 的可能性已补全</h2>
+  <p>K 覆盖 [1, 2, 3, 5, 8, 10, 15, 20, 30, 40, 50, 75, 100]。结果显示 SAM3 不是“点越多越好”：K=1 的 Dice 最高之一，K 变大后 recall 和面积上升，但 Dice 并没有提升，甚至更容易扩张。</p>
+  <table><thead><tr><th>K</th><th>Dice</th><th>IoU</th><th>FG precision</th><th>FG recall</th><th>Obj recall</th><th>Pred area %</th></tr></thead><tbody><tr><td>1.0000</td><td>0.0768</td><td>0.0430</td><td>0.9410</td><td>0.0452</td><td>0.0451</td><td>0.4968</td></tr><tr><td>2.0000</td><td>0.0662</td><td>0.0369</td><td>0.9802</td><td>0.0369</td><td>0.0315</td><td>0.2071</td></tr><tr><td>3.0000</td><td>0.0483</td><td>0.0258</td><td>0.8831</td><td>0.0740</td><td>0.0719</td><td>5.1160</td></tr><tr><td>5.0000</td><td>0.0710</td><td>0.0394</td><td>0.9249</td><td>0.0875</td><td>0.0769</td><td>5.1038</td></tr><tr><td>8.0000</td><td>0.0732</td><td>0.0410</td><td>0.9239</td><td>0.0893</td><td>0.0770</td><td>5.0432</td></tr><tr><td>10.0000</td><td>0.0503</td><td>0.0281</td><td>0.8396</td><td>0.0762</td><td>0.0689</td><td>5.0104</td></tr><tr><td>15.0000</td><td>0.0545</td><td>0.0303</td><td>0.8383</td><td>0.1523</td><td>0.1697</td><td>14.8016</td></tr><tr><td>20.0000</td><td>0.0313</td><td>0.0160</td><td>0.7792</td><td>0.1390</td><td>0.1587</td><td>15.6248</td></tr><tr><td>30.0000</td><td>0.0541</td><td>0.0302</td><td>0.7428</td><td>0.1977</td><td>0.2509</td><td>24.3056</td></tr><tr><td>40.0000</td><td>0.0347</td><td>0.0178</td><td>0.5963</td><td>0.2661</td><td>0.3474</td><td>33.7489</td></tr><tr><td>50.0000</td><td>0.0345</td><td>0.0176</td><td>0.5555</td><td>0.3321</td><td>0.4447</td><td>42.5019</td></tr><tr><td>75.0000</td><td>0.0369</td><td>0.0189</td><td>0.5281</td><td>0.3694</td><td>0.4438</td><td>42.4707</td></tr><tr><td>100.0000</td><td>0.0324</td><td>0.0166</td><td>0.4851</td><td>0.3089</td><td>0.3452</td><td>33.9191</td></tr></tbody></table>
+
+  <h2>4. SAM3 K-lambda 二维网格</h2>
+  <p>Round2 对 K=[10, 15, 20, 30, 40, 50] 与 lambda=[0.0, 0.1, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0] 做二维搜索。最优组合是 K=10, lambda=0.75，但 mean Dice 仍只有 0.0696。</p>
+  <table><thead><tr><th>K</th><th>lambda</th><th>Dice</th><th>IoU</th><th>FG precision</th><th>FG recall</th><th>Obj recall</th><th>Pred area %</th></tr></thead><tbody><tr><td>10.0000</td><td>0.0000</td><td>0.0503</td><td>0.0281</td><td>0.8396</td><td>0.0762</td><td>0.0689</td><td>5.0104</td></tr><tr><td>10.0000</td><td>0.1000</td><td>0.0651</td><td>0.0365</td><td>0.8879</td><td>0.1123</td><td>0.1234</td><td>9.8451</td></tr><tr><td>10.0000</td><td>0.2500</td><td>0.0644</td><td>0.0361</td><td>0.8840</td><td>0.1121</td><td>0.1243</td><td>9.9808</td></tr><tr><td>10.0000</td><td>0.5000</td><td>0.0592</td><td>0.0333</td><td>0.8851</td><td>0.0617</td><td>0.0733</td><td>5.9358</td></tr><tr><td>10.0000</td><td>0.7500</td><td>0.0696</td><td>0.0388</td><td>0.9258</td><td>0.0872</td><td>0.0764</td><td>5.1734</td></tr><tr><td>10.0000</td><td>1.0000</td><td>0.0464</td><td>0.0247</td><td>0.8832</td><td>0.0730</td><td>0.0714</td><td>5.1327</td></tr><tr><td>10.0000</td><td>1.2500</td><td>0.0648</td><td>0.0347</td><td>0.8863</td><td>0.1179</td><td>0.1234</td><td>9.9361</td></tr><tr><td>10.0000</td><td>1.5000</td><td>0.0397</td><td>0.0210</td><td>0.5074</td><td>0.3184</td><td>0.3523</td><td>34.8357</td></tr><tr><td>10.0000</td><td>2.0000</td><td>0.0604</td><td>0.0329</td><td>0.3182</td><td>0.4377</td><td>0.4590</td><td>47.9877</td></tr><tr><td>15.0000</td><td>0.0000</td><td>0.0545</td><td>0.0303</td><td>0.8383</td><td>0.1523</td><td>0.1697</td><td>14.8016</td></tr><tr><td>15.0000</td><td>0.1000</td><td>0.0529</td><td>0.0295</td><td>0.8359</td><td>0.1520</td><td>0.1682</td><td>14.8725</td></tr><tr><td>15.0000</td><td>0.2500</td><td>0.0606</td><td>0.0339</td><td>0.8795</td><td>0.0605</td><td>0.0733</td><td>5.9556</td></tr><tr><td>15.0000</td><td>0.5000</td><td>0.0617</td><td>0.0344</td><td>0.8859</td><td>0.1142</td><td>0.1233</td><td>9.9558</td></tr><tr><td>15.0000</td><td>0.7500</td><td>0.0590</td><td>0.0330</td><td>0.8793</td><td>0.0814</td><td>0.0733</td><td>5.1538</td></tr><tr><td>15.0000</td><td>1.0000</td><td>0.0678</td><td>0.0378</td><td>0.9267</td><td>0.0864</td><td>0.0764</td><td>5.1344</td></tr><tr><td>15.0000</td><td>1.2500</td><td>0.0500</td><td>0.0268</td><td>0.6321</td><td>0.1963</td><td>0.2140</td><td>20.7949</td></tr><tr><td>15.0000</td><td>1.5000</td><td>0.0387</td><td>0.0205</td><td>0.4593</td><td>0.3072</td><td>0.3542</td><td>35.5051</td></tr><tr><td>15.0000</td><td>2.0000</td><td>0.0564</td><td>0.0306</td><td>0.3183</td><td>0.4209</td><td>0.4639</td><td>46.6695</td></tr><tr><td>20.0000</td><td>0.0000</td><td>0.0313</td><td>0.0160</td><td>0.7792</td><td>0.1390</td><td>0.1587</td><td>15.6248</td></tr><tr><td>20.0000</td><td>0.1000</td><td>0.0324</td><td>0.0166</td><td>0.7872</td><td>0.1391</td><td>0.1548</td><td>15.6106</td></tr><tr><td>20.0000</td><td>0.2500</td><td>0.0624</td><td>0.0348</td><td>0.8772</td><td>0.1090</td><td>0.1233</td><td>9.9522</td></tr><tr><td>20.0000</td><td>0.5000</td><td>0.0660</td><td>0.0371</td><td>0.8819</td><td>0.1111</td><td>0.1225</td><td>9.9476</td></tr><tr><td>20.0000</td><td>0.7500</td><td>0.0612</td><td>0.0342</td><td>0.8811</td><td>0.1060</td><td>0.1189</td><td>9.9216</td></tr><tr><td>20.0000</td><td>1.0000</td><td>0.0443</td><td>0.0232</td><td>0.8283</td><td>0.1457</td><td>0.1675</td><td>14.7757</td></tr><tr><td>20.0000</td><td>1.2500</td><td>0.0292</td><td>0.0150</td><td>0.6866</td><td>0.1490</td><td>0.2072</td><td>20.2924</td></tr><tr><td>20.0000</td><td>1.5000</td><td>0.0288</td><td>0.0147</td><td>0.5463</td><td>0.2589</td><td>0.3049</td><td>29.7080</td></tr><tr><td>20.0000</td><td>2.0000</td><td>0.0645</td><td>0.0351</td><td>0.3708</td><td>0.3769</td><td>0.4273</td><td>42.4422</td></tr><tr><td>30.0000</td><td>0.0000</td><td>0.0541</td><td>0.0302</td><td>0.7428</td><td>0.1977</td><td>0.2509</td><td>24.3056</td></tr><tr><td>30.0000</td><td>0.1000</td><td>0.0565</td><td>0.0314</td><td>0.8326</td><td>0.1570</td><td>0.1688</td><td>14.6718</td></tr><tr><td>30.0000</td><td>0.2500</td><td>0.0552</td><td>0.0307</td><td>0.8281</td><td>0.1545</td><td>0.1680</td><td>14.6974</td></tr><tr><td>30.0000</td><td>0.5000</td><td>0.0362</td><td>0.0187</td><td>0.7758</td><td>0.1417</td><td>0.1630</td><td>15.6226</td></tr><tr><td>30.0000</td><td>0.7500</td><td>0.0388</td><td>0.0200</td><td>0.7781</td><td>0.1893</td><td>0.2130</td><td>19.6145</td></tr><tr><td>30.0000</td><td>1.0000</td><td>0.0296</td><td>0.0151</td><td>0.7730</td><td>0.1365</td><td>0.1630</td><td>15.7382</td></tr><tr><td>30.0000</td><td>1.2500</td><td>0.0289</td><td>0.0148</td><td>0.6849</td><td>0.1950</td><td>0.2545</td><td>24.8621</td></tr><tr><td>30.0000</td><td>1.5000</td><td>0.0301</td><td>0.0154</td><td>0.5921</td><td>0.2528</td><td>0.3047</td><td>29.6684</td></tr><tr><td>30.0000</td><td>2.0000</td><td>0.0624</td><td>0.0340</td><td>0.3684</td><td>0.3668</td><td>0.4388</td><td>42.3979</td></tr><tr><td>40.0000</td><td>0.0000</td><td>0.0347</td><td>0.0178</td><td>0.5963</td><td>0.2661</td><td>0.3474</td><td>33.7489</td></tr><tr><td>40.0000</td><td>0.1000</td><td>0.0337</td><td>0.0174</td><td>0.6451</td><td>0.2399</td><td>0.2963</td><td>29.1075</td></tr><tr><td>40.0000</td><td>0.2500</td><td>0.0365</td><td>0.0188</td><td>0.6878</td><td>0.2213</td><td>0.2504</td><td>24.1342</td></tr><tr><td>40.0000</td><td>0.5000</td><td>0.0351</td><td>0.0181</td><td>0.7272</td><td>0.1886</td><td>0.2116</td><td>19.4650</td></tr><tr><td>40.0000</td><td>0.7500</td><td>0.0298</td><td>0.0152</td><td>0.7720</td><td>0.1379</td><td>0.1630</td><td>15.7143</td></tr><tr><td>40.0000</td><td>1.0000</td><td>0.0296</td><td>0.0151</td><td>0.7727</td><td>0.1389</td><td>0.1630</td><td>15.7681</td></tr><tr><td>40.0000</td><td>1.2500</td><td>0.0327</td><td>0.0168</td><td>0.6912</td><td>0.2050</td><td>0.2553</td><td>24.9335</td></tr><tr><td>40.0000</td><td>1.5000</td><td>0.0325</td><td>0.0168</td><td>0.6440</td><td>0.2059</td><td>0.2555</td><td>25.5286</td></tr><tr><td>40.0000</td><td>2.0000</td><td>0.0493</td><td>0.0266</td><td>0.3717</td><td>0.3411</td><td>0.4384</td><td>42.7426</td></tr><tr><td>50.0000</td><td>0.0000</td><td>0.0345</td><td>0.0176</td><td>0.5555</td><td>0.3321</td><td>0.4447</td><td>42.5019</td></tr><tr><td>50.0000</td><td>0.1000</td><td>0.0316</td><td>0.0161</td><td>0.5532</td><td>0.3026</td><td>0.3943</td><td>37.9404</td></tr><tr><td>50.0000</td><td>0.2500</td><td>0.0267</td><td>0.0136</td><td>0.6041</td><td>0.2262</td><td>0.2935</td><td>29.3292</td></tr><tr><td>50.0000</td><td>0.5000</td><td>0.0261</td><td>0.0133</td><td>0.5997</td><td>0.2162</td><td>0.2878</td><td>29.3686</td></tr><tr><td>50.0000</td><td>0.7500</td><td>0.0228</td><td>0.0116</td><td>0.5943</td><td>0.2014</td><td>0.2846</td><td>30.1590</td></tr><tr><td>50.0000</td><td>1.0000</td><td>0.0235</td><td>0.0119</td><td>0.5996</td><td>0.2060</td><td>0.2878</td><td>30.2287</td></tr><tr><td>50.0000</td><td>1.2500</td><td>0.0245</td><td>0.0125</td><td>0.6004</td><td>0.2198</td><td>0.2953</td><td>29.7340</td></tr><tr><td>50.0000</td><td>1.5000</td><td>0.0381</td><td>0.0201</td><td>0.5639</td><td>0.2435</td><td>0.3315</td><td>32.5260</td></tr><tr><td>50.0000</td><td>2.0000</td><td>0.0419</td><td>0.0220</td><td>0.3696</td><td>0.3364</td><td>0.4195</td><td>41.6658</td></tr></tbody></table>
+
+  <h2>5. SAM3 点布局/聚类对照</h2>
+  <p>在 SAM3 的最优 K/lambda 下，DBSCAN medoid 略高于 top-k/local maxima，但整体 Dice 仍低。这和 SAM baseline 中 local maxima 最优的结论不同，说明 SAM3 的交互点解释方式和 SAM 不一样。</p>
+  <table><thead><tr><th>method</th><th>layout</th><th>clustering</th><th>Dice</th><th>IoU</th><th>FG precision</th><th>FG recall</th><th>Obj recall</th><th>Pred area %</th></tr></thead><tbody><tr><td>best_topk</td><td>topk</td><td>none</td><td>0.0696</td><td>0.0388</td><td>0.9258</td><td>0.0872</td><td>0.0764</td><td>5.1734</td></tr><tr><td>boundary_mix</td><td>boundary_mix</td><td>none</td><td>0.0595</td><td>0.0334</td><td>0.8858</td><td>0.0592</td><td>0.0720</td><td>5.9323</td></tr><tr><td>dbscan_medoid</td><td>cluster_medoid</td><td>dbscan</td><td>0.0742</td><td>0.0417</td><td>0.9351</td><td>0.0901</td><td>0.0769</td><td>5.1595</td></tr><tr><td>diverse_topk</td><td>diverse_topk</td><td>none</td><td>0.0645</td><td>0.0363</td><td>0.8895</td><td>0.1331</td><td>0.1224</td><td>10.1158</td></tr><tr><td>heatmap_cc</td><td>heatmap_cc</td><td>connected_components</td><td>0.0445</td><td>0.0236</td><td>0.8409</td><td>0.1197</td><td>0.1174</td><td>10.2538</td></tr><tr><td>local_maxima</td><td>local_maxima</td><td>none</td><td>0.0671</td><td>0.0376</td><td>0.8870</td><td>0.1344</td><td>0.1224</td><td>10.1172</td></tr></tbody></table>
+
+  <h2>6. SAM3 定性图</h2>
+  <p>点击图像可以放大。SAM3 的一个直观问题是：很多 candidate 输出很小，或者在多点下突然扩张，但和 all-nuclei GT 的重叠仍不足。</p>
+  
+            <section class="example">
+              <h3>monuseg_16 / round2 / contrast_topk_K20_lam0.5</h3>
+              <p>Dice=0.4119, IoU=0.2594, prompt_count=20, points=<code>runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/points/round2_contrast_topk_K20_lam0.5_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t1_matching/round2_contrast_topk_K20_lam0.5_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t1_matching/round2_contrast_topk_K20_lam0.5_score_heatmap.png" alt="heatmap"></a><figcaption>SAM3 使用的 matcher score heatmap。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/points/round2_contrast_topk_K20_lam0.5_points.csv" target="_blank"><div class="filebox">CSV<br>点坐标表</div></a><figcaption>每个点的 rank、坐标、前景/背景相似度。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t2_overlays/round2_contrast_topk_K20_lam0.5.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t2_overlays/round2_contrast_topk_K20_lam0.5.png" alt="overlay"></a><figcaption>蓝色 GT、红色 SAM3 mask、绿色 positive points。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>monuseg_16 / round2 / contrast_topk_K20_lam0.75</h3>
+              <p>Dice=0.4113, IoU=0.2589, prompt_count=20, points=<code>runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/points/round2_contrast_topk_K20_lam0.75_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t1_matching/round2_contrast_topk_K20_lam0.75_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t1_matching/round2_contrast_topk_K20_lam0.75_score_heatmap.png" alt="heatmap"></a><figcaption>SAM3 使用的 matcher score heatmap。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/points/round2_contrast_topk_K20_lam0.75_points.csv" target="_blank"><div class="filebox">CSV<br>点坐标表</div></a><figcaption>每个点的 rank、坐标、前景/背景相似度。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t2_overlays/round2_contrast_topk_K20_lam0.75.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t2_overlays/round2_contrast_topk_K20_lam0.75.png" alt="overlay"></a><figcaption>蓝色 GT、红色 SAM3 mask、绿色 positive points。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>monuseg_16 / round2 / contrast_topk_K20_lam0.25</h3>
+              <p>Dice=0.4113, IoU=0.2589, prompt_count=20, points=<code>runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/points/round2_contrast_topk_K20_lam0.25_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t1_matching/round2_contrast_topk_K20_lam0.25_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t1_matching/round2_contrast_topk_K20_lam0.25_score_heatmap.png" alt="heatmap"></a><figcaption>SAM3 使用的 matcher score heatmap。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/points/round2_contrast_topk_K20_lam0.25_points.csv" target="_blank"><div class="filebox">CSV<br>点坐标表</div></a><figcaption>每个点的 rank、坐标、前景/背景相似度。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t2_overlays/round2_contrast_topk_K20_lam0.25.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_16/t2_overlays/round2_contrast_topk_K20_lam0.25.png" alt="overlay"></a><figcaption>蓝色 GT、红色 SAM3 mask、绿色 positive points。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>monuseg_02 / round1 / fg_topk_K100</h3>
+              <p>Dice=0.0000, IoU=0.0000, prompt_count=100, points=<code>runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_02/points/round1_fg_topk_K100_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_02/t1_matching/round1_fg_topk_K100_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_02/t1_matching/round1_fg_topk_K100_score_heatmap.png" alt="heatmap"></a><figcaption>SAM3 使用的 matcher score heatmap。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_02/points/round1_fg_topk_K100_points.csv" target="_blank"><div class="filebox">CSV<br>点坐标表</div></a><figcaption>每个点的 rank、坐标、前景/背景相似度。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_02/t2_overlays/round1_fg_topk_K100.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_02/t2_overlays/round1_fg_topk_K100.png" alt="overlay"></a><figcaption>蓝色 GT、红色 SAM3 mask、绿色 positive points。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>monuseg_05 / round1 / fg_topk_K10</h3>
+              <p>Dice=0.0000, IoU=0.0000, prompt_count=10, points=<code>runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_05/points/round1_fg_topk_K10_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_05/t1_matching/round1_fg_topk_K10_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_05/t1_matching/round1_fg_topk_K10_score_heatmap.png" alt="heatmap"></a><figcaption>SAM3 使用的 matcher score heatmap。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_05/points/round1_fg_topk_K10_points.csv" target="_blank"><div class="filebox">CSV<br>点坐标表</div></a><figcaption>每个点的 rank、坐标、前景/背景相似度。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_05/t2_overlays/round1_fg_topk_K10.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_05/t2_overlays/round1_fg_topk_K10.png" alt="overlay"></a><figcaption>蓝色 GT、红色 SAM3 mask、绿色 positive points。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>monuseg_13 / round1 / fg_topk_K40</h3>
+              <p>Dice=0.0000, IoU=0.0000, prompt_count=40, points=<code>runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_13/points/round1_fg_topk_K40_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_13/t1_matching/round1_fg_topk_K40_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_13/t1_matching/round1_fg_topk_K40_score_heatmap.png" alt="heatmap"></a><figcaption>SAM3 使用的 matcher score heatmap。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_13/points/round1_fg_topk_K40_points.csv" target="_blank"><div class="filebox">CSV<br>点坐标表</div></a><figcaption>每个点的 rank、坐标、前景/背景相似度。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_13/t2_overlays/round1_fg_topk_K40.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_sam3_grid/cases/monuseg_13/t2_overlays/round1_fg_topk_K40.png" alt="overlay"></a><figcaption>蓝色 GT、红色 SAM3 mask、绿色 positive points。</figcaption></figure>
+              </div>
+            </section>
+            
+
+  <h2>7. 现在应该怎么汇报</h2>
+  <p>第一句话要先纠正：上一轮主实验是 SAM，不是 SAM3。重测后，SAM3 确实支持累计点，但在 MonuSeg all-nuclei dense prompt 上效果弱，这本身是一个重要结果。</p>
+  <p>后续不应直接把 SAM3 当成 SAM 的替代模型。更合理的路线是：SAM baseline 用来证明 matcher dense point 的候选池价值；SAM3 单独研究 prompt 行为，尤其是为什么多点不能稳定合成全图细胞核 mask，以及是否需要 negative points、box/mask guidance 或不同的 instance-to-all aggregation。</p>
+</main></body></html>

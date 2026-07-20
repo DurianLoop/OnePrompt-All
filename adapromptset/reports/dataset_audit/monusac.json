@@ -1,0 +1,36 @@
+{
+  "dataset": "MoNuSAC",
+  "summary": {
+    "case_count": 310,
+    "split_counts": {
+      "test": 101,
+      "train": 209
+    },
+    "role_counts": {
+      "excluded_overlap": 9,
+      "test": 101,
+      "train": 200
+    },
+    "patient_count": 69,
+    "duplicate_case_ids": []
+  },
+  "gate": {
+    "name": "GATE-A/MoNuSAC",
+    "passed": true,
+    "issues": [],
+    "metadata": {
+      "case_count": 310,
+      "split_counts": {
+        "test": 101,
+        "train": 209
+      },
+      "role_counts": {
+        "excluded_overlap": 9,
+        "test": 101,
+        "train": 200
+      },
+      "patient_count": 69,
+      "duplicate_case_ids": []
+    }
+  }
+}

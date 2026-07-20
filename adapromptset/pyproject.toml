@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adapromptset"
+version = "0.1.0"
+description = "Gated reproducible package for AdaPromptSet MVP experiments."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+adapromptset-audit-data = "adapromptset.scripts.audit_data:main"
+adapromptset-audit-data-profile = "adapromptset.scripts.audit_data_profile:main"
+adapromptset-audit-reference-exposure = "adapromptset.scripts.audit_reference_exposure:main"
+adapromptset-audit-optimizer-guard = "adapromptset.scripts.audit_optimizer_guard:main"
+adapromptset-audit-statistical-units = "adapromptset.scripts.audit_statistical_units:main"
+adapromptset-run-bootstrap = "adapromptset.scripts.run_bootstrap:main"
+adapromptset-write-run-metadata = "adapromptset.scripts.write_run_metadata:main"
+adapromptset-export-gate-reports = "adapromptset.scripts.export_gate_reports:main"
+adapromptset-analyze-representation-pivot = "adapromptset.scripts.analyze_representation_pivot:main"
+adapromptset-export-oracle-analysis-figures = "adapromptset.scripts.export_oracle_analysis_figures:main"
+adapromptset-export-method-overview-figure = "adapromptset.scripts.export_method_overview_figure:main"
+adapromptset-export-action-bank-figure = "adapromptset.scripts.export_action_bank_figure:main"
+adapromptset-export-final-report = "adapromptset.scripts.export_final_report:main"
+adapromptset-audit-scientific-claims = "adapromptset.scripts.audit_scientific_claims:main"
+adapromptset-audit-paper-sections = "adapromptset.scripts.audit_paper_sections:main"
+adapromptset-audit-latexmk-build = "adapromptset.scripts.audit_latexmk_build:main"
+adapromptset-audit-pdf-metadata = "adapromptset.scripts.audit_pdf_metadata:main"
+adapromptset-audit-gate-f-failure-diagnostics = "adapromptset.scripts.audit_gate_f_failure_diagnostics:main"
+adapromptset-audit-ddr-protocol = "adapromptset.scripts.audit_ddr_protocol:main"
+adapromptset-audit-new-domain-pilot-readiness = "adapromptset.scripts.audit_new_domain_pilot_readiness:main"
+adapromptset-audit-phase0-scope-structure = "adapromptset.scripts.audit_phase0_scope_structure:main"
+adapromptset-export-related-work = "adapromptset.scripts.export_related_work:main"
+adapromptset-build-glas-phase2-splits = "adapromptset.scripts.build_glas_phase2_splits:main"
+adapromptset-audit-glas-phase2-gate-c = "adapromptset.scripts.audit_glas_phase2_gate_c:main"
+adapromptset-audit-glas-phase2-gate-d = "adapromptset.scripts.audit_glas_phase2_gate_d:main"
+adapromptset-run-glas-gate-d-confirmation = "adapromptset.scripts.run_glas_gate_d_confirmation:main"
+adapromptset-audit-phase3-interpretation = "adapromptset.scripts.audit_phase3_interpretation:main"
+adapromptset-build-glas-phase3-region-splits = "adapromptset.scripts.build_glas_phase3_region_splits:main"
+adapromptset-run-glas-phase3-gate-r1 = "adapromptset.scripts.run_glas_phase3_gate_r1:main"
+adapromptset-export-phase3-paper-assets = "adapromptset.scripts.export_phase3_paper_assets:main"
+adapromptset-audit-phase4-read-only = "adapromptset.scripts.audit_phase4_read_only:main"
+adapromptset-build-route-b-ddr-manifests = "adapromptset.scripts.build_route_b_ddr_manifests:main"
+adapromptset-audit-route-b-benchmark-freeze = "adapromptset.scripts.audit_route_b_benchmark_freeze:main"
+adapromptset-build-route-b-ddr-episodes = "adapromptset.scripts.build_route_b_ddr_episodes:main"
+adapromptset-run-route-b-ddr-matcher-smoke = "adapromptset.scripts.run_route_b_ddr_matcher_smoke:main"
+adapromptset-run-route-b-ddr-stratified-matcher = "adapromptset.scripts.run_route_b_ddr_stratified_matcher:main"
+adapromptset-analyze-route-b-ddr-failure-taxonomy = "adapromptset.scripts.analyze_route_b_ddr_failure_taxonomy:main"
+adapromptset-run-route-b-ddr-privileged-sam-controls = "adapromptset.scripts.run_route_b_ddr_privileged_sam_controls:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+exclude = [
+    ".test_tmp",
+    ".tmp-tests",
+    "tmp",
+    "tmpjxy40czp",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

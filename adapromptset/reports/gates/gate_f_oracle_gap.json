@@ -1,0 +1,52 @@
+{
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "predeclared_new_domain_pilot"
+  ],
+  "commands": [
+    "scripts/run_oracle_gap_pilot.py --action-bank configs/actions/prompt_set_bank_v2.json",
+    "scripts/write_decision_checkpoint.py"
+  ],
+  "deviations": [
+    "Gate F failed after the one allowed MoNuSAC rescue bank; MoNuSAC policy training remains prohibited."
+  ],
+  "diagnostics": {
+    "aji_available": true,
+    "aji_oracle_gap": 0.0038202062471413,
+    "best_fixed_action": "B_top5_pos3neg",
+    "dice_oracle_gap": 0.0050113301616486194,
+    "episode_count": 10,
+    "gate_f_min_dice_gap": 0.01,
+    "mean_best_fixed_aji": 0.22834095079987268,
+    "mean_best_fixed_dice": 0.37123847211635835,
+    "mean_oracle_aji": 0.23216115704701398,
+    "mean_oracle_dice": 0.376249802278007,
+    "phase5_status": "PIVOT_ORACLE_ANALYSIS",
+    "record_count": 120,
+    "top_oracle_action_fraction": 0.5
+  },
+  "gate": "F",
+  "input_hashes": [
+    {
+      "path": "reports/oracle_gap_pilot_v2/oracle_gap_pilot_summary.json",
+      "sha256": "F4CBE717CF9CA94755DF6CFC85F7623E47CD0FE4FB425F46A6A8D5A82EF92FF5"
+    },
+    {
+      "path": "reports/decision_checkpoint/phase5_decision.json",
+      "sha256": "B6EC74EA3AF9984EA37F17EC38C35DDD67758F94D88E1FE9A1764143768FBE90"
+    },
+    {
+      "path": "reports/gate_f_status.md",
+      "sha256": "B706348FF5191D8221C1EE864B55AF0101030E7F9833A9C7A870801EE399AC6E"
+    }
+  ],
+  "name": "oracle_gap",
+  "pass_fail": "FAIL",
+  "prohibited_next_actions": [
+    "policy_training_on_monusac",
+    "posthoc_monusac_action_redesign"
+  ],
+  "rule_applied": "Policy learning may continue only if the predeclared oracle gap and action-heterogeneity criteria pass after at most one rescue bank.",
+  "status": "FAIL_ORACLE_GAP_SMALL",
+  "title": "Oracle Gap"
+}

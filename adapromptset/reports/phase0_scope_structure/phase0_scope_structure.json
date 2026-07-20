@@ -1,0 +1,206 @@
+{
+  "schema_version": "adapromptset.phase0_scope_structure.v1",
+  "status": "PASS_SCOPE_STRUCTURE",
+  "policy_training_allowed": false,
+  "post_hoc_monusac_action_redesign_allowed": false,
+  "structure": {
+    "status": "PASS",
+    "required_path_count": 26,
+    "missing_paths": [],
+    "paths": [
+      {
+        "path": "pyproject.toml",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "environment.yml",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "README.md",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "execution.md",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "checklist.md",
+        "exists": true,
+        "kind": "file"
+      },
+      {
+        "path": "configs/data",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "configs/matcher",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "configs/segmenter",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "configs/actions",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "configs/experiments",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/actions",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/candidates",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/data",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/matching",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/policy",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/reporting",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/scripts",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/segmenters",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/statistics",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "src/adapromptset/training",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "scripts",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "tests",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "manifests",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "reports",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "paper",
+        "exists": true,
+        "kind": "directory"
+      },
+      {
+        "path": "docs",
+        "exists": true,
+        "kind": "directory"
+      }
+    ]
+  },
+  "toolchain": {
+    "status": "PASS",
+    "checks": {
+      "pyproject_present": true,
+      "environment_yml_present": true,
+      "pytest_declared_or_tests_present": true,
+      "package_discovery_configured": true,
+      "script_entry_points_present": true,
+      "lint_config_present": true
+    }
+  },
+  "research_question": {
+    "text": "Under frozen DINOv2-L and SAM-B, does budget-constrained structured prompt-set selection show enough query-specific oracle heterogeneity to justify learned selection?",
+    "does_not_claim_first_to_learn_prompts": true
+  },
+  "similar_work_boundaries": {
+    "gf_sam": {
+      "label": "GF-SAM",
+      "present": true
+    },
+    "synpo": {
+      "label": "SynPo",
+      "present": true
+    },
+    "alignsam": {
+      "label": "AlignSAM",
+      "present": true
+    },
+    "ppd": {
+      "label": "Point Prompt Defender",
+      "present": true
+    }
+  },
+  "rq_hypotheses": {
+    "status": "PASS",
+    "rq_count": 3,
+    "hypothesis_count": 5,
+    "expected_rq_count": 3,
+    "expected_hypothesis_count": 5
+  },
+  "scope": {
+    "status": "PASS",
+    "non_mainline_exclusions": {
+      "sequential_rl": {
+        "present": true,
+        "mainline": false
+      },
+      "continuous_coordinate_generation": {
+        "present": true,
+        "mainline": false
+      },
+      "online_sam_response_refinement": {
+        "present": true,
+        "mainline": false
+      }
+    },
+    "mainline": "offline one-shot set-level utility ranking under a frozen matcher/segmenter"
+  },
+  "reader_facing_notes": [
+    "The executable mainline remains one-shot, offline, and set-level.",
+    "This audit is not deployable policy evidence and does not reopen MoNuSAC policy training.",
+    "Sequential RL, continuous coordinate generation, and online SAM-response refinement are non-mainline extensions."
+  ]
+}

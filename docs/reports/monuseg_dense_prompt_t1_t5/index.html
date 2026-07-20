@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MonuSeg Dense Point Prompt T1-T5</title>
+  <style>
+    body { margin:0; background:#f6f8fb; color:#17202a; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
+    main { max-width:1240px; margin:0 auto; padding:34px 24px 70px; }
+    h1 { font-size:32px; margin:0 0 8px; }
+    h2 { margin-top:34px; padding-top:18px; border-top:1px solid #d8e0ea; font-size:22px; }
+    h3 { font-size:18px; margin:20px 0 8px; }
+    p { line-height:1.72; margin:8px 0; }
+    .summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:18px 0 24px; }
+    .metric { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:14px; }
+    .metric strong { display:block; font-size:24px; margin-bottom:4px; color:#123c69; }
+    table { width:100%; border-collapse:collapse; background:#fff; margin:12px 0 20px; box-shadow:0 1px 2px rgba(16,24,40,.05); }
+    th,td { border:1px solid #d9e2ec; padding:9px 10px; font-size:14px; text-align:left; }
+    th { background:#eaf1f8; }
+    code { background:#eef3f8; padding:2px 5px; border-radius:4px; }
+    .callout { background:#e9f7ef; border:1px solid #b8e2c8; padding:12px 14px; border-radius:8px; }
+    .warn { background:#fff7e6; border:1px solid #f3d19c; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; align-items:start; }
+    figure { margin:0; background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:8px; }
+    img { width:100%; height:auto; display:block; border-radius:5px; }
+    figcaption { font-size:13px; color:#52616f; line-height:1.5; margin-top:8px; }
+    .example { margin-top:22px; }
+    @media (max-width:900px) { .summary,.grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body><main>
+  <h1>MonuSeg 单域 Dense Point Prompt T1-T5 闭环实验报告</h1>
+  <p>这份报告对应老师方向中的“如何精进 matcher”：先不扩大到所有医学域，而是在 MonuSeg 细胞核单域里验证 reference-mask matching、dense point prompt、foreground/background contrastive score 和聚类对照。</p>
+  <div class="summary">
+    <div class="metric"><strong>20</strong><span>MonuSeg cases</span></div>
+    <div class="metric"><strong>340</strong><span>SAM proposals</span></div>
+    <div class="metric"><strong>K=20</strong><span>Round1 最优点数</span></div>
+    <div class="metric"><strong>lambda=0.25</strong><span>Round2 最优背景抑制</span></div>
+  </div>
+
+  <section class="callout">
+    <p><b>主结论：</b>多点 dense prompt 明显优于单点/少点；前景-背景对比 matching 明显优于 foreground-only；当前最优布局是 <code>local_maxima</code>，mean Dice=0.3861。新候选池 oracle mean Dice=0.4464，高于旧 MonuSeg 候选池 oracle mean Dice=0.3425。</p>
+  </section>
+  <section class="callout warn">
+    <p><b>关于“空白方向”：</b>本实验先按潜在空白方向推进，但报告中只陈述本地实验事实；是否“前人完全没有做过”还需要后续系统查新和 related work 对照。</p>
+  </section>
+
+  <h2>0. 与之前 MonuSeg 基线对比</h2>
+  <table><thead><tr><th>方法/池子</th><th>mean Dice</th><th>解释</th></tr></thead><tbody>
+    <tr><td>旧 Stage3 手写筛选</td><td>0.0517</td><td>之前规则筛出来的结果，说明 MonuSeg 上 Stage3 误杀严重。</td></tr>
+    <tr><td>旧候选池 oracle</td><td>0.3425</td><td>旧 12 proposals/case 中，每个 case 选 Dice 最好的候选。</td></tr>
+    <tr><td>新 T1-T5 最优单策略</td><td>0.3861</td><td>固定同一种策略，20 case 平均。</td></tr>
+    <tr><td>新 T1-T5 候选池 oracle</td><td>0.4464</td><td>每个 case 从本轮 17 个候选中选最优，说明候选池质量上限提高。</td></tr>
+  </tbody></table>
+
+  <h2>T1. Foreground-Background Contrastive Matching</h2>
+  <p>reference 图不是只提供一个目标框，而是有人工 mask。因此我们同时利用 mask 内的 foreground prototype 和 mask 外的 background prototype：</p>
+  <p><code>score(x)=z(sim(query_x, foreground_proto))-lambda*z(sim(query_x, background_proto))</code></p>
+  <p>这一步回应你的想法：我们要找的是“最像细胞核前景，同时最不像参考背景”的点，而不是只按前景相似度排序。</p>
+
+  <h2>T3. 点数预算：K 取多少</h2>
+  <p>固定 foreground-only、top-k、无聚类，只看一次性送入 SAM 的点数。结果说明 K=1 几乎不够，K=10 后 recall 大幅提升，K=20 达到本轮 Dice 峰值；继续加到 50/100 会提高 recall，但预测面积和 merge 风险也上升。</p>
+  <table><thead><tr><th>K</th><th>cases</th><th>Dice</th><th>IoU</th><th>FG recall</th><th>Obj recall</th><th>Merge</th><th>Pred area %</th></tr></thead><tbody><tr><td>1.0000</td><td>20.0000</td><td>0.0347</td><td>0.0181</td><td>0.1216</td><td>0.1349</td><td>0.1333</td><td>10.4867</td></tr><tr><td>3.0000</td><td>20.0000</td><td>0.1905</td><td>0.1178</td><td>0.4722</td><td>0.4897</td><td>0.0547</td><td>40.9908</td></tr><tr><td>5.0000</td><td>20.0000</td><td>0.2413</td><td>0.1517</td><td>0.7241</td><td>0.7267</td><td>0.0372</td><td>61.4828</td></tr><tr><td>10.0000</td><td>20.0000</td><td>0.3007</td><td>0.1991</td><td>0.8160</td><td>0.8241</td><td>0.0167</td><td>65.1803</td></tr><tr><td>20.0000</td><td>20.0000</td><td>0.3301</td><td>0.2258</td><td>0.8361</td><td>0.8081</td><td>0.0205</td><td>59.0408</td></tr><tr><td>50.0000</td><td>20.0000</td><td>0.3263</td><td>0.2250</td><td>0.9215</td><td>0.8849</td><td>0.1239</td><td>70.5408</td></tr><tr><td>100.0000</td><td>20.0000</td><td>0.3013</td><td>0.2050</td><td>0.9367</td><td>0.9014</td><td>0.3152</td><td>77.7476</td></tr></tbody></table>
+
+  <h2>T4. Background 是否有用</h2>
+  <p>固定 K=20、top-k，不改变 SAM，只改变 matching score。lambda=0.25 把 mean Dice 从 0.3301 提到 0.3840，同时预测面积从 59.04% 降到 51.25%，说明 background prototype 对抑制背景扩张是有用的。</p>
+  <table><thead><tr><th>lambda</th><th>cases</th><th>Dice</th><th>IoU</th><th>FG precision</th><th>FG recall</th><th>Obj recall</th><th>Pred area %</th></tr></thead><tbody><tr><td>0.0000</td><td>20.0000</td><td>0.3301</td><td>0.2258</td><td>0.2804</td><td>0.8361</td><td>0.8081</td><td>59.0408</td></tr><tr><td>0.2500</td><td>20.0000</td><td>0.3840</td><td>0.2746</td><td>0.3778</td><td>0.8014</td><td>0.7544</td><td>51.2477</td></tr><tr><td>0.5000</td><td>20.0000</td><td>0.3833</td><td>0.2720</td><td>0.4132</td><td>0.7352</td><td>0.7006</td><td>44.8986</td></tr><tr><td>1.0000</td><td>20.0000</td><td>0.3693</td><td>0.2578</td><td>0.3715</td><td>0.7678</td><td>0.7324</td><td>48.2621</td></tr></tbody></table>
+
+  <h2>T5. 点布局与聚类是否必要</h2>
+  <p>固定 K=20、lambda=0.25。local maxima 略优于普通 top-k；DBSCAN/heatmap CC 的 object recall 高，但 Dice 不如 local maxima/top-k，说明 MonuSeg all-nuclei 任务里“强制聚类”暂时不是主线，下一步更应研究 dense points 如何分布。</p>
+  <table><thead><tr><th>method</th><th>layout</th><th>clustering</th><th>Dice</th><th>IoU</th><th>FG recall</th><th>Obj recall</th><th>Merge</th></tr></thead><tbody><tr><td>best_topk</td><td>topk</td><td>none</td><td>0.3840</td><td>0.2746</td><td>0.8014</td><td>0.7544</td><td>0.0325</td></tr><tr><td>boundary_mix</td><td>boundary_mix</td><td>none</td><td>0.3294</td><td>0.2242</td><td>0.8444</td><td>0.8149</td><td>0.0680</td></tr><tr><td>dbscan_medoid</td><td>cluster_medoid</td><td>dbscan</td><td>0.3709</td><td>0.2691</td><td>0.8709</td><td>0.8065</td><td>0.0360</td></tr><tr><td>diverse_topk</td><td>diverse_topk</td><td>none</td><td>0.3756</td><td>0.2739</td><td>0.8643</td><td>0.8055</td><td>0.1054</td></tr><tr><td>heatmap_cc</td><td>heatmap_cc</td><td>connected_components</td><td>0.3599</td><td>0.2593</td><td>0.8837</td><td>0.8328</td><td>0.1717</td></tr><tr><td>local_maxima</td><td>local_maxima</td><td>none</td><td>0.3861</td><td>0.2795</td><td>0.8142</td><td>0.7604</td><td>0.0419</td></tr></tbody></table>
+
+  <h2>定性证据</h2>
+  <p>每组图都分成三张：score heatmap、points overlay、SAM mask overlay。点击任意图片可以放大查看。</p>
+  
+            <section class="example">
+              <h3>round1 / fg_topk_K50 / monuseg_01</h3>
+              <p>Dice=0.7458, IoU=0.5946, object recall=0.6296, prompt_count=50。点坐标表：<code>runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/points/round1_fg_topk_K50_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round1_fg_topk_K50_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round1_fg_topk_K50_score_heatmap.png" alt="score heatmap"></a><figcaption>Stage1 score heatmap：越亮代表该 patch 越像目标前景，且在 contrastive 设置下越不像背景。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round1_fg_topk_K50_points_overlay.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round1_fg_topk_K50_points_overlay.png" alt="points overlay"></a><figcaption>进入 SAM 的 positive points。绿色/红色点的位置来自 DINO patch score 排序或对应布局策略。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t2_overlays/round1_fg_topk_K50.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t2_overlays/round1_fg_topk_K50.png" alt="SAM overlay"></a><figcaption>SAM 输出：蓝色是人工 GT，红色是预测 mask，绿色是 prompt 点，黄色框是预测 mask 外接范围。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>round1 / fg_topk_K1 / monuseg_16</h3>
+              <p>Dice=0.0000, IoU=0.0000, object recall=0.0000, prompt_count=1。点坐标表：<code>runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/points/round1_fg_topk_K1_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/t1_matching/round1_fg_topk_K1_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/t1_matching/round1_fg_topk_K1_score_heatmap.png" alt="score heatmap"></a><figcaption>Stage1 score heatmap：越亮代表该 patch 越像目标前景，且在 contrastive 设置下越不像背景。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/t1_matching/round1_fg_topk_K1_points_overlay.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/t1_matching/round1_fg_topk_K1_points_overlay.png" alt="points overlay"></a><figcaption>进入 SAM 的 positive points。绿色/红色点的位置来自 DINO patch score 排序或对应布局策略。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/t2_overlays/round1_fg_topk_K1.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_16/t2_overlays/round1_fg_topk_K1.png" alt="SAM overlay"></a><figcaption>SAM 输出：蓝色是人工 GT，红色是预测 mask，绿色是 prompt 点，黄色框是预测 mask 外接范围。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>round2 / contrast_topk_lam1 / monuseg_01</h3>
+              <p>Dice=0.7488, IoU=0.5984, object recall=0.6852, prompt_count=20。点坐标表：<code>runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/points/round2_contrast_topk_lam1_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round2_contrast_topk_lam1_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round2_contrast_topk_lam1_score_heatmap.png" alt="score heatmap"></a><figcaption>Stage1 score heatmap：越亮代表该 patch 越像目标前景，且在 contrastive 设置下越不像背景。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round2_contrast_topk_lam1_points_overlay.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round2_contrast_topk_lam1_points_overlay.png" alt="points overlay"></a><figcaption>进入 SAM 的 positive points。绿色/红色点的位置来自 DINO patch score 排序或对应布局策略。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t2_overlays/round2_contrast_topk_lam1.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t2_overlays/round2_contrast_topk_lam1.png" alt="SAM overlay"></a><figcaption>SAM 输出：蓝色是人工 GT，红色是预测 mask，绿色是 prompt 点，黄色框是预测 mask 外接范围。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>round2 / contrast_topk_lam0 / monuseg_19</h3>
+              <p>Dice=0.0356, IoU=0.0181, object recall=1.0000, prompt_count=20。点坐标表：<code>runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/points/round2_contrast_topk_lam0_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round2_contrast_topk_lam0_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round2_contrast_topk_lam0_score_heatmap.png" alt="score heatmap"></a><figcaption>Stage1 score heatmap：越亮代表该 patch 越像目标前景，且在 contrastive 设置下越不像背景。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round2_contrast_topk_lam0_points_overlay.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round2_contrast_topk_lam0_points_overlay.png" alt="points overlay"></a><figcaption>进入 SAM 的 positive points。绿色/红色点的位置来自 DINO patch score 排序或对应布局策略。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t2_overlays/round2_contrast_topk_lam0.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t2_overlays/round2_contrast_topk_lam0.png" alt="SAM overlay"></a><figcaption>SAM 输出：蓝色是人工 GT，红色是预测 mask，绿色是 prompt 点，黄色框是预测 mask 外接范围。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>round3 / diverse_topk / monuseg_01</h3>
+              <p>Dice=0.7624, IoU=0.6160, object recall=0.5370, prompt_count=20。点坐标表：<code>runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/points/round3_diverse_topk_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round3_diverse_topk_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round3_diverse_topk_score_heatmap.png" alt="score heatmap"></a><figcaption>Stage1 score heatmap：越亮代表该 patch 越像目标前景，且在 contrastive 设置下越不像背景。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round3_diverse_topk_points_overlay.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t1_matching/round3_diverse_topk_points_overlay.png" alt="points overlay"></a><figcaption>进入 SAM 的 positive points。绿色/红色点的位置来自 DINO patch score 排序或对应布局策略。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t2_overlays/round3_diverse_topk.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_01/t2_overlays/round3_diverse_topk.png" alt="SAM overlay"></a><figcaption>SAM 输出：蓝色是人工 GT，红色是预测 mask，绿色是 prompt 点，黄色框是预测 mask 外接范围。</figcaption></figure>
+              </div>
+            </section>
+            
+            <section class="example">
+              <h3>round3 / heatmap_cc / monuseg_19</h3>
+              <p>Dice=0.0287, IoU=0.0146, object recall=1.0000, prompt_count=20。点坐标表：<code>runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/points/round3_heatmap_cc_points.csv</code></p>
+              <div class="grid">
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round3_heatmap_cc_score_heatmap.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round3_heatmap_cc_score_heatmap.png" alt="score heatmap"></a><figcaption>Stage1 score heatmap：越亮代表该 patch 越像目标前景，且在 contrastive 设置下越不像背景。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round3_heatmap_cc_points_overlay.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t1_matching/round3_heatmap_cc_points_overlay.png" alt="points overlay"></a><figcaption>进入 SAM 的 positive points。绿色/红色点的位置来自 DINO patch score 排序或对应布局策略。</figcaption></figure>
+                <figure><a href="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t2_overlays/round3_heatmap_cc.png" target="_blank"><img src="../../../runs/research_direction/monuseg_dense_prompt_t1_t5/cases/monuseg_19/t2_overlays/round3_heatmap_cc.png" alt="SAM overlay"></a><figcaption>SAM 输出：蓝色是人工 GT，红色是预测 mask，绿色是 prompt 点，黄色框是预测 mask 外接范围。</figcaption></figure>
+              </div>
+            </section>
+            
+
+  <h2>下一步研究路线</h2>
+  <p>第一优先级：沿着 MonuSeg 单域，把 <code>K</code> 和 <code>lambda</code> 从人工网格搜索改成验证集可学习策略。</p>
+  <p>第二优先级：加入 negative/background points，但只在预测面积过大或 merge error 高的 case 触发，避免重新引入太多变量。</p>
+  <p>第三优先级：把 local maxima 和 top-k 结合成一个可学习 point policy，输入 score map 的峰值数量、熵、面积估计和 background score，输出 K 与点布局。</p>
+  <p>第四优先级：在 MonuSeg 稳定后，再迁移到 IDRID 或其他 domain；不要现在就把跨域作为主线。</p>
+</main></body></html>

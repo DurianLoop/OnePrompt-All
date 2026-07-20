@@ -22,6 +22,7 @@ Matcher/models/
 # Local medical datasets
 code/datasets/IDRID/
 code/datasets/MonuSeg/
+code/datasets/MoNuSAC/
 code/IDRID/
 code/MonuSeg/
 code/ddr_datasets/
@@ -29,6 +30,10 @@ Matcher/datasets/
 Matcher/IDRID/
 Matcher/MonuSeg/
 Matcher/ddr_datasets/
+
+# External project model weights and raw research data (>100MB, GitHub limit)
+external/PPO/model/
+external/research_data/raw/
 
 # Generated demo/evaluation outputs
 runs/

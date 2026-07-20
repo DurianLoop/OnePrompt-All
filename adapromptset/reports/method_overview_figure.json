@@ -1,0 +1,23 @@
+{
+  "checks": {
+    "frozen_matcher_present": true,
+    "frozen_segmenter_present": true,
+    "gate_f_policy_prohibition_present": true,
+    "test_time_safe_path_present": true,
+    "tikz_present": true,
+    "train_only_utility_labels_present": true
+  },
+  "claim_boundary": "oracle_analysis_only",
+  "figure": {
+    "bytes": 2310,
+    "path": "paper/figures/method_overview.tex",
+    "sha256": "E2D4CEB312CD4FC67FCD54B051D2FEC4397590D7E6F1991E6C124AA0C280E6D6"
+  },
+  "prohibited_claims": [
+    "adaptive_policy_success",
+    "end_to_end_differentiable",
+    "test_time_action_search"
+  ],
+  "schema_version": "adapromptset.method_overview_figure.v1",
+  "status": "PASS_METHOD_OVERVIEW_FIGURE"
+}

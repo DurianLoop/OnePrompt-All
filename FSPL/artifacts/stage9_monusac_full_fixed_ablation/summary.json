@@ -1,0 +1,33 @@
+{
+  "protocol": {
+    "seed": 20260716,
+    "references": [
+      "train_028",
+      "train_115",
+      "train_183"
+    ],
+    "test_case_count": 101
+  },
+  "rules": [
+    "top1_n0",
+    "top3_n0",
+    "top5_n0"
+  ],
+  "official_test": {
+    "fixed_rules": {
+      "top1_n0": {
+        "case_count": 303,
+        "mean_dice": 0.090684944847
+      },
+      "top3_n0": {
+        "case_count": 303,
+        "mean_dice": 0.326631911095
+      },
+      "top5_n0": {
+        "case_count": 303,
+        "mean_dice": 0.381392368581
+      }
+    }
+  },
+  "elapsed_seconds": 2361.8400369999
+}

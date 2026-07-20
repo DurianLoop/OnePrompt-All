@@ -1,0 +1,15 @@
+model_key,family,checkpoint,config,prompt_types,source,paper_or_repo,status,priority,notes
+sam_vit_b,SAM,assets/checkpoints/sam_vit_b.pth,,point|box,official,facebookresearch/segment-anything,runnable,P0,Already used in MonuSeg dense point baseline.
+sam_vit_l,SAM,assets/checkpoints/sam_vit_l_0b3195.pth,,point|box,official,facebookresearch/segment-anything,downloaded,P0,Downloaded 2026-07-09; needs MonuSeg screening.
+sam_vit_h,SAM,assets/checkpoints/sam_vit_h_4b8939.pth,,point|box,official,facebookresearch/segment-anything,downloaded,P0,Local checkpoint exists; needs MonuSeg screening.
+sam2p1_hiera_tiny,SAM2.1,assets/checkpoints/sam2.1_hiera_tiny.pt,sam2/sam2/configs/sam2.1/sam2.1_hiera_t.yaml,point|box,official,facebookresearch/sam2,downloaded,P0,Local lightweight SAM2.1 checkpoint exists.
+sam2p1_hiera_small,SAM2.1,assets/checkpoints/sam2.1_hiera_small.pt,sam2/sam2/configs/sam2.1/sam2.1_hiera_s.yaml,point|box,official,facebookresearch/sam2,downloaded,P0,Downloaded 2026-07-09; needs adapter into screening runner.
+sam2p1_hiera_base_plus,SAM2.1,assets/checkpoints/sam2.1_hiera_base_plus.pt,sam2/sam2/configs/sam2.1/sam2.1_hiera_b+.yaml,point|box,official,facebookresearch/sam2,downloaded,P0,Downloaded 2026-07-09; needs adapter into screening runner.
+sam2p1_hiera_large,SAM2.1,assets/checkpoints/sam2.1_hiera_large.pt,sam2/sam2/configs/sam2.1/sam2.1_hiera_l.yaml,point|box,official,facebookresearch/sam2,downloaded,P0,Downloaded 2026-07-09; mandatory large-model screening candidate.
+sam3_modelscope,SAM3,assets/checkpoints/sam3_modelscope/sam3.pt,,point|box|text,mirror,facebook/sam3 via ModelScope,runnable,P0,Already used for SAM3 point grid.
+sam3_hf_official,SAM3,assets/checkpoints/sam3_hf,,point|box|text|exemplar,official_hf,facebook/sam3,gated_access_denied,P0,hf download returned Access denied/requires approval on 2026-07-09; needs accepted HF access/token.
+medsam_vit_b,MedSAM,assets/checkpoints/medsam_vit_b.pth,,box,official_or_mirror,bowang-lab/MedSAM,downloaded,P0,MedSAM is primarily box-prompt based.
+lite_medsam,MedSAM,assets/checkpoints/medsam_download/lite_medsam.pth,,box,official_or_mirror,bowang-lab/MedSAM,downloaded,P1,Lightweight medical baseline.
+medical_sam_adapter,Medical-SAM-Adapter,assets/checkpoints/medical_adapter_zoo/White Blood Cell_MicroScope_sam_1024.pth,,point|box|adapter,third_party,Medical-SAM-Adapter,adapter_downloaded,P0,Microscope adapter exists locally; likely closest adapter for MonuSeg; needs interface audit.
+sam_med2d,SAM-Med2D,assets/checkpoints/sam_med2d_b.pth,,point|box|mask,third_party,SAM-Med2D,downloaded,P0,Downloaded official Google Drive checkpoint 2026-07-09; repo exists and needs interface audit.
+medsam2,Medical-SAM2,assets/checkpoints/medsam2.pth,,point|box|video,third_party,MedSAM2 or BioSAM2,missing,P2,Only if needed after 2D baselines.

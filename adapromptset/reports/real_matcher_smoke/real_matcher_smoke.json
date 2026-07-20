@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "formal_gate_c": "PENDING_FULL_CANDIDATE_PILOT",
+  "episode": "monusac_val__train_111__to__train_004",
+  "device": "cuda:0",
+  "elapsed_seconds": 3.916,
+  "gpu_hours_estimate": 0.001088,
+  "evidence_metadata": {
+    "dataset": "MoNuSAC",
+    "episode_id": "monusac_val__train_111__to__train_004",
+    "support_case_id": "train_111",
+    "query_case_id": "train_004",
+    "support_image_path": "processed/train/images/train_111.png",
+    "support_mask_path": "processed/train/masks/train_111.png",
+    "query_image_path": "processed/train/images/train_004.png",
+    "matcher_checkpoint_sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+    "feature_grid_size": 37,
+    "query_ground_truth_excluded_from_cache": true
+  },
+  "score_map_features": {
+    "s_bg": {
+      "score_count": 1369,
+      "score_mean": 0.6900599002838135,
+      "score_std": 0.05792979523539543,
+      "top_score": 0.8123247623443604,
+      "second_score": 0.8043925166130066,
+      "top_margin": 0.00793224573135376,
+      "top_index_row": 14,
+      "top_index_col": 1,
+      "matching_entropy": 0.9997775545620231,
+      "high_score_threshold": 0.7548204660415649,
+      "high_score_area_fraction": 0.10007304698228836
+    },
+    "s_ctr": {
+      "score_count": 1369,
+      "score_mean": -0.12465167045593262,
+      "score_std": 0.07990396022796631,
+      "top_score": 0.13942062854766846,
+      "second_score": 0.13206839561462402,
+      "top_margin": 0.007352232933044434,
+      "top_index_row": 2,
+      "top_index_col": 18,
+      "matching_entropy": 0.9995386683659412,
+      "high_score_threshold": -0.005676178261637688,
+      "high_score_area_fraction": 0.10007304698228836
+    },
+    "s_fg": {
+      "score_count": 1369,
+      "score_mean": 0.5654082298278809,
+      "score_std": 0.08324830234050751,
+      "top_score": 0.7704651355743408,
+      "second_score": 0.7470796704292297,
+      "top_margin": 0.023385465145111084,
+      "top_index_row": 2,
+      "top_index_col": 18,
+      "matching_entropy": 0.9995261892362951,
+      "high_score_threshold": 0.6719818711280823,
+      "high_score_area_fraction": 0.10007304698228836
+    }
+  },
+  "metrics": {
+    "point_precision": 0.2,
+    "component_coverage": 0.004291845493562232,
+    "positive_count": 5,
+    "negative_count": 5,
+    "validation_issues": []
+  },
+  "artifacts": {
+    "score_maps": "D:\\SAM\\adapromptset\\reports\\real_matcher_smoke\\score_maps.pt",
+    "candidates": "D:\\SAM\\adapromptset\\reports\\real_matcher_smoke\\candidates.csv"
+  },
+  "notes": [
+    "Single validation episode smoke only.",
+    "Query mask is used only for diagnostic metrics, not for candidate generation or cache metadata."
+  ]
+}

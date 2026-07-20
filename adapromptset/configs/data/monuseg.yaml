@@ -1,0 +1,6 @@
+name: MoNuSeg
+role: sanity_historical
+root: D:\SAM\code\datasets\MonuSeg\official
+tuning_allowed: false
+leakage_policy: case_level_train_test_holdout
+

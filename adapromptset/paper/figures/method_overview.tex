@@ -1,0 +1,40 @@
+% Auto-generated method overview for the Gate-F pivot state.
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  node distance=0.75cm and 0.9cm,
+  block/.style={draw, rounded corners=2pt, align=center, minimum width=2.6cm, minimum height=0.78cm, font=\small},
+  frozen/.style={block, fill=blue!8, draw=blue!55!black},
+  learned/.style={block, fill=green!8, draw=green!45!black},
+  trainonly/.style={block, fill=orange!10, draw=orange!60!black},
+  testtime/.style={block, fill=gray!8, draw=gray!65!black},
+  stop/.style={block, fill=red!8, draw=red!60!black},
+  arrow/.style={->, >=Stealth, thick}
+]
+\node[testtime] (ref) {Reference image\\and mask};
+\node[testtime, right=of ref] (query) {Query image};
+\node[frozen, below=of ref, xshift=1.75cm] (matcher) {Frozen matcher\\DINOv2-L};
+\node[testtime, below=of matcher] (evidence) {Matching evidence\\candidates $C^+, C^-$};
+\node[testtime, below left=of evidence, xshift=-0.35cm] (bank) {Predeclared\\prompt-set bank};
+\node[trainonly, below right=of evidence, xshift=0.35cm] (labels) {Train/validation only\\utility labels};
+\node[learned, below=of labels] (policy) {Learned utility predictor\\only if Gate F passes};
+\node[stop, below=of bank] (pivot) {Policy is prohibited after Gate F\\current oracle-analysis pivot};
+\node[testtime, below=of pivot, xshift=2.65cm] (select) {Test-time safe path\\fixed/oracle-analysis assets};
+\node[frozen, below=of select] (segmenter) {Frozen segmenter\\SAM-B};
+\node[testtime, below=of segmenter] (report) {Claim-safe reports\\tables and figures};
+
+\draw[arrow] (ref) -- (matcher);
+\draw[arrow] (query) -- (matcher);
+\draw[arrow] (matcher) -- (evidence);
+\draw[arrow] (evidence) -- (bank);
+\draw[arrow] (evidence) -- (labels);
+\draw[arrow] (labels) -- (policy);
+\draw[arrow] (bank) -- (pivot);
+\draw[arrow] (pivot) -- (select);
+\draw[arrow] (select) -- (segmenter);
+\draw[arrow] (segmenter) -- (report);
+\draw[arrow, dashed] (policy) -- node[font=\scriptsize, align=center, right]{blocked in\\current evidence} (select);
+\end{tikzpicture}
+\caption{AdaPromptSet method overview under the current Gate-F pivot. Frozen modules and test-time-safe paths are separated from train/validation-only utility labels and the learned predictor path.}
+\label{fig:method-overview}
+\end{figure*}

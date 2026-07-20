@@ -1,0 +1,4 @@
+name: dinov2_vitl14
+checkpoint: D:\SAM\assets\checkpoints\dinov2_vitl14_pretrain.pth
+frozen: true
+

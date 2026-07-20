@@ -1,0 +1,88 @@
+{
+  "schema_version": "adapromptset.ddr_protocol_audit.v1",
+  "status": "PASS_PROTOCOL_DEFINED",
+  "data_root": "D:\\SAM\\code\\ddr_datasets\\DDR-dataset-01\\lesion_segmentation",
+  "splits": {
+    "train": {
+      "image_count": 383,
+      "label_counts": {
+        "EX": 383,
+        "HE": 383,
+        "MA": 383,
+        "SE": 383
+      },
+      "complete_case_count": 383,
+      "missing_label_count": 0,
+      "missing_labels": []
+    },
+    "valid": {
+      "image_count": 149,
+      "label_counts": {
+        "EX": 149,
+        "HE": 149,
+        "MA": 149,
+        "SE": 149
+      },
+      "complete_case_count": 149,
+      "missing_label_count": 0,
+      "missing_labels": []
+    },
+    "test": {
+      "image_count": 225,
+      "label_counts": {
+        "EX": 225,
+        "HE": 225,
+        "MA": 225,
+        "SE": 225
+      },
+      "complete_case_count": 225,
+      "missing_label_count": 0,
+      "missing_labels": []
+    }
+  },
+  "total_image_count": 757,
+  "total_complete_case_count": 757,
+  "total_missing_label_count": 0,
+  "stage1_union": {
+    "name": "lesion_all_union",
+    "allowed_use": "infrastructure_only",
+    "mask_rule": "binary_union_of_EX_HE_MA_SE",
+    "uses": [
+      "loader_validation",
+      "mask_merge_validation",
+      "coordinate_tests",
+      "candidate_diagnostics",
+      "segmenter_smoke",
+      "runtime_estimation"
+    ],
+    "prohibited_use": "formal_scientific_claim"
+  },
+  "stage2_four_intents": {
+    "name": "four_reference_defined_intents",
+    "intents": [
+      "EX",
+      "HE",
+      "MA",
+      "SE"
+    ],
+    "reference_rule": "reference mask contains exactly one lesion intent",
+    "query_rule": "positive-query protocol first; query must contain the same target lesion for the selected intent",
+    "metrics": [
+      "per_intent_dice",
+      "per_intent_iou",
+      "macro_average",
+      "lesion_size_stratified_results",
+      "empty_target_handling_fixed_before_formal_evaluation"
+    ]
+  },
+  "formal_policy_training_allowed": false,
+  "allowed_next_actions": [
+    "stage1_union_loader_and_mask_merge_smoke",
+    "predeclared_stage2_four_intent_protocol"
+  ],
+  "prohibited_next_actions": [
+    "ddr_formal_policy_training_before_pathology_gate_decision",
+    "using_idrid_observed_test_behavior_for_ddr_thresholds",
+    "claiming_union_mask_as_preferred_formal_task"
+  ]
+}

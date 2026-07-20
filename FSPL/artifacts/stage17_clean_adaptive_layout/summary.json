@@ -1,0 +1,232 @@
+{
+  "method_status": "clean-development adaptive-layout policy; external IDRiD test evaluated once after action set was locked",
+  "clean_monusac_train_case_count": 143,
+  "excluded_prior_monusac_train_case_ids": [
+    "train_006",
+    "train_008",
+    "train_014",
+    "train_024",
+    "train_026",
+    "train_027",
+    "train_028",
+    "train_030",
+    "train_033",
+    "train_035",
+    "train_036",
+    "train_048",
+    "train_052",
+    "train_054",
+    "train_056",
+    "train_057",
+    "train_066",
+    "train_067",
+    "train_072",
+    "train_076",
+    "train_077",
+    "train_080",
+    "train_083",
+    "train_084",
+    "train_086",
+    "train_088",
+    "train_096",
+    "train_099",
+    "train_100",
+    "train_101",
+    "train_104",
+    "train_108",
+    "train_110",
+    "train_115",
+    "train_120",
+    "train_121",
+    "train_125",
+    "train_126",
+    "train_129",
+    "train_132",
+    "train_134",
+    "train_136",
+    "train_140",
+    "train_147",
+    "train_150",
+    "train_153",
+    "train_154",
+    "train_157",
+    "train_158",
+    "train_159",
+    "train_161",
+    "train_164",
+    "train_170",
+    "train_171",
+    "train_172",
+    "train_173",
+    "train_180",
+    "train_181",
+    "train_183",
+    "train_185",
+    "train_187",
+    "train_189",
+    "train_192",
+    "train_198",
+    "train_204",
+    "train_207"
+  ],
+  "development_protocol": {
+    "seed": 20260718,
+    "reference_case_ids": [
+      "train_009",
+      "train_118",
+      "train_205"
+    ],
+    "policy_train_query_ids": [
+      "train_000",
+      "train_004",
+      "train_010",
+      "train_013",
+      "train_021",
+      "train_025",
+      "train_029",
+      "train_034",
+      "train_043",
+      "train_047",
+      "train_053",
+      "train_055",
+      "train_060",
+      "train_062",
+      "train_063",
+      "train_065",
+      "train_068",
+      "train_071",
+      "train_073",
+      "train_074",
+      "train_075",
+      "train_081",
+      "train_082",
+      "train_085",
+      "train_090",
+      "train_093",
+      "train_097",
+      "train_102",
+      "train_107",
+      "train_111",
+      "train_114",
+      "train_119",
+      "train_130",
+      "train_135",
+      "train_139",
+      "train_143",
+      "train_144",
+      "train_145",
+      "train_148",
+      "train_160",
+      "train_165",
+      "train_167",
+      "train_168",
+      "train_177",
+      "train_182",
+      "train_195",
+      "train_199",
+      "train_202"
+    ],
+    "validation_query_ids": [
+      "train_007",
+      "train_020",
+      "train_046",
+      "train_050",
+      "train_089",
+      "train_109",
+      "train_124",
+      "train_137",
+      "train_149",
+      "train_155",
+      "train_175",
+      "train_193"
+    ],
+    "test_case_ids_reserved": []
+  },
+  "rules": [
+    {
+      "name": "top5_n3",
+      "positive_limit": 5,
+      "negative_limit": 3,
+      "lambda_bg": 1.0,
+      "positive_layout": "topk",
+      "min_positive_distance_patches": 3.0
+    },
+    {
+      "name": "spread5_n3_d2",
+      "positive_limit": 5,
+      "negative_limit": 3,
+      "lambda_bg": 1.0,
+      "positive_layout": "spread",
+      "min_positive_distance_patches": 2.0
+    },
+    {
+      "name": "spread5_n3_d3",
+      "positive_limit": 5,
+      "negative_limit": 3,
+      "lambda_bg": 1.0,
+      "positive_layout": "spread",
+      "min_positive_distance_patches": 3.0
+    },
+    {
+      "name": "spread5_n3_d4",
+      "positive_limit": 5,
+      "negative_limit": 3,
+      "lambda_bg": 1.0,
+      "positive_layout": "spread",
+      "min_positive_distance_patches": 4.0
+    }
+  ],
+  "development": {
+    "train_action_row_count": 576,
+    "validation_action_row_count": 144,
+    "validation_fixed_rules": {
+      "spread5_n3_d2": {
+        "case_count": 36,
+        "mean_dice": 0.404926724374
+      },
+      "spread5_n3_d3": {
+        "case_count": 36,
+        "mean_dice": 0.401392425972
+      },
+      "spread5_n3_d4": {
+        "case_count": 36,
+        "mean_dice": 0.403094241457
+      },
+      "top5_n3": {
+        "case_count": 36,
+        "mean_dice": 0.382034235227
+      }
+    },
+    "selected_min_samples_leaf": 2,
+    "validation_policy_selected_mean_dice": 0.4055988298388403
+  },
+  "idrid_external_test": {
+    "reference_case_ids": [
+      "IDRiD_20",
+      "IDRiD_47",
+      "IDRiD_50"
+    ],
+    "test_case_count": 27,
+    "episodes_per_rule": 81,
+    "fixed_rules": {
+      "spread5_n3_d2": {
+        "case_count": 81,
+        "mean_dice": 0.091720469752
+      },
+      "spread5_n3_d3": {
+        "case_count": 81,
+        "mean_dice": 0.053269179497
+      },
+      "spread5_n3_d4": {
+        "case_count": 81,
+        "mean_dice": 0.042548740612
+      },
+      "top5_n3": {
+        "case_count": 81,
+        "mean_dice": 0.09578001728
+      }
+    },
+    "policy_selected_mean_dice": 0.07250893596643199
+  },
+  "elapsed_seconds": 2851.4423138001002
+}

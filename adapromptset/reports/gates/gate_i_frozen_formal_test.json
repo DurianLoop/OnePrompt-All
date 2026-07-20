@@ -1,0 +1,29 @@
+{
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "predeclared_new_domain_pilot"
+  ],
+  "commands": [],
+  "deviations": [
+    "Not executed because Gate F selected the current oracle-analysis pivot."
+  ],
+  "diagnostics": {
+    "phase5_status": "PIVOT_ORACLE_ANALYSIS"
+  },
+  "gate": "I",
+  "input_hashes": [
+    {
+      "path": "reports/decision_checkpoint/phase5_decision.json",
+      "sha256": "B6EC74EA3AF9984EA37F17EC38C35DDD67758F94D88E1FE9A1764143768FBE90"
+    }
+  ],
+  "name": "frozen_formal_test",
+  "pass_fail": "NOT_RUN",
+  "prohibited_next_actions": [
+    "policy_training_on_monusac",
+    "posthoc_monusac_action_redesign"
+  ],
+  "rule_applied": "Frozen formal testing requires a locked method or approved pivot protocol; no MoNuSAC policy checkpoint exists under the current evidence.",
+  "status": "NOT_RUN_NO_FROZEN_POLICY_PROTOCOL",
+  "title": "Frozen Formal Test"
+}

@@ -1,0 +1,4 @@
+episode_id,query_case_id,support_case_id,positive_limit,point_precision,component_coverage,random_precision,validation_issue_count,negative_blank_fraction
+glas_val__train_60__to__train_41,train_41,train_60,1,1.0,0.125,1.0,0,0.0
+glas_val__train_60__to__train_41,train_41,train_60,3,1.0,0.25,0.3333333333333333,0,0.0
+glas_val__train_60__to__train_41,train_41,train_60,5,1.0,0.375,0.4,0,0.0

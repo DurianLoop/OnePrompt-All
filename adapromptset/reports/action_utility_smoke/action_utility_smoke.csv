@@ -1,0 +1,10 @@
+episode_id,action_id,action_family,valid,invalid_reason,sam_calls,decoder_calls,cache_hits,num_groups,num_positive,num_negative,dice,iou,retained_masks,runtime_ms
+monusac_val__train_111__to__train_004,A_top1_one_group,single_group_positive,True,,1,1,0,1,1,0,0.0,0.0,1,195.186
+monusac_val__train_111__to__train_004,A_top3_one_group,single_group_positive,True,,1,1,0,1,3,0,0.0018978747075473242,0.0009498386911877897,1,63.573
+monusac_val__train_111__to__train_004,A_top5_one_group,single_group_positive,True,,1,1,0,1,5,0,0.39857924546414514,0.24889102026135954,1,76.203
+monusac_val__train_111__to__train_004,B_top3_pos1neg,single_group_positive_negative,True,,1,1,0,1,3,1,0.3980933336841459,0.24851218991409849,1,45.496
+monusac_val__train_111__to__train_004,B_top3_pos3neg,single_group_positive_negative,True,,1,1,0,1,3,3,0.3411921402776443,0.20568514808867108,1,60.44
+monusac_val__train_111__to__train_004,B_top5_pos1neg,single_group_positive_negative,True,,1,1,0,1,5,1,0.40273697378646295,0.2521419247656343,1,45.721
+monusac_val__train_111__to__train_004,B_top5_pos3neg,single_group_positive_negative,True,,1,1,0,1,5,3,0.40064814746462135,0.2505065704144415,1,59.054
+monusac_val__train_111__to__train_004,C_top3_independent,independent_positive_groups,True,,3,2,1,3,3,0,0.0,0.0,3,264.689
+monusac_val__train_111__to__train_004,C_top5_independent,independent_positive_groups,True,,5,2,3,5,5,0,0.01707891637220259,0.008613008613008613,5,563.876

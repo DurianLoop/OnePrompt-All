@@ -1,0 +1,10 @@
+backbone_key,family,checkpoint_or_model_id,feature_level,source,paper_or_repo,status,priority,notes
+dinov2_vitl14,DINOv2,assets/checkpoints/dinov2_vitl14_pretrain.pth,patch,official,facebookresearch/dinov2,runnable,P0,Current matcher backbone.
+dinov2_vitb14,DINOv2,assets/checkpoints/dinov2_vitb14_pretrain.pth,patch,official,facebookresearch/dinov2,downloaded,P0,Downloaded 2026-07-09; must test as balanced DINOv2 baseline.
+biomedclip,BioMedCLIP,assets/checkpoints/biomedclip/open_clip_pytorch_model.bin,patch_or_global,official,Microsoft/BioMedCLIP,downloaded,P0,Downloaded 2026-07-09; need open_clip dependency and patch extraction design.
+uni_pathology,UNI,MahmoodLab/UNI,patch,official_gated,UNI pathology foundation model,gated_access_denied,P0,hf download returned Access denied/requires approval on 2026-07-09.
+conch_pathology,CONCH,MahmoodLab/CONCH,patch_or_global,official_gated,CONCH pathology VLM,gated_access_denied,P0,hf download returned Access denied/requires approval on 2026-07-09.
+dinov2_vits14,DINOv2,facebook/dinov2-small or local checkpoint,patch,official,facebookresearch/dinov2,missing,P1,Lightweight feature baseline.
+dinov2_vitg14,DINOv2,facebook/dinov2-giant or local checkpoint,patch,official,facebookresearch/dinov2,missing,P1,Large general feature upper bound if resources allow.
+virchow_pathology,Virchow,provider_checkpoint_or_hf_id,patch,official_or_gated,Virchow pathology foundation model,missing_or_gated,P2,Large pathology model, expensive/gated.
+retfound,RETFound,provider_checkpoint_or_hf_id,patch,official_or_gated,RETFound,missing_or_gated,P2,More relevant for IDRID/fundus than MonuSeg.

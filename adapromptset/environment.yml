@@ -1,0 +1,9 @@
+name: adapromptset
+channels:
+  - defaults
+dependencies:
+  - python>=3.10
+  - pip
+  - pip:
+      - pytest
+      - ruff

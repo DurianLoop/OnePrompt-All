@@ -1,0 +1,2 @@
+"""Frozen segmenter adapters."""
+

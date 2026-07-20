@@ -1,0 +1,32 @@
+{
+  "episode_count": 10,
+  "action_count": 12,
+  "best_fixed_action_id": "B_top5_pos3neg",
+  "mean_best_fixed_dice": 0.37123847211635835,
+  "mean_oracle_dice": 0.376249802278007,
+  "mean_regret_to_oracle": 0.0050113301616486194,
+  "aji_available": true,
+  "best_fixed_aji_action_id": "B_top5_pos3neg",
+  "mean_best_fixed_aji": 0.22834095079987268,
+  "mean_oracle_aji": 0.23216115704701398,
+  "mean_aji_regret_to_oracle": 0.0038202062471413,
+  "median_regret_to_oracle": 0.0003192560639198039,
+  "max_regret_to_oracle": 0.01855580912161431,
+  "near_oracle_tolerance": 0.005,
+  "near_oracle_episode_fraction": 0.6,
+  "oracle_action_counts": {
+    "B_top5_pos3neg": 5,
+    "R_split5_2groups_localneg": 1,
+    "B_top5_pos1neg": 2,
+    "A_top5_one_group": 1,
+    "B_top3_pos3neg": 1
+  },
+  "oracle_family_counts": {
+    "single_group_positive_negative": 8,
+    "rescue_group_specific_negatives": 1,
+    "single_group_positive": 1
+  },
+  "top_oracle_action_fraction": 0.5,
+  "deterministic_promotion_status": "NOT_PROMOTED",
+  "recommended_claim": "oracle_analysis_only"
+}

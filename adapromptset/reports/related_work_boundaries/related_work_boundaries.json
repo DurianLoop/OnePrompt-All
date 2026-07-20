@@ -1,0 +1,48 @@
+{
+  "schema_version": "adapromptset.related_work_boundaries.v1",
+  "status": "PASS_RELATED_WORK_BOUNDARIES",
+  "work_count": 4,
+  "claims": {
+    "first_to_learn_prompts": false,
+    "all_prior_methods_fixed_topk_or_clustering": false,
+    "background_reference_is_explicit_negative_prompting": false
+  },
+  "rows": [
+    {
+      "label": "GF-SAM",
+      "reference_guided": true,
+      "negative_prompting": "background_reference_evidence",
+      "learned_prompt_policy": "none",
+      "grouping": "graph_rule",
+      "budgeted_complete_action_selection": false,
+      "adapromptset_boundary": "deterministic_graph_baseline"
+    },
+    {
+      "label": "SynPo",
+      "reference_guided": true,
+      "negative_prompting": "explicit_rule_negatives",
+      "learned_prompt_policy": "none",
+      "grouping": "fixed_kmeans",
+      "budgeted_complete_action_selection": false,
+      "adapromptset_boundary": "fixed_negative_prompt_rule"
+    },
+    {
+      "label": "AlignSAM",
+      "reference_guided": false,
+      "negative_prompting": "learned_label_module",
+      "learned_prompt_policy": "sequential_rl",
+      "grouping": "patch_center_actions",
+      "budgeted_complete_action_selection": false,
+      "adapromptset_boundary": "one_shot_offline_set_level"
+    },
+    {
+      "label": "Point Prompt Defender",
+      "reference_guided": false,
+      "negative_prompting": "adversarial_prompt_optimization",
+      "learned_prompt_policy": "adversarial_dqn",
+      "grouping": "dual_space_graph_environment",
+      "budgeted_complete_action_selection": false,
+      "adapromptset_boundary": "not_reference_constructed_action_bank"
+    }
+  ]
+}

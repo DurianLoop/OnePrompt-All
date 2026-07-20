@@ -1,0 +1,15 @@
+{
+  "case_count": 165,
+  "split_counts": {
+    "testA": 60,
+    "testB": 20,
+    "train": 85
+  },
+  "role_counts": {
+    "excluded_overlap": 77,
+    "test": 80,
+    "train": 8
+  },
+  "patient_count": 16,
+  "duplicate_case_ids": []
+}

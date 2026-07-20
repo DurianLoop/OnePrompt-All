@@ -1,0 +1,34 @@
+{
+  "dataset": "MoNuSeg",
+  "summary": {
+    "case_count": 51,
+    "split_counts": {
+      "test": 14,
+      "train": 37
+    },
+    "role_counts": {
+      "test": 14,
+      "train": 37
+    },
+    "patient_count": 51,
+    "duplicate_case_ids": []
+  },
+  "gate": {
+    "name": "GATE-A/MoNuSeg",
+    "passed": true,
+    "issues": [],
+    "metadata": {
+      "case_count": 51,
+      "split_counts": {
+        "test": 14,
+        "train": 37
+      },
+      "role_counts": {
+        "test": 14,
+        "train": 37
+      },
+      "patient_count": 51,
+      "duplicate_case_ids": []
+    }
+  }
+}

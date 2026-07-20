@@ -1,0 +1,48 @@
+{
+  "checks": {
+    "complete_prompt_set_boundary_present": true,
+    "deferred_families_disclosed": true,
+    "independent_groups_family_present": true,
+    "positive_negative_family_present": true,
+    "rescue_family_present": true,
+    "sam_calls_and_points_present": true,
+    "source_bank_present": true,
+    "tikz_present": true,
+    "topk_family_present": true,
+    "valid_counts_match_source": true
+  },
+  "claim_boundary": "oracle_analysis_only_current_mvp_subset",
+  "deferred_families": [
+    "kmeans_groups",
+    "density_groups",
+    "gf_sam_style_graph_groups"
+  ],
+  "family_counts": {
+    "independent_positive_groups": 2,
+    "rescue_group_specific_negatives": 2,
+    "rescue_split_groups": 1,
+    "single_group_positive": 3,
+    "single_group_positive_negative": 4
+  },
+  "figure": {
+    "bytes": 2598,
+    "path": "paper/figures/action_bank.tex",
+    "sha256": "290AB62437347460BCB8F2D5BB85C21A4539B245180E67955C0A18FE3155F862"
+  },
+  "prohibited_claims": [
+    "full_action_bank_complete",
+    "adaptive_policy_success",
+    "test_time_action_search"
+  ],
+  "schema_version": "adapromptset.action_bank_figure.v1",
+  "source_bank": {
+    "action_count": 13,
+    "bank_hash": "35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8",
+    "invalid_action_count": 1,
+    "name": "prompt_set_bank_v2",
+    "path": "configs/actions/prompt_set_bank_v2.json",
+    "sha256": "9A04120FBD18A77DA617CD61E14FC7EFC7BCDA6009AC8BF156FF10178BBA5ADE",
+    "valid_action_count": 12
+  },
+  "status": "PASS_ACTION_BANK_FIGURE"
+}

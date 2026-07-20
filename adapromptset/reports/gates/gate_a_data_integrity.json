@@ -1,0 +1,47 @@
+{
+  "allowed_next_actions": [
+    "gate_b_protocol_exposure_audit"
+  ],
+  "commands": [
+    "scripts/audit_data.py --config configs/experiments/e0_data_audit.yaml"
+  ],
+  "deviations": [],
+  "diagnostics": {
+    "dataset_count": 3,
+    "datasets": [
+      "GlaS",
+      "MoNuSAC",
+      "MoNuSeg"
+    ],
+    "issues": {
+      "GlaS": [],
+      "MoNuSAC": [],
+      "MoNuSeg": []
+    }
+  },
+  "gate": "A",
+  "input_hashes": [
+    {
+      "path": "reports/dataset_audit/glas.json",
+      "sha256": "46335899AD5F3417C7B61AC43D3A525D68F3391C2BFF2C1E912C2FDA480887E4"
+    },
+    {
+      "path": "reports/dataset_audit/monusac.json",
+      "sha256": "6AD35B0607EB0042AC61495B84FC64BC8975E964F822F288309B4BB1C3C60248"
+    },
+    {
+      "path": "reports/dataset_audit/monuseg.json",
+      "sha256": "54B442884BE5A7F4D24ED997EF0B7BC5370E74F8822BD61A8B244766040DB41C"
+    },
+    {
+      "path": "reports/gate_status.md",
+      "sha256": "A977087F33671D2DDE26131F4A86DB882879B41532103A888604F7CCE62106F0"
+    }
+  ],
+  "name": "data_integrity",
+  "pass_fail": "PASS",
+  "prohibited_next_actions": [],
+  "rule_applied": "All formal cases require verified image-mask pairs, hashes, and zero strict train/test identity overlap.",
+  "status": "PASS",
+  "title": "Data Integrity"
+}

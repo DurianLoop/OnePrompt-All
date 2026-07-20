@@ -1,0 +1,29 @@
+{
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "predeclared_new_domain_pilot"
+  ],
+  "commands": [],
+  "deviations": [
+    "Not executed because Gate F selected the current oracle-analysis pivot."
+  ],
+  "diagnostics": {
+    "phase5_status": "PIVOT_ORACLE_ANALYSIS"
+  },
+  "gate": "G",
+  "input_hashes": [
+    {
+      "path": "reports/decision_checkpoint/phase5_decision.json",
+      "sha256": "B6EC74EA3AF9984EA37F17EC38C35DDD67758F94D88E1FE9A1764143768FBE90"
+    }
+  ],
+  "name": "utility_label_reliability",
+  "pass_fail": "NOT_RUN",
+  "prohibited_next_actions": [
+    "policy_training_on_monusac",
+    "posthoc_monusac_action_redesign"
+  ],
+  "rule_applied": "Utility-label reliability is evaluated before policy training only when Gate F permits policy learning.",
+  "status": "NOT_RUN_AFTER_GATE_F_PIVOT",
+  "title": "Utility-Label Reliability"
+}

@@ -1,0 +1,37 @@
+{
+  "bootstrap": {
+    "bootstrap_mean_delta": null,
+    "ci_high": null,
+    "ci_low": null,
+    "cluster_count": 1,
+    "cluster_key": "query_patient",
+    "confidence": 0.95,
+    "iterations": 10000,
+    "observed_mean_delta": 0.0050113301616486194,
+    "query_count": 2,
+    "seed": 0,
+    "status": "PENDING_INSUFFICIENT_CLUSTERS",
+    "unit": "patient_cluster"
+  },
+  "comparison": "oracle_vs_best_fixed",
+  "input_episode_manifest_csv": "D:\\SAM\\adapromptset\\manifests\\episodes\\monusac\\episodes_val.csv",
+  "input_episode_regret_csv": "D:\\SAM\\adapromptset\\reports\\fixed_oracle_analysis\\episode_regret.csv",
+  "paired_significance": {
+    "alternative": "two_sided",
+    "method": "exact_sign_flip",
+    "nonzero_delta_count": 2,
+    "observed_mean_delta": 0.0050113301616486194,
+    "p_value_two_sided": 0.5,
+    "permutation_count": 4,
+    "query_count": 2,
+    "status": "PASS"
+  },
+  "rule": "Aggregate references to query-level before patient-cluster bootstrap.",
+  "status": "PENDING_INSUFFICIENT_CLUSTERS",
+  "tie_threshold": 0.005,
+  "win_tie_loss": {
+    "loss": 0,
+    "tie": 1,
+    "win": 1
+  }
+}

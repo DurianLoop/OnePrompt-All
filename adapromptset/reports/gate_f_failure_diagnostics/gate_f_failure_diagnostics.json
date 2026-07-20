@@ -1,0 +1,51 @@
+{
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "scope": "MoNuSAC Gate F post-failure diagnostics from existing validation artifacts",
+  "policy_training_allowed": false,
+  "post_hoc_monusac_action_redesign_allowed": false,
+  "coverage_diagnostic": {
+    "status": "LOW_COMPONENT_COVERAGE",
+    "max_positive_limit": 5,
+    "episode_count": 10,
+    "mean_component_coverage_at_max_pool": 0.052004904966278354,
+    "mean_point_precision_at_max_pool": 0.52,
+    "mean_random_precision_at_max_pool": 0.16,
+    "precision_delta_over_random": 0.36,
+    "component_coverage_warning_threshold": 0.6
+  },
+  "proposal_diagnostic": {
+    "status": "ACTIONS_SEPARATED",
+    "tie_tolerance": 0.005,
+    "episode_count": 10,
+    "mean_top2_dice_margin": 0.02044071753259889,
+    "near_tie_episode_fraction": 0.4,
+    "mean_within_episode_dice_range": 0.34719572379504915
+  },
+  "sam_sensitivity_diagnostic": {
+    "status": "NO_HIGHER_CALL_GAIN",
+    "call_counts_observed": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "best_one_call_dice": 0.426745607565394,
+    "best_high_call_dice": 0.40617589807113785,
+    "best_high_call_minus_best_one_call": -0.020569709494256128,
+    "high_call_gain_threshold": 0.005
+  },
+  "interpretation_flags": [
+    "candidate_pool_limited_coverage",
+    "no_clear_sam_call_grouping_gain"
+  ],
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "representation_analysis",
+    "predeclared_new_domain_pilot"
+  ],
+  "prohibited_next_actions": [
+    "monusac_policy_training",
+    "post_hoc_monusac_action_bank_redesign",
+    "test_time_action_search"
+  ]
+}

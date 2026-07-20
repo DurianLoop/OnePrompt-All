@@ -1,0 +1,10 @@
+{
+  "name": "fusion_mvp",
+  "min_area": 1,
+  "iou_nms_threshold": 0.95,
+  "content_hash": "5F15975FBE2BBF0E16B2A06DAF0A6F67F0BF7E50824F97CE6B3B66C0A743A8F4",
+  "notes": [
+    "Shared MVP fusion config for all automatic methods.",
+    "Area filtering and mask IoU NMS are validation-frozen before action utility generation."
+  ]
+}

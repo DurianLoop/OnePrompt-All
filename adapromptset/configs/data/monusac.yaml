@@ -1,0 +1,6 @@
+name: MoNuSAC
+role: main_development
+root: D:\SAM\code\datasets\MoNuSAC\processed
+tuning_allowed: true
+leakage_policy: exclude_source_train_patients_seen_in_official_test
+

@@ -1,0 +1,195 @@
+{
+  "schema_version": "adapromptset.new_domain_pilot_readiness.v1",
+  "status": "READY_WITH_BLOCKED_FORMAL_DATASETS",
+  "policy": {
+    "purpose": "Decide which local datasets can support Gate-F-safe extensions after the MoNuSAC policy pivot.",
+    "does_not_reopen_monusac_policy": true,
+    "does_not_train_policy": true
+  },
+  "datasets": {
+    "glas": {
+      "dataset": "GlaS",
+      "role": "first_clean_morphology_shift_extension",
+      "status": "BLOCKED_INSUFFICIENT_EPISODES",
+      "formal_policy_training_allowed": false,
+      "official_test_preserved": true,
+      "source_split_counts": {
+        "testA": 60,
+        "testB": 20,
+        "train": 85
+      },
+      "role_counts": {
+        "excluded_overlap": 77,
+        "test": 80,
+        "train": 7,
+        "val": 1
+      },
+      "episode_counts": {
+        "train": 7,
+        "val": 1,
+        "test": 80
+      },
+      "candidate_smoke": {
+        "status": "PASS",
+        "episode_count": 1,
+        "formal_gate_c": "PASS"
+      },
+      "gate": {
+        "name": "GlaS Gate F readiness",
+        "status": "PENDING_INSUFFICIENT_EPISODES",
+        "episode_count": 1,
+        "gate_min_episodes": 10,
+        "dice_oracle_gap": 0.0,
+        "gate_f_min_dice_gap": 0.01
+      },
+      "artifacts": {
+        "manifest": {
+          "path": "manifests/glas_manifest.summary.json",
+          "exists": true
+        },
+        "protocol": {
+          "path": "manifests/episodes/glas/protocol_metadata.json",
+          "exists": true
+        },
+        "candidate_pilot": {
+          "path": "reports/candidate_pilot_glas/candidate_pilot_summary.json",
+          "exists": true
+        },
+        "oracle_gap_pilot": {
+          "path": "reports/oracle_gap_pilot_glas/oracle_gap_pilot_summary.json",
+          "exists": true
+        }
+      },
+      "allowed_next_actions": [
+        "predeclare_glas_trainval_diagnostic_without_official_test",
+        "rerun_glas_readiness_after_new_episode_manifest",
+        "keep_glas_as_smoke_only_if_min_episodes_cannot_be_met"
+      ],
+      "prohibited_next_actions": [
+        "promote_glas_smoke_to_gate_f",
+        "use_testA_or_testB_for_action_or_threshold_design",
+        "open_glas_policy_training_before_predeclared_gate_f_pass",
+        "use_glas_to_reopen_monusac_policy"
+      ],
+      "supplemental_experiments_when_blocked": [
+        {
+          "trigger": "episode_count_below_gate_minimum",
+          "experiment": "predeclared_trainval_diagnostic",
+          "rule": "Use source-train data only; preserve official testA/testB; report whether enough query-level units exist before any policy work.",
+          "stop_if": "No non-leaky protocol reaches the predeclared minimum query units."
+        }
+      ]
+    },
+    "ddr": {
+      "dataset": "DDR",
+      "role": "conditional_eye_lesion_domain_boundary",
+      "status": "READY_FOR_INFRASTRUCTURE_ONLY",
+      "formal_policy_training_allowed": false,
+      "stage1_mask_rule": "binary_union_of_EX_HE_MA_SE",
+      "stage1_allowed_use": "infrastructure_only",
+      "stage2_intents": [
+        "EX",
+        "HE",
+        "MA",
+        "SE"
+      ],
+      "artifacts": {
+        "protocol_audit": {
+          "path": "reports/ddr_protocol_audit/ddr_protocol_audit.json",
+          "exists": true
+        }
+      },
+      "allowed_next_actions": [
+        "ddr_stage1_union_loader_smoke",
+        "ddr_stage1_coordinate_and_mask_merge_smoke",
+        "predeclare_ddr_stage2_four_intent_protocol"
+      ],
+      "prohibited_next_actions": [
+        "formal_ddr_policy_training_without_protocol",
+        "claim_union_mask_as_preferred_formal_task",
+        "use_idrid_observed_test_behavior_for_ddr_thresholds"
+      ],
+      "supplemental_experiments_when_blocked": [
+        {
+          "trigger": "pathology_gate_f_failure_may_be_domain_shape_specific",
+          "experiment": "stage1_infrastructure_smoke_only",
+          "rule": "Exercise loaders, mask union, coordinate transforms, and candidate diagnostics without policy labels.",
+          "stop_if": "Protocol audit or label pairing fails."
+        }
+      ]
+    },
+    "idrid": {
+      "dataset": "IDRID",
+      "role": "recorded_non_tunable_boundary",
+      "status": "READ_ONLY_NON_TUNABLE",
+      "formal_policy_training_allowed": false,
+      "allowed_next_actions": [
+        "historical_negative_result_summary",
+        "read_only_boundary_table_if_protocol_history_supports_it"
+      ],
+      "prohibited_next_actions": [
+        "use_idrid_for_candidate_design",
+        "use_idrid_for_action_bank_design",
+        "use_idrid_for_policy_feature_selection",
+        "use_idrid_for_threshold_or_budget_tuning"
+      ],
+      "supplemental_experiments_when_blocked": [
+        {
+          "trigger": "fresh_unobserved_subset_cannot_be_proven",
+          "experiment": "none",
+          "rule": "Keep IDRID as read-only historical or boundary evidence.",
+          "stop_if": "Any proposed action would depend on observed IDRID test behavior."
+        }
+      ]
+    },
+    "cpm17": {
+      "dataset": "CPM-17",
+      "role": "deferred_external_nuclei_extension",
+      "status": "DEFERRED_MISSING_OR_INCOMPLETE",
+      "formal_policy_training_allowed": false,
+      "observed_local_subset": {
+        "root": "D:\\SAM\\external\\research_data\\raw\\CPM17\\cpm15",
+        "exists": true,
+        "image_like_count": 29,
+        "mat_label_count": 15
+      },
+      "allowed_next_actions": [
+        "write_missing_asset_report",
+        "parser_development_on_cpm15_only_if_labeled_exploratory"
+      ],
+      "prohibited_next_actions": [
+        "call_cpm15_formal_cpm17_evaluation",
+        "download_or_repair_cpm17_without_user_approval",
+        "include_cpm17_in_formal_gate_before_manifest_license_pass"
+      ],
+      "supplemental_experiments_when_blocked": [
+        {
+          "trigger": "complete_public_version_missing",
+          "experiment": "missing_asset_report",
+          "rule": "Record expected source, license, 32/32 split assumptions, and parser requirements.",
+          "stop_if": "Network or download approval is absent."
+        }
+      ]
+    }
+  },
+  "blocked_datasets": [
+    "glas",
+    "cpm17"
+  ],
+  "infrastructure_ready_datasets": [
+    "ddr"
+  ],
+  "global_allowed_next_actions": [
+    "fixed_rule_oracle_analysis_assets",
+    "predeclare_glas_trainval_diagnostic_without_official_test",
+    "ddr_stage1_infrastructure_smoke",
+    "cpm17_missing_asset_report"
+  ],
+  "global_prohibited_next_actions": [
+    "monusac_policy_training",
+    "posthoc_monusac_action_redesign",
+    "test_time_action_search",
+    "promote_insufficient_episode_smoke_to_gate_pass",
+    "formal_new_domain_policy_training_without_predeclared_gate_f"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "config": {
+    "dataset_root": "D:\\SAM\\code\\datasets\\MonuSeg\\official",
+    "device": "cpu",
+    "dino_checkpoint": "D:\\SAM\\assets\\checkpoints\\dinov2_vitl14_pretrain.pth",
+    "lambda_bg": 1.0,
+    "negative_limit": 3,
+    "output_path": "artifacts\\stage1_smoke.json",
+    "positive_limit": 5,
+    "sam_checkpoint": "D:\\SAM\\assets\\checkpoints\\sam_vit_b.pth"
+  },
+  "dice": 0.2406517124662957,
+  "elapsed_seconds": 8.48390640038997,
+  "negative_count": 3,
+  "negative_points": [
+    [
+      986.4864864864865,
+      175.67567567567568
+    ],
+    [
+      121.62162162162161,
+      608.1081081081081
+    ],
+    [
+      959.4594594594594,
+      121.62162162162161
+    ]
+  ],
+  "positive_count": 5,
+  "positive_points": [
+    [
+      13.513513513513512,
+      986.4864864864865
+    ],
+    [
+      878.3783783783783,
+      959.4594594594594
+    ],
+    [
+      635.1351351351351,
+      797.2972972972973
+    ],
+    [
+      283.78378378378375,
+      878.3783783783783
+    ],
+    [
+      824.3243243243243,
+      797.2972972972973
+    ]
+  ],
+  "query_case_id": "TCGA-21-5784-01Z-00-DX1",
+  "reference_case_id": "TCGA-18-5592-01Z-00-DX1",
+  "sam_score": 0.93406081199646
+}

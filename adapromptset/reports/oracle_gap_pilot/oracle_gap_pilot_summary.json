@@ -1,0 +1,55 @@
+{
+  "gate_f_status": "FAIL_ORACLE_GAP_SMALL",
+  "episode_count": 10,
+  "record_count": 90,
+  "valid_record_count": 90,
+  "best_fixed_action_id": "B_top5_pos3neg",
+  "mean_oracle_dice": 0.3759059098495395,
+  "mean_best_fixed_dice": 0.37123847211635835,
+  "dice_oracle_gap": 0.004667437733181123,
+  "oracle_action_counts": {
+    "B_top5_pos1neg": 3,
+    "B_top3_pos3neg": 1,
+    "A_top5_one_group": 1,
+    "B_top5_pos3neg": 5
+  },
+  "oracle_family_counts": {
+    "single_group_positive_negative": 9,
+    "single_group_positive": 1
+  },
+  "top_oracle_action_fraction": 0.5,
+  "best_fixed_sam_calls": 1,
+  "mean_oracle_sam_calls": 1.0,
+  "budget_gaps": {
+    "1": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.3759059098495395,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.004667437733181123
+    },
+    "3": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.3759059098495395,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.004667437733181123
+    },
+    "5": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.3759059098495395,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.004667437733181123
+    }
+  },
+  "gate_f_min_dice_gap": 0.01,
+  "gate_f_max_top_oracle_fraction": 0.7,
+  "max_sam_calls": 5,
+  "decoder_calls": 110,
+  "cache_hits": 40,
+  "status": "FAIL_ORACLE_GAP_SMALL",
+  "max_episodes": 10,
+  "positive_limit": 5,
+  "max_actions": null,
+  "elapsed_seconds": 20.118,
+  "gpu_hours_estimate": 0.005588,
+  "utility_csv": "D:\\SAM\\adapromptset\\reports\\oracle_gap_pilot\\action_utility_pilot.csv"
+}

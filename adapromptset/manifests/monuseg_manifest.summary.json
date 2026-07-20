@@ -1,0 +1,13 @@
+{
+  "case_count": 51,
+  "split_counts": {
+    "test": 14,
+    "train": 37
+  },
+  "role_counts": {
+    "test": 14,
+    "train": 37
+  },
+  "patient_count": 51,
+  "duplicate_case_ids": []
+}

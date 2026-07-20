@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "issues": [],
+  "episode_count": 1,
+  "max_positive_limit": 5,
+  "mean_point_precision": 1.0,
+  "mean_random_precision": 0.4,
+  "precision_delta": 0.6,
+  "mean_component_coverage": 0.375,
+  "mean_negative_blank_fraction": 0.0,
+  "formal_gate_c": "PASS",
+  "device": "cuda:0",
+  "elapsed_seconds": 4.538,
+  "gpu_hours_estimate": 0.001261,
+  "predeclared_rules": {
+    "min_episodes": 1,
+    "precision_margin": 0.05,
+    "positive_limits": [
+      1,
+      3,
+      5
+    ],
+    "dataset_role": "GlaS validation extension",
+    "test_split_used": false,
+    "query_mask_use": "diagnostic metrics and random-baseline evaluation only"
+  },
+  "matcher_checkpoint_sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+  "artifacts": {
+    "metrics_csv": "reports\\candidate_pilot_glas\\candidate_pilot_metrics.csv",
+    "candidates_csv": "reports\\candidate_pilot_glas\\candidate_pilot_candidates.csv"
+  }
+}

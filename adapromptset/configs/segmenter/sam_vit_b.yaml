@@ -1,0 +1,4 @@
+name: sam_vit_b
+checkpoint: D:\SAM\assets\checkpoints\sam_vit_b.pth
+frozen: true
+

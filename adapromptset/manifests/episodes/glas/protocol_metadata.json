@@ -1,0 +1,21 @@
+{
+  "seed": 20260717,
+  "references_per_query": 1,
+  "val_patient_count": 1,
+  "role_counts": {
+    "excluded_overlap": 77,
+    "test": 80,
+    "train": 7,
+    "val": 1
+  },
+  "episode_counts": {
+    "train": 7,
+    "val": 1,
+    "test": 80
+  },
+  "leakage_rules": [
+    "Support rows always come from role=train.",
+    "Support and query patient_id must differ.",
+    "Rows marked excluded_overlap are never sampled as support or query."
+  ]
+}

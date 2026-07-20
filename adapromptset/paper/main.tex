@@ -1,0 +1,36 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{xcolor}
+
+\pdfinfo{
+  /Title (AdaPromptSet: Cost-Aware Prompt Set Selection for Reference-Guided Dense Medical Segmentation)
+  /Author (Internal MVP Draft)
+  /Subject (Oracle-analysis-only AdaPromptSet MVP artifact after Gate-F pivot)
+  /Keywords (AdaPromptSet, oracle analysis, prompt set selection, medical segmentation)
+}
+\title{AdaPromptSet: Cost-Aware Prompt Set Selection for\\Reference-Guided Dense Medical Segmentation}
+\author{Internal MVP Draft}
+\date{2026-07-17}
+
+% Current gate status: PIVOT_ORACLE_ANALYSIS.
+\newif\ifsimulated
+\simulatedfalse
+\input{generated/oracle_analysis_macros}
+
+\begin{document}
+\maketitle
+
+\input{sections/00_abstract}
+\input{sections/01_intro}
+\input{sections/02_related}
+\input{sections/03_method}
+\input{sections/04_experiments}
+\input{sections/05_results}
+\input{sections/06_limitations}
+\input{sections/07_conclusion}
+\end{document}

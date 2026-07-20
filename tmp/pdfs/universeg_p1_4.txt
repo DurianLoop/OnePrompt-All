@@ -1,0 +1,265 @@
+                                                                    UniverSeg: Universal Medical Image Segmentation
+
+                                           Victor Ion Butoi*               Jose Javier Gonzalez Ortiz*          Tianyu Ma                    Mert R. Sabuncu
+                                            MIT CSAIL                             MIT CSAIL                  Cornell University              Cornell University
+                                           vbutoi@mit.edu                       josejg@mit.edu               tm544@cornell.edu             msabuncu@cornell.edu
+
+                                                                              John Guttag                     Adrian V. Dalca
+                                                                              MIT CSAIL                   MIT CSAIL & MGH, HMS
+arXiv:2304.06131v1 [cs.CV] 12 Apr 2023
+
+
+
+
+                                                                            guttag@mit.edu                    adalca@mit.edu
+
+
+
+                                                                      Abstract                              UniverSeg substantially outperforms several related methods
+                                                                                                            on unseen tasks, and thoroughly analyze and draw insights
+                                            While deep learning models have become the predomi-             about important aspects of the proposed system. The Uni-
+                                         nant method for medical image segmentation, they are typ-          verSeg source code and model weights are freely available
+                                         ically not capable of generalizing to unseen segmentation          at https://universeg.csail.mit.edu
+                                         tasks involving new anatomies, image modalities, or labels.
+                                         Given a new segmentation task, researchers generally have
+                                         to train or fine-tune models, which is time-consuming and          1. Introduction
+                                         poses a substantial barrier for clinical researchers, who of-
+                                                                                                                Image segmentation is a widely studied problem in com-
+                                         ten lack the resources and expertise to train neural networks.
+                                                                                                            puter vision and a central challenge in medical image analy-
+                                         We present UniverSeg, a method for solving unseen medi-
+                                                                                                            sis. Medical segmentation tasks can involve diverse imaging
+                                         cal segmentation tasks without additional training. Given a
+                                                                                                            modalities, such as magnetic resonance imaging (MRI), X-
+                                         query image and example set of image-label pairs that define
+                                                                                                            ray, computerized tomography (CT), and microscopy; differ-
+                                         a new segmentation task, UniverSeg employs a new Cross-
+                                                                                                            ent biomedical domains, such as the abdomen, chest, brain,
+                                         Block mechanism to produce accurate segmentation maps
+                                                                                                            retina, or individual cells; and different labels within a re-
+                                         without the need for additional training. To achieve general-
+                                                                                                            gion, such as heart valves or chambers (Figure 1). This di-
+                                         ization to new tasks, we have gathered and standardized a
+                                                                                                            versity has inspired a wide array of segmentation tools, each
+                                         collection of 53 open-access medical segmentation datasets
+                                                                                                            usually tackling one task or a small set of closely related
+                                         with over 22,000 scans, which we refer to as MegaMedical.
+                                                                                                            tasks [14, 20, 38, 39, 83, 90]. In recent years, deep-learning
+                                         We used this collection to train UniverSeg on a diverse set
+                                                                                                            models have become the predominant strategy for medical
+                                         of anatomies and imaging modalities. We demonstrate that
+                                                                                                            image segmentation [42, 71, 83].
+                                            * Denotes equal contribution                                        A key problem in image segmentation is domain shift,
+
+
+                                                                       Train Segmentation Tasks                                     Test Segmentation Tasks
+
+
+
+
+                                         Figure 1: Medical segmentation involves many imaging types, biomedical domains, and target labels. We employ a large
+                                         diverse set of training tasks (blue) to build a model that can segment unseen tasks (orange) without additional training.
+                    Traditional Approach                                                UniverSeg Approach
+          1. Design and train a task-specific model.               With a trained UniverSeg model, predict new images for the new
+                                                                           task from a few labeled pairs without retraining.
+                                                                    Query Image
+
+
+
+
+        2. Predict new images with the trained model.
+                                                                     Support Set
+
+
+
+
+Figure 2: Workflow for inference on a new task, from an unseen dataset. Given a new task, traditional models (left) are
+trained before making predictions. UniverSeg (right) employs a single trained model which can make predictions for images
+(queries) from the new task with a few labeled examples as input (support set), without additional fine-tuning.
+
+where models often perform poorly given out-of-distribution          • We demonstrate that UniverSeg substantially outper-
+examples. This is especially problematic in the medical                forms several models across diverse held-out segmen-
+domain where clinical researchers or other scientists are con-         tation tasks involving unseen anatomies, and even ap-
+stantly defining new segmentation tasks driven by evolving             proaches the performance of fully-supervised networks
+populations, and scientific and clinical goals. To solve these         trained specifically for those tasks.
+problems they need to either train models from scratch or            • In extensive analysis, we show that the generalization
+fine-tune existing models. Unfortunately, training neural net-         capabilities of UniverSeg are linked to task diversity
+works requires machine learning expertise, computational               during training and image diversity during inference.
+resources, and human labor. This is infeasible for most
+clinical researchers or other scientists, who do not possess          UniverSeg source code and model weights are available
+the expertise or resources to train models. In practice, this      at https://universeg.csail.mit.edu
+substantially slows scientific development. We therefore
+focus on avoiding the need to do any training given a new
+                                                                   2. Related Works
+segmentation tasks.                                                Medical Image Segmentation. Medical image segmenta-
+    Fine-tuning models trained on the natural image domain         tion has been widely studied, with state-of-the-art meth-
+can be unhelpful in the medical domain [82], likely due to         ods training convolutional neural networks in a super-
+the differences in data sizes, features, and task specifications   vised fashion, predicting a label map for a given input im-
+between domains, and importantly still requires substan-           age [20, 38, 39, 43, 83]. For a new segmentation problem,
+tial retraining. Some few-shot semantic segmentation ap-           models are typically trained from scratch, requiring substan-
+proaches attempt to predict novel classes without fine-tuning      tial design and tuning.
+in limited data regimes, but mostly focus on classification            Recent strategies, such as the nnUNet [39], automate
+tasks, or segmentation of new classes within the same input        some design decisions such as data processing or model
+domain, and do not generalize across anatomies or imaging          architecture, but still incur substantial overhead from training.
+modalities.                                                        In contrast to these methods, UniverSeg generalizes to new
+    In this paper, we present UniverSeg – an approach to           medical segmentation tasks without training or fine-tuning.
+learning a single general medical-image segmentation model
+that performs well on a variety of tasks without any retrain-      Multi-task Learning. Multi-Task Learning (MTL) frame-
+ing, including tasks that are substantially different from those   works learn several tasks simultaneously [13, 21, 86]. For
+seen at training time. UniverSeg learns how to exploit an          medical imaging, this can involve multiple modalities [72],
+input set of labeled examples that specify the segmentation        population centers [61], or anatomies [73]. However, the
+task, to segment a new biomedical image in one forward             tasks are always pre-determined by design: once trained,
+pass. We make the following contributions.                         each network can only solve tasks presented during training.
+                                                                   UniverSeg overcomes this limitation, enabling tasks to be
+                                                                   dynamically specified during inference.
+  • We propose UniverSeg – a framework that enables solv-
+    ing new segmentation tasks without retraining, using           Transfer Learning. Transfer learning strategies involve
+    a novel flexible CrossBlock mechanism that transfers           fine-tuning pre-trained models, often from a different do-
+    information from the example set to the new image.             main [63, 97]. This is used in medical image segmentation
+                                                                                                                                     V
+ xt
+                                                                     ||
+
+                                                                          ||
+                                                                                             𝑦"              u
+                      −                                ||        +                                                                           𝐶
+                                                                                                                         +
+                                                                                                                         ||          +
+                                                                                                                                     +
+                                                                                                                                     ||            +
+                                                                                                                                                   ||
+                                                                                    Query Path                                               2
+                      −                                     ||   +                                                      𝐶1          𝐶𝐶 11         𝐶1
+                                                                                    Support Path
+                                                                                                            𝐴𝑣𝑔
+                                                                                                                       1                         1
+
+
+
+
+                                                                                                                  +
+                                                                                                                  ||
+
+
+
+
+                                                                                                                                +
+                           −             ||        +
+                                                                               −    Down-Sample
+                           −                  ||   +                           +    Up-Sample                          𝐶𝐶𝐶222       𝐶𝐶𝐶222       𝐶𝐶𝐶222
+                                                                                    CrossBlock
+                                 −   +
+
+ St                              −   +
+                                                                                    1x1 Convolution
+                                                                                    Shared Convolution
+                                                                               ||   Channel-wise Concat      u′                      V′
+Figure 3: A UniverSeg network (left) takes as input a query image and a support set of image and label-maps (pairwise
+concatenated in the channel dimension) and employs multi-scale CrossBlock features. A CrossBlock (right) takes as input
+representations of the query u and support set V = {vi }, and interacts u with each support entry vi to produce u0 and V 0 .
+
+starting with models trained on natural images [3, 24, 41,                             data regimes, tackle specific tasks involving generalizing to
+106, 109], where the amount of data far exceeds the amount                             new classes in a particular subdomain, like abdominal CT or
+in the target biomedical domain. However, this technique                               MRI scans [29, 76, 84, 98].
+still involves substantial training for each new task, which                              In our work, we focus on avoiding any fine-tuning, even
+UniverSeg avoids. Additionally, the differences between                                when given many examples for a new task, to avoid requir-
+medical and natural images often make transfer learning                                ing the clinical or scientific user to have machine learning
+from large pre-trained models unhelpful [82].                                          expertise and compute resources. Our proposed framework
+                                                                                       draws inspiration from ideas from some few-shot learning
+Optimization-based Meta-Learning. Optimization-based
+                                                                                       solutions, but aims to generalize to a universally broad set of
+meta-learning techniques often learn representations that
+                                                                                       anatomies, modalities, and datasets – even those completely
+minimize downstream fine-tuning steps by using a few ex-
+                                                                                       unseen during training.
+amples per task, sometimes referred to as few-shot learn-
+ing [22, 75, 100, 94]. Meta-learning via fine-tuning has been
+studied in medical image segmentation to handle multiple im-                           3. UniverSeg Method
+age modalities [105], anatomies [103], and generalization to                              Let t be a segmentation task comprised of a set of image-
+different targets [48, 49, 93]. While these strategies reduce                          label pairs {(xti , yit )}N
+                                                                                                                 i=1 . Common segmentation strategies
+the amount of data and training required for downstream                                learn parametric functions ŷ = fθt (x), where fθt is most often
+tasks [30], fine-tuning these models nevertheless requires                             modeled using a convolutional neural network that estimates
+machine learning expertise and computational resources,                                a label map ŷ given an input image x. By construction, fθt
+which are often not available to medical researchers.                                  only learns to predict segmentations for task t.
+Few-shot Semantic Segmentation. Few-shot (FS) meth-                                       In contrast, we learn a universal function ŷ = fθ (xt , S t )
+ods adapt to new tasks from few training examples, often                               that predicts a label map for input xt of task t, according to
+by fine-tuning pretrained networks [22, 75, 100, 94]. Some                             the task-specifying support S t = {(xtj , yjt )}nj=1 comprised
+few-shot semantic segmentation models generate predic-                                 of example image-label pairs available for t.
+tions for new images (queries) containing unseen classes
+from just a few labeled examples (support) without addi-                               3.1. Model
+tional retraining. One strategy prevalent in both natural
+                                                                                          We implement fθ using a fully convolutional neural net-
+image [74, 87, 102] and medical image [19, 59, 77, 91] FS
+                                                                                       work illustrated in Figure 3. We first introduce the pro-
+segmentation methods is to employ large pre-trained models
+                                                                                       posed building blocks: the cross-convolution layer and the
+to extract deep features from the query and support images.
+                                                                                       CrossBlock module. We then specify how we combine these
+These methods often involve learning meaningful prototyp-
+                                                                                       blocks into a complete segmentation network.
+ical representations for each label [101]. Another medical
+FS segmentation strategy uses self-supervised learning to                              CrossBlock. To transfer information between the support
+make up for the lack of training data and tasks [29, 76]. In                           set and query image, we introduce a cross-convolution layer
+contrast to UniverSeg, these methods, focused on limited                               that interacts a query feature map u with a set of support
+feature maps V = {vi }ni=1 :                                           Algorithm 1 UniverSeg Training Loop using SGD with
+              CrossConv(u, V ; θz ) = {zi }ni=1 ,                      learning rate η over tasks T , main architecture fθ , in-task
+                                                                 (1)   augmentations Augt and task augmentations AugT
+                    for zi = Conv(u||vi ; θz ),
+                                                                         for k = 1, . . . , NumTrainSteps do
+where || is the concatenation operation along the feature                    t∼T                                               . Sample Task
+dimension and Conv(x; θz ) is a convolutional layer with                     (xti , yit ) ∼ t                                . Sample Query
+learnable parameters θz . Due to the weight reuse of θz ,                    S t ← {(xtj , yjt )}nj6=i                     . Sample Support
+cross-convolution operations are permutation invariant with
+                                                                             xti , yit ← Augt (xti , yit )                 . Augment Query
+respect to V . From this layer, we design a higher-level
+                                                                             S t ← {Augt (xtj , yjt )}nj                 . Augment Support
+building block that produces updated versions of query rep-
+                                                                             xti , yit , S t ← AugT (xti , yit , S t )            . Task Aug
+resentation u and support V at each step in the network:
+                                                                             ŷi ← fθ (xti , S t )                       . Predict label map
+ CrossBlock(u, V ; θz , θv ) = (u0 , V 0 ), where:               (2)         ` ← Lseg (ŷi , yit )                           . Compute loss
+       zi = A(CrossConv(u, vi ; θz ))       for i = 1, 2, . . . , n          θ ← θ − η∇θ `                                    . Gradient step
+               Pn
+       u0 = 1/n i=1 zi                                                   end for
+       vi0 = A(Conv(zi ; θv )) for i = 1, 2, . . . , n,
+where A(x) is a non-linear activation function. This strat-                Task Augmentation (AugT (x, y, S)). Similar to standard
+egy enables the representations of each support set entry              data augmentation that reduces overfitting to training exam-
+and query to interact with the others through their average            ples, augmenting the training tasks is useful for generalizing
+representation, and facilitates variably sized support sets.           to new tasks, especially those far from the training task dis-
+Network. To integrate information across spatial scales, we            tribution. We introduce task augmentation – alterations that
+compose the CrossBlock modules in an encoder-decoder                   modify all query and support images, and/or all segmentation
+structure with residual connections, similarly to the popular          maps, with the same type of task-changing transformation.
+UNet architecture (Figure 3). The network takes as input               Example task augmentations include edge detection of the
+the query image xt and support set S t = {(xti , yit )}ni=1 of         segmentation maps or a horizontal flip to all images and
+image and label-map pairs, each concatenated channel-wise,             labels. We provide a list of all augmentations and the param-
+and outputs the segmentation prediction map ŷ t .                     eters we used in the supplemental Section C.
+    Each level in the encoder path consists of a CrossBlock
+                                                                       3.3. Inference
+followed by a spatial down-sampling operation of both query
+and support set representations. Each level in the expansive               For a given query image xt , UniverSeg predicts segmen-
+path consists of up-sampling both representations, which               tation ŷ = fθ (xt , S t ) given a support set S t , where the
+double their spatial resolutions, concatenating them with              prediction quality depends on the choice of the support
+the equivalently-sized representation in the encoding path,            set S t . To reduce this dependence, and to take advantage
+followed by a CrossBlock. We perform a single 1x1 convo-               of more data when memory constraints limit the support
+lution to map the final query representation to a prediction.          set size at inference, we combine predictions from an en-
+                                                                       semble of K independently sampled support sets {Sit }K     i=1
+3.2. Training                                                          as theirP the pixel-wise average to produce the prediction
+                                                                             1     K            t
+   Algorithm 1 describes UniverSeg training using a large              ŷ = K      k=1 fθ (x, Sk ).
+and varied set of training tasks T and the loss
+                                 h                           i         4. MegaMedical Dataset
+   L(θ; T ) = Et∈T E(xt ,yt ),S t Lseg (fθ (xt , S t ), y t ) , (3)
+                                                                          To train our universal model fθ , we employ a set of seg-
+where xt ∈  / S t , and Lseg (ŷ, y t ) is a standard segmentation     mentation tasks that is large and diverse, so that it is able to
+loss like cross-entropy or soft Dice [71], capturing the agree-        generalize to new tasks. We compiled MegaMedical – an
+ment between the predicted ŷ and ground truth yt .                    extensive collection of open-access medical segmentation
+Data Augmentation. We employ data augmentation to grow                 datasets with diverse anatomies, imaging modalities, and
+the diversity of training tasks and increase the number of             labels. It is constructed from 53 datasets encompassing 26
+effective training examples belonging to any particular task.          medical domains and 16 imaging modalities.
+    In-Task Augmentation (Augt (x, y)). To reduce overfitting             We standardize data across the wildly diverse formats of
+to individual subjects, we perform standard data augmen-               original datasets, processed images, and label maps. We also
+tation operations, like affine transformations, elastic defor-         expand the training data using synthetic segmentation tasks
+mation, or adding image noise to the query image and each              to further increase the training task diversity. Because of
+entry of the support set independently.                                individual dataset agreements, we are prohibited from re-
+

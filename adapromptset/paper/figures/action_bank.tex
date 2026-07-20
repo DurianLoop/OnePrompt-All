@@ -1,0 +1,35 @@
+% Auto-generated action-bank structure figure for the current Gate-F pivot state.
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  node distance=0.55cm and 0.65cm,
+  block/.style={draw, rounded corners=2pt, align=center, minimum height=0.72cm, font=\scriptsize},
+  source/.style={block, fill=gray!8, draw=gray!65!black, minimum width=3.2cm},
+  family/.style={block, fill=blue!7, draw=blue!55!black, minimum width=2.75cm},
+  rescue/.style={block, fill=orange!10, draw=orange!70!black, minimum width=2.75cm},
+  deferred/.style={block, fill=red!7, draw=red!60!black, minimum width=3.2cm},
+  metric/.style={block, fill=green!7, draw=green!45!black, minimum width=2.4cm},
+  arrow/.style={->, >=Stealth, thick}
+]
+\node[source] (cand) {Shared candidate pool\\$C^+$ top 5 and $C^-$};
+\node[family, below left=of cand, xshift=-2.1cm] (topk) {Top-K one group\\1 SAM call\\points: 1--5};
+\node[family, below=of cand] (posneg) {Positive + negative\\1 SAM call\\points: 4--8};
+\node[family, below right=of cand, xshift=2.1cm] (ind) {Independent groups\\3 or 5 SAM calls\\one point per group};
+\node[rescue, below=of posneg, yshift=-0.1cm] (rescue) {Rescue split/local negatives\\2 or 5 SAM calls\\group-specific negatives};
+\node[deferred, below left=of rescue, xshift=-1.6cm] (deferred) {Deferred in current MVP subset\\KMeans, density, GF-SAM-style graph\\not claimed as implemented};
+\node[metric, below right=of rescue, xshift=1.6cm] (cost) {Frozen accounting\\valid 12/13; invalid 1\\bank hash 35E44B3B937A};
+\node[source, below=of rescue, yshift=-1.25cm, minimum width=7.1cm] (selector) {Complete prompt-set proposals only\\policy path remains prohibited after Gate F; current use is oracle analysis};
+
+\draw[arrow] (cand) -- (topk);
+\draw[arrow] (cand) -- (posneg);
+\draw[arrow] (cand) -- (ind);
+\draw[arrow] (topk) -- (selector);
+\draw[arrow] (posneg) -- (rescue);
+\draw[arrow] (ind) -- (rescue);
+\draw[arrow] (rescue) -- (selector);
+\draw[arrow] (deferred) -- (selector);
+\draw[arrow] (cost) -- (selector);
+\end{tikzpicture}
+\caption{Current AdaPromptSet action-bank structure. The figure is generated from \texttt{prompt\_set\_bank\_v2} and summarizes complete prompt-set proposals with frozen SAM-call and prompt-point accounting. Deferred families are shown as missing from the current MVP subset rather than as implemented methods. Implemented valid families: independent\_positive\_groups=2, rescue\_group\_specific\_negatives=2, rescue\_split\_groups=1, single\_group\_positive=3, single\_group\_positive\_negative=4.}
+\label{fig:action-bank}
+\end{figure*}

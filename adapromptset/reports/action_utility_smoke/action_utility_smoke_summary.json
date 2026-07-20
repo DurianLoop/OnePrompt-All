@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "valid_action_count": 9,
+  "oracle_action_id": "B_top5_pos1neg",
+  "best_fixed_action_id": "B_top5_pos1neg",
+  "oracle_dice": 0.40273697378646295,
+  "best_fixed_dice": 0.40273697378646295,
+  "max_sam_calls": 5,
+  "decoder_calls": 11,
+  "cache_hits": 4,
+  "episode_id": "monusac_val__train_111__to__train_004",
+  "positive_limit": 5,
+  "max_actions": 9,
+  "elapsed_seconds": 2.021,
+  "gpu_hours_estimate": 0.000561,
+  "utility_csv": "D:\\SAM\\adapromptset\\reports\\action_utility_smoke\\action_utility_smoke.csv"
+}

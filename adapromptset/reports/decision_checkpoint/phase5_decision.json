@@ -1,0 +1,26 @@
+{
+  "phase5_status": "PIVOT_ORACLE_ANALYSIS",
+  "rationale": "no meaningful oracle gap after the one allowed redesign; analyze fixed-rule near-oracle behavior and action-bank limits",
+  "v1_gate_f_status": "FAIL_ORACLE_GAP_SMALL",
+  "v1_dice_oracle_gap": 0.004667437733181123,
+  "v2_gate_f_status": "FAIL_ORACLE_GAP_SMALL",
+  "v2_dice_oracle_gap": 0.0050113301616486194,
+  "v2_gate_f_min_dice_gap": 0.01,
+  "v2_best_fixed_action_id": "B_top5_pos3neg",
+  "v2_oracle_action_counts": {
+    "R_split5_2groups_localneg": 1,
+    "B_top3_pos3neg": 1,
+    "A_top5_one_group": 1,
+    "B_top5_pos3neg": 5,
+    "B_top5_pos1neg": 2
+  },
+  "v2_top_oracle_action_fraction": 0.5,
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "predeclared_new_domain_pilot"
+  ],
+  "prohibited_next_actions": [
+    "policy_training_on_monusac",
+    "posthoc_monusac_action_redesign"
+  ]
+}

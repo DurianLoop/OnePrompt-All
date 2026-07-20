@@ -1,0 +1,54 @@
+{
+  "checks": {
+    "main_tex_exists": true,
+    "pdf_author_matches": true,
+    "pdf_exists": true,
+    "pdf_keywords_match": true,
+    "pdf_subject_matches": true,
+    "pdf_title_matches": true,
+    "pdfinfo_available": true,
+    "visible_author_present": true,
+    "visible_date_present": true,
+    "visible_title_present": true
+  },
+  "expected": {
+    "author": "Internal MVP Draft",
+    "date": "2026-07-17",
+    "keywords": "AdaPromptSet, oracle analysis, prompt set selection, medical segmentation",
+    "subject": "Oracle-analysis-only AdaPromptSet MVP artifact after Gate-F pivot",
+    "title": "AdaPromptSet: Cost-Aware Prompt Set Selection for Reference-Guided Dense Medical Segmentation"
+  },
+  "observed": {
+    "main_tex": "D:\\SAM\\adapromptset\\paper\\main.tex",
+    "pdf": "D:\\SAM\\adapromptset\\paper\\main.pdf",
+    "pdfinfo_available": true,
+    "pdfinfo_error": null,
+    "pdfinfo_fields": {
+      "Author": "Internal MVP Draft",
+      "CreationDate": "Sat Jul 18 19:10:08 2026 \ufffd\u0439\ufffd\ufffd\ufffd\u05fc\u02b1\ufffd\ufffd",
+      "Creator": "TeX",
+      "Custom Metadata": "yes",
+      "Encrypted": "no",
+      "File size": "361714 bytes",
+      "Form": "none",
+      "JavaScript": "no",
+      "Keywords": "AdaPromptSet, oracle analysis, prompt set selection, medical segmentation",
+      "Metadata Stream": "no",
+      "ModDate": "Sat Jul 18 19:10:08 2026 \ufffd\u0439\ufffd\ufffd\ufffd\u05fc\u02b1\ufffd\ufffd",
+      "Optimized": "no",
+      "PDF version": "1.5",
+      "Page rot": "0",
+      "Page size": "612 x 792 pts (letter)",
+      "Pages": "8",
+      "Producer": "MiKTeX pdfTeX-1.40.28",
+      "Subject": "Oracle-analysis-only AdaPromptSet MVP artifact after Gate-F pivot",
+      "Suspects": "no",
+      "Tagged": "no",
+      "Title": "AdaPromptSet: Cost-Aware Prompt Set Selection for Reference-Guided Dense Medical Segmentation",
+      "UserProperties": "no"
+    }
+  },
+  "schema_version": "adapromptset.pdf_metadata_audit.v1",
+  "status": "PASS",
+  "violations": []
+}

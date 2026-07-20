@@ -1,0 +1,10 @@
+{
+  "spread5_n3": {
+    "case_count": 3,
+    "mean_dice": 0.550751983813
+  },
+  "top5_n3": {
+    "case_count": 3,
+    "mean_dice": 0.550198262804
+  }
+}

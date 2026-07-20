@@ -1,0 +1,29 @@
+{
+  "status": "PIVOT_REPRESENTATION_ANALYSIS",
+  "episode_count": 10,
+  "action_count": 12,
+  "positive_limit": 5,
+  "top_margin_tolerance": 0.005,
+  "best_fixed_action_id": "B_top5_pos3neg",
+  "mean_regret_to_oracle": 0.005011330161648608,
+  "mean_top2_dice_margin": 0.02044071753259889,
+  "near_tie_episode_fraction": 0.4,
+  "oracle_differs_from_best_fixed_fraction": 0.5,
+  "mean_candidate_point_precision": 0.52,
+  "mean_candidate_component_coverage": 0.052004904966278354,
+  "mean_candidate_random_precision": 0.15999999999999998,
+  "mean_candidate_negative_blank_fraction": 0.08,
+  "pearson_precision_vs_regret": -0.21408983836601292,
+  "pearson_coverage_vs_regret": -0.14407203442078728,
+  "representation_claim": "oracle_analysis_only_insufficient_separation",
+  "allowed_next_actions": [
+    "fixed_rule_action_oracle_analysis",
+    "representation_analysis_without_policy_training",
+    "predeclared_new_domain_pilot"
+  ],
+  "prohibited_next_actions": [
+    "monusac_policy_training",
+    "posthoc_monusac_action_redesign",
+    "test_time_action_search"
+  ]
+}

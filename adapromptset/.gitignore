@@ -1,0 +1,6 @@
+.test_tmp/
+test_tmp_gate/
+__pycache__/
+*.pyc
+.matplotlib_cache/
+tmp/

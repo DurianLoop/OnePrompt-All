@@ -1,0 +1,33 @@
+{
+  "protocol": {
+    "seed": 20260716,
+    "references": [
+      "train_028",
+      "train_115",
+      "train_183"
+    ],
+    "test_case_count": 101
+  },
+  "rules": [
+    "spread5_n3_d1",
+    "spread5_n3_d2",
+    "spread5_n3_d4"
+  ],
+  "official_test": {
+    "fixed_rules": {
+      "spread5_n3_d1": {
+        "case_count": 303,
+        "mean_dice": 0.419611307905
+      },
+      "spread5_n3_d2": {
+        "case_count": 303,
+        "mean_dice": 0.447381733714
+      },
+      "spread5_n3_d4": {
+        "case_count": 303,
+        "mean_dice": 0.462941314788
+      }
+    }
+  },
+  "elapsed_seconds": 2327.4328173999675
+}

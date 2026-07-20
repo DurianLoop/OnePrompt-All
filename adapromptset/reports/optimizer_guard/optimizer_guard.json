@@ -1,0 +1,14 @@
+{
+  "guard_report": {
+    "checked_roles": [
+      "matcher",
+      "segmenter"
+    ],
+    "frozen_parameter_count": 4,
+    "optimizer_parameter_count": 2,
+    "status": "PASS"
+  },
+  "note": "Toy audit only; no AdaPromptSet policy training is executed.",
+  "policy_training": "not_started",
+  "status": "PASS"
+}

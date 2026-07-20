@@ -1,0 +1,75 @@
+{
+  "development": {
+    "selected_min_samples_leaf": 1,
+    "train_action_row_count": 4,
+    "validation_action_row_count": 4,
+    "validation_fixed_rules": {
+      "spread5_n3_d2": {
+        "case_count": 1,
+        "mean_dice": 0.2
+      },
+      "spread5_n3_d3": {
+        "case_count": 1,
+        "mean_dice": 0.3
+      },
+      "spread5_n3_d4": {
+        "case_count": 1,
+        "mean_dice": 0.4
+      },
+      "top5_n3": {
+        "case_count": 1,
+        "mean_dice": 0.1
+      }
+    },
+    "validation_policy_selected_mean_dice": 0.4
+  },
+  "development_protocol": {
+    "policy_train_query_ids": [
+      "train_query"
+    ],
+    "reference_case_ids": [
+      "reference_001"
+    ],
+    "validation_query_ids": [
+      "validation_query"
+    ]
+  },
+  "idrid_external_test": {
+    "episodes_per_rule": 1,
+    "fixed_rules": {
+      "spread5_n3_d2": {
+        "case_count": 1,
+        "mean_dice": 0.2
+      },
+      "spread5_n3_d3": {
+        "case_count": 1,
+        "mean_dice": 0.3
+      },
+      "spread5_n3_d4": {
+        "case_count": 1,
+        "mean_dice": 0.4
+      },
+      "top5_n3": {
+        "case_count": 1,
+        "mean_dice": 0.1
+      }
+    },
+    "policy_selected_mean_dice": 0.4,
+    "reference_case_ids": [
+      "reference_001"
+    ],
+    "test_case_count": 1
+  },
+  "method_status": "postprocessed clean-development adaptive-layout policy; no image or mask inference was rerun",
+  "result_provenance": {
+    "development_utility_csv_sha256": "9575cd6febfd6d9c25a2a5d938d5233d81fd03d327ce9c4b0105646f2a05bebb",
+    "idrid_test_utility_csv_sha256": "b082bb48b16e0de36976bc10a965d544ec4e61264c1802169e34beafa37a42f9",
+    "seed": 20260718
+  },
+  "rules": [
+    "spread5_n3_d2",
+    "spread5_n3_d3",
+    "spread5_n3_d4",
+    "top5_n3"
+  ]
+}

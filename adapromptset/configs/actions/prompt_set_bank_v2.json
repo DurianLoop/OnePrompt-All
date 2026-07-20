@@ -1,0 +1,439 @@
+{
+  "name": "prompt_set_bank_v2",
+  "action_count": 13,
+  "valid_action_count": 12,
+  "actions": [
+    {
+      "action_id": "A_top1_one_group",
+      "family": "single_group_positive",
+      "config": {
+        "positive_limit": 1
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0
+          ],
+          "negative_indices": []
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 1,
+      "num_negative": 0,
+      "sam_calls": 1,
+      "prompt_points": 1,
+      "content_hash": "9C5065346FD9AAC193FA6909E191377A71F16699A62894CE22E52611FFFFC1DE"
+    },
+    {
+      "action_id": "A_top3_one_group",
+      "family": "single_group_positive",
+      "config": {
+        "positive_limit": 3
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2
+          ],
+          "negative_indices": []
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 3,
+      "num_negative": 0,
+      "sam_calls": 1,
+      "prompt_points": 3,
+      "content_hash": "860598DA8C54BDECFB53F8DD1599EDED7003352273BC95C9DEAD7FBD31F1D385"
+    },
+    {
+      "action_id": "A_top5_one_group",
+      "family": "single_group_positive",
+      "config": {
+        "positive_limit": 5
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "negative_indices": []
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 5,
+      "num_negative": 0,
+      "sam_calls": 1,
+      "prompt_points": 5,
+      "content_hash": "847B1759B2E1C24F5F64F1A9EDDB52BE7D216AE9993567DA0099AF70F0FCDFAF"
+    },
+    {
+      "action_id": "A_top10_one_group",
+      "family": "single_group_positive",
+      "config": {
+        "positive_limit": 10
+      },
+      "groups": [],
+      "valid": false,
+      "invalid_reason": "requires_10_positive_candidates",
+      "num_groups": 0,
+      "num_positive": 0,
+      "num_negative": 0,
+      "sam_calls": 0,
+      "prompt_points": 0,
+      "content_hash": "2B36C49FC36B671B9C6ED5F484A3B03D68E54622E5BAC313D222A623DB48D59B"
+    },
+    {
+      "action_id": "B_top3_pos1neg",
+      "family": "single_group_positive_negative",
+      "config": {
+        "positive_limit": 3,
+        "negative_limit": 1
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2
+          ],
+          "negative_indices": [
+            5
+          ]
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 3,
+      "num_negative": 1,
+      "sam_calls": 1,
+      "prompt_points": 4,
+      "content_hash": "77A83316DA4BD3E6CB57ECA5CBC8F1D778E63577F9F7F969BD977153D3E54B63"
+    },
+    {
+      "action_id": "B_top3_pos3neg",
+      "family": "single_group_positive_negative",
+      "config": {
+        "positive_limit": 3,
+        "negative_limit": 3
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2
+          ],
+          "negative_indices": [
+            5,
+            6,
+            7
+          ]
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 3,
+      "num_negative": 3,
+      "sam_calls": 1,
+      "prompt_points": 6,
+      "content_hash": "5C483C61B25525A54155CEA90729E7B2E93538374477D1B4F4517965105B9671"
+    },
+    {
+      "action_id": "B_top5_pos1neg",
+      "family": "single_group_positive_negative",
+      "config": {
+        "positive_limit": 5,
+        "negative_limit": 1
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "negative_indices": [
+            5
+          ]
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 5,
+      "num_negative": 1,
+      "sam_calls": 1,
+      "prompt_points": 6,
+      "content_hash": "C8C4C09B307225555433E5E79527055E7C9E27B3373EBE02896C3EC22CEEA4FA"
+    },
+    {
+      "action_id": "B_top5_pos3neg",
+      "family": "single_group_positive_negative",
+      "config": {
+        "positive_limit": 5,
+        "negative_limit": 3
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "negative_indices": [
+            5,
+            6,
+            7
+          ]
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 1,
+      "num_positive": 5,
+      "num_negative": 3,
+      "sam_calls": 1,
+      "prompt_points": 8,
+      "content_hash": "DE0EA39B055B0D773CC93B6719C6C48A2E4E41781389980BD5C364AB3133BE0B"
+    },
+    {
+      "action_id": "C_top3_independent",
+      "family": "independent_positive_groups",
+      "config": {
+        "positive_limit": 3
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            1
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            2
+          ],
+          "negative_indices": []
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 3,
+      "num_positive": 3,
+      "num_negative": 0,
+      "sam_calls": 3,
+      "prompt_points": 3,
+      "content_hash": "D323C887946D6F3BA2D632AB89BD0BEA4B7C257609855D4B1686AE3E15695523"
+    },
+    {
+      "action_id": "C_top5_independent",
+      "family": "independent_positive_groups",
+      "config": {
+        "positive_limit": 5
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            1
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            2
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            3
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            4
+          ],
+          "negative_indices": []
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 5,
+      "num_positive": 5,
+      "num_negative": 0,
+      "sam_calls": 5,
+      "prompt_points": 5,
+      "content_hash": "681BCE811DDE1C0FD482BBA0D4C06BBBA8678482371B02DD4D99D04C3AA0830C"
+    },
+    {
+      "action_id": "R_split5_2groups",
+      "family": "rescue_split_groups",
+      "config": {
+        "positive_limit": 5,
+        "groups": 2,
+        "local_negative": false
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2
+          ],
+          "negative_indices": []
+        },
+        {
+          "positive_indices": [
+            3,
+            4
+          ],
+          "negative_indices": []
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 2,
+      "num_positive": 5,
+      "num_negative": 0,
+      "sam_calls": 2,
+      "prompt_points": 5,
+      "content_hash": "7EB5206182875A5A2E72439C02A071C76B170829C0EE2C93E7836835911BDB62"
+    },
+    {
+      "action_id": "R_split5_2groups_localneg",
+      "family": "rescue_group_specific_negatives",
+      "config": {
+        "positive_limit": 5,
+        "groups": 2,
+        "local_negative": true
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0,
+            1,
+            2
+          ],
+          "negative_indices": [
+            8
+          ]
+        },
+        {
+          "positive_indices": [
+            3,
+            4
+          ],
+          "negative_indices": [
+            5
+          ]
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 2,
+      "num_positive": 5,
+      "num_negative": 2,
+      "sam_calls": 2,
+      "prompt_points": 7,
+      "content_hash": "900C839A4DF683732352337963D2FD105A49BE7CC80A0BC285649CA29D05F0C4"
+    },
+    {
+      "action_id": "R_top5_independent_localneg",
+      "family": "rescue_group_specific_negatives",
+      "config": {
+        "positive_limit": 5,
+        "groups": 5,
+        "local_negative": true
+      },
+      "groups": [
+        {
+          "positive_indices": [
+            0
+          ],
+          "negative_indices": [
+            8
+          ]
+        },
+        {
+          "positive_indices": [
+            1
+          ],
+          "negative_indices": [
+            5
+          ]
+        },
+        {
+          "positive_indices": [
+            2
+          ],
+          "negative_indices": [
+            9
+          ]
+        },
+        {
+          "positive_indices": [
+            3
+          ],
+          "negative_indices": [
+            5
+          ]
+        },
+        {
+          "positive_indices": [
+            4
+          ],
+          "negative_indices": [
+            8
+          ]
+        }
+      ],
+      "valid": true,
+      "invalid_reason": "",
+      "num_groups": 5,
+      "num_positive": 5,
+      "num_negative": 5,
+      "sam_calls": 5,
+      "prompt_points": 10,
+      "content_hash": "E43074729DB372E264979EF1D8A8AE26FA795835FBC05003AD5C61DDEB15D613"
+    }
+  ],
+  "bank_hash": "35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8",
+  "source": {
+    "candidate_csv": "D:\\SAM\\adapromptset\\reports\\candidate_pilot\\candidate_pilot_candidates.csv",
+    "episode_id": "monusac_val__train_111__to__train_004",
+    "positive_limit": 5,
+    "candidate_index_order": "positives_then_negatives"
+  },
+  "invalid_action_count": 1
+}

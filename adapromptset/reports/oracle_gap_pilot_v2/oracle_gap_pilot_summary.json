@@ -1,0 +1,93 @@
+{
+  "gate_f_status": "FAIL_ORACLE_GAP_SMALL",
+  "episode_count": 10,
+  "record_count": 120,
+  "valid_record_count": 120,
+  "best_fixed_action_id": "B_top5_pos3neg",
+  "mean_oracle_dice": 0.376249802278007,
+  "mean_best_fixed_dice": 0.37123847211635835,
+  "dice_oracle_gap": 0.0050113301616486194,
+  "oracle_action_counts": {
+    "R_split5_2groups_localneg": 1,
+    "B_top3_pos3neg": 1,
+    "A_top5_one_group": 1,
+    "B_top5_pos3neg": 5,
+    "B_top5_pos1neg": 2
+  },
+  "oracle_family_counts": {
+    "rescue_group_specific_negatives": 1,
+    "single_group_positive_negative": 8,
+    "single_group_positive": 1
+  },
+  "top_oracle_action_fraction": 0.5,
+  "best_fixed_sam_calls": 1,
+  "mean_oracle_sam_calls": 1.1,
+  "budget_gaps": {
+    "1": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.3759059098495395,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.004667437733181123,
+      "aji_available": true,
+      "best_fixed_aji_action_id": "B_top5_pos3neg",
+      "mean_oracle_aji": 0.2318909878816886,
+      "mean_best_fixed_aji": 0.22834095079987268,
+      "aji_oracle_gap": 0.003550037081815921
+    },
+    "2": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.376249802278007,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.0050113301616486194,
+      "aji_available": true,
+      "best_fixed_aji_action_id": "B_top5_pos3neg",
+      "mean_oracle_aji": 0.23216115704701398,
+      "mean_best_fixed_aji": 0.22834095079987268,
+      "aji_oracle_gap": 0.0038202062471413
+    },
+    "3": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.376249802278007,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.0050113301616486194,
+      "aji_available": true,
+      "best_fixed_aji_action_id": "B_top5_pos3neg",
+      "mean_oracle_aji": 0.23216115704701398,
+      "mean_best_fixed_aji": 0.22834095079987268,
+      "aji_oracle_gap": 0.0038202062471413
+    },
+    "5": {
+      "best_fixed_action_id": "B_top5_pos3neg",
+      "mean_oracle_dice": 0.376249802278007,
+      "mean_best_fixed_dice": 0.37123847211635835,
+      "dice_oracle_gap": 0.0050113301616486194,
+      "aji_available": true,
+      "best_fixed_aji_action_id": "B_top5_pos3neg",
+      "mean_oracle_aji": 0.23216115704701398,
+      "mean_best_fixed_aji": 0.22834095079987268,
+      "aji_oracle_gap": 0.0038202062471413
+    }
+  },
+  "gate_f_min_dice_gap": 0.01,
+  "gate_f_max_top_oracle_fraction": 0.7,
+  "max_sam_calls": 5,
+  "decoder_calls": 190,
+  "cache_hits": 50,
+  "aji_available": true,
+  "best_fixed_aji_action_id": "B_top5_pos3neg",
+  "mean_oracle_aji": 0.23216115704701398,
+  "mean_best_fixed_aji": 0.22834095079987268,
+  "aji_oracle_gap": 0.0038202062471413,
+  "status": "FAIL_ORACLE_GAP_SMALL",
+  "max_episodes": 10,
+  "gate_min_episodes": 10,
+  "dataset_slug": "monusac",
+  "positive_limit": 5,
+  "max_actions": null,
+  "action_bank": "D:\\SAM\\adapromptset\\configs\\actions\\prompt_set_bank_v2.json",
+  "episodes_csv": "D:\\SAM\\adapromptset\\manifests\\episodes\\monusac\\episodes_val.csv",
+  "candidates_csv": "D:\\SAM\\adapromptset\\reports\\candidate_pilot\\candidate_pilot_candidates.csv",
+  "elapsed_seconds": 31.306,
+  "gpu_hours_estimate": 0.008696,
+  "utility_csv": "D:\\SAM\\adapromptset\\reports\\oracle_gap_pilot_v2\\action_utility_pilot.csv"
+}

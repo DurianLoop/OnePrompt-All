@@ -1,0 +1,36 @@
+{
+  "allowed_next_actions": [
+    "oracle_gap_gate"
+  ],
+  "commands": [
+    "scripts/build_action_bank.py --bank-version v2"
+  ],
+  "deviations": [
+    "Current bank is a rescue subset; full KMeans/SynPo/GF-SAM/safe-anchor matrix remains incomplete."
+  ],
+  "diagnostics": {
+    "action_count": 13,
+    "bank_hash": "35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8",
+    "bank_name": "prompt_set_bank_v2",
+    "valid_action_count": 12
+  },
+  "gate": "E",
+  "input_hashes": [
+    {
+      "path": "reports/action_bank/action_bank_summary.json",
+      "sha256": "9A04120FBD18A77DA617CD61E14FC7EFC7BCDA6009AC8BF156FF10178BBA5ADE"
+    },
+    {
+      "path": "reports/gate_e_status.md",
+      "sha256": "CF089B0E266BAC67E6A65E33B56E6088B404A9F671D32E23081E08643A28B46F"
+    }
+  ],
+  "name": "action_bank_validity",
+  "pass_fail": "PASS",
+  "prohibited_next_actions": [
+    "post_hoc_action_bank_redesign_after_gate_f"
+  ],
+  "rule_applied": "Actions must be predeclared, versioned, hashable, cost-accounted, and built from the shared candidate pool.",
+  "status": "PASS_RESCUE_SUBSET",
+  "title": "Action-Bank Validity"
+}

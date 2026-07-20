@@ -1,0 +1,70 @@
+{
+  "config_hash": "1DD5A11E2C6A897F0EDA671F0E10A77B0F5C3FB9F706341F0EFDB98383954F60",
+  "configs": [
+    {
+      "bytes": 172,
+      "relative_path": "configs/data/monusac.yaml",
+      "sha256": "E3CD9102206F18995DDAA1BA0498A5441A05B7CDAA4210D071107CC0DE9A668A"
+    },
+    {
+      "bytes": 99,
+      "relative_path": "configs/matcher/dinov2_vitl14.yaml",
+      "sha256": "BAF4ADA947E2815D6EF943F1DF15D9025490B1FE56DE0A1629329B2CD39C50CA"
+    },
+    {
+      "bytes": 82,
+      "relative_path": "configs/segmenter/sam_vit_b.yaml",
+      "sha256": "F93D47590072D85D2EF27993456B09E66380029AB3D7538564418816DB655602"
+    },
+    {
+      "bytes": 330,
+      "relative_path": "configs/segmenter/fusion_mvp.json",
+      "sha256": "C4A1B8B637D790162E2925BF72B1287610C9C4ACD9E59ECCFBFC28103D807ADA"
+    },
+    {
+      "bytes": 10339,
+      "relative_path": "configs/actions/prompt_set_bank_v2.json",
+      "sha256": "9A04120FBD18A77DA617CD61E14FC7EFC7BCDA6009AC8BF156FF10178BBA5ADE"
+    }
+  ],
+  "environment": {
+    "cuda_available": "true",
+    "cuda_version": "12.8",
+    "cwd": "D:\\SAM\\adapromptset",
+    "gpu_name": "NVIDIA GeForce RTX 5090 D v2",
+    "machine": "AMD64",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "processor": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+    "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+    "python_executable": "D:\\SAM\\conda_envs\\sam_gpu\\python.exe",
+    "torch": "2.11.0+cu128"
+  },
+  "extra": {
+    "gate_status": "PIVOT_ORACLE_ANALYSIS",
+    "policy_training": "prohibited"
+  },
+  "git": {
+    "branch": "main",
+    "commit": "016daa85a785ed9c6c272326b93977f0f70cbdfa",
+    "dirty_file_count": "162",
+    "dirty_file_sample": "?? FSPL/\n?? MedSAM/\n?? Medical-SAM-Adapter/\n?? SAM-Med2D/\n?? adapromptset/\n?? code/benchmarks/_csv_writer_fixture/\n?? code/benchmarks/_policy_candidate_fixture/\n?? code/benchmarks/_saved_policy_config_fixture/\n?? code/benchmarks/aggregate_nested_cv_prompt_policy.py\n?? code/benchmarks/all_nuclei_utility.py\n?? code/benchmarks/analyze_all_nuclei_utility.py\n?? code/benchmarks/analyze_matcher_mechanisms.py\n?? code/benchmarks/analyze_monusac_patient_level.py\n?? code/benchmarks/analyze_policy_oracle_gap.py\n?? code/benchmarks/analyze_policy_switches.py\n?? code/benchmarks/analyze_prompt_policy_results.py\n?? code/benchmarks/analyze_reference_robustness.py\n?? code/benchmarks/apply_saved_negative_budget_policy.py\n?? code/benchmarks/apply_saved_prompt_policy.py\n?? code/benchmarks/audit_monusac_dataset.py",
+    "is_dirty": "true"
+  },
+  "inputs": [
+    {
+      "bytes": 78997,
+      "relative_path": "manifests/monusac_manifest.csv",
+      "sha256": "7FF1828AC1EC8A34674AFC832FE094C5B54D8EF12F887B687101828E7220F07F"
+    },
+    {
+      "bytes": 907,
+      "relative_path": "reports/decision_checkpoint/phase5_decision.json",
+      "sha256": "B6EC74EA3AF9984EA37F17EC38C35DDD67758F94D88E1FE9A1764143768FBE90"
+    }
+  ],
+  "project_root": "D:\\SAM\\adapromptset",
+  "run_id": "phase0_reproducibility_1DD5A11E2C6A",
+  "run_name": "phase0_reproducibility",
+  "schema_version": "adapromptset.run_metadata.v1",
+  "timestamp_utc": "2026-07-17T12:35:04Z"
+}

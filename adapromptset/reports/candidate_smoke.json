@@ -1,0 +1,16 @@
+{
+  "synthetic_smoke": "PASS",
+  "formal_gate_c": "PENDING_REAL_MATCHER",
+  "metrics": {
+    "point_precision": 1.0,
+    "component_coverage": 1.0,
+    "positive_count": 2,
+    "negative_count": 2,
+    "validation_issues": []
+  },
+  "candidate_generation_uses_query_gt": false,
+  "notes": [
+    "This smoke uses synthetic foreground/background score maps.",
+    "It validates candidate mechanics only and must not be reported as formal Gate C."
+  ]
+}

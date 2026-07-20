@@ -1,0 +1,42 @@
+{
+  "mvp_matcher": {
+    "role": "matcher",
+    "path": "D:\\SAM\\assets\\checkpoints\\dinov2_vitl14_pretrain.pth",
+    "exists": true,
+    "sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+    "bytes": 1217586395,
+    "architecture": "large"
+  },
+  "mvp_segmenter": {
+    "role": "segmenter",
+    "path": "D:\\SAM\\assets\\checkpoints\\sam_vit_b.pth",
+    "exists": true,
+    "sha256": "EC2DF62732614E57411CDCF32A23FFDF28910380D03139EE0F4FCBE91EB8C912",
+    "bytes": 375042383,
+    "architecture": "vit_b"
+  },
+  "external_import_paths": [
+    "D:\\SAM\\code",
+    "D:\\SAM\\Matcher"
+  ],
+  "dependencies": {
+    "torch": true,
+    "torchvision": true,
+    "PIL": true,
+    "dinov2": true,
+    "segment_anything": true
+  },
+  "runtime": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "torch": "2.11.0+cu128",
+    "cuda_available": true,
+    "cuda_version": "12.8",
+    "gpu_name": "NVIDIA GeForce RTX 5090 D v2"
+  },
+  "formal_gate_c": "PENDING_REAL_MATCHER_EVIDENCE",
+  "notes": [
+    "This audit records frozen MVP checkpoint hashes and import availability.",
+    "It does not run DINOv2 feature extraction and must not be reported as formal Gate C."
+  ]
+}
