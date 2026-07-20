@@ -126,13 +126,40 @@ class BankKGridTests(unittest.TestCase):
         self.assertEqual(_bank_k_positive_grid(A_SMALL), (1, 3, 5))
 
     def test_a_medium_k_positive_grid(self) -> None:
-        self.assertEqual(_bank_k_positive_grid(A_MEDIUM), (5, 10, 20))
+        self.assertEqual(_bank_k_positive_grid(A_MEDIUM), (1, 3, 5, 10, 20))
 
     def test_a_large_k_positive_grid(self) -> None:
-        self.assertEqual(_bank_k_positive_grid(A_LARGE), (20, 50, 100))
+        self.assertEqual(_bank_k_positive_grid(A_LARGE), (1, 3, 5, 10, 20, 50, 100))
 
     def test_a_small_k_negative_grid(self) -> None:
         self.assertEqual(_bank_k_negative_grid(A_SMALL), (0, 1, 3))
+
+    def test_a_medium_k_negative_grid(self) -> None:
+        self.assertEqual(_bank_k_negative_grid(A_MEDIUM), (0, 1, 3, 5, 10))
+
+    def test_a_large_k_negative_grid_includes_medium_values(self) -> None:
+        """Strict nesting: A_large K- grid must include every A_medium K- value."""
+        medium_set = set(_bank_k_negative_grid(A_MEDIUM))
+        large_set = set(_bank_k_negative_grid(A_LARGE))
+        self.assertTrue(medium_set.issubset(large_set))
+
+    def test_a_large_k_positive_grid_includes_medium_values(self) -> None:
+        """Strict nesting: A_large K+ grid must include every A_medium K+ value."""
+        medium_set = set(_bank_k_positive_grid(A_MEDIUM))
+        large_set = set(_bank_k_positive_grid(A_LARGE))
+        self.assertTrue(medium_set.issubset(large_set))
+
+    def test_a_medium_k_positive_grid_includes_small_values(self) -> None:
+        """Strict nesting: A_medium K+ grid must include every A_small K+ value."""
+        small_set = set(_bank_k_positive_grid(A_SMALL))
+        medium_set = set(_bank_k_positive_grid(A_MEDIUM))
+        self.assertTrue(small_set.issubset(medium_set))
+
+    def test_a_medium_k_negative_grid_includes_small_values(self) -> None:
+        """Strict nesting: A_medium K- grid must include every A_small K- value."""
+        small_set = set(_bank_k_negative_grid(A_SMALL))
+        medium_set = set(_bank_k_negative_grid(A_MEDIUM))
+        self.assertTrue(small_set.issubset(medium_set))
 
     def test_grids_within_bank_limits(self) -> None:
         for bank in NESTED_BANKS:

@@ -189,24 +189,37 @@ def _action_set_for_bank(bank: BankSpec) -> list[ActionSpec]:
 
 
 def _bank_k_positive_grid(bank: BankSpec) -> tuple[int, ...]:
-    """Return the K+ grid for the bank (within bank.max_positive)."""
+    """Return the K+ grid for the bank (within bank.max_positive).
+
+    Grids are cumulative across banks to preserve the strict nesting property
+    A_small ⊂ A_medium ⊂ A_large: every K+ valid in a smaller bank is also
+    represented in larger banks. A_medium therefore includes A_small's K+
+    values (1, 3, 5) plus its own extensions (10, 20); A_large includes all
+    of A_medium's values plus (50, 100).
+    """
     if bank.name == "A_small":
         return (1, 3, 5)
     if bank.name == "A_medium":
-        return (5, 10, 20)
+        return (1, 3, 5, 10, 20)
     if bank.name == "A_large":
-        return (20, 50, 100)
+        return (1, 3, 5, 10, 20, 50, 100)
     raise ValueError(f"unknown bank: {bank.name}")
 
 
 def _bank_k_negative_grid(bank: BankSpec) -> tuple[int, ...]:
-    """Return the K- grid for the bank (within bank.max_negative)."""
+    """Return the K- grid for the bank (within bank.max_negative).
+
+    Grids are cumulative across banks to preserve the strict nesting property
+    A_small ⊂ A_medium ⊂ A_large: every action valid in a smaller bank must
+    also be representable in a larger bank. A_large therefore includes all
+    K- values from A_medium (0, 1, 3, 5, 10) plus its own extensions (20, 30).
+    """
     if bank.name == "A_small":
         return (0, 1, 3)
     if bank.name == "A_medium":
         return (0, 1, 3, 5, 10)
     if bank.name == "A_large":
-        return (0, 5, 10, 20, 30)
+        return (0, 1, 3, 5, 10, 20, 30)
     raise ValueError(f"unknown bank: {bank.name}")
 
 
