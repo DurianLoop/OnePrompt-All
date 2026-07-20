@@ -1,0 +1,11 @@
+episode_id,query_case_id,support_case_id,positive_limit,point_precision,component_coverage,random_precision,validation_issue_count,negative_blank_fraction
+monusac_val__train_111__to__train_004,train_004,train_111,100,0.18,0.07296137339055794,0.23,0,0.01
+monusac_val__train_190__to__train_004,train_004,train_190,100,0.44,0.18025751072961374,0.32,0,0.02
+monusac_val__train_132__to__train_004,train_004,train_132,100,0.34,0.13733905579399142,0.28,0,0.01
+monusac_val__train_204__to__train_004,train_004,train_204,100,0.55,0.2145922746781116,0.18,0,0.01
+monusac_val__train_200__to__train_004,train_004,train_200,100,0.46,0.18025751072961374,0.24,0,0.01
+monusac_val__train_116__to__train_005,train_005,train_116,100,0.34,0.7428571428571429,0.12,0,0.21
+monusac_val__train_123__to__train_005,train_005,train_123,100,0.52,0.6857142857142857,0.2,0,0.27
+monusac_val__train_207__to__train_005,train_005,train_207,100,0.33,0.7428571428571429,0.14,0,0.17
+monusac_val__train_113__to__train_005,train_005,train_113,100,0.5,0.6571428571428571,0.09,0,0.19
+monusac_val__train_017__to__train_005,train_005,train_017,100,0.41,0.7142857142857143,0.13,0,0.23

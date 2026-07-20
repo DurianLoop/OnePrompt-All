@@ -23,30 +23,74 @@ Failure code if any artifact is missing: `BLOCKED_HISTORICAL_ARTIFACT_INCOMPLETE
 
 Status: `CANDIDATE_UNIVERSE_INADEQUATE`.
 
-Ran on 10 MoNuSAC validation episodes against the historical candidate pool
-(`reports/candidate_pilot/candidate_pilot_candidates.csv`). The pool maxes out
-at 9 positives and 9 negatives per episode (historical pilot was run with
-`positive_limits=(1,3,5)`). Component coverage at K+=10 (the smallest grid
-K+ that can use all 9 distinct positives) is 0.052 — well below the 0.5
-threshold. Point precision at K+=10 is 0.511.
+Two Gate X2 audits were run on 10 MoNuSAC validation episodes:
 
-The candidate universe itself is the bottleneck. Per directive section 7,
-this finding is attributed to the matcher / candidate generator (DINOv2-L
-`spread` layout with `min_positive_distance=4.0`), **not** to the policy.
-Before Gate X3 (Dense Prompt Viability) can be evaluated, the candidate pool
-must be regenerated with `positive_limit >= 100` so that K+=100 coverage can
-be measured with 100 distinct positives per episode.
+1. Historical 5-positive pool (`reports/candidate_pilot/candidate_pilot_candidates.csv`):
+   pool maxes at 9 positives/9 negatives per episode. Component coverage at
+   K+=10 (smallest grid K+ using all 9 distinct positives) is 0.052. Status
+   `CANDIDATE_UNIVERSE_INADEQUATE` because coverage at pool max < 0.5.
+   Artifacts under `reports/phaseX_candidate_scaling/`.
 
-Artifacts:
+2. Regenerated 100-positive pool
+   (`reports/phaseX_candidate_pilot_100/candidate_pilot_candidates.csv`):
+   pool maxes at 100 positives/100 negatives per episode. Even at K+=100,
+   component coverage is only 0.433 — still below the 0.5 threshold. Point
+   precision drops from 0.500 (K+=1) to 0.407 (K+=100), indicating the
+   matcher's foreground score map is diffuse. Negative quality is good
+   (background precision 0.93-1.00, false-negative risk 0.03-0.07). Status
+   `CANDIDATE_UNIVERSE_INADEQUATE`. Artifacts under
+   `reports/phaseX_candidate_scaling_100/`.
 
-- `reports/phaseX_candidate_scaling/positive_scaling_query_metrics.csv`
-- `reports/phaseX_candidate_scaling/negative_scaling_query_metrics.csv`
-- `reports/phaseX_candidate_scaling/positive_coverage_curve.csv`
-- `reports/phaseX_candidate_scaling/negative_quality_curve.csv`
-- `reports/phaseX_candidate_scaling/component_coverage_by_k.csv`
-- `reports/phaseX_candidate_scaling/spatial_dispersion_by_k.csv`
-- `reports/phaseX_candidate_scaling/scaling_summary.md`
-- `reports/phaseX_candidate_scaling/scaling_summary.json`
+Coverage curve (100-positive pool):
+
+| K+ | Mean component coverage | Mean point precision |
+|---|---|---|
+| 1  | 0.012 | 0.500 |
+| 3  | 0.033 | 0.533 |
+| 5  | 0.040 | 0.480 |
+| 10 | 0.069 | 0.460 |
+| 20 | 0.115 | 0.490 |
+| 30 | 0.162 | 0.487 |
+| 50 | 0.245 | 0.506 |
+| 75 | 0.401 | 0.495 |
+| 100| 0.433 | 0.407 |
+
+Coverage is monotonically increasing with the biggest jump K=50->75 (+0.156)
+and a clear plateau K=75->100 (+0.032). Even at the frozen K+=100 ceiling,
+the candidate universe cannot reach 0.5 component coverage.
+
+Per directive section 7, this finding is attributed to the matcher /
+candidate generator (DINOv2-L `spread` layout with
+`min_positive_distance=4.0`), **not** to the policy. Stage S2
+(single-variable K+ scaling on SAM inference) and Gate X3 (Dense Prompt
+Viability) cannot proceed under the current candidate generator. The
+directive's Section 7 explicitly states: when `CANDIDATE_UNIVERSE_INADEQUATE`,
+"the problem should not be attributed to policy, but to matcher/candidate
+generator."
+
+Implications for the rest of Phase X:
+
+- Stage S2-S5 (dense prompt scaling on SAM) would use the same inadequate
+  candidate universe; absolute Dice gains from K+ scaling will be capped by
+  the candidate generator, not by the policy.
+- The historical 0.005 oracle gap was measured on this same inadequate
+  candidate universe; the gap may reflect matcher saturation rather than
+  action-space saturation.
+- Gate X3 (`DENSE_PROMPT_VIABILITY_*`) is unlikely to pass without a better
+  matcher or candidate generator; this should be recorded but not used to
+  skip Stage S2-S5 entirely. Per directive section 25: "不要因为旧的 0.005
+  gap 再次提前停止" (do not stop early again because of the old 0.005 gap).
+
+Artifacts (100-positive pool, under `reports/phaseX_candidate_scaling_100/`):
+
+- `positive_scaling_query_metrics.csv`
+- `negative_scaling_query_metrics.csv`
+- `positive_coverage_curve.csv`
+- `negative_quality_curve.csv`
+- `component_coverage_by_k.csv`
+- `spatial_dispersion_by_k.csv`
+- `scaling_summary.md`
+- `scaling_summary.json`
 
 Will report one of:
 

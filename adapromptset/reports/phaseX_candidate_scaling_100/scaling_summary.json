@@ -1,0 +1,57 @@
+{
+  "phase": "phaseX",
+  "stage": "candidate_scaling",
+  "gate": "X2",
+  "date": "2026-07-20",
+  "episode_count": 10,
+  "pool_max_positive": 100,
+  "pool_max_negative": 100,
+  "positive_k_grid": [
+    1,
+    3,
+    5,
+    10,
+    20,
+    30,
+    50,
+    75,
+    100
+  ],
+  "negative_k_grid": [
+    0,
+    1,
+    3,
+    5,
+    10,
+    20,
+    30,
+    50
+  ],
+  "gate_x2_status": "CANDIDATE_UNIVERSE_INADEQUATE",
+  "gate_x2_rationale": "even at K+=100, component coverage is 0.433 < 0.5; problem is matcher/candidate generator, not policy",
+  "coverage_curve": {
+    "1": 0.011857755977927651,
+    "3": 0.032716125076640096,
+    "5": 0.03971796443899448,
+    "10": 0.06886572654812997,
+    "20": 0.11545064377682404,
+    "30": 0.16231759656652361,
+    "50": 0.24534641324340895,
+    "75": 0.4012385039852851,
+    "100": 0.43282648681790314
+  },
+  "precision_curve": {
+    "1": 0.5,
+    "3": 0.5333333333333333,
+    "5": 0.48,
+    "10": 0.45999999999999996,
+    "20": 0.49000000000000005,
+    "30": 0.4866666666666667,
+    "50": 0.506,
+    "75": 0.4946666666666667,
+    "100": 0.40700000000000003
+  },
+  "elapsed_seconds": 12.968,
+  "cpu_only": true,
+  "sam_inference_run": false
+}
