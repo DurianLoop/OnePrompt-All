@@ -1,0 +1,2 @@
+phase,stage,gpu_hours,command,notes
+phaseX-preregistration,historical_audit,0.0,scripts/build_phasex_preregistration.py,CPU-only read of historical artifacts; no new SAM inference.

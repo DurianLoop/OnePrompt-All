@@ -129,3 +129,16 @@
 - Status: `PASS_ROUTE_B_DDR_FAILURE_TAXONOMY`; mean DINOv2 point precision `0.0125`, mean random point precision `0.0`, mean DINOv2 component coverage `0.0025`, mean random component coverage `0.0`.
 - Failure flags: small sparse target `16/16`, diffuse matching map `16/16`, no candidate hit `15/16`, no component covered `15/16`, random not beaten `15/16`.
 - Interpretation: this strengthens the benchmark/failure-taxonomy direction and closes candidate-only DINOv2 matching as a method-positive DDR route unless a separately registered representation/control redesign is justified.
+
+
+## 2026-07-20 Phase X Action-Space Adequacy / Search-Oracle Audit Preregistration
+
+- Branch `phaseX-action-space-oracle-audit` created for Phase X.
+- Phase X is a development-stage action-space audit on MoNuSAC train/validation only. It does not reopen Phase 4+ Route B work and does not access formal test.
+- Historical Oracle claim renamed to `FINITE_BANK_ORACLE_GAP_SMALL`. Historical anchors: v2 bank hash `35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8`, best fixed `B_top5_pos3neg`, mean best fixed Dice 0.371238, mean finite-bank oracle Dice 0.376250, gap 0.005011; both ends sit in a low-absolute-performance regime (~0.37 Dice), so the small gap cannot establish action-space saturation.
+- Phase X preregistration docs created: `docs/phaseX_goal_read_receipt.md`, `docs/action_space_problem_statement.md`, `docs/historical_oracle_correction.md`, `docs/dense_prompt_scaling_protocol.md`, `docs/search_oracle_protocol.md`, `docs/action_space_saturation_protocol.md`, `docs/formal_test_lock_notice.md`.
+- Phase X reports scaffolding created: `reports/phaseX_gate_status.md`, `reports/phaseX_compute_ledger.csv`, `reports/phaseX_protocol_snapshot.json`, `reports/phaseX_input_hashes.json`.
+- Historical bank audit created under `reports/phaseX_historical_bank_audit/`: `action_bank_exact_definitions.{csv,md}`, `fixed_action_absolute_metrics.csv`, `fixed_action_rankings.csv`, `old_bank_oracle_query_metrics.csv`, `old_bank_oracle_summary.md`, `cost_distribution.csv`, `historical_claim_correction.md`, `audit_summary.json`.
+- Frozen grids: K+ in {1, 3, 5, 10, 20, 30, 50, 75, 100}; K- in {0, 1, 3, 5, 10, 20, 30, 50}; groupings = {G_ONE_GROUP, G_ONE_POINT_PER_GROUP, G_FIXED_CHUNK_5, G_FIXED_CHUNK_10, G_FIXED_CHUNK_20, G_KMEANS_3, G_KMEANS_5, G_KMEANS_10, G_KMEANS_20, G_SPATIAL_GRID, G_GRAPH, G_CANDIDATE_COMPONENT}; call budgets = {1, 3, 5, 10, 20}; point budgets = {5, 10, 20, 50, 100, 150}; nested banks A_small/A_medium/A_large with limits ({'max_positive': 5, 'max_negative': 4, 'max_calls': 3}, {'max_positive': 20, 'max_negative': 10, 'max_calls': 5}, {'max_positive': 100, 'max_negative': 30, 'max_calls': 20}); search beam_widths = {4, 8}, depths = {10, 20, 50}, call budgets = {1, 3, 5, 10, 20}, point budgets = {10, 20, 50, 100}; adaptive-value Dice threshold = 0.01; min query fraction = 0.25; GPU-hour cap = 132.0.
+- No new SAM/matcher inference has been run. Preregistration commit must precede candidate coverage scaling, dense prompt scaling, search oracle, and any policy reopening decision.
+

@@ -1057,3 +1057,40 @@ Main result run IDs:
 Paper PDF SHA256:
 Decision summary:
 ```
+
+
+## Phase X — Action-Space Adequacy / Search-Oracle Audit (2026-07-20)
+
+- [x] Read all historical action-bank and oracle artifacts before preregistration.
+  - 2026-07-20: Read `configs/actions/prompt_set_bank_v1.json`, `configs/actions/prompt_set_bank_v2.json`, `reports/oracle_gap_pilot_v2/*`, `reports/fixed_oracle_analysis/*`, `reports/decision_checkpoint/*`, `reports/gates/gate_f_oracle_gap.*`, `reports/candidate_pilot/candidate_pilot_candidates.csv`.
+- [x] Create historical Oracle correction doc.
+  - 2026-07-20: `docs/historical_oracle_correction.md` and `reports/phaseX_historical_bank_audit/historical_claim_correction.md` rename the old claim to `FINITE_BANK_ORACLE_GAP_SMALL`.
+- [x] Export old 12-action exact definitions.
+  - 2026-07-20: `reports/phaseX_historical_bank_audit/action_bank_exact_definitions.{csv,md}`.
+- [x] Export each historical action's absolute Dice / IoU / AJI / cost.
+  - 2026-07-20: `reports/phaseX_historical_bank_audit/fixed_action_absolute_metrics.csv` and `fixed_action_rankings.csv`.
+- [x] Pinpoint historical strongest fixed exact config.
+  - 2026-07-20: `B_top5_pos3neg` (5 positives + 3 negatives in one group, 1 SAM call, MVP fusion). Mean Dice = 0.371238.
+- [x] Freeze candidate scaling / dense prompt scaling / search oracle / saturation protocols.
+  - 2026-07-20: `docs/dense_prompt_scaling_protocol.md`, `docs/search_oracle_protocol.md`, `docs/action_space_saturation_protocol.md`, `docs/formal_test_lock_notice.md`, `docs/action_space_problem_statement.md`, `docs/phaseX_goal_read_receipt.md`.
+- [x] Freeze K / negative / grouping / call / point / search grids.
+  - 2026-07-20: Recorded in `reports/phaseX_protocol_snapshot.json` and `reports/phaseX_input_hashes.json`.
+- [x] Generate config/input hashes.
+  - 2026-07-20: `reports/phaseX_input_hashes.json` records SHA256 of directive, v1/v2 banks, oracle summaries, decision checkpoint, gate F report, action utility CSV, fixed action summary CSV, budget Pareto CSV, oracle heatmap CSV, MoNuSAC validation episodes CSV, candidate pilot CSV.
+- [ ] Run focused tests on the preregistration builder.
+- [ ] Create preregistration git commit `phaseX: preregister action-space adequacy and search-oracle audit` before any new SAM inference.
+- [ ] Run candidate coverage scaling (Stage S1 / Gate X2).
+- [ ] Run single-variable K+ scaling.
+- [ ] Run grouping scaling.
+- [ ] Run negative scaling.
+- [ ] Run coarse joint grid + successive halving.
+- [ ] Build nested action banks A_small ⊂ A_medium ⊂ A_large ⊂ A_search_augmented.
+- [ ] Compute fixed baseline saturation.
+- [ ] Compute finite-bank oracle saturation.
+- [ ] Run GT-guided greedy/beam search oracle.
+- [ ] Compare bank oracle vs search oracle under matched budgets.
+- [ ] Generate Phase X tables, figures, and `reports/phaseX_final_report.{md,json}`.
+- [ ] Output the unique final Phase X state (one of the section 24 conclusions).
+
+Current Phase X status: `PREREGISTRATION_PENDING_COMMIT`.
+

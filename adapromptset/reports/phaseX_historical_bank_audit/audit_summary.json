@@ -1,0 +1,80 @@
+{
+  "phase": "phaseX",
+  "stage": "historical_bank_audit",
+  "preregistration_date": "2026-07-20",
+  "historical_bank": {
+    "name": "prompt_set_bank_v2",
+    "bank_hash": "35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8",
+    "action_count": 13,
+    "valid_action_count": 12,
+    "max_positive_k_tested": 5,
+    "max_negative_k_tested": 3,
+    "max_sam_calls_tested": 5,
+    "untested_positive_k": [
+      10,
+      20,
+      30,
+      50,
+      75,
+      100
+    ],
+    "untested_negative_k": [
+      10,
+      20,
+      30,
+      50
+    ],
+    "untested_call_budgets": [
+      10,
+      20
+    ],
+    "untested_groupings": [
+      "G_KMEANS_3",
+      "G_KMEANS_5",
+      "G_KMEANS_10",
+      "G_KMEANS_20",
+      "G_SPATIAL_GRID",
+      "G_GRAPH",
+      "G_CANDIDATE_COMPONENT"
+    ]
+  },
+  "absolute_performance": {
+    "strongest_fixed_action_id": "B_top5_pos3neg",
+    "strongest_fixed_family": "single_group_positive_negative",
+    "strongest_fixed_mean_dice": 0.37123847211635835,
+    "strongest_fixed_mean_iou": 0.22834095079987268,
+    "strongest_fixed_mean_aji": 0.22834095079987268,
+    "strongest_fixed_mean_sam_calls": 1.0,
+    "strongest_fixed_mean_runtime_ms": 41.439400000000006,
+    "top1_mean_dice": 0.029210558137448394,
+    "top3_mean_dice": 0.2560657753898481,
+    "top5_mean_dice": 0.3259841511612571,
+    "top10_status": "INVALID_REQUIRES_10_POSITIVES"
+  },
+  "finite_bank_oracle": {
+    "mean_dice": 0.376249802278007,
+    "mean_aji": 0.23216115704701398,
+    "mean_best_fixed_dice": 0.37123847211635835,
+    "mean_best_fixed_aji": 0.22834095079987268,
+    "dice_gap": 0.0050113301616486194,
+    "aji_gap": 0.0038202062471413,
+    "median_regret": 0.0003192560639198039,
+    "max_regret": 0.01855580912161431,
+    "near_oracle_episode_fraction": 0.6,
+    "top_oracle_action_fraction": 0.5,
+    "oracle_action_counts": {
+      "B_top5_pos3neg": 5,
+      "R_split5_2groups_localneg": 1,
+      "B_top5_pos1neg": 2,
+      "A_top5_one_group": 1,
+      "B_top3_pos3neg": 1
+    },
+    "oracle_family_counts": {
+      "single_group_positive_negative": 8,
+      "rescue_group_specific_negatives": 1,
+      "single_group_positive": 1
+    }
+  },
+  "renamed_claim": "FINITE_BANK_ORACLE_GAP_SMALL",
+  "historical_phase5_status": "PIVOT_ORACLE_ANALYSIS"
+}
