@@ -1,0 +1,39 @@
+{
+  "date": "2026-07-21T23:09:00",
+  "device": "cuda",
+  "cuda_available": true,
+  "split": "validation",
+  "query_count": 41,
+  "total_sam_calls": 148757,
+  "elapsed_seconds": 29357.453,
+  "gpu_hours": 8.1548,
+  "fixed_action_baseline": "Y_P_TOPK_K50_N0_N_NONE_G1_C1",
+  "fixed_dice": 0.43379819236507783,
+  "positive_pool_name": "topk",
+  "gate_y2": {
+    "query_count": 41,
+    "fixed_dice": 0.43379819236507783,
+    "raw_search_dice": 0.594741937663077,
+    "cross_search_dice": 0.4104717009548907,
+    "raw_search_gap": 0.1609437452979992,
+    "search_optimism": 0.18427023670818632,
+    "optimism_ratio": 1.144935681514037,
+    "bootstrap_ci_lo": -0.08904228885861672,
+    "bootstrap_ci_hi": 0.040279647518930144,
+    "median_kplus_diff": 6.0,
+    "median_cross_dice_diff": 0.029182028560414464,
+    "beat_fixed_rate": 0.2682926829268293,
+    "mean_point_overlap": 0.33224481456856825,
+    "mean_rank_overlap": 0.5576827959969038,
+    "mean_spatial_overlap": 0.8978979451759139,
+    "mean_prompt_area_bias": 0.14058965341618826,
+    "conditions": {
+      "cond1_cross_ge_fixed_plus_0p03": false,
+      "cond2_bootstrap_ci_lo_gt_0": false,
+      "cond3_optimism_le_50pct_gap": false,
+      "cond4_k_stable_or_cross_dice_stable": true,
+      "cond5_70pct_A_beats_fixed_on_B": false
+    },
+    "decision": "PHASEY_GATE_Y2_SEARCH_ORACLE_OVERFIT"
+  }
+}

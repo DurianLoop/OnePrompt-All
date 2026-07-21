@@ -1,0 +1,9 @@
+# Table 1: Fresh Data Split
+
+| Split | Query Count | Patient Count | Target | Status |
+|---|---|---|---|---|
+| train | 80 | 18 | 80 | PHASEY_DATA_AUDIT_COMPLETE |
+| validation | 41 | 9 | 40 | PHASEY_DATA_AUDIT_COMPLETE |
+| holdout | 40 | 9 | 40 | PHASEY_DATA_AUDIT_COMPLETE |
+| Total (fresh) | 161 | 36 | 160 | PHASEY_DATA_AUDIT_COMPLETE |
+

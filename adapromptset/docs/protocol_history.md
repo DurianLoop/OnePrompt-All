@@ -160,3 +160,36 @@
 - Compute cap: 155 GPU-hours total.
 - No new SAM/matcher inference has been run. Preregistration commit must precede Gate Y1 utility matrix, search oracle Y2, policy training Y3/Y4, and holdout evaluation.
 
+## 2026-07-21 Phase Y Gate Y1 — Fresh-Query Action Heterogeneity (FAILED)
+
+- Y1 validation utility matrix completed: 41 validation queries × 2 reference sets (A, B) × 3 references = 246 pairs, 210 actions per pair, 51,660 action evaluations total. Runtime: ~3 hours on GPU (42.4s/pair average). DINOv2-L features cached per case_id, SAM-B single-call one-group configuration.
+- Gate Y1 decision: `PHASEY_GATE_Y1_ORACLE_GAP_SMALL` — 2 of 6 conditions passed.
+- Strongest fixed action: `Y_P_TOPK_K50_N0_N_NONE_G1_C1` (K+=50, K-=0, P_TOPK, G_ONE_GROUP, 1 call), mean Dice = 0.4338 on Reference Set A.
+- Raw oracle A: 0.5007 (gap = 0.0669). Raw oracle B: 0.4836.
+- Cross-reference oracle A→B: 0.4258 (BELOW fixed 0.4338). Cross-reference oracle B→A: 0.4539.
+- Stable oracle = mean(cross A→B, cross B→A) = 0.4399. Stable oracle gap = 0.0061 (threshold: ≥0.015) → FAIL.
+- Oracle optimism A = 0.0749 (optimism ratio = 1.12, threshold: ≤0.60) → FAIL. Optimism exceeds raw gap, meaning cross-reference Dice is below fixed Dice.
+- Bootstrap 95% CI on stable oracle gap: [-0.057, 0.070] (threshold: lower >0) → FAIL.
+- diff_from_fixed_rate = 0% (threshold: ≥30%) → FAIL. No query's stable best-action family differs from strongest fixed.
+- median Spearman ρ = 0.745 (threshold: >0.30) → PASS. Action rankings are correlated across references.
+- All actions use 1 SAM call → PASS.
+- Key finding: The Phase X raw oracle gap of 0.0708 (from 10 exploratory queries) does NOT persist under fresh-query cross-reference evaluation. The stable oracle gap is only 0.0061, well below the 0.015 threshold. The raw gap was almost entirely Winner's Curse / selection bias. When the oracle action selected on Reference Set A is evaluated on Reference Set B, it performs WORSE than the strongest fixed action (cross A→B = 0.4258 < fixed = 0.4338).
+- Routing per section 19.1: Bank Policy (Y3) and Holdout are PROHIBITED. Search Oracle stability audit (Y2) is ALLOWED for diagnostic purposes. If Y2 also fails, final state = `PHASEY_SEARCH_ORACLE_DIAGNOSTIC_ONLY`.
+
+## 2026-07-21 Phase Y Gate Y2 — Search Oracle Stability (FAILED)
+
+- Y2 Search Oracle Stability audit completed: 41 validation queries, GT-guided greedy add/remove positives + add negatives over dual reference sets A/B with cross-evaluation.
+- Runtime: 29357.5s (~8.15 GPU-hours), 148757 total SAM calls (search budget, not deployed calls). Mean ~12 min/query.
+- Gate Y2 decision: `PHASEY_GATE_Y2_SEARCH_ORACLE_OVERFIT` — 1 of 5 conditions passed.
+- Raw search Dice (mean over A, B): 0.5947. Raw search gap over fixed = 0.1609.
+- Cross-reference search Dice (A→B, B→A averaged): 0.4105 (BELOW fixed 0.4338!) → cond1 FAIL (need ≥ fixed + 0.03 = 0.4638).
+- Search optimism = 0.1843, optimism ratio = 1.1449 (threshold: ≤0.50) → cond3 FAIL. Optimism exceeds the entire raw gap, meaning raw search Dice is almost entirely reference-overfit artefact.
+- Paired bootstrap 95% CI on (cross - fixed): [-0.089, 0.040] (threshold: lower >0) → cond2 FAIL.
+- Median |K_A - K_B| = 6.0 (≤8) → cond4 PASS. K is stable across references even though Dice is not.
+- A-search prompt beats strongest fixed on B: 26.8% of queries (threshold: ≥70%) → cond5 FAIL.
+- Mean point overlap (Jaccard) = 0.332, mean rank overlap = 0.558, mean spatial overlap (IoU) = 0.898.
+- Key finding: The Phase X search oracle Dice of 0.7256 (from 10 exploratory queries) does NOT persist under cross-reference evaluation. Raw search Dice on the full 41-query validation set is only 0.5947, and cross-reference Dice collapses to 0.4105 — below the strongest fixed action (0.4338). The search oracle overfits to the reference set's candidate pool and cannot generalize to a different reference.
+- Final routing per section 19.1: Y1 FAIL + Y2 FAIL → final state = `PHASEY_SEARCH_ORACLE_DIAGNOSTIC_ONLY`. Bank Policy (Y3), Point-Subset (Y4), and Confirmatory Holdout remain PROHIBITED. Formal test remains LOCKED.
+- Allowed claim per section 21 (情况 A): "The large raw oracle gap observed in the exploratory 10-query audit did not persist under fresh-query and cross-reference evaluation."
+- Total Phase Y GPU usage: 11.28 GPU-hours (Y1: 3.13h + Y2: 8.15h), well under the 155 GPU-hour cap.
+

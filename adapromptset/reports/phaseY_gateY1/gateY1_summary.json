@@ -1,0 +1,37 @@
+{
+  "gate_y1": {
+    "query_count": 41,
+    "action_count": 210,
+    "best_fixed_action": "Y_P_TOPK_K50_N0_N_NONE_G1_C1",
+    "fixed_A_dice": 0.43379819236507783,
+    "oracle_A": 0.5007257872057267,
+    "oracle_B": 0.4836125456615921,
+    "cross_A_to_B": 0.4257883596670754,
+    "cross_B_to_A": 0.4539130826808166,
+    "stable_oracle": 0.43985072117394597,
+    "optimism_A": 0.07493742753865129,
+    "optimism_B": 0.029699462980775526,
+    "raw_gap_A": 0.06692759484064886,
+    "stable_oracle_gap": 0.006052528808868141,
+    "bootstrap_ci_lo": -0.05717108082880834,
+    "bootstrap_ci_hi": 0.0699151431455973,
+    "exact_action_agreement_rate": 0.04878048780487805,
+    "kplus_bin_agreement_rate": 0.3902439024390244,
+    "selector_agreement_rate": 1.0,
+    "median_spearman_rho": 0.7449545303319534,
+    "mean_top3_overlap": 0.08943089430894309,
+    "win_consistency_rate": 0.8292682926829268,
+    "diff_from_fixed_rate": 0.0,
+    "optimism_ratio_A": 1.1196790758292365,
+    "conditions": {
+      "cond1_stable_oracle_gap_ge_0p015": false,
+      "cond2_bootstrap_ci_lo_gt_0": false,
+      "cond3_30pct_diff_from_fixed": false,
+      "cond4_median_spearman_rho_gt_0p30": true,
+      "cond5_optimism_le_60pct_gap": false,
+      "cond6_all_one_sam_call": true
+    },
+    "decision": "PHASEY_GATE_Y1_ORACLE_GAP_SMALL"
+  },
+  "pareto": null
+}

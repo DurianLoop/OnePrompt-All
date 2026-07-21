@@ -1,131 +1,84 @@
 # Phase Y Gate Status
 
-Date: 2026-07-21
+Date: 2026-07-21 (final)
 
-Phase: preregistration (no new SAM inference yet).
+Phase: COMPLETE. Final state: `PHASEY_SEARCH_ORACLE_DIAGNOSTIC_ONLY`.
 
 Directive: `AdaPromptSet_PhaseY_Policy_Feasibility.md`
 
 ## Pre-Gate: Preregistration Completeness
 
-Status: `PENDING_PREREGISTRATION_COMMIT`
+Status: `COMPLETE`
 
-Required artifacts before any new SAM inference:
-
-- `docs/phaseY_goal_read_receipt.md`
-- `docs/phaseY_scientific_questions.md`
-- `docs/phaseY_data_split_protocol.md`
-- `docs/phaseY_reference_protocol.md`
-- `docs/phaseY_single_call_action_bank.md`
-- `docs/phaseY_oracle_stability_protocol.md`
-- `docs/phaseY_bank_policy_protocol.md`
-- `docs/phaseY_point_subset_protocol.md`
-- `docs/phaseY_statistics_protocol.md`
-- `docs/phaseY_claim_registry.md`
-- `docs/phaseY_test_lock_notice.md`
-- `reports/phaseY_gate_status.md`
-- `reports/phaseY_compute_ledger.csv`
-- `reports/phaseY_protocol_snapshot.json`
-- `reports/phaseY_input_hashes.json`
-- `configs/actions/phaseY_full_single_call_bank.yaml`
-- `configs/actions/phaseY_compact_policy_bank.yaml`
-- `manifests/phaseY/policy_train_queries.csv`
-- `manifests/phaseY/policy_validation_queries.csv`
-- `manifests/phaseY/confirmatory_holdout_queries.csv`
-- `manifests/phaseY/reference_pool.csv`
-- `manifests/phaseY/reference_set_A.csv`
-- `manifests/phaseY/reference_set_B.csv`
-- `reports/phaseY_data_audit/data_audit_summary.md`
-- `reports/phaseY_data_audit/split_summary.json`
-- `reports/phaseY_reference_audit.json`
-
-Failure code if any artifact is missing: `BLOCKED_PREREGISTRATION_INCOMPLETE`.
+Preregistration commit: `2d61ef8` on branch `phaseY-policy-feasibility`.
+All required artifacts created and hashed before any new SAM inference.
 
 ## Gate Y1 — Fresh-Query Action Heterogeneity
 
-Status: `PENDING_PREREGISTRATION_COMMIT`
+Status: `FAILED` → `PHASEY_GATE_Y1_ORACLE_GAP_SMALL`
 
-Scope: Policy Validation Queries (41 cases), full audit bank
-(210 actions), Reference Sets A and B.
+Scope: 41 validation queries × 2 reference sets (A, B) × 3 references = 246 pairs, 210 actions per pair.
+Runtime: ~3.13 GPU-hours (11264.2s).
 
-Pass conditions (all must hold):
-1. `stable_oracle_gap >= 0.015 Dice`
-2. paired bootstrap 95% CI lower bound > 0
-3. `>= 30% validation queries` stable best-action family != strongest fixed
-4. cross-reference action-rank `median Spearman rho > 0.30`
-5. `oracle optimism <= 60% of raw oracle gap`
-6. all actions fixed at 1 SAM call (no call-count confound)
+Results (6 conditions, 2 passed):
+1. `stable_oracle_gap = 0.0061` (need ≥0.015) → **FAIL**
+2. bootstrap 95% CI = [-0.057, 0.070] (need lower >0) → **FAIL**
+3. `diff_from_fixed_rate = 0%` (need ≥30%) → **FAIL**
+4. `median Spearman ρ = 0.745` (need >0.30) → **PASS**
+5. `optimism_ratio_A = 1.12` (need ≤0.60) → **FAIL**
+6. all actions 1 SAM call → **PASS**
 
-Pass: `PHASEY_GATE_Y1_STABLE_HETEROGENEITY`
+Key metrics:
+- Strongest fixed: `Y_P_TOPK_K50_N0_N_NONE_G1_C1`, Dice=0.4338
+- Raw oracle A: 0.5007 (gap=0.0669)
+- Cross A→B: 0.4258 (below fixed!), Cross B→A: 0.4539
+- Stable oracle: 0.4399, stable gap: 0.0061
+- Optimism A: 0.0749 (112% of raw gap)
 
-Fail branches:
-- `PHASEY_GATE_Y1_REFERENCE_UNSTABLE` (cross-reference gap collapses)
-- `PHASEY_GATE_Y1_SELECTION_BIAS_DOMINATES` (optimism > 60%)
-- `PHASEY_GATE_Y1_ORACLE_GAP_SMALL` (gap < 0.015)
-
-On Y1 fail: bank-action policy training is BLOCKED; allowed to pivot to
-point-subset stability audit only; holdout/test access forbidden.
+Interpretation: Phase X's raw oracle gap (0.0708 from 10 queries) was almost entirely Winner's Curse / selection bias. Under fresh-query cross-reference evaluation, the stable gap collapses to 0.0061.
 
 ## Gate Y2 — Search Oracle Stability
 
-Status: `PENDING_GATE_Y1`
+Status: `FAILED` → `PHASEY_GATE_Y2_SEARCH_ORACLE_OVERFIT`
 
-Scope: Policy Train + Validation Queries only (121 cases). Holdout and
-formal test are forbidden for search oracle.
+Scope: 41 validation queries, GT-guided greedy search on dual reference sets A/B with cross-evaluation.
+Runtime: ~8.15 GPU-hours (29357.5s), 148757 SAM calls (search budget, not deployed calls).
 
-Pass conditions:
-1. `cross-reference search >= 0.03 Dice` over strongest fixed
-2. paired bootstrap CI lower bound > 0
-3. `search optimism <= 50% of raw search gap`
-4. `median |K_A - K_B| <= 8` OR cross Dice diff <= 0.01
-5. `>= 70% queries`: A-search prompt beats strongest fixed on B
+Results (5 conditions, 1 passed):
+1. `cross-reference search Dice = 0.4105` (need ≥ fixed + 0.03 = 0.4638) → **FAIL**
+2. paired bootstrap 95% CI = [-0.089, 0.040] (need lower >0) → **FAIL**
+3. `optimism_ratio = 1.1449` (need ≤0.50) → **FAIL**
+4. `median |K_A - K_B| = 6.0` (need ≤8) → **PASS**
+5. `A beats fixed on B = 26.8%` (need ≥70%) → **FAIL**
 
-Pass: `PHASEY_GATE_Y2_SEARCH_LABELS_STABLE`
-Fail: `PHASEY_GATE_Y2_SEARCH_ORACLE_OVERFIT`
+Key metrics:
+- Fixed baseline: `Y_P_TOPK_K50_N0_N_NONE_G1_C1`, Dice=0.4338
+- Raw search Dice: 0.5947 (gap over fixed = 0.1609)
+- Cross-reference search Dice: 0.4105 (BELOW fixed 0.4338!)
+- Search optimism: 0.1843 (114.49% of raw gap)
+- Mean point overlap (Jaccard): 0.3322
+- Mean rank overlap (Jaccard): 0.5577
+- Mean spatial overlap (IoU): 0.8979
 
-Interpretation rules (section 9.3):
-- raw high, cross high -> `SEARCH_ORACLE_REFERENCE_STABLE`
-- raw high, cross drops -> `SEARCH_ORACLE_REFERENCE_OVERFIT`
-- K unstable, cross Dice stable -> `MULTIPLE_EQUIVALENT_PROMPTS`
-- both unstable -> `SEARCH_LABELS_NOT_SUITABLE_FOR_SUPERVISION`
+Interpretation: The Phase X search oracle Dice of 0.7256 (from 10 exploratory queries) does NOT persist under cross-reference evaluation. Raw search Dice on the full 41-query validation set is only 0.5947, and cross-reference Dice collapses to 0.4105 — below the strongest fixed action. The search oracle overfits to the reference set's candidate pool and cannot generalize to a different reference.
 
 ## Gate Y3 — Bank Policy Validation
 
-Status: `PENDING_GATE_Y1`
+Status: `BLOCKED_BY_GATE_Y1_FAIL`
 
-Scope: compact policy bank (12-32 actions, Pareto-pruned on train-only),
-M0-M5 model ladder, 3 seeds per learned model, Validation Queries.
-
-Pass conditions:
-1. `Delta Dice >= 0.010` over strongest fixed on validation
-2. paired bootstrap 95% CI lower bound > 0
-3. `oracle recovery >= 30%` (policy Dice - strongest fixed) / (oracle - strongest fixed)
-
-Pass: `PHASEY_GATE_Y3_BANK_POLICY_VALIDATED`
-Fail: `PHASEY_GATE_Y3_BANK_POLICY_INSUFFICIENT`
+Y1 failure prohibits bank-action policy training per directive section 19.1.
 
 ## Gate Y4 — Point-Subset Learnability
 
-Status: `PENDING_GATE_Y2`
+Status: `BLOCKED_BY_GATE_Y2_FAIL`
 
-Scope: P0-P5 point-subset ladder, trained on train queries with search
-oracle labels, validated on Validation Queries.
-
-Pass conditions (either):
-1. `Delta Dice >= 0.015` over strongest fixed, OR
-2. `Delta Dice >= 0.0075` over bank policy (Gate Y3 winner)
-Plus: paired bootstrap 95% CI lower bound > 0.
-
-Pass: `PHASEY_GATE_Y4_POINT_SUBSET_LEARNABLE`
-Fail: `PHASEY_GATE_Y4_POINT_SUBSET_NOT_LEARNABLE`
+Y2 failure prohibits Point-Subset Track per directive section 19.1 routing (Y1 fail + Y2 fail → diagnostic only).
 
 ## Holdout Evaluation
 
-Status: `PENDING_ALL_GATES`
+Status: `BLOCKED_BY_GATE_Y1_FAIL`
 
-Scope: Confirmatory Holdout (40 cases). Run ONCE on the single frozen
-best model from Y3/Y4. No model selection on holdout. No holdout access
-before the final frozen run.
+Y1 failure prohibits holdout access per directive section 19.1.
 
 ## Test Lock
 
@@ -134,3 +87,16 @@ Status: `LOCKED_UNUSED`
 MoNuSAC formal test (101 cases), GlaS testA/testB, DDR test, IDRID test
 remain locked. No test access for K, action bank, router, features,
 model capacity, or seed selection.
+
+## Final State
+
+`PHASEY_SEARCH_ORACLE_DIAGNOSTIC_ONLY`
+
+Per directive section 19.1: Y1 fail + Y2 fail → diagnostic only.
+
+Allowed claim (section 21, 情况 A):
+> The large raw oracle gap observed in the exploratory 10-query audit did not persist under fresh-query and cross-reference evaluation.
+
+Total Phase Y GPU usage: 11.28 GPU-hours (Y1: 3.13h + Y2: 8.15h) / 155 GPU-hour cap.
+
+Final report: `reports/phaseY_final_report.md` and `reports/phaseY_final_report.json`.
