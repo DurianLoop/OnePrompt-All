@@ -1122,8 +1122,8 @@ Phase Y directive: `AdaPromptSet_PhaseY_Policy_Feasibility.md`. Branch: `phaseY-
   - 2026-07-21: `docs/phaseY_{goal_read_receipt,scientific_questions,data_split_protocol,reference_protocol,single_call_action_bank,oracle_stability_protocol,bank_policy_protocol,point_subset_protocol,statistics_protocol,claim_registry,test_lock_notice}.md`.
 - [x] GATE Run focused unit tests to verify script paths
   - 2026-07-21: `tests/test_phaseY_preregistration.py` — 15 tests, all PASS. Verified: 210 actions in bank, patient-level disjoint splits, no test cases in manifests, reference sets A/B disjoint per query, reference patient != query patient, Phase X excluded patients absent, protocol snapshot complete, input hashes non-empty.
-- [ ] GATE Submit preregistration commit `phaseY: preregister fresh-query policy feasibility study`
-  - Must precede any new SAM inference.
+- [x] GATE Submit preregistration commit `phaseY: preregister fresh-query policy feasibility study`
+  - 2026-07-21: Commit `2d61ef8` on branch `phaseY-policy-feasibility`. 40 files, 7372 insertions. Preregistration complete — SAM inference now allowed under the Phase Y protocol.
 
 ### Post-Registration (SAM inference allowed)
 
