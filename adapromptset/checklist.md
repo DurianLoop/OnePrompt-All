@@ -1094,3 +1094,48 @@ Decision summary:
 
 Current Phase X status: `PREREGISTRATION_PENDING_COMMIT`.
 
+---
+
+## Phase Y — Fresh-Query Policy Feasibility (2026-07-21)
+
+Phase Y directive: `AdaPromptSet_PhaseY_Policy_Feasibility.md`. Branch: `phaseY-policy-feasibility`. All Phase X evidence labeled `EXPLORATORY_PHASEX_EVIDENCE`.
+
+### Pre-Registration (CPU-only, no SAM inference)
+
+- [x] GATE Read Phase X reports and action definitions
+  - 2026-07-21: Read `reports/phaseX_final_report.md`, `reports/phaseX_gate_status.md`, `reports/phaseX_search_oracle/search_oracle_summary.md`, `reports/phaseX_protocol_snapshot.json`, `reports/phaseX_input_hashes.json`, `docs/action_space_problem_statement.md`.
+- [x] Create `phaseY-policy-feasibility` branch from Phase X commit `ae883df`
+  - 2026-07-21: Branch created.
+- [x] GATE Complete prior exposure and case identity audit
+  - 2026-07-21: `reports/phaseY_data_audit/` — 310 cases audited. 10 Phase X exposed patients identified and excluded. Critical: train_111+train_113 same patient (TCGA-UZ-A9PO); train_004+train_005 same patient (TCGA-55-1594).
+- [x] Build fresh train/validation/holdout splits (target 80/40/40)
+  - 2026-07-21: `manifests/phaseY/` — train=80 (18 patients), val=41 (10 patients), holdout=40 (8 patients). Patient-level disjoint. Seed=20260721.
+- [x] Build Reference Set A/B (3+3 non-overlapping per query)
+  - 2026-07-21: `manifests/phaseY/reference_set_{A,B}.csv` — 483 rows each. Reference audit PASS.
+- [x] GATE Freeze single-call one-group action bank (full audit bank)
+  - 2026-07-21: `configs/actions/phaseY_full_single_call_bank.yaml` — 210 actions. K+ in {5,10,15,20,25,30,40,50,75,100}, K- in {0,1,3,5}, 3 pos selectors, 2 neg selectors, G_ONE_GROUP, 1 call.
+- [x] Freeze statistics protocol and Gate decision rules
+  - 2026-07-21: `docs/phaseY_statistics_protocol.md` — paired patient-cluster bootstrap (10k iters, 95% CI), Benjamini-Hochberg FDR 0.05. Y1: gap>=0.015. Y2: cross-ref>=0.03. Y3: Delta>=0.010. Y4: Delta>=0.015 or >=0.0075.
+- [x] Generate input_hashes / protocol_snapshot / compute_ledger
+  - 2026-07-21: `reports/phaseY_protocol_snapshot.json`, `reports/phaseY_input_hashes.json`, `reports/phaseY_compute_ledger.csv`, `reports/phaseY_gate_status.md`.
+- [x] Create 11 preregistration docs
+  - 2026-07-21: `docs/phaseY_{goal_read_receipt,scientific_questions,data_split_protocol,reference_protocol,single_call_action_bank,oracle_stability_protocol,bank_policy_protocol,point_subset_protocol,statistics_protocol,claim_registry,test_lock_notice}.md`.
+- [x] GATE Run focused unit tests to verify script paths
+  - 2026-07-21: `tests/test_phaseY_preregistration.py` — 15 tests, all PASS. Verified: 210 actions in bank, patient-level disjoint splits, no test cases in manifests, reference sets A/B disjoint per query, reference patient != query patient, Phase X excluded patients absent, protocol snapshot complete, input hashes non-empty.
+- [ ] GATE Submit preregistration commit `phaseY: preregister fresh-query policy feasibility study`
+  - Must precede any new SAM inference.
+
+### Post-Registration (SAM inference allowed)
+
+- [ ] Utility matrix on validation queries (Gate Y1): 210 actions × 41 queries × 2 ref sets
+- [ ] GATE Y1 decision: stable heterogeneity?
+- [ ] GT-guided search oracle on train+val (Gate Y2): dual-reference search
+- [ ] GATE Y2 decision: search labels stable?
+- [ ] Pareto pruning on train-only -> compact policy bank (12-32 actions)
+- [ ] Bank-action policy M0-M5 (Gate Y3): 3 seeds each
+- [ ] GATE Y3 decision: bank policy validated?
+- [ ] Point-subset policy P0-P5 (Gate Y4): 3 seeds each
+- [ ] GATE Y4 decision: point-subset learnable?
+- [ ] GATE Holdout evaluation: single frozen model run on 40 holdout queries
+- [ ] Generate Phase Y final report: 18 tables, 20 figures
+

@@ -1,0 +1,9 @@
+stage,phase,gpu_hours,cpu_seconds,status,notes
+data_audit_and_split,phaseY,0.0,5.0,COMPLETE,read-only manifest processing
+preregistration,phaseY,0.0,1.0,COMPLETE,doc and config generation
+utility_matrix_Y1,phaseY,0.0,0.0,PENDING,Gate Y1: 210 actions x 161 queries x 2 ref sets
+search_oracle_Y2,phaseY,0.0,0.0,PENDING,Gate Y2: GT-guided search on train+val only
+bank_policy_Y3,phaseY,0.0,0.0,PENDING,Gate Y3: M0-M5 on compact bank
+point_subset_Y4,phaseY,0.0,0.0,PENDING,Gate Y4: P0-P5 point-subset models
+holdout_evaluation,phaseY,0.0,0.0,PENDING,single frozen-model run on 40 holdout queries
+statistics_and_figures,phaseY,0.0,0.0,PENDING,18 tables + 20 figures

@@ -1,0 +1,1916 @@
+# Phase Y Single-Call One-Group Full Audit Bank
+# Directive: AdaPromptSet_PhaseY_Policy_Feasibility.md section 7.1
+# Frozen: do NOT modify after preregistration commit.
+# All actions use G_ONE_GROUP and exactly 1 SAM call.
+
+bank_name: phaseY_full_single_call_bank
+bank_version: v1
+frozen_at: preregistration
+total_actions: 210
+
+frozen_dimensions:
+  k_positive: [5, 10, 15, 20, 25, 30, 40, 50, 75, 100]
+  k_negative: [0, 1, 3, 5]
+  positive_selectors: ['P_TOPK', 'P_SPREAD', 'P_LOCAL_PEAKS']
+  negative_selectors_k0: ['N_NONE']
+  negative_selectors_kgt0: ['N_BOTTOMK', 'N_HIGH_BACKGROUND']
+  grouping: G_ONE_GROUP
+  sam_calls: 1
+
+constraints:
+  - No query GT in action definition
+  - All points in a single prompt group
+  - Exactly 1 SAM call per action
+  - No mask union / multimask fusion beyond frozen MVP rule
+
+actions:
+  - action_id: Y_P_TOPK_K5_N0_N_NONE_G1_C1
+    action_index: 1
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 5
+  - action_id: Y_P_TOPK_K5_N1_N_BOTTOMK_G1_C1
+    action_index: 2
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 6
+  - action_id: Y_P_TOPK_K5_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 3
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 6
+  - action_id: Y_P_TOPK_K5_N3_N_BOTTOMK_G1_C1
+    action_index: 4
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 8
+  - action_id: Y_P_TOPK_K5_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 5
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 8
+  - action_id: Y_P_TOPK_K5_N5_N_BOTTOMK_G1_C1
+    action_index: 6
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_TOPK_K5_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 7
+    positive_selector: P_TOPK
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_TOPK_K10_N0_N_NONE_G1_C1
+    action_index: 8
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_TOPK_K10_N1_N_BOTTOMK_G1_C1
+    action_index: 9
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 11
+  - action_id: Y_P_TOPK_K10_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 10
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 11
+  - action_id: Y_P_TOPK_K10_N3_N_BOTTOMK_G1_C1
+    action_index: 11
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 13
+  - action_id: Y_P_TOPK_K10_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 12
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 13
+  - action_id: Y_P_TOPK_K10_N5_N_BOTTOMK_G1_C1
+    action_index: 13
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_TOPK_K10_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 14
+    positive_selector: P_TOPK
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_TOPK_K15_N0_N_NONE_G1_C1
+    action_index: 15
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_TOPK_K15_N1_N_BOTTOMK_G1_C1
+    action_index: 16
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 16
+  - action_id: Y_P_TOPK_K15_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 17
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 16
+  - action_id: Y_P_TOPK_K15_N3_N_BOTTOMK_G1_C1
+    action_index: 18
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 18
+  - action_id: Y_P_TOPK_K15_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 19
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 18
+  - action_id: Y_P_TOPK_K15_N5_N_BOTTOMK_G1_C1
+    action_index: 20
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_TOPK_K15_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 21
+    positive_selector: P_TOPK
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_TOPK_K20_N0_N_NONE_G1_C1
+    action_index: 22
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_TOPK_K20_N1_N_BOTTOMK_G1_C1
+    action_index: 23
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 21
+  - action_id: Y_P_TOPK_K20_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 24
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 21
+  - action_id: Y_P_TOPK_K20_N3_N_BOTTOMK_G1_C1
+    action_index: 25
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 23
+  - action_id: Y_P_TOPK_K20_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 26
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 23
+  - action_id: Y_P_TOPK_K20_N5_N_BOTTOMK_G1_C1
+    action_index: 27
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_TOPK_K20_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 28
+    positive_selector: P_TOPK
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_TOPK_K25_N0_N_NONE_G1_C1
+    action_index: 29
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_TOPK_K25_N1_N_BOTTOMK_G1_C1
+    action_index: 30
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 26
+  - action_id: Y_P_TOPK_K25_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 31
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 26
+  - action_id: Y_P_TOPK_K25_N3_N_BOTTOMK_G1_C1
+    action_index: 32
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 28
+  - action_id: Y_P_TOPK_K25_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 33
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 28
+  - action_id: Y_P_TOPK_K25_N5_N_BOTTOMK_G1_C1
+    action_index: 34
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_TOPK_K25_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 35
+    positive_selector: P_TOPK
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_TOPK_K30_N0_N_NONE_G1_C1
+    action_index: 36
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_TOPK_K30_N1_N_BOTTOMK_G1_C1
+    action_index: 37
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 31
+  - action_id: Y_P_TOPK_K30_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 38
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 31
+  - action_id: Y_P_TOPK_K30_N3_N_BOTTOMK_G1_C1
+    action_index: 39
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 33
+  - action_id: Y_P_TOPK_K30_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 40
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 33
+  - action_id: Y_P_TOPK_K30_N5_N_BOTTOMK_G1_C1
+    action_index: 41
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 35
+  - action_id: Y_P_TOPK_K30_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 42
+    positive_selector: P_TOPK
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 35
+  - action_id: Y_P_TOPK_K40_N0_N_NONE_G1_C1
+    action_index: 43
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 40
+  - action_id: Y_P_TOPK_K40_N1_N_BOTTOMK_G1_C1
+    action_index: 44
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 41
+  - action_id: Y_P_TOPK_K40_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 45
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 41
+  - action_id: Y_P_TOPK_K40_N3_N_BOTTOMK_G1_C1
+    action_index: 46
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 43
+  - action_id: Y_P_TOPK_K40_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 47
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 43
+  - action_id: Y_P_TOPK_K40_N5_N_BOTTOMK_G1_C1
+    action_index: 48
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 45
+  - action_id: Y_P_TOPK_K40_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 49
+    positive_selector: P_TOPK
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 45
+  - action_id: Y_P_TOPK_K50_N0_N_NONE_G1_C1
+    action_index: 50
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 50
+  - action_id: Y_P_TOPK_K50_N1_N_BOTTOMK_G1_C1
+    action_index: 51
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 51
+  - action_id: Y_P_TOPK_K50_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 52
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 51
+  - action_id: Y_P_TOPK_K50_N3_N_BOTTOMK_G1_C1
+    action_index: 53
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 53
+  - action_id: Y_P_TOPK_K50_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 54
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 53
+  - action_id: Y_P_TOPK_K50_N5_N_BOTTOMK_G1_C1
+    action_index: 55
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 55
+  - action_id: Y_P_TOPK_K50_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 56
+    positive_selector: P_TOPK
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 55
+  - action_id: Y_P_TOPK_K75_N0_N_NONE_G1_C1
+    action_index: 57
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 75
+  - action_id: Y_P_TOPK_K75_N1_N_BOTTOMK_G1_C1
+    action_index: 58
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 76
+  - action_id: Y_P_TOPK_K75_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 59
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 76
+  - action_id: Y_P_TOPK_K75_N3_N_BOTTOMK_G1_C1
+    action_index: 60
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 78
+  - action_id: Y_P_TOPK_K75_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 61
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 78
+  - action_id: Y_P_TOPK_K75_N5_N_BOTTOMK_G1_C1
+    action_index: 62
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 80
+  - action_id: Y_P_TOPK_K75_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 63
+    positive_selector: P_TOPK
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 80
+  - action_id: Y_P_TOPK_K100_N0_N_NONE_G1_C1
+    action_index: 64
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 100
+  - action_id: Y_P_TOPK_K100_N1_N_BOTTOMK_G1_C1
+    action_index: 65
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 101
+  - action_id: Y_P_TOPK_K100_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 66
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 101
+  - action_id: Y_P_TOPK_K100_N3_N_BOTTOMK_G1_C1
+    action_index: 67
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 103
+  - action_id: Y_P_TOPK_K100_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 68
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 103
+  - action_id: Y_P_TOPK_K100_N5_N_BOTTOMK_G1_C1
+    action_index: 69
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 105
+  - action_id: Y_P_TOPK_K100_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 70
+    positive_selector: P_TOPK
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 105
+  - action_id: Y_P_SPREAD_K5_N0_N_NONE_G1_C1
+    action_index: 71
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 5
+  - action_id: Y_P_SPREAD_K5_N1_N_BOTTOMK_G1_C1
+    action_index: 72
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 6
+  - action_id: Y_P_SPREAD_K5_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 73
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 6
+  - action_id: Y_P_SPREAD_K5_N3_N_BOTTOMK_G1_C1
+    action_index: 74
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 8
+  - action_id: Y_P_SPREAD_K5_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 75
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 8
+  - action_id: Y_P_SPREAD_K5_N5_N_BOTTOMK_G1_C1
+    action_index: 76
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_SPREAD_K5_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 77
+    positive_selector: P_SPREAD
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_SPREAD_K10_N0_N_NONE_G1_C1
+    action_index: 78
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_SPREAD_K10_N1_N_BOTTOMK_G1_C1
+    action_index: 79
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 11
+  - action_id: Y_P_SPREAD_K10_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 80
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 11
+  - action_id: Y_P_SPREAD_K10_N3_N_BOTTOMK_G1_C1
+    action_index: 81
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 13
+  - action_id: Y_P_SPREAD_K10_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 82
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 13
+  - action_id: Y_P_SPREAD_K10_N5_N_BOTTOMK_G1_C1
+    action_index: 83
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_SPREAD_K10_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 84
+    positive_selector: P_SPREAD
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_SPREAD_K15_N0_N_NONE_G1_C1
+    action_index: 85
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_SPREAD_K15_N1_N_BOTTOMK_G1_C1
+    action_index: 86
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 16
+  - action_id: Y_P_SPREAD_K15_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 87
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 16
+  - action_id: Y_P_SPREAD_K15_N3_N_BOTTOMK_G1_C1
+    action_index: 88
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 18
+  - action_id: Y_P_SPREAD_K15_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 89
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 18
+  - action_id: Y_P_SPREAD_K15_N5_N_BOTTOMK_G1_C1
+    action_index: 90
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_SPREAD_K15_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 91
+    positive_selector: P_SPREAD
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_SPREAD_K20_N0_N_NONE_G1_C1
+    action_index: 92
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_SPREAD_K20_N1_N_BOTTOMK_G1_C1
+    action_index: 93
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 21
+  - action_id: Y_P_SPREAD_K20_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 94
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 21
+  - action_id: Y_P_SPREAD_K20_N3_N_BOTTOMK_G1_C1
+    action_index: 95
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 23
+  - action_id: Y_P_SPREAD_K20_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 96
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 23
+  - action_id: Y_P_SPREAD_K20_N5_N_BOTTOMK_G1_C1
+    action_index: 97
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_SPREAD_K20_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 98
+    positive_selector: P_SPREAD
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_SPREAD_K25_N0_N_NONE_G1_C1
+    action_index: 99
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_SPREAD_K25_N1_N_BOTTOMK_G1_C1
+    action_index: 100
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 26
+  - action_id: Y_P_SPREAD_K25_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 101
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 26
+  - action_id: Y_P_SPREAD_K25_N3_N_BOTTOMK_G1_C1
+    action_index: 102
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 28
+  - action_id: Y_P_SPREAD_K25_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 103
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 28
+  - action_id: Y_P_SPREAD_K25_N5_N_BOTTOMK_G1_C1
+    action_index: 104
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_SPREAD_K25_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 105
+    positive_selector: P_SPREAD
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_SPREAD_K30_N0_N_NONE_G1_C1
+    action_index: 106
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_SPREAD_K30_N1_N_BOTTOMK_G1_C1
+    action_index: 107
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 31
+  - action_id: Y_P_SPREAD_K30_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 108
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 31
+  - action_id: Y_P_SPREAD_K30_N3_N_BOTTOMK_G1_C1
+    action_index: 109
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 33
+  - action_id: Y_P_SPREAD_K30_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 110
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 33
+  - action_id: Y_P_SPREAD_K30_N5_N_BOTTOMK_G1_C1
+    action_index: 111
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 35
+  - action_id: Y_P_SPREAD_K30_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 112
+    positive_selector: P_SPREAD
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 35
+  - action_id: Y_P_SPREAD_K40_N0_N_NONE_G1_C1
+    action_index: 113
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 40
+  - action_id: Y_P_SPREAD_K40_N1_N_BOTTOMK_G1_C1
+    action_index: 114
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 41
+  - action_id: Y_P_SPREAD_K40_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 115
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 41
+  - action_id: Y_P_SPREAD_K40_N3_N_BOTTOMK_G1_C1
+    action_index: 116
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 43
+  - action_id: Y_P_SPREAD_K40_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 117
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 43
+  - action_id: Y_P_SPREAD_K40_N5_N_BOTTOMK_G1_C1
+    action_index: 118
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 45
+  - action_id: Y_P_SPREAD_K40_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 119
+    positive_selector: P_SPREAD
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 45
+  - action_id: Y_P_SPREAD_K50_N0_N_NONE_G1_C1
+    action_index: 120
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 50
+  - action_id: Y_P_SPREAD_K50_N1_N_BOTTOMK_G1_C1
+    action_index: 121
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 51
+  - action_id: Y_P_SPREAD_K50_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 122
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 51
+  - action_id: Y_P_SPREAD_K50_N3_N_BOTTOMK_G1_C1
+    action_index: 123
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 53
+  - action_id: Y_P_SPREAD_K50_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 124
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 53
+  - action_id: Y_P_SPREAD_K50_N5_N_BOTTOMK_G1_C1
+    action_index: 125
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 55
+  - action_id: Y_P_SPREAD_K50_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 126
+    positive_selector: P_SPREAD
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 55
+  - action_id: Y_P_SPREAD_K75_N0_N_NONE_G1_C1
+    action_index: 127
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 75
+  - action_id: Y_P_SPREAD_K75_N1_N_BOTTOMK_G1_C1
+    action_index: 128
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 76
+  - action_id: Y_P_SPREAD_K75_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 129
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 76
+  - action_id: Y_P_SPREAD_K75_N3_N_BOTTOMK_G1_C1
+    action_index: 130
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 78
+  - action_id: Y_P_SPREAD_K75_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 131
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 78
+  - action_id: Y_P_SPREAD_K75_N5_N_BOTTOMK_G1_C1
+    action_index: 132
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 80
+  - action_id: Y_P_SPREAD_K75_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 133
+    positive_selector: P_SPREAD
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 80
+  - action_id: Y_P_SPREAD_K100_N0_N_NONE_G1_C1
+    action_index: 134
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 100
+  - action_id: Y_P_SPREAD_K100_N1_N_BOTTOMK_G1_C1
+    action_index: 135
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 101
+  - action_id: Y_P_SPREAD_K100_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 136
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 101
+  - action_id: Y_P_SPREAD_K100_N3_N_BOTTOMK_G1_C1
+    action_index: 137
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 103
+  - action_id: Y_P_SPREAD_K100_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 138
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 103
+  - action_id: Y_P_SPREAD_K100_N5_N_BOTTOMK_G1_C1
+    action_index: 139
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 105
+  - action_id: Y_P_SPREAD_K100_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 140
+    positive_selector: P_SPREAD
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 105
+  - action_id: Y_P_LOCAL_PEAKS_K5_N0_N_NONE_G1_C1
+    action_index: 141
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 5
+  - action_id: Y_P_LOCAL_PEAKS_K5_N1_N_BOTTOMK_G1_C1
+    action_index: 142
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 6
+  - action_id: Y_P_LOCAL_PEAKS_K5_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 143
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 6
+  - action_id: Y_P_LOCAL_PEAKS_K5_N3_N_BOTTOMK_G1_C1
+    action_index: 144
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 8
+  - action_id: Y_P_LOCAL_PEAKS_K5_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 145
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 8
+  - action_id: Y_P_LOCAL_PEAKS_K5_N5_N_BOTTOMK_G1_C1
+    action_index: 146
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_LOCAL_PEAKS_K5_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 147
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 5
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_LOCAL_PEAKS_K10_N0_N_NONE_G1_C1
+    action_index: 148
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 10
+  - action_id: Y_P_LOCAL_PEAKS_K10_N1_N_BOTTOMK_G1_C1
+    action_index: 149
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 11
+  - action_id: Y_P_LOCAL_PEAKS_K10_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 150
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 11
+  - action_id: Y_P_LOCAL_PEAKS_K10_N3_N_BOTTOMK_G1_C1
+    action_index: 151
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 13
+  - action_id: Y_P_LOCAL_PEAKS_K10_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 152
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 13
+  - action_id: Y_P_LOCAL_PEAKS_K10_N5_N_BOTTOMK_G1_C1
+    action_index: 153
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_LOCAL_PEAKS_K10_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 154
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 10
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_LOCAL_PEAKS_K15_N0_N_NONE_G1_C1
+    action_index: 155
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 15
+  - action_id: Y_P_LOCAL_PEAKS_K15_N1_N_BOTTOMK_G1_C1
+    action_index: 156
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 16
+  - action_id: Y_P_LOCAL_PEAKS_K15_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 157
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 16
+  - action_id: Y_P_LOCAL_PEAKS_K15_N3_N_BOTTOMK_G1_C1
+    action_index: 158
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 18
+  - action_id: Y_P_LOCAL_PEAKS_K15_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 159
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 18
+  - action_id: Y_P_LOCAL_PEAKS_K15_N5_N_BOTTOMK_G1_C1
+    action_index: 160
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_LOCAL_PEAKS_K15_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 161
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 15
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_LOCAL_PEAKS_K20_N0_N_NONE_G1_C1
+    action_index: 162
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 20
+  - action_id: Y_P_LOCAL_PEAKS_K20_N1_N_BOTTOMK_G1_C1
+    action_index: 163
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 21
+  - action_id: Y_P_LOCAL_PEAKS_K20_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 164
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 21
+  - action_id: Y_P_LOCAL_PEAKS_K20_N3_N_BOTTOMK_G1_C1
+    action_index: 165
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 23
+  - action_id: Y_P_LOCAL_PEAKS_K20_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 166
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 23
+  - action_id: Y_P_LOCAL_PEAKS_K20_N5_N_BOTTOMK_G1_C1
+    action_index: 167
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_LOCAL_PEAKS_K20_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 168
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 20
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_LOCAL_PEAKS_K25_N0_N_NONE_G1_C1
+    action_index: 169
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 25
+  - action_id: Y_P_LOCAL_PEAKS_K25_N1_N_BOTTOMK_G1_C1
+    action_index: 170
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 26
+  - action_id: Y_P_LOCAL_PEAKS_K25_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 171
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 26
+  - action_id: Y_P_LOCAL_PEAKS_K25_N3_N_BOTTOMK_G1_C1
+    action_index: 172
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 28
+  - action_id: Y_P_LOCAL_PEAKS_K25_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 173
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 28
+  - action_id: Y_P_LOCAL_PEAKS_K25_N5_N_BOTTOMK_G1_C1
+    action_index: 174
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_LOCAL_PEAKS_K25_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 175
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 25
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_LOCAL_PEAKS_K30_N0_N_NONE_G1_C1
+    action_index: 176
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 30
+  - action_id: Y_P_LOCAL_PEAKS_K30_N1_N_BOTTOMK_G1_C1
+    action_index: 177
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 31
+  - action_id: Y_P_LOCAL_PEAKS_K30_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 178
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 31
+  - action_id: Y_P_LOCAL_PEAKS_K30_N3_N_BOTTOMK_G1_C1
+    action_index: 179
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 33
+  - action_id: Y_P_LOCAL_PEAKS_K30_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 180
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 33
+  - action_id: Y_P_LOCAL_PEAKS_K30_N5_N_BOTTOMK_G1_C1
+    action_index: 181
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 35
+  - action_id: Y_P_LOCAL_PEAKS_K30_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 182
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 30
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 35
+  - action_id: Y_P_LOCAL_PEAKS_K40_N0_N_NONE_G1_C1
+    action_index: 183
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 40
+  - action_id: Y_P_LOCAL_PEAKS_K40_N1_N_BOTTOMK_G1_C1
+    action_index: 184
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 41
+  - action_id: Y_P_LOCAL_PEAKS_K40_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 185
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 41
+  - action_id: Y_P_LOCAL_PEAKS_K40_N3_N_BOTTOMK_G1_C1
+    action_index: 186
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 43
+  - action_id: Y_P_LOCAL_PEAKS_K40_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 187
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 43
+  - action_id: Y_P_LOCAL_PEAKS_K40_N5_N_BOTTOMK_G1_C1
+    action_index: 188
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 45
+  - action_id: Y_P_LOCAL_PEAKS_K40_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 189
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 40
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 45
+  - action_id: Y_P_LOCAL_PEAKS_K50_N0_N_NONE_G1_C1
+    action_index: 190
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 50
+  - action_id: Y_P_LOCAL_PEAKS_K50_N1_N_BOTTOMK_G1_C1
+    action_index: 191
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 51
+  - action_id: Y_P_LOCAL_PEAKS_K50_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 192
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 51
+  - action_id: Y_P_LOCAL_PEAKS_K50_N3_N_BOTTOMK_G1_C1
+    action_index: 193
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 53
+  - action_id: Y_P_LOCAL_PEAKS_K50_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 194
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 53
+  - action_id: Y_P_LOCAL_PEAKS_K50_N5_N_BOTTOMK_G1_C1
+    action_index: 195
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 55
+  - action_id: Y_P_LOCAL_PEAKS_K50_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 196
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 50
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 55
+  - action_id: Y_P_LOCAL_PEAKS_K75_N0_N_NONE_G1_C1
+    action_index: 197
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 75
+  - action_id: Y_P_LOCAL_PEAKS_K75_N1_N_BOTTOMK_G1_C1
+    action_index: 198
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 76
+  - action_id: Y_P_LOCAL_PEAKS_K75_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 199
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 76
+  - action_id: Y_P_LOCAL_PEAKS_K75_N3_N_BOTTOMK_G1_C1
+    action_index: 200
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 78
+  - action_id: Y_P_LOCAL_PEAKS_K75_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 201
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 78
+  - action_id: Y_P_LOCAL_PEAKS_K75_N5_N_BOTTOMK_G1_C1
+    action_index: 202
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 80
+  - action_id: Y_P_LOCAL_PEAKS_K75_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 203
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 75
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 80
+  - action_id: Y_P_LOCAL_PEAKS_K100_N0_N_NONE_G1_C1
+    action_index: 204
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_NONE
+    k_negative: 0
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 100
+  - action_id: Y_P_LOCAL_PEAKS_K100_N1_N_BOTTOMK_G1_C1
+    action_index: 205
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 101
+  - action_id: Y_P_LOCAL_PEAKS_K100_N1_N_HIGH_BACKGROUND_G1_C1
+    action_index: 206
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 1
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 101
+  - action_id: Y_P_LOCAL_PEAKS_K100_N3_N_BOTTOMK_G1_C1
+    action_index: 207
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 103
+  - action_id: Y_P_LOCAL_PEAKS_K100_N3_N_HIGH_BACKGROUND_G1_C1
+    action_index: 208
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 3
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 103
+  - action_id: Y_P_LOCAL_PEAKS_K100_N5_N_BOTTOMK_G1_C1
+    action_index: 209
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_BOTTOMK
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 105
+  - action_id: Y_P_LOCAL_PEAKS_K100_N5_N_HIGH_BACKGROUND_G1_C1
+    action_index: 210
+    positive_selector: P_LOCAL_PEAKS
+    k_positive: 100
+    negative_selector: N_HIGH_BACKGROUND
+    k_negative: 5
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+    point_count: 105

@@ -1,0 +1,19 @@
+{
+  "phase": "phaseY",
+  "stage": "reference_set_audit",
+  "directive_section": "5.3",
+  "reference_pool_size": 80,
+  "reference_set_A_rows": 483,
+  "reference_set_B_rows": 483,
+  "queries_with_references": 161,
+  "refs_per_query_per_set": 3,
+  "constraints": {
+    "references_from_train_only": true,
+    "reference_patient_not_query_patient": true,
+    "set_A_B_disjoint_per_query": true,
+    "fixed_seed": 20260721,
+    "no_result_based_selection": true
+  },
+  "violations": [],
+  "status": "PHASEY_REFERENCE_AUDIT_PASS"
+}

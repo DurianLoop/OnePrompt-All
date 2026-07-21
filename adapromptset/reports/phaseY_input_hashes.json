@@ -1,0 +1,146 @@
+{
+  "phase": "phaseY",
+  "preregistration_date": "2026-07-21",
+  "input_hashes": {
+    "docs/phaseY_goal_read_receipt.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_goal_read_receipt.md",
+      "sha256": "B4B3165BD9B4802F978E0F4E40288262D03F5FDB875406DCD722EAD72C7C3BFA",
+      "exists": true
+    },
+    "docs/phaseY_scientific_questions.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_scientific_questions.md",
+      "sha256": "DEA63D3A694E93A1530C925A030B95904CE6329BF310BD7EB6F6FD83C3FBD0EB",
+      "exists": true
+    },
+    "docs/phaseY_data_split_protocol.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_data_split_protocol.md",
+      "sha256": "30C33269EC55236402506D468C31F31BF2C197440D0522747B7E290CDF7CD888",
+      "exists": true
+    },
+    "docs/phaseY_reference_protocol.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_reference_protocol.md",
+      "sha256": "709B741795DD589E9A610D577120888556A1CDFD5C887E76A9D233DB0D8C11B8",
+      "exists": true
+    },
+    "docs/phaseY_single_call_action_bank.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_single_call_action_bank.md",
+      "sha256": "C8CC47E815618F0E9FEB95821520D4F4A92FC3F49100CC888249B993F79CBAE8",
+      "exists": true
+    },
+    "docs/phaseY_oracle_stability_protocol.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_oracle_stability_protocol.md",
+      "sha256": "D1D0E327BC2F747B3AAE163EDCFE387B77E927450B2623072BBC8C12071E0292",
+      "exists": true
+    },
+    "docs/phaseY_bank_policy_protocol.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_bank_policy_protocol.md",
+      "sha256": "304A4F5391DBD54FFE15AD6287191B6FEF8B0C307EBB8A6326FAA5F50BCB14E1",
+      "exists": true
+    },
+    "docs/phaseY_point_subset_protocol.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_point_subset_protocol.md",
+      "sha256": "A7ED39795DB0BAC1A37B998BA24FC69A9E5241BD11658733F2D751771C3C3D9B",
+      "exists": true
+    },
+    "docs/phaseY_statistics_protocol.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_statistics_protocol.md",
+      "sha256": "988B3B8FDE77F24CDCAF8AB579EF2F5DAE09C0AB022C145AB2A2F951D6ABAE94",
+      "exists": true
+    },
+    "docs/phaseY_claim_registry.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_claim_registry.md",
+      "sha256": "85978D3846FF72E3F3216B820358D4D4319CBDB00F670208FCA9D732DD8F4F6E",
+      "exists": true
+    },
+    "docs/phaseY_test_lock_notice.md": {
+      "path": "D:\\SAM\\adapromptset\\docs\\phaseY_test_lock_notice.md",
+      "sha256": "F0A118E632E05398E31159FA265AA28CAD0FCAA54468ECF03076285FF9C397EF",
+      "exists": true
+    },
+    "reports/phaseY_gate_status.md": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_gate_status.md",
+      "sha256": "75BC766FFBB11DCB4416695F3E81ABCC8BBD78761C74A14348B6C8CA054BCE91",
+      "exists": true
+    },
+    "reports/phaseY_compute_ledger.csv": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_compute_ledger.csv",
+      "sha256": "8CE6BD4AD15DD0D62A4005433A03E101B8907FC02D566F652658C6A7146DBCF9",
+      "exists": true
+    },
+    "reports/phaseY_protocol_snapshot.json": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_protocol_snapshot.json",
+      "sha256": "5C91A1E9BF6502A30C56407015FDF059616E586BFD34B4545E90E49ED8473ACF",
+      "exists": true
+    },
+    "reports/phaseY_input_hashes.json": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_input_hashes.json",
+      "sha256": "B118A827A90C611F0AC358BF65C0301CCE6421C3F51586BCC3B7E4ECD800EF64",
+      "exists": true
+    },
+    "configs/actions/phaseY_full_single_call_bank.yaml": {
+      "path": "D:\\SAM\\adapromptset\\configs\\actions\\phaseY_full_single_call_bank.yaml",
+      "sha256": "0DD0842074CA7AA0BC8ABECE28B15E4B8270F512F2B3B1CBCCBB53C940284401",
+      "exists": true
+    },
+    "configs/actions/phaseY_compact_policy_bank.yaml": {
+      "path": "D:\\SAM\\adapromptset\\configs\\actions\\phaseY_compact_policy_bank.yaml",
+      "sha256": "B9C7345C6C04F398A82E537F9D0656D3A88C5B0FBB908E8AE6699A0ECBCD6F4C",
+      "exists": true
+    },
+    "manifests/phaseY/policy_train_queries.csv": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\phaseY\\policy_train_queries.csv",
+      "sha256": "18A7174B6F71FF6EB46E3D99890594666496D0085D7E3A4CAD29618352FD2B41",
+      "exists": true
+    },
+    "manifests/phaseY/policy_validation_queries.csv": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\phaseY\\policy_validation_queries.csv",
+      "sha256": "8CB0246DEC8ED31D73D9ECBBA045261C2EC9B5F322670B6A71F18B2F2B2EE47E",
+      "exists": true
+    },
+    "manifests/phaseY/confirmatory_holdout_queries.csv": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\phaseY\\confirmatory_holdout_queries.csv",
+      "sha256": "5808EB26CAFAACF74BBC778246BDAB8F75B2857D1CD5F8BA85B354EA15B95441",
+      "exists": true
+    },
+    "manifests/phaseY/reference_pool.csv": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\phaseY\\reference_pool.csv",
+      "sha256": "6D52160201783FE14E4F051862AB413B73F1BB4F308659EFC805A0DAC27C94A7",
+      "exists": true
+    },
+    "manifests/phaseY/reference_set_A.csv": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\phaseY\\reference_set_A.csv",
+      "sha256": "EE4347B7226E3FFEE99C60276508E9C4D4BFD1928050C6D6161DF2E3EAFBF257",
+      "exists": true
+    },
+    "manifests/phaseY/reference_set_B.csv": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\phaseY\\reference_set_B.csv",
+      "sha256": "ECAD78721CCD5DB6F4F5F3DA1BC4BDC1C23E9C20645F23268DE31A6186650071",
+      "exists": true
+    },
+    "reports/phaseY_data_audit/data_audit_summary.md": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_data_audit\\data_audit_summary.md",
+      "sha256": "ACD1F706DCEC6AD616314BC02DCEBF24F161AAA4E183811323DD42641A4FB0D7",
+      "exists": true
+    },
+    "reports/phaseY_data_audit/split_summary.json": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_data_audit\\split_summary.json",
+      "sha256": "A6F3372CD7742D90F780C63ED3CDE2706C521B0BCB32EB7A2AAAE1999BCE7EF0",
+      "exists": true
+    },
+    "reports/phaseY_reference_audit.json": {
+      "path": "D:\\SAM\\adapromptset\\reports\\phaseY_reference_audit.json",
+      "sha256": "3A93FE10930426ED3205105A6552F8491E1F0AB83A97BA0A038A70A0FF82C180",
+      "exists": true
+    },
+    "scripts/build_phaseY_data_audit_and_splits.py": {
+      "path": "D:\\SAM\\adapromptset\\scripts\\build_phaseY_data_audit_and_splits.py",
+      "sha256": "943F6AC027D86F1233339705927EDD95FD9E3C25FDFC44D46A635F7F62616722",
+      "exists": true
+    },
+    "scripts/build_phaseY_preregistration_artifacts.py": {
+      "path": "D:\\SAM\\adapromptset\\scripts\\build_phaseY_preregistration_artifacts.py",
+      "sha256": "34E1D75B70809765E5626ED2956B16D4377CBA4DB0BB9AB0EDE58CAFFD9A7BDD",
+      "exists": true
+    }
+  }
+}

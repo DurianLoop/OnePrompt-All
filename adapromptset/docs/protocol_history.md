@@ -142,3 +142,21 @@
 - Frozen grids: K+ in {1, 3, 5, 10, 20, 30, 50, 75, 100}; K- in {0, 1, 3, 5, 10, 20, 30, 50}; groupings = {G_ONE_GROUP, G_ONE_POINT_PER_GROUP, G_FIXED_CHUNK_5, G_FIXED_CHUNK_10, G_FIXED_CHUNK_20, G_KMEANS_3, G_KMEANS_5, G_KMEANS_10, G_KMEANS_20, G_SPATIAL_GRID, G_GRAPH, G_CANDIDATE_COMPONENT}; call budgets = {1, 3, 5, 10, 20}; point budgets = {5, 10, 20, 50, 100, 150}; nested banks A_small/A_medium/A_large with limits ({'max_positive': 5, 'max_negative': 4, 'max_calls': 3}, {'max_positive': 20, 'max_negative': 10, 'max_calls': 5}, {'max_positive': 100, 'max_negative': 30, 'max_calls': 20}); search beam_widths = {4, 8}, depths = {10, 20, 50}, call budgets = {1, 3, 5, 10, 20}, point budgets = {10, 20, 50, 100}; adaptive-value Dice threshold = 0.01; min query fraction = 0.25; GPU-hour cap = 132.0.
 - No new SAM/matcher inference has been run. Preregistration commit must precede candidate coverage scaling, dense prompt scaling, search oracle, and any policy reopening decision.
 
+
+## 2026-07-21 Phase Y Fresh-Query Policy Feasibility Preregistration
+
+- Branch `phaseY-policy-feasibility` created from Phase X latest commit `ae883df`.
+- Phase Y is a fresh-query confirmation, oracle stability, and deployable policy feasibility study on MoNuSAC train/validation only. It does NOT access formal test and does NOT reopen GlaS/DDR work.
+- Phase X exploratory evidence preserved but labeled `EXPLORATORY_PHASEX_EVIDENCE`: Top20+N1 fixed=0.5411, A_large bank oracle=0.6119, Search Oracle=0.7256, 10 episodes. These are excluded from confirmatory statistics.
+- MoNuSAC data audit completed (`reports/phaseY_data_audit/`): 310 total cases (209 train, 101 test LOCKED). Phase X exposed 12 cases across 10 patients. Critical findings: (1) Phase X references train_004 and train_005 are both from patient TCGA-55-1594 (single-patient reference pool); (2) Phase X queries train_111 and train_113 are both from patient TCGA-UZ-A9PO (patient-level leakage risk). Phase Y splits at patient level to eliminate both issues.
+- Fresh pool: 36 patients, 161 cases. Patient-level split (seed=20260721): Policy Train=80 cases (18 patients), Policy Validation=41 cases (10 patients), Confirmatory Holdout=40 cases (8 patients). Patient-level disjoint verified.
+- Reference Sets A and B built: 3+3 non-overlapping references per query, patient-disjoint from query, sourced from train fold only. 483 rows each (161 queries × 3). Reference audit PASS.
+- Full audit bank frozen (`configs/actions/phaseY_full_single_call_bank.yaml`): 210 actions = 3 pos_selectors × 10 K+ × (1 N_NONE@K0 + 2 neg_selectors × 3 K>0) × G_ONE_GROUP × 1 call. Compact policy bank is placeholder pending Pareto pruning on train-only (post-preregistration, section 7.2).
+- 11 preregistration docs created under `docs/phaseY_*.md`: goal_read_receipt, scientific_questions, data_split_protocol, reference_protocol, single_call_action_bank, oracle_stability_protocol, bank_policy_protocol, point_subset_protocol, statistics_protocol, claim_registry, test_lock_notice.
+- 5 structured reports created: `reports/phaseY_gate_status.md`, `reports/phaseY_compute_ledger.csv`, `reports/phaseY_protocol_snapshot.json`, `reports/phaseY_input_hashes.json`, `reports/phaseY_reference_audit.json`.
+- Main question: "Can a query-conditioned, single-call prompt-configuration policy outperform the strongest fixed dense prompt under a strictly matched deployment budget?"
+- 4 Gates pre-registered: Y1 (stable heterogeneity, gap>=0.015, optimism<=60%), Y2 (search label stability, cross-ref>=0.03, optimism<=50%), Y3 (bank policy, Delta>=0.010, recovery>=30%), Y4 (point-subset, Delta>=0.015 or >=0.0075 over bank).
+- Model ladders: M0-M5 (bank-action) and P0-P5 (point-subset). PPO/DQN forbidden.
+- Compute cap: 155 GPU-hours total.
+- No new SAM/matcher inference has been run. Preregistration commit must precede Gate Y1 utility matrix, search oracle Y2, policy training Y3/Y4, and holdout evaluation.
+
