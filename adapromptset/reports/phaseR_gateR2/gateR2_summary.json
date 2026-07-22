@@ -1,0 +1,37 @@
+{
+  "gate_r2": {
+    "query_count": 41,
+    "best_config": "P30-N0",
+    "best_method": "B2_mean",
+    "best_hyperparam": "",
+    "best_beta": 0.25,
+    "best_tau": 0.83,
+    "mean_consensus_dice": 0.475608,
+    "mean_b1_random_dice": 0.429655,
+    "delta_dice": 0.045953,
+    "bootstrap": {
+      "mean": 0.045953,
+      "ci_lower": 0.012529,
+      "ci_upper": 0.083533
+    },
+    "var_single": 0.054308,
+    "var_consensus": 0.057056,
+    "variance_reduction": -0.050601,
+    "cfr_consensus": 0.073171,
+    "cfr_b1": 0.121951,
+    "mean_consensus_ab_overlap": 0.607517,
+    "mean_single_ab_overlap": 0.594181,
+    "consistent_config_count": 3,
+    "conditions": {
+      "cond1_delta_dice_ge_0p010": true,
+      "cond2_bootstrap_ci_lower_gt_0": true,
+      "cond3_variance_reduction_ge_25pct": false,
+      "cond4_catastrophic_rate_not_increase": true,
+      "cond5_ab_prediction_overlap_improve": true,
+      "cond6_single_sam_call": true,
+      "cond7_no_query_gt_used": true,
+      "cond8_2of3_configs_consistent_direction": true
+    },
+    "decision": "PHASER_GATE_R2_CONSENSUS_NO_GAIN"
+  }
+}

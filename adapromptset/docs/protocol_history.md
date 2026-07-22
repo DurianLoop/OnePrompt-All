@@ -252,3 +252,36 @@ Branch: `phaseR-reference-stable-feasibility`
 - Output artifacts under `reports/phaseR_gateR1/`: `per_reference_metrics.csv` (7200 rows), `per_query_instability.csv` (1200 rows), `per_query_aggregate.csv` (240 rows), `gateR1_summary.{json,md}`, `run_metadata.json`.
 - Cumulative GPU usage: 0.139 / 85 GPU-hours.
 - Per directive section 23 step 14: proceed to deterministic consensus (B1-B6) on train=80 to select β/τ, then Gate R2 on validation=41.
+
+## 2026-07-22 Phase R Gate R2 — Deterministic Consensus Feasibility (FAILED)
+
+- R2 inference completed: 80 train queries × 5 seeds × 3 configs × 10 method variants (B1-B6 with β∈{0.25,0.5,1.0}, τ∈{0.50,0.67,0.83}) plus 41 val queries × 3 configs × multiple methods = 3138 SAM calls total (1539 new train + 1599 val; train reused R1 per-reference Dice for B1).
+- Runtime: 271.7s on RTX 5090 (0.0755 GPU-hours).
+- Best config and method selected on train: P30-N0 + B2_mean (β=0.25, τ=0.83 frozen for val).
+- Validation results (frozen β/τ):
+  - Mean consensus Dice (B2_mean, P30-N0): 0.4756
+  - Mean B1 random single Dice: 0.4297
+  - Δ Dice: +0.0460
+  - Paired bootstrap 95% CI: [0.0125, 0.0835]
+  - Variance(single)=0.0543, Variance(consensus)=0.0571
+  - Variance reduction: -0.0506 (variance INCREASED by 5.06%)
+  - Catastrophic failure rate (Dice<0.1): consensus 0.0732 vs B1 0.1220 (improved)
+  - A/B prediction overlap: consensus 0.6075 vs single 0.5942 (improved)
+  - Consistent direction across configs: 3/3
+- Gate R2 decision: `PHASER_GATE_R2_CONSENSUS_NO_GAIN` — 7 of 8 conditions passed, 1 failed.
+  - Cond1 Δ Dice ≥ 0.010: PASS (0.0460)
+  - Cond2 bootstrap CI lower > 0: PASS (0.0125)
+  - Cond3 variance reduction ≥ 25%: **FAIL** (-0.0506)
+  - Cond4 catastrophic rate not increase: PASS (0.0732 vs 0.1220)
+  - Cond5 A/B overlap improve: PASS (0.6075 vs 0.5942)
+  - Cond6 single SAM call: PASS (by construction)
+  - Cond7 no query GT used: PASS (by construction)
+  - Cond8 ≥ 2 of 3 configs consistent: PASS (3/3)
+- Interpretation: Deterministic consensus aggregation improves mean Dice, catastrophic-failure rate, and A/B prediction overlap, but it does NOT reduce per-query variance. The central R2 hypothesis (consensus reduces reference-induced variance) is therefore not supported. The Dice gain appears to come from averaging the contrast maps, which also smooths the failure mode rather than eliminates it.
+- Per directive §12 (R3): "只有 Gate R2 通过才训练" — R3 reliability estimator training is BLOCKED.
+- Per directive §13 (R4): "只有 R2 或 R3 通过" — R4 holdout is BLOCKED.
+- Per directive §14 (GlaS): "只有 MoNuSAC R2 通过后运行 GlaS" — GlaS secondary diagnostic is BLOCKED.
+- Per directive §22: formal test remains LOCKED and UNUSED.
+- Output artifacts under `reports/phaseR_gateR2/`: `train_consensus_metrics.csv`, `train_selection_summary.json`, `val_consensus_metrics.csv`, `val_per_reference_metrics.csv`, `val_cross_set_stability.csv`, `gateR2_summary.{json,md}`, `run_metadata.json`.
+- Cumulative GPU usage: 0.2153 / 85 GPU-hours (R1: 0.1394 + R2: 0.0755).
+- Per directive section 23 step 21: proceed to final report generation (18 tables, 20 figures) and Phase R final state.

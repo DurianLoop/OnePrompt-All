@@ -1,0 +1,39 @@
+{
+  "train_selection": {
+    "best_config": "P30-N0",
+    "best_method": "B2_mean",
+    "best_hyperparam": "",
+    "best_beta": 0.25,
+    "best_tau": 0.83,
+    "best_config_mean_dice": 0.499174,
+    "per_config": {
+      "P20-N1": {
+        "best_mean_dice": 0.473869,
+        "best_method": "B2_mean",
+        "best_hyperparam": "",
+        "best_beta": 0.25,
+        "best_tau": 0.83,
+        "b5_mean_at_best_beta": 0.468988,
+        "b6_mean_at_best_tau": 0.465754
+      },
+      "P30-N0": {
+        "best_mean_dice": 0.499174,
+        "best_method": "B2_mean",
+        "best_hyperparam": "",
+        "best_beta": 0.25,
+        "best_tau": 0.83,
+        "b5_mean_at_best_beta": 0.496484,
+        "b6_mean_at_best_tau": 0.490336
+      },
+      "P50-N0": {
+        "best_mean_dice": 0.494428,
+        "best_method": "B2_mean",
+        "best_hyperparam": "",
+        "best_beta": 0.25,
+        "best_tau": 0.67,
+        "b5_mean_at_best_beta": 0.492442,
+        "b6_mean_at_best_tau": 0.485211
+      }
+    }
+  }
+}
