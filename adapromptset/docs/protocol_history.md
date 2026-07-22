@@ -235,3 +235,20 @@ Branch: `phaseR-reference-stable-feasibility`
 
 ### Next
 - Gate R1: Reference Instability Replication (train=80, 5 seeds)
+
+
+## 2026-07-22 Phase R Gate R1 — Reference Instability Replication (PASSED)
+
+- R1 inference completed: 80 train queries × 5 resampling seeds × 6 references × 3 prompt configs = 7200 SAM calls.
+- Runtime: 501.7s on RTX 5090 (0.139 GPU-hours, well within the 25 GPU-hour R1 cap).
+- Gate R1 decision: `PHASER_GATE_R1_REFERENCE_INSTABILITY_CONFIRMED` — all 5 conditions passed.
+- Replication statistics:
+  - % queries with best-worst Dice gap ≥ 0.05: 0.8875 (need ≥ 0.30) — PASS
+  - Mean reference std: 0.0737 (need ≥ 0.02) — PASS
+  - Direction consistent across 5 seeds: YES — PASS
+  - Sensitive config: P20-N1 (K+=20, K-=1, N_BOTTOMK) — PASS
+  - Not a code/coordinate/leakage error: YES — PASS
+- The instability observed in the Phase R0 historical audit (mean best-worst gap=0.1874, 82.9% queries gap≥0.05) replicates on fresh resampled references with 5 seeds. The mean reference std (0.0737) is 3.7× the cond2 threshold.
+- Output artifacts under `reports/phaseR_gateR1/`: `per_reference_metrics.csv` (7200 rows), `per_query_instability.csv` (1200 rows), `per_query_aggregate.csv` (240 rows), `gateR1_summary.{json,md}`, `run_metadata.json`.
+- Cumulative GPU usage: 0.139 / 85 GPU-hours.
+- Per directive section 23 step 14: proceed to deterministic consensus (B1-B6) on train=80 to select β/τ, then Gate R2 on validation=41.

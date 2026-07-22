@@ -3,3 +3,4 @@ historical_audit,2026-07-22,0.00,cpu,Phase R0 read-only audit (8 files)
 reference_pool_audit,2026-07-22,0.00,cpu,Reference pool sufficiency check
 manifest_build,2026-07-22,0.00,cpu,Train resampling + validation A/B manifests
 preregistration,2026-07-22,0.00,cpu,All preregistration documents
+gateR1,2026-07-22,0.13935,cuda,80 queries x 5 seeds x 6 refs x 3 configs = 7200 SAM calls

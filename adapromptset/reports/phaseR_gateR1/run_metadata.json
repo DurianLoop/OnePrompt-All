@@ -1,0 +1,12 @@
+{
+  "date": "2026-07-22T13:40:48",
+  "device": "cuda",
+  "cuda_available": true,
+  "runtime_seconds": 501.659,
+  "gpu_hours": 0.13935,
+  "total_sam_calls": 7200,
+  "query_count": 80,
+  "seed_count": 5,
+  "config_count": 3,
+  "gate_r1_decision": "PHASER_GATE_R1_REFERENCE_INSTABILITY_CONFIRMED"
+}
