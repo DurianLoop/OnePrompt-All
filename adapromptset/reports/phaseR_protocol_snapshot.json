@@ -1,0 +1,62 @@
+{
+  "phase": "R",
+  "date": "2026-07-22T11:59:57",
+  "directive": "AdaPromptSet_PhaseR_ReferenceStable_Feasibility.md",
+  "branch": "phaseR-reference-stable-feasibility",
+  "starting_state": "PHASEY_SEARCH_ORACLE_DIAGNOSTIC_ONLY",
+  "frozen_configs": {
+    "prompt_configs": [
+      "P20-N1",
+      "P30-N0",
+      "P50-N0"
+    ],
+    "consensus_methods": [
+      "B0",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7"
+    ],
+    "beta_grid": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "tau_grid": [
+      0.5,
+      0.67,
+      0.83
+    ],
+    "matcher": "DINOv2-L",
+    "segmenter": "SAM-B",
+    "sam_calls": 1,
+    "prompt_group": 1
+  },
+  "data_splits": {
+    "train": 80,
+    "validation": 41,
+    "holdout": 40
+  },
+  "reference_resampling": {
+    "refs_per_query": 6,
+    "train_seeds": [
+      20260722,
+      20261722,
+      20262722,
+      20263722,
+      20264722
+    ],
+    "validation_seed": 20260722
+  },
+  "compute_budget_gpu_hours": 85,
+  "gates": [
+    "R1",
+    "R2",
+    "R3",
+    "R4"
+  ],
+  "test_locked": true
+}

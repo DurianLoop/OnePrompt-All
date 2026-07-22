@@ -1,0 +1,37 @@
+# Phase R Frozen Consensus Methods
+# Frozen at: 2026-07-22T11:59:57
+# Directive section: 7
+
+methods:
+  - id: B0
+    name: Single Reference
+    deployable: true
+    formula: per-reference Dice; report mean/best/worst/std
+  - id: B1
+    name: Random Single Reference
+    deployable: true
+    formula: randomly select 1 of 6 references (fixed seed)
+  - id: B2
+    name: Mean Consensus
+    deployable: true
+    formula: C_mean(x) = (1/m) * sum_r C_r(x)
+  - id: B3
+    name: Median Consensus
+    deployable: true
+    formula: C_median(x) = median_r C_r(x)
+  - id: B4
+    name: Trimmed Mean
+    deployable: true
+    formula: remove max and min reference score, then mean (requires >= 5 refs)
+  - id: B5
+    name: Disagreement-Penalized
+    deployable: true
+    formula: C_stable(x) = mu(x) - beta * sigma(x)
+  - id: B6
+    name: Quantile Consensus
+    deployable: true
+    formula: C_q(x) = Q_tau({C_r(x)})
+  - id: B7
+    name: Reliability-Weighted Mean
+    deployable: false
+    formula: C_weighted(x) = sum_r w_r * C_r(x); only after Gate R2 pass

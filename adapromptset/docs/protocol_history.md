@@ -193,3 +193,45 @@
 - Allowed claim per section 21 (情况 A): "The large raw oracle gap observed in the exploratory 10-query audit did not persist under fresh-query and cross-reference evaluation."
 - Total Phase Y GPU usage: 11.28 GPU-hours (Y1: 3.13h + Y2: 8.15h), well under the 155 GPU-hour cap.
 
+
+## 2026-07-22 Phase R — Preregistration Complete
+
+Directive: `AdaPromptSet_PhaseR_ReferenceStable_Feasibility.md`
+Branch: `phaseR-reference-stable-feasibility`
+
+### Phase R0 Historical Audit
+- 8 audit files produced under `reports/phaseR_historical_audit/`
+- Mean best-worst Dice gap: 0.1874
+- Mean reference std: 0.0687
+- 82.9% queries with gap >= 0.05
+- Reference instability strongly confirmed
+
+### Reference Pool Audit
+- Pool size: 80 cases, 18 patients
+- Min available refs: 70 (train), 80 (validation)
+- Status: PHASER_REFERENCE_POOL_SUFFICIENT
+
+### Manifests
+- 5 train resampling seeds (2400 rows total)
+- 1 validation fixed A/B (246 rows)
+- All verified: A/B non-overlap, patient-disjoint, seed diversity
+
+### Frozen Configs
+- Prompt configs: P20-N1, P30-N0, P50-N0
+- Consensus methods: B0-B7
+- beta grid: [0.25, 0.5, 1.0]
+- tau grid: [0.50, 0.67, 0.83]
+- Statistics: 4 Gates with frozen thresholds
+
+### Preregistration Documents
+- 9 docs/phaseR_*.md files
+- 3 reports/phaseR_* files (md, csv, json)
+- 4 configs/frozen/phaseR_*.yaml files
+- Input hashes generated
+
+### Compute
+- Used: 0.00 GPU-hours (CPU-only so far)
+- Budget: 85 GPU-hours
+
+### Next
+- Gate R1: Reference Instability Replication (train=80, 5 seeds)

@@ -1,0 +1,92 @@
+{
+  "date": "2026-07-22T11:59:57",
+  "phase": "R",
+  "branch": "phaseR-reference-stable-feasibility",
+  "files": {
+    "directive": {
+      "path": "AdaPromptSet_PhaseR_ReferenceStable_Feasibility.md",
+      "sha256": "0721f624e95ff06a51f936db1953c66f1d553b59b15d86d3dc275a23ec772ed2",
+      "exists": true
+    },
+    "frozen_prompt_configs": {
+      "path": "configs\\frozen\\phaseR_prompt_configs.yaml",
+      "sha256": "d1386e1b62a40d1a287aa115f37d6e98d04f024f1aa20a177d4485934beec422",
+      "exists": true
+    },
+    "frozen_consensus_methods": {
+      "path": "configs\\frozen\\phaseR_consensus_methods.yaml",
+      "sha256": "22f2172bedf045a008f29802d0f0efa7cb012e29288a591d2f7dad2f6a3483b1",
+      "exists": true
+    },
+    "frozen_beta_tau_grid": {
+      "path": "configs\\frozen\\phaseR_beta_tau_grid.yaml",
+      "sha256": "0849065169b84a72665e9ff152c42cfbd69ef8a9171570d5ec84b16ea822d843",
+      "exists": true
+    },
+    "frozen_statistics": {
+      "path": "configs\\frozen\\phaseR_statistics.yaml",
+      "sha256": "46fa1257b83bdfe4fc80b9faca5ebb766134bcf0e45e1104d418b8c09d0e08a9",
+      "exists": true
+    },
+    "train_manifest_seed_0": {
+      "path": "manifests\\phaseR\\train_resampling_seed_0.csv",
+      "sha256": "60289b4a0b9fe2853c5f04612c7ca38fa3d8b96ce9888d80a1c63d5b4880ba84",
+      "exists": true
+    },
+    "train_manifest_seed_1": {
+      "path": "manifests\\phaseR\\train_resampling_seed_1.csv",
+      "sha256": "2ca2d4cef809bf1717b3eee3ab73f7cbce26756c71ad8b2edbe05a1ec356db63",
+      "exists": true
+    },
+    "train_manifest_seed_2": {
+      "path": "manifests\\phaseR\\train_resampling_seed_2.csv",
+      "sha256": "b32a380637fa0ff29b6449aec8bf11af5137c0eb952e397c90f17817af39a549",
+      "exists": true
+    },
+    "train_manifest_seed_3": {
+      "path": "manifests\\phaseR\\train_resampling_seed_3.csv",
+      "sha256": "e6952c1aeeb8f6959cf532ceac795639b0ce4d0c06bedf7ab8db9efb5ba70222",
+      "exists": true
+    },
+    "train_manifest_seed_4": {
+      "path": "manifests\\phaseR\\train_resampling_seed_4.csv",
+      "sha256": "c9341716f3a2626df5ec7bab68811ad0bb87f780c85381f0b39b6d67af90f38c",
+      "exists": true
+    },
+    "train_manifest_all": {
+      "path": "manifests\\phaseR\\train_resampling_all_seeds.csv",
+      "sha256": "6092aec522c1d8998e780c61cc31d084b65747fa8b12c91f11545338eb5c5485",
+      "exists": true
+    },
+    "validation_AB_fixed": {
+      "path": "manifests\\phaseR\\validation_AB_fixed.csv",
+      "sha256": "30752cb959b1ab5ce853fedfe4fb03370529051cc4d85bf97e20985fc1e6f1ab",
+      "exists": true
+    },
+    "manifest_summary": {
+      "path": "manifests\\phaseR\\manifest_summary.json",
+      "sha256": "3a133566cc0a303c8b2d08c52fd81ebbb3d0d980b539c1d135e8cedb6d71a37a",
+      "exists": true
+    },
+    "phaseY_train_queries": {
+      "path": "manifests\\phaseY\\policy_train_queries.csv",
+      "sha256": "18a7174b6f71ff6eb46e3d99890594666496d0085d7e3a4cad29618352fd2b41",
+      "exists": true
+    },
+    "phaseY_val_queries": {
+      "path": "manifests\\phaseY\\policy_validation_queries.csv",
+      "sha256": "8cb0246dec8ed31d73d9ecbba045261c2ec9b5f322670b6a71f18b2f2b2ee47e",
+      "exists": true
+    },
+    "phaseY_holdout_queries": {
+      "path": "manifests\\phaseY\\confirmatory_holdout_queries.csv",
+      "sha256": "5808eb26cafaacf74bbc778246bdab8f75b2857d1cd5f8ba85b354ea15b95441",
+      "exists": true
+    },
+    "phaseY_reference_pool": {
+      "path": "manifests\\phaseY\\reference_pool.csv",
+      "sha256": "6d52160201783fe14e4f051862ab413b73f1bb4f308659efc805a0dac27c94a7",
+      "exists": true
+    }
+  }
+}

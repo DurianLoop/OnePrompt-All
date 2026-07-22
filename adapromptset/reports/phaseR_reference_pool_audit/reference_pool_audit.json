@@ -1,0 +1,14 @@
+{
+  "date": "2026-07-22T11:56:32",
+  "reference_pool_size": 80,
+  "reference_pool_patients": 18,
+  "train_queries": 80,
+  "validation_queries": 41,
+  "holdout_queries": 40,
+  "min_available_train": 70,
+  "min_available_val": 80,
+  "all_train_sufficient": true,
+  "all_val_sufficient": true,
+  "feasible_for_5_seeds": true,
+  "status": "PHASER_REFERENCE_POOL_SUFFICIENT"
+}

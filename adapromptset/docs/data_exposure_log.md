@@ -33,3 +33,15 @@ This log records whether each local dataset may influence AdaPromptSet MVP tunin
 | Phase Y fresh query split | CPU-only patient-level split | `manifests/phaseY/policy_train_queries.csv`; `manifests/phaseY/policy_validation_queries.csv`; `manifests/phaseY/confirmatory_holdout_queries.csv` | tuning_allowed=True within Phase Y protocol only | 161 fresh cases across 36 patients split into train=80/val=41/holdout=40. Patient-level disjoint. No test access. Split seed=20260721 frozen. |
 | Phase Y reference sets A/B | CPU-only reference sampling | `manifests/phaseY/reference_set_A.csv`; `manifests/phaseY/reference_set_B.csv` | tuning_allowed=True within Phase Y protocol only | 3+3 non-overlapping references per query, patient-disjoint from query, sourced from train fold only. 483 rows each (161 queries × 3). Seed=20260721 frozen. No result-based selection. |
 | Phase Y preregistration artifacts | CPU-only doc/config generation | `docs/phaseY_*.md`; `reports/phaseY_*`; `configs/actions/phaseY_*.yaml` | tuning_allowed=False | Preregistration docs, protocol snapshot, input hashes, compute ledger, gate status, action bank YAML. No SAM inference; no formal-test access. |
+
+## 2026-07-22 Phase R Data Exposure
+
+- MoNuSAC train=80: READ (queries and reference pool)
+- MoNuSAC validation=41: READ (queries; reference A/B fixed)
+- MoNuSAC holdout=40: NOT ACCESSED (locked)
+- MoNuSAC test=101: NOT ACCESSED (locked)
+- GlaS: NOT ACCESSED (pending R2 pass)
+- DDR: NOT ACCESSED (optional, pending R2 pass)
+- Phase Y artifacts: READ (all reports/phaseY_* and manifests/phaseY/*)
+- Phase R0 audit: READ-ONLY (no new SAM inference)
+- Phase R manifests: CREATED (5 train seeds + 1 val fixed)
