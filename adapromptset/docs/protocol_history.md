@@ -285,3 +285,16 @@ Branch: `phaseR-reference-stable-feasibility`
 - Output artifacts under `reports/phaseR_gateR2/`: `train_consensus_metrics.csv`, `train_selection_summary.json`, `val_consensus_metrics.csv`, `val_per_reference_metrics.csv`, `val_cross_set_stability.csv`, `gateR2_summary.{json,md}`, `run_metadata.json`.
 - Cumulative GPU usage: 0.2153 / 85 GPU-hours (R1: 0.1394 + R2: 0.0755).
 - Per directive section 23 step 21: proceed to final report generation (18 tables, 20 figures) and Phase R final state.
+
+## 2026-07-22 Phase S Preregistration — Multi-Track Reference-Robust Research
+
+- Branch `phaseS-multitrack-reference-robust-research` created from Phase R commit c35d5e9.
+- Phase S directive `research.md` defines a 4-track research program (A/B/C/D) with 210 GPU-hour cap, 20 tables, 24 figures, and strict preregistration.
+- Created 11 control documents under `docs/`: goal read receipt, research charter, track registry, hypothesis registry, data roles, exposure map, metric definitions, model registry, claim registry, publication readiness, test lock notice.
+- Created 7 report documents under `reports/`: program status (.md + .json), compute ledger, decision tree, risk register, protocol snapshot, input hashes.
+- Starting scientific state: `Reference instability confirmed + deterministic consensus utility gain confirmed + stability reduction unresolved + learned reliability scientifically motivated` (Phase R is NOT a failed direction).
+- Data roles frozen: MoNuSAC train=80 / val=41 / holdout=40 / test=101 locked; GlaS 55/30; DDR 383/149; Phase X 10 queries excluded from primary stats.
+- Track A must run first (metric correction + stability benchmark, 20 GPU-hour cap). Track B (reliability, 35h) only if A passes. Track C (set models, 45h) only if B plateaus. Track D (direct segmentation, 50h) only if B/C fail but matching evidence has value.
+- Per directive §24: do not stop all research because one Gate fails; do not claim publishable on small positive results.
+- Formal test locked for entire Phase S program.
+- No new SAM inference in this commit; preregistration only.

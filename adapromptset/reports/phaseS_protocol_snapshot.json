@@ -1,0 +1,70 @@
+{
+  "phase": "S",
+  "date": "2026-07-22",
+  "branch": "phaseS-multitrack-reference-robust-research",
+  "directive": "D:\\SAM\\adapromptset\\research.md",
+  "base_commit": "c35d5e9",
+  "base_branch": "phaseR-reference-stable-feasibility",
+  "data_roles": {
+    "monusac_train": 80,
+    "monusac_validation": 41,
+    "monusac_holdout": 40,
+    "monusac_test_locked": 101,
+    "glas_train": 55,
+    "glas_validation": 30,
+    "glas_testA_locked": 80,
+    "glas_testB_locked": 80,
+    "ddr_train": 383,
+    "ddr_valid": 149,
+    "ddr_test_locked": 225
+  },
+  "frozen_pipeline": {
+    "matcher": "DINOv2-L",
+    "segmenter": "SAM-B",
+    "image_size": 518,
+    "patch_size": 14,
+    "grid_size": 37,
+    "prompt_configs": ["P20-N1", "P30-N0", "P50-N0"]
+  },
+  "tracks": {
+    "A": {
+      "name": "Metric Correction and Stability Benchmark",
+      "gate_section": "6.5",
+      "compute_cap_gpu_hours": 20,
+      "reference_subset_sizes": [1, 3, 6],
+      "resampling_seeds_train": 10,
+      "resampling_seeds_val": 10
+    },
+    "B": {
+      "name": "Learned Reference Reliability and Robust Aggregation",
+      "gate_section": "7.6",
+      "compute_cap_gpu_hours": 35,
+      "model_ladder": ["M0_uniform", "M1_handcrafted", "M2_linear", "M3_pairwise", "M4_gbm", "M5_mlp"],
+      "hyperparams": {
+        "T": [0.25, 0.5, 1.0, 2.0],
+        "epsilon": [0, 0.05],
+        "lambda": [0, 0.25, 0.5, 1.0],
+        "alpha": [0.1, 0.2]
+      }
+    },
+    "C": {
+      "name": "Set-Conditioned Robust Prompting",
+      "gate_section": "8.4",
+      "compute_cap_gpu_hours": 45,
+      "param_cap_millions": 5
+    },
+    "D": {
+      "name": "Direct Reference-Conditioned Segmentation",
+      "gate_section": "9.4",
+      "compute_cap_gpu_hours": 50,
+      "methods": ["D1_multi_prototype", "D2_uncertainty_fusion", "D3_lightweight_refiner", "D4_topology_aware"]
+    }
+  },
+  "compute_cap_gpu_hours": 210,
+  "compute_checkpoints": [50, 100, 160, 210],
+  "formal_test": "LOCKED_UNUSED",
+  "holdout_runs_allowed": 1,
+  "statistical_unit": "query/case",
+  "bootstrap_resamples": 10000,
+  "multi_model_correction": "holm"
+}

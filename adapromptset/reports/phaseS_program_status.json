@@ -1,0 +1,52 @@
+{
+  "phase": "S",
+  "date": "2026-07-22",
+  "branch": "phaseS-multitrack-reference-robust-research",
+  "state": "PHASES_PREREGISTRATION_COMPLETE",
+  "tracks": {
+    "A": {
+      "name": "Metric Correction and Stability Benchmark",
+      "status": "NOT_STARTED",
+      "gate_section": "6.5",
+      "conditions_count": 7,
+      "compute_cap_gpu_hours": 20
+    },
+    "B": {
+      "name": "Learned Reference Reliability and Robust Aggregation",
+      "status": "BLOCKED_BY_A",
+      "gate_section": "7.6",
+      "conditions_count": 6,
+      "compute_cap_gpu_hours": 35
+    },
+    "C": {
+      "name": "Set-Conditioned Robust Prompting",
+      "status": "BLOCKED_BY_B",
+      "gate_section": "8.4",
+      "conditions_count": 8,
+      "compute_cap_gpu_hours": 45
+    },
+    "D": {
+      "name": "Direct Reference-Conditioned Segmentation",
+      "status": "CONDITIONAL",
+      "gate_section": "9.4",
+      "conditions_count": 8,
+      "compute_cap_gpu_hours": 50
+    }
+  },
+  "holdout": {
+    "status": "BLOCKED",
+    "reason": "No validation pass yet"
+  },
+  "cross_dataset": {
+    "status": "BLOCKED",
+    "reason": "No holdout pass"
+  },
+  "formal_test": "LOCKED_UNUSED",
+  "compute": {
+    "used_gpu_hours": 0.0,
+    "cap_gpu_hours": 210,
+    "remaining_gpu_hours": 210.0,
+    "checkpoints": [50, 100, 160, 210]
+  },
+  "next_action": "Step 4: Complete metric correction audit (Track A section 6.3)"
+}

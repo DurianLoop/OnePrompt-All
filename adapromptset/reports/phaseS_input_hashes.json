@@ -1,0 +1,37 @@
+{
+  "phase": "S",
+  "date": "2026-07-22",
+  "directive_sha256": "pending_computation",
+  "phaseR_final_state": "PHASER_REFERENCE_STABILITY_NOT_FEASIBLE_DETERMINISTIC",
+  "phaseR_final_commit": "c35d5e9",
+  "phaseY_final_state": "PHASEY_SEARCH_ORACLE_DIAGNOSTIC_ONLY",
+  "phaseY_final_commit": "ac9a049",
+  "frozen_configs": {
+    "phaseR_prompt_configs": "configs/frozen/phaseR_prompt_configs.yaml",
+    "phaseR_consensus_methods": "configs/frozen/phaseR_consensus_methods.yaml",
+    "phaseR_beta_tau_grid": "configs/frozen/phaseR_beta_tau_grid.yaml",
+    "phaseR_statistics": "configs/frozen/phaseR_statistics.yaml"
+  },
+  "manifests": {
+    "phaseR_train_resampling_seeds": [
+      "manifests/phaseR/train_resampling_seed_0.csv",
+      "manifests/phaseR/train_resampling_seed_1.csv",
+      "manifests/phaseR/train_resampling_seed_2.csv",
+      "manifests/phaseR/train_resampling_seed_3.csv",
+      "manifests/phaseR/train_resampling_seed_4.csv"
+    ],
+    "phaseR_validation_AB_fixed": "manifests/phaseR/validation_AB_fixed.csv",
+    "phaseR_manifest_summary": "manifests/phaseR/manifest_summary.json"
+  },
+  "phaseR_artifacts": {
+    "gateR1_summary": "reports/phaseR_gateR1/gateR1_summary.json",
+    "gateR2_summary": "reports/phaseR_gateR2/gateR2_summary.json",
+    "final_report": "reports/phaseR_final_report.json",
+    "compute_ledger": "reports/phaseR_compute_ledger.csv"
+  },
+  "checkpoints": {
+    "sam_vit_b": "../assets/checkpoints/sam_vit_b.pth",
+    "dinov2_vitl14": "../assets/checkpoints/dinov2_vitl14_pretrain.pth"
+  },
+  "note": "Hashes of file contents will be computed by the protocol snapshot script at preregistration commit time and recorded in the final input_hashes.json."
+}
