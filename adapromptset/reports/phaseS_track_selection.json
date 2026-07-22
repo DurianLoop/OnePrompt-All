@@ -1,0 +1,28 @@
+{
+  "phase": "S",
+  "date": "2026-07-22",
+  "track_a_state": "PHASES_TRACK_A_REFERENCE_INSTABILITY_BENCHMARK_VALID",
+  "track_a_conditions_passed": "7/7",
+  "scoring": {
+    "scientific_phenomenon_stability": {"weight": 20, "score": 9},
+    "method_novelty_potential": {"weight": 20, "score": 7},
+    "validation_effect_size": {"weight": 15, "score": 8},
+    "predictability": {"weight": 10, "score": 9},
+    "cross_dataset_potential": {"weight": 10, "score": 6},
+    "related_work_differentiation": {"weight": 10, "score": 7},
+    "compute_cost": {"weight": 5, "score": 8},
+    "paper_narrative_completeness": {"weight": 10, "score": 7},
+    "weighted_total": 770,
+    "max_total": 1000
+  },
+  "routing_rule_applied": "Track A strong + reliability predictable -> Track B",
+  "selected_track": "B",
+  "selected_track_name": "Learned Reference Reliability and Robust Aggregation",
+  "paused_tracks": ["C", "D"],
+  "next_action": "Execute Track B section 7: train reliability models M0-M4, evaluate on validation, run Gate B",
+  "compute_cap_gpu_hours": 35,
+  "caveats": [
+    "prediction_jaccard_mean (strongest predictor, |rho|=0.883) requires multiple SAM calls; Track B must verify truly test-time-safe features",
+    "Track B must use features computable without SAM at deployment (matching_map_disagreement, candidate_jaccard_mean, prompt_overlap_mean, etc.)"
+  ]
+}
