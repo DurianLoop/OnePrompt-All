@@ -1,0 +1,39 @@
+{
+  "date": "2026-07-22T17:03:12",
+  "device": "cpu",
+  "cuda_available": false,
+  "phases_run": [1, 2, 3],
+  "phase1": {
+    "description": "Features + labels + model training on train",
+    "runtime_seconds": 306.7,
+    "train_query_count": 80,
+    "train_feature_rows": 7200,
+    "models_trained": ["M0_uniform", "M1_handcrafted", "M2_ridge", "M3_pairwise_rank", "M4_gbm", "M5_mlp"],
+    "best_model": "M4_gbm",
+    "best_inner_cv_spearman": 0.9163,
+    "sam_calls": 0
+  },
+  "phase2": {
+    "description": "Validation features + weighted consensus + SAM-B inference",
+    "runtime_seconds": 308.5,
+    "val_query_count": 41,
+    "val_feature_rows": 738,
+    "sam_calls": 123,
+    "max_weight_observed": 0.4047,
+    "min_weight_observed": 0.0416
+  },
+  "phase3": {
+    "description": "Gate B evaluation",
+    "runtime_seconds": 0.1,
+    "sam_calls": 0
+  },
+  "total_runtime_seconds": 615.3,
+  "total_sam_calls": 123,
+  "gpu_hours": 0.0,
+  "gate_b_decision": "PHASES_TRACK_B_NO_GAIN",
+  "gate_b_pass": false,
+  "gate_b_conditions_pass": 1,
+  "gate_b_conditions_total": 6,
+  "gate_b_requirements_pass": 5,
+  "gate_b_requirements_total": 6
+}

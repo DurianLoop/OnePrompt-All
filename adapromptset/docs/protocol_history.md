@@ -298,3 +298,49 @@ Branch: `phaseR-reference-stable-feasibility`
 - Per directive §24: do not stop all research because one Gate fails; do not claim publishable on small positive results.
 - Formal test locked for entire Phase S program.
 - No new SAM inference in this commit; preregistration only.
+
+## 2026-07-22 Phase S Track A — Metric Audit + Instability Benchmark
+
+- Track A §6.3 metric audit traced Phase R's `compute_gate_r2()` variance code (lines 1459-1589 of `run_phaseR_gateR2.py`). Finding: Phase R cond3 was INVALID. `var_single = Var_{q,r}[D]` (total variance across all 246 query×ref pairs = V_query + V_ref) was compared against `var_consensus = Var_q[D_cons]` (pure cross-query variance = V_query only). The comparison mixed different axes. Corrected VR = 100% (consensus eliminates within-query reference variance by construction).
+- Variance decomposition (law of total variance): V_total = V_query + V_ref. For P30-N0: V_total=0.0543, V_query=0.0410, V_ref=0.0133 (V_ref is 24.6% of total). For P20-N1: V_ref is 33.1%. For P50-N0: V_ref is 13.8%.
+- Track A §6.4 benchmark computed k∈{1,3,6} reference subset scaling, per-query metrics, within-query variance, pairwise deviation, CVaR, prediction consistency, cost scaling. CPU-only (no new SAM calls). Reused Phase R artefacts.
+- Track A §6.5 Gate: 7/7 conditions PASSED. Decision: `PHASES_TRACK_A_REFERENCE_INSTABILITY_BENCHMARK_VALID`.
+  - cond1: V_ref>0 and V_ref_frac>5% for all 3 configs.
+  - cond2: 80.5%-90.2% of val queries have best-worst gap≥0.05.
+  - cond3: mean within-query ref std 0.069-0.101 (≥0.02 threshold).
+  - cond4: metric definitions match code (audit verified).
+  - cond5: V_ref(k=1)>V_ref(k=3)>V_ref(k=6)=0 (monotone, explainable).
+  - cond6: P50-N0 ρ(gap, catastrophic)=-0.395, p=0.011 (tail risk linkage).
+  - cond7: prediction_jaccard_mean |ρ|=0.883 on train (test-time-safe feature predicts instability; threshold 0.25).
+- Caveat: prediction_jaccard_mean requires multiple SAM calls. Track B must evaluate truly test-time-safe features (matching_map_disagreement, candidate_jaccard_mean, prompt_overlap_mean) that don't need SAM.
+
+## 2026-07-22 Phase S Track Selection
+
+- Scoring (directive §10): weighted total 770/1000. Track A strong (7/7 passed). Reliability predictable (|ρ|=0.883 >> 0.30). Routing rule: "Track A strong + reliability predictable → Track B".
+- Selected Track: Track B — Learned Reference Reliability and Robust Aggregation.
+- Track C and Track D paused pending Track B outcome.
+
+## 2026-07-22 Phase S Track B — Learned Reference Reliability Execution
+
+- Track B §7 executed in 3 phases (CPU only, 0 GPU-hours, 123 SAM calls).
+- Phase 1 (307s, CPU): Computed 28 test-time-safe features per (query, reference, config) for 80 train queries × 5 seeds × 6 refs × 3 configs = 7200 rows. Features include reference-only (8), reference-query (15), leave-one-reference-out (3), plus k_positive/k_negative. Generated utility labels (Dice), pairwise labels (y_ij), harmfulness labels (h_r with δ∈{0.02,0.05}).
+- Model ladder trained with inner 5-fold CV on train:
+  - M0_uniform: Spearman=0.0 (baseline)
+  - M1_handcrafted: Spearman=0.139 (weak)
+  - M2_ridge: Spearman=0.431 (best_alpha=0.1, exceeds 0.30 threshold)
+  - M3_pairwise_rank: Spearman=0.276 (best_margin=0.05)
+  - M4_gbm: Spearman=0.916 (best_depth=5, best_n_estimators=300; best learned model)
+  - M5_mlp: Spearman=0.233 (best_hidden=64; trained because M2-M4 had signal > 0.20)
+- Selection: M4_gbm with T=0.25, ε=0.0, λ=0.0. Selection filter: learned models must have inner_cv_spearman > 0 to be eligible. M5_mlp (0.233) eligible but M4_gbm had higher robust utility proxy.
+- Phase 2 (309s, CPU): Computed validation features for 41 queries × 6 refs × 3 configs = 738 pairs. Predicted reliability û(q, R_r) with M4_gbm. Computed weighted consensus C_weighted = Σ w_r C_r. Ran SAM-B 123 times (41 queries × 3 configs). Max weight observed: 0.405 (no collapse). Min weight: 0.042.
+- Phase 3 (Gate B evaluation, CPU): Compared weighted method vs B2_mean (uniform) baseline on best config P30-N0.
+  - Mean weighted Dice: 0.4732 vs uniform: 0.4756 (ΔDice = -0.0024)
+  - Within-query ref std reduction: 2.83% (need ≥10%)
+  - Pairwise reference deviation reduction: 60.09% (PASSED, need ≥10%)
+  - CVaR_0.1: 0.0768 vs 0.0738 (improvement +0.003, need ≥0.01)
+  - CFR: 0.0732 for both (no reduction)
+  - Utility prediction Spearman on validation: 0.478 (PASSED, exceeds 0.30)
+  - Bootstrap CI: [-0.021, +0.013] (includes 0, not significantly positive)
+- Gate B: 1/6 conditions passed (only cond3). Neither cond1 nor cond2 passed. req6 (bootstrap positive) failed. Decision: `PHASES_TRACK_B_NO_GAIN`.
+- Key scientific finding: Reference utility IS predictable from test-time-safe features (Spearman=0.478 on validation), but reliability weighting does NOT improve segmentation Dice. The pairwise reference deviation is dramatically reduced (60%), but this doesn't translate to Dice improvement. Some queries improve a lot (+0.10), others worsen (-0.26) — high variance in per-query effect.
+- Track B does NOT unblock holdout or cross-dataset. Per directive §10, Track C may start (Track B has stable positive signal [utility prediction] but plateaued [no Dice gain]).

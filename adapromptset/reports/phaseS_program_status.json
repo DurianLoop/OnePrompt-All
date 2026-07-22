@@ -2,32 +2,44 @@
   "phase": "S",
   "date": "2026-07-22",
   "branch": "phaseS-multitrack-reference-robust-research",
-  "state": "PHASES_PREREGISTRATION_COMPLETE",
+  "state": "PHASES_TRACK_B_COMPLETE_NO_GAIN",
   "tracks": {
     "A": {
       "name": "Metric Correction and Stability Benchmark",
-      "status": "NOT_STARTED",
+      "status": "PHASES_TRACK_A_REFERENCE_INSTABILITY_BENCHMARK_VALID",
       "gate_section": "6.5",
-      "conditions_count": 7,
+      "conditions_passed": 7,
+      "conditions_total": 7,
+      "compute_used_gpu_hours": 0.0,
       "compute_cap_gpu_hours": 20
     },
     "B": {
       "name": "Learned Reference Reliability and Robust Aggregation",
-      "status": "BLOCKED_BY_A",
+      "status": "PHASES_TRACK_B_NO_GAIN",
       "gate_section": "7.6",
-      "conditions_count": 6,
+      "conditions_passed": 1,
+      "conditions_total": 6,
+      "requirements_passed": 5,
+      "requirements_total": 6,
+      "best_model": "M4_gbm",
+      "inner_cv_spearman_train": 0.9163,
+      "utility_prediction_spearman_val": 0.4781,
+      "delta_dice": -0.0024,
+      "sam_calls": 123,
+      "compute_used_gpu_hours": 0.0,
       "compute_cap_gpu_hours": 35
     },
     "C": {
       "name": "Set-Conditioned Robust Prompting",
-      "status": "BLOCKED_BY_B",
+      "status": "START_CONDITION_MET",
       "gate_section": "8.4",
       "conditions_count": 8,
-      "compute_cap_gpu_hours": 45
+      "compute_cap_gpu_hours": 45,
+      "start_rationale": "Track B has stable positive signal (Spearman=0.478 > 0.30) but plateaued (deltaDice=-0.0024)"
     },
     "D": {
       "name": "Direct Reference-Conditioned Segmentation",
-      "status": "CONDITIONAL",
+      "status": "PAUSED",
       "gate_section": "9.4",
       "conditions_count": 8,
       "compute_cap_gpu_hours": 50
@@ -35,11 +47,11 @@
   },
   "holdout": {
     "status": "BLOCKED",
-    "reason": "No validation pass yet"
+    "reason": "Track B failed; directive §11 requires Track B/C/D PASS"
   },
   "cross_dataset": {
     "status": "BLOCKED",
-    "reason": "No holdout pass"
+    "reason": "Holdout blocked; directive §12 requires holdout PASS"
   },
   "formal_test": "LOCKED_UNUSED",
   "compute": {
@@ -48,5 +60,5 @@
     "remaining_gpu_hours": 210.0,
     "checkpoints": [50, 100, 160, 210]
   },
-  "next_action": "Step 4: Complete metric correction audit (Track A section 6.3)"
+  "next_action": "Step 8: Execute Track C (Set-Conditioned Robust Prompting) if resources allow, or proceed to benchmark paper with Track A + Track B findings"
 }
