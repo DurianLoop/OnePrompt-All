@@ -75,6 +75,8 @@
   },
   "final_report": {
     "tables_generated": 20,
+    "figures_generated": 24,
+    "figures_dir": "reports/phaseS_figures/",
     "novelty_audit": "reports/phaseS_novelty_audit.md",
     "mock_review": "reports/phaseS_mock_review.md",
     "final_research_summary_md": "reports/phaseS_final_research_summary.md",

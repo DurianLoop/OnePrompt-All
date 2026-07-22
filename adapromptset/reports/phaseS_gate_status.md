@@ -144,6 +144,7 @@ Status: `LOCKED_UNUSED` (directive §22: "不访问 formal test")
 Status: `COMPLETE`
 
 - 20 tables generated in `reports/phaseS_tables/` (directive §14)
+- 24 figures generated in `reports/phaseS_figures/` (directive §15) — 22 data-driven + 2 BLOCKED placeholders (Track D, cross-dataset)
 - Novelty audit in `reports/phaseS_novelty_audit.md` (directive §13, 12 works, 7 questions)
 - Mock review in `reports/phaseS_mock_review.md` (Soundness 6/10, Presentation 7/10, Contribution 6/10, Weak Reject/Borderline)
 - Final research summary in `reports/phaseS_final_research_summary.md` and `.json` (directive §22, 22 sections)
