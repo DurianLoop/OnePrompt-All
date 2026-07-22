@@ -138,3 +138,28 @@ Status: `LOCKED_UNUSED` (directive §22: "不访问 formal test")
 - Used: 0.00 GPU-hours (all phases ran on CPU)
 - Remaining: 210.00 GPU-hours
 - SAM calls: 123 (Track B Phase 2)
+
+## Final Report (Steps 13-17)
+
+Status: `COMPLETE`
+
+- 20 tables generated in `reports/phaseS_tables/` (directive §14)
+- Novelty audit in `reports/phaseS_novelty_audit.md` (directive §13, 12 works, 7 questions)
+- Mock review in `reports/phaseS_mock_review.md` (Soundness 6/10, Presentation 7/10, Contribution 6/10, Weak Reject/Borderline)
+- Final research summary in `reports/phaseS_final_research_summary.md` and `.json` (directive §22, 22 sections)
+- Prohibited claim scan: PASSED (no actual prohibited claims)
+- All 17 directive steps executed
+
+## Final Unique State
+
+```
+PHASES_BENCHMARK_PAPER_READY
+```
+
+Per directive §20: Track A PASS (7/7) + no method track PASS → benchmark + failure-boundary paper.
+
+Allowed claims:
+1. Track A instability benchmark claim
+2. Track B Utility-Only claim
+
+Suggested title: "Reference-Induced Instability in Visual-Reference Segmentation: A Benchmark and Failure-Boundary Analysis"
