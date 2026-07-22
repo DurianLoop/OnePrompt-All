@@ -6,4 +6,7 @@ track_selection,2026-07-22,0.00,cpu,Scoring + routing (no SAM calls)
 trackB_phase1,2026-07-22,0.00,cpu,Features + labels + model ladder M0-M5 on train (307s, 0 SAM calls)
 trackB_phase2,2026-07-22,0.00,cpu,Val features + weighted consensus + 123 SAM calls (309s)
 trackB_phase3,2026-07-22,0.00,cpu,Gate B evaluation (0 SAM calls)
-total,2026-07-22,0.00,cpu,All Phase S stages through Track B
+trackC_phase1,2026-07-22,0.00,cpu,Grid search 27 combos on 80 train queries x 3 configs (1164s, 6432 SAM calls)
+trackC_phase2,2026-07-22,0.00,cpu,Val inference 41 queries x 3 configs (195s, 117 SAM calls)
+trackC_phase3,2026-07-22,0.00,cpu,Gate C evaluation + seed/refcount/LOO tests (211s, 110 SAM calls)
+total,2026-07-22,0.00,cpu,All Phase S stages through Track C (6779 total SAM calls)

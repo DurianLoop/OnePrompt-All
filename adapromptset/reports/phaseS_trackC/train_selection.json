@@ -1,0 +1,201 @@
+{
+  "best_alpha": 0.0,
+  "best_beta": 0.0,
+  "best_gamma": 0.0,
+  "best_mean_dice": 0.503761,
+  "grid": [
+    {
+      "alpha": 0.0,
+      "beta": 0.0,
+      "gamma": 0.0,
+      "mean_dice": 0.503761,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 0.0,
+      "gamma": 0.5,
+      "mean_dice": 0.494461,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 0.0,
+      "gamma": 1.0,
+      "mean_dice": 0.493393,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 0.5,
+      "gamma": 0.0,
+      "mean_dice": 0.49336,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 0.5,
+      "gamma": 0.5,
+      "mean_dice": 0.490772,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 0.5,
+      "gamma": 1.0,
+      "mean_dice": 0.48891,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 1.0,
+      "gamma": 0.0,
+      "mean_dice": 0.488421,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 1.0,
+      "gamma": 0.5,
+      "mean_dice": 0.489168,
+      "n_samples": 240
+    },
+    {
+      "alpha": 0.0,
+      "beta": 1.0,
+      "gamma": 1.0,
+      "mean_dice": 0.48836,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 0.0,
+      "gamma": 0.0,
+      "mean_dice": 0.49923,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 0.0,
+      "gamma": 0.5,
+      "mean_dice": 0.487981,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 0.0,
+      "gamma": 1.0,
+      "mean_dice": 0.488891,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 0.5,
+      "gamma": 0.0,
+      "mean_dice": 0.491124,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 0.5,
+      "gamma": 0.5,
+      "mean_dice": 0.486698,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 0.5,
+      "gamma": 1.0,
+      "mean_dice": 0.484857,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "gamma": 0.0,
+      "mean_dice": 0.484036,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "gamma": 0.5,
+      "mean_dice": 0.485206,
+      "n_samples": 240
+    },
+    {
+      "alpha": 1.0,
+      "beta": 1.0,
+      "gamma": 1.0,
+      "mean_dice": 0.484565,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 0.0,
+      "gamma": 0.0,
+      "mean_dice": 0.495413,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 0.0,
+      "gamma": 0.5,
+      "mean_dice": 0.486546,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 0.0,
+      "gamma": 1.0,
+      "mean_dice": 0.487509,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 0.5,
+      "gamma": 0.0,
+      "mean_dice": 0.489767,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 0.5,
+      "gamma": 0.5,
+      "mean_dice": 0.48314,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 0.5,
+      "gamma": 1.0,
+      "mean_dice": 0.481939,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "gamma": 0.0,
+      "mean_dice": 0.482206,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "gamma": 0.5,
+      "mean_dice": 0.483906,
+      "n_samples": 240
+    },
+    {
+      "alpha": 5.0,
+      "beta": 1.0,
+      "gamma": 1.0,
+      "mean_dice": 0.478925,
+      "n_samples": 240
+    }
+  ],
+  "seed": 0,
+  "n_queries": 80,
+  "n_configs": 3,
+  "reasoning": "Selected (\u03b1=0.0, \u03b2=0.0, \u03b3=0.0) maximising mean Dice on train (seed 0)."
+}

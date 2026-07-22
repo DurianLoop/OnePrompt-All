@@ -2,7 +2,7 @@
   "phase": "S",
   "date": "2026-07-22",
   "branch": "phaseS-multitrack-reference-robust-research",
-  "state": "PHASES_TRACK_B_COMPLETE_NO_GAIN",
+  "state": "PHASES_TRACK_C_COMPLETE_NO_GAIN",
   "tracks": {
     "A": {
       "name": "Metric Correction and Stability Benchmark",
@@ -31,23 +31,36 @@
     },
     "C": {
       "name": "Set-Conditioned Robust Prompting",
-      "status": "START_CONDITION_MET",
+      "status": "PHASES_TRACK_C_NO_GAIN",
       "gate_section": "8.4",
-      "conditions_count": 8,
+      "conditions_passed": 5,
+      "conditions_total": 8,
+      "best_alpha": 0.0,
+      "best_beta": 0.0,
+      "best_gamma": 0.0,
+      "best_method": "B2_mean_baseline (no C3/C4 improvement)",
+      "delta_dice_vs_trackB": 0.0047,
+      "train_mean_dice": 0.5038,
+      "val_mean_dice": 0.4779,
+      "sam_calls_train": 6432,
+      "sam_calls_val": 117,
+      "sam_calls_gate_eval": 110,
+      "compute_used_gpu_hours": 0.0,
       "compute_cap_gpu_hours": 45,
       "start_rationale": "Track B has stable positive signal (Spearman=0.478 > 0.30) but plateaued (deltaDice=-0.0024)"
     },
     "D": {
       "name": "Direct Reference-Conditioned Segmentation",
-      "status": "PAUSED",
+      "status": "START_CONDITION_NOT_FULLY_MET",
       "gate_section": "9.4",
       "conditions_count": 8,
-      "compute_cap_gpu_hours": 50
+      "compute_cap_gpu_hours": 50,
+      "start_assessment": "Track A confirmed instability, Track B/C failed. But condition 3 (raw matching maps have stable signal but point prompt conversion loses significantly) is NOT clearly met because SAM refinement HELPS (consensus Dice 0.48 vs raw matching map Dice <0.3). Track D not started."
     }
   },
   "holdout": {
     "status": "BLOCKED",
-    "reason": "Track B failed; directive §11 requires Track B/C/D PASS"
+    "reason": "Track B and C both failed; directive §11 requires Track B/C/D PASS"
   },
   "cross_dataset": {
     "status": "BLOCKED",
@@ -60,5 +73,5 @@
     "remaining_gpu_hours": 210.0,
     "checkpoints": [50, 100, 160, 210]
   },
-  "next_action": "Step 8: Execute Track C (Set-Conditioned Robust Prompting) if resources allow, or proceed to benchmark paper with Track A + Track B findings"
+  "next_action": "Steps 13-17: Generate final research summary (20 tables, 24 figures), novelty audit, mock review, unique final state"
 }

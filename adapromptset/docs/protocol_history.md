@@ -344,3 +344,23 @@ Branch: `phaseR-reference-stable-feasibility`
 - Gate B: 1/6 conditions passed (only cond3). Neither cond1 nor cond2 passed. req6 (bootstrap positive) failed. Decision: `PHASES_TRACK_B_NO_GAIN`.
 - Key scientific finding: Reference utility IS predictable from test-time-safe features (Spearman=0.478 on validation), but reliability weighting does NOT improve segmentation Dice. The pairwise reference deviation is dramatically reduced (60%), but this doesn't translate to Dice improvement. Some queries improve a lot (+0.10), others worsen (-0.26) — high variance in per-query effect.
 - Track B does NOT unblock holdout or cross-dataset. Per directive §10, Track C may start (Track B has stable positive signal [utility prediction] but plateaued [no Dice gain]).
+
+## 2026-07-22 Phase S Track C Execution
+
+- Track C (§8) implemented C3 (Pixel-wise Agreement Gate) and C4 (Stable Candidate Scoring). C3 applies per-pixel agreement weighting `w_r(x) = 1/(1+α·|C_r(x)-C_mean(x)|)` before consensus aggregation. C4 re-ranks candidates by stability score `s_i = μ_i - β·σ_i + γ·a_i` (mean - β·std + γ·agreement across references).
+- Hyperparameter grid: α∈{0,1,5}, β∈{0,0.5,1}, γ∈{0,0.5,1} = 27 combinations. α=0,β=0,γ=0 is B2_mean baseline.
+- Phase 1 (1164s, CPU): Grid search on 80 train queries × 3 configs × 27 combos = 6432 SAM calls. Best: (α=0.0, β=0.0, γ=0.0) with mean Dice=0.5038. ALL non-zero hyperparameters DECREASED mean Dice monotonically. C3 alone (α=1,β=0,γ=0): 0.4992. C4 alone (α=0,β=0.5,γ=0): 0.4934. C3+C4 (α=1,β=0.5,γ=0.5): 0.4867.
+- Phase 2 (195s, CPU): 41 val queries × 3 configs = 117 SAM calls with selected (α=0, β=0, γ=0). Mean Dice on val: 0.4779 (B2_mean baseline). Track B best (M4_gbm weighted): 0.4732. ΔDice = +0.0047 (just below +0.005 threshold).
+- Phase 3 (Gate C evaluation, CPU): 8 conditions relative to Track B best.
+  - cond1 (ΔDice≥+0.005): FAIL (+0.0047)
+  - cond2 (CVaR+0.01 or std-10%): FAIL (CVaR -0.0031)
+  - cond3 (CFR not increase): PASS (0.0732 = 0.0732)
+  - cond4 (3 seeds consistent): PASS (3/3 beat B2_mean on train)
+  - cond5 (refcount k=3 vs k=6 stable): PASS
+  - cond6 (LOO no crash/big drop): FAIL (7/30 LOO cases had drop >0.05)
+  - cond7 (params/runtime): PASS (0 learned params, 195s < 309s Track B)
+  - cond8 (train-val gap <0.05): PASS (0.037)
+- Gate C: 5/8 conditions passed. cond1 and cond2 both failed. Decision: `PHASES_TRACK_C_NO_GAIN`.
+- Key scientific finding: Neither pixel-wise agreement gating (C3) nor stable candidate scoring (C4) improves over B2_mean. The selected (α=0, β=0, γ=0) IS the B2_mean baseline, meaning all stability-based interventions degraded performance. This confirms the prompt interface bottleneck: the issue is not in how references are aggregated or candidates are selected, but in how SAM processes point prompts.
+- Track D assessed: start condition (§9.1) NOT fully met — condition 3 ("raw matching maps have stable signal but point prompt conversion loses significantly") is NOT met because SAM refinement HELPS (consensus Dice 0.48 vs raw matching map Dice <0.3). Track D not started.
+- Phase S final state: Track A PASSED (7/7), Track B NO_GAIN (1/6), Track C NO_GAIN (5/8). Holdout BLOCKED, cross-dataset BLOCKED. All compute: 0 GPU-hours (CPU-only), 6779 total SAM calls.

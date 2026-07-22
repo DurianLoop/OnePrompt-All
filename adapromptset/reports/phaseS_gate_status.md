@@ -73,19 +73,52 @@ Pairwise deviation reduced 60% but doesn't translate to Dice gain.
 
 ## Track C — Set-Conditioned Robust Prompting
 
-Status: `START_CONDITION_MET` (not yet executed)
+Status: `PHASES_TRACK_C_NO_GAIN`
 
-- Per directive §8.1: Track B has stable positive signal (Spearman=0.478 > 0.30)
-  but plateaued (ΔDice=-0.0024). Track C may start.
-- Track C models: C1 DeepSets, C2 Set Attention, C3 Pixel-wise Agreement Gate,
-  C4 Stable Candidate Scoring. All <5M params.
-- Track C Gate: relative to Track B best, need ΔDice≥+0.005 or CVaR+0.01/ref std-10%.
+- Date: 2026-07-22
+- Methods implemented: C3 (Pixel-wise Agreement Gate), C4 (Stable Candidate Scoring)
+- Hyperparameter grid: α∈{0,1,5}, β∈{0,0.5,1}, γ∈{0,0.5,1} = 27 combos
+- Phase 1: 1164s CPU, 80 train queries × 3 configs × 27 combos = 6432 SAM calls
+- Phase 2: 195s CPU, 117 SAM calls, 41 val queries × 3 configs
+- Phase 3: Gate C evaluation + seed/refcount/LOO tests, 110 SAM calls
+- Best hyperparameters: (α=0.0, β=0.0, γ=0.0) = B2_mean baseline
+
+### Key Finding
+
+Neither C3 (pixel-wise agreement gate) nor C4 (stable candidate scoring) improved
+over the B2_mean baseline on train. ALL non-zero hyperparameters DECREASED mean Dice
+monotonically. The best validation Dice (0.4779) came from the baseline (α=0, β=0, γ=0),
+which is effectively B2_mean consensus — NOT a Track C method contribution.
+
+### Gate C Conditions (5/8 passed)
+
+| # | Condition | Result |
+|---|---|---|
+| 1 | Mean Dice +0.005 vs Track B | FAIL (+0.0047) |
+| 2 | CVaR +0.01 vs Track B | FAIL (-0.0031) |
+| 3 | Catastrophic failure not increase | PASS (0.0732 = 0.0732) |
+| 4 | 3 seeds consistent (≥2/3 beat B2_mean) | PASS (3/3) |
+| 5 | Reference count variation stable | PASS |
+| 6 | LOO no crash / no big drop | FAIL (7 big drops >0.05) |
+| 7 | Params <5M, 1 SAM call, <2x runtime | PASS (0 params, 195s < 309s) |
+| 8 | Train-val gap < 0.05 | PASS (0.037) |
+
+### Decision
+
+`PHASES_TRACK_C_NO_GAIN` — cond1 and cond2 both failed. The selected (α=0, β=0, γ=0)
+is the B2_mean baseline, meaning C3/C4 interventions consistently degraded performance.
+The stability-based candidate re-ranking and agreement-based gating cannot overcome
+the prompt interface bottleneck.
 
 ## Track D — Direct Reference-Conditioned Segmentation
 
-Status: `PAUSED`
+Status: `START_CONDITION_NOT_FULLY_MET`
 
-- Only starts if Track B/C fail AND prompt interface confirmed as bottleneck.
+- Track A confirmed prompt-interface instability ✓
+- Track B/C cannot improve stability ✓
+- Raw matching maps have signal but SAM refinement HELPS (consensus Dice 0.48 vs raw <0.3) ✗
+- SAM refinement gains unstable across references ✓
+- Condition 3 (point prompt conversion loses significantly) NOT met. Track D not started.
 
 ## Holdout
 
