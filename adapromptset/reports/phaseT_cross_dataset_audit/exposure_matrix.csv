@@ -1,0 +1,13 @@
+dataset,split,cases,prior_phase_exposure,phase_t_role,phase_t_status
+MoNuSAC,train,80,Phase X/Y/R/S training,Model training + reference pool,EXPOSED (training only)
+MoNuSAC,validation,41,Phase R/S validation,Method selection,EXPOSED (validation only)
+MoNuSAC,holdout,40,Phase Y holdout (UNEXPOSED),WP1 confirmatory benchmark,OBSERVED (WP1 PASS)
+MoNuSAC,test,101,Never accessed,LOCKED,LOCKED_UNUSED
+GlaS,official_train,55,Phase 2D reference pool,NOT_AVAILABLE,DATA_MISSING
+GlaS,strict_validation,30,Phase 2D Gate D (FAILED),NOT_AVAILABLE,DATA_MISSING
+GlaS,testA,60,Never accessed,LOCKED,LOCKED_UNUSED
+GlaS,testB,20,Never accessed,LOCKED,LOCKED_UNUSED
+MoNuSeg,kmms_train,82,Not used with ref-resampling protocol,Reference pool + validation queries,UNEXPOSED until WP2
+MoNuSeg,official_test,14,Phase 2D secondary,LOCKED,LOCKED_UNUSED
+IDRID,train,54,Phase 4+ Route B matcher smoke,Reference pool + validation queries,UNEXPOSED until WP2
+IDRID,test,27,Never accessed,LOCKED,LOCKED_UNUSED

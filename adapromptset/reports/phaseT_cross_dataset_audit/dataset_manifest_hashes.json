@@ -1,0 +1,40 @@
+{
+  "audit_date": "2026-07-23",
+  "datasets": {
+    "monuseg": {
+      "source_path": "D:\\SAM\\code\\datasets\\MonuSeg\\kmms",
+      "image_count": 82,
+      "mask_count": 82,
+      "image_format": "PNG 256x256 RGBA",
+      "mask_format": "PNG 256x256 L grayscale 0-255",
+      "split": {
+        "reference_pool_count": 52,
+        "validation_query_count": 30,
+        "split_method": "alphabetical by filename"
+      },
+      "manifest_hash": "PENDING_WPM2_MANIFEST_CREATION"
+    },
+    "idrid": {
+      "source_path": "D:\\SAM\\code\\datasets\\IDRID\\DR_Training_Set",
+      "image_count": 55,
+      "mask_count": 54,
+      "image_format": "JPG ~4288x2848 RGB",
+      "mask_format": "PNG RGB color-coded (5 colors)",
+      "frozen_lesion_intent": "EX",
+      "ex_extraction_rule": "R>200 & B>200 & G<50 (magenta)",
+      "ex_non_empty_count": 54,
+      "split": {
+        "reference_pool_count": 24,
+        "validation_query_count": 30,
+        "split_method": "alphabetical by case_id"
+      },
+      "manifest_hash": "PENDING_WP2_MANIFEST_CREATION"
+    },
+    "glas": {
+      "source_path": "D:\\SAM\\external\\research_data\\extracted\\GlaS",
+      "status": "NOT_AVAILABLE",
+      "image_count": 0,
+      "mask_count": 0
+    }
+  }
+}
