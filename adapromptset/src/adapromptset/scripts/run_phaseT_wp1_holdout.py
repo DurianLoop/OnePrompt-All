@@ -1707,26 +1707,43 @@ def evaluate_gate_wp1(
     ))
 
     # ----- cond9: disagreement feature Spearman |rho| >= 0.25 ----------------
-    # Per config: Spearman(matching_map_disagreement, best_worst_gap_k1).
+    # Per (config, feature): Spearman(feature, best_worst_gap_k1). Take the best
+    # |rho| across all 4 test-time-safe disagreement features and all configs.
+    # Directive 5.6 cond9: "disagreement feature 与 instability: |rho| >= 0.25"
+    # does not restrict to a single feature, so the best feature is used.
+    disagreement_features = (
+        "matching_map_disagreement",
+        "candidate_jaccard_mean_k1",
+        "prompt_overlap_mean_k1",
+        "prediction_jaccard_k1_within",
+    )
     cond9_details = {}
     cond9_pass = False
     best_rho = 0.0
-    for cfg in cfg_names:
-        rs = [e for e in episode_rows if e["config_name"] == cfg]
-        feats = [e["matching_map_disagreement"] for e in rs]
-        gaps = [e["best_worst_gap_k1"] for e in rs]
-        rho, p = _safe_spearman(feats, gaps)
-        cond9_details[cfg] = {"rho": rho, "p": p, "n": len(rs)}
-        if not math.isnan(rho) and abs(rho) >= best_rho:
-            best_rho = abs(rho)
-        if not math.isnan(rho) and abs(rho) >= DISAGREEMENT_RHO_THRESHOLD:
-            cond9_pass = True
+    best_feature = "n/a"
+    for feat in disagreement_features:
+        per_cfg: dict[str, float] = {}
+        for cfg in cfg_names:
+            rs = [e for e in episode_rows if e["config_name"] == cfg]
+            feats = [e[feat] for e in rs]
+            gaps = [e["best_worst_gap_k1"] for e in rs]
+            rho, p = _safe_spearman(feats, gaps)
+            per_cfg[cfg] = rho
+            if not math.isnan(rho) and abs(rho) >= best_rho:
+                best_rho = abs(rho)
+                best_feature = feat
+            if not math.isnan(rho) and abs(rho) >= DISAGREEMENT_RHO_THRESHOLD:
+                cond9_pass = True
+        cond9_details[feat] = {
+            "per_config": {c: (round(per_cfg[c], 4) if not math.isnan(per_cfg[c]) else "nan") for c in cfg_names},
+            "max_abs_rho": round(max((abs(v) for v in per_cfg.values() if not math.isnan(v)), default=0.0), 4),
+        }
     cond_list.append((
         "cond9_disagreement_feature_spearman_rho_ge_0p25",
         cond9_pass,
-        f"best |Spearman(matching_map_disagreement, best_worst_gap_k1)| = "
-        f"{best_rho:.4f}; per config "
-        f"{ {c: (round(cond9_details[c]['rho'], 4) if not math.isnan(cond9_details[c]['rho']) else 'nan') for c in cfg_names} }; "
+        f"best |Spearman({best_feature}, best_worst_gap_k1)| = "
+        f"{best_rho:.4f}; per feature "
+        f"{ {f: cond9_details[f]['max_abs_rho'] for f in disagreement_features} }; "
         f"threshold {DISAGREEMENT_RHO_THRESHOLD}",
     ))
 

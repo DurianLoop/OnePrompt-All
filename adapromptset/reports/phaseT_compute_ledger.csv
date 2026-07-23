@@ -1,2 +1,3 @@
 stage,gpu_hours,sam_calls,runtime_seconds,notes
 preregistration,0,0,0,Phase T preregistration control files created; no inference run
+wp1_holdout,0,9600,1526.5,MoNuSAC holdout=40 queries x 10 seeds x 3 configs x 8 SAM calls; CPU run; 10/10 gate conditions PASSED

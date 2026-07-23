@@ -1,8 +1,8 @@
 {
   "phase": "T",
-  "state": "PHASES_BENCHMARK_CORE_FINDING_ESTABLISHED",
+  "state": "PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED",
   "work_packages": {
-    "WP1": "PENDING",
+    "WP1": "PASS",
     "WP2": "PENDING",
     "WP3": "PENDING",
     "WP4": "PENDING"
@@ -15,5 +15,21 @@
   },
   "branch": "phaseT-publication-completion",
   "base_commit": "2c1f7d2",
-  "next_action": "Freeze MoNuSAC holdout benchmark protocol and run WP1"
+  "wp1_result": {
+    "n_conditions": 10,
+    "n_pass": 10,
+    "n_queries": 40,
+    "seed_count": 10,
+    "configs": ["P20-N1", "P30-N0", "P50-N0"],
+    "key_metrics": {
+      "frac_queries_best_worst_gap_ge_0p05": 0.925,
+      "v_ref_frac_k1_range": "0.1264-0.2627",
+      "consensus_gain": 0.026631,
+      "bootstrap_ci_lower": 0.014009,
+      "best_disagreement_rho": 0.724109,
+      "best_disagreement_feature": "prediction_jaccard_k1_within"
+    },
+    "decision": "PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED"
+  },
+  "next_action": "Audit GlaS/MoNuSeg/DDR and run WP2 cross-dataset replication"
 }

@@ -6,13 +6,13 @@ Directive: `D:\SAM\adapromptset\reports\AdaPromptSet_PhaseT_Publication_Completi
 
 ## Current State
 
-`PHASES_BENCHMARK_CORE_FINDING_ESTABLISHED`
+`PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED`
 
 ## Work Packages
 
 | WP | Name | Status | Gate |
 |---|---|---|---|
-| WP1 | Confirmatory Benchmark (MoNuSAC holdout=40) | PENDING | §5.6 (10 conditions) |
+| WP1 | Confirmatory Benchmark (MoNuSAC holdout=40) | PASS (10/10) | §5.6 (10 conditions) |
 | WP2 | Cross-Dataset + Cross-Method Replication | PENDING | §6.4 + §7.3 |
 | WP3 | Risk-Aware Mitigation (M1 + M2) | PENDING | §9.6 + §10.5 |
 | WP4 | Paper Construction + Mock Review | PENDING | §20 (12 conditions) |
@@ -20,7 +20,7 @@ Directive: `D:\SAM\adapromptset\reports\AdaPromptSet_PhaseT_Publication_Completi
 ## Compute Budget
 
 - Cap: 195 GPU-hours
-- Used: 0 GPU-hours
+- Used: 0 GPU-hours (WP1 ran on CPU)
 - Remaining: 195 GPU-hours
 - Checkpoints: 40 / 90 / 140 / 195 GPU-hours
 
@@ -28,13 +28,25 @@ Directive: `D:\SAM\adapromptset\reports\AdaPromptSet_PhaseT_Publication_Completi
 
 | Gate | Status |
 |---|---|
-| WP1 holdout | PENDING (protocol not yet frozen) |
-| WP2 cross-dataset | BLOCKED_BY_WP1 |
-| WP2b external baselines | BLOCKED_BY_WP1 |
+| WP1 holdout | PASS — PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED (10/10 conditions) |
+| WP2 cross-dataset | UNBLOCKED — audit GlaS/MoNuSeg/DDR |
+| WP2b external baselines | UNBLOCKED — build comparator matrix |
 | WP3 M1 dynamic budget | BLOCKED_BY_WP2 |
 | WP3 M2 selective prediction | BLOCKED_BY_WP2 |
 | WP4 publication readiness | BLOCKED_BY_WP1/WP2/WP3 |
 | Formal test | LOCKED_UNUSED |
+
+## WP1 Result Summary
+
+- 40 holdout queries × 10 seeds × 3 configs (P20-N1, P30-N0, P50-N0)
+- 9600 SAM calls, 1526.5s on CPU
+- 10/10 gate conditions PASSED
+- Key metrics:
+  - 92.5% queries with best-worst gap ≥ 0.05
+  - V_ref_frac (k=1): 0.1264–0.2627
+  - Consensus gain: +0.0266 Dice (bootstrap CI lower = 0.014)
+  - Best disagreement feature: prediction_jaccard_k1_within (Spearman |ρ| = 0.7241)
+  - 0 data leakage violations across 2400 reference assignments
 
 ## Starting Scientific State (from Phase S)
 
@@ -48,14 +60,9 @@ Directive: `D:\SAM\adapromptset\reports\AdaPromptSet_PhaseT_Publication_Completi
 
 ## Next Action
 
-Freeze the MoNuSAC holdout benchmark protocol (`docs/phaseT_holdout_protocol.md`
-already created; the WP1 freeze commit and
-`configs/frozen/phaseT_monusac_benchmark.yaml` are the next concrete
-artifacts) and run WP1.
-
-Per directive §26 step 4: freeze MoNuSAC holdout benchmark protocol before
-any WP1 inference. The holdout may be observed exactly once per frozen
-method; hash verification is required before the run begins.
+WP1 PASSED. Per directive §26 steps 7-8: audit GlaS/MoNuSeg/DDR datasets and
+run cross-dataset replication on at least 2 additional datasets under the
+unified protocol (directive §6.3).
 
 ## Prohibited Next Actions
 
