@@ -1,0 +1,2 @@
+stage,gpu_hours,sam_calls,runtime_seconds,notes
+preregistration,0,0,0,Phase T preregistration control files created; no inference run

@@ -1,0 +1,19 @@
+{
+  "phase": "T",
+  "state": "PHASES_BENCHMARK_CORE_FINDING_ESTABLISHED",
+  "work_packages": {
+    "WP1": "PENDING",
+    "WP2": "PENDING",
+    "WP3": "PENDING",
+    "WP4": "PENDING"
+  },
+  "compute": {
+    "cap_gpu_hours": 195,
+    "used_gpu_hours": 0,
+    "remaining_gpu_hours": 195,
+    "checkpoints": [40, 90, 140, 195]
+  },
+  "branch": "phaseT-publication-completion",
+  "base_commit": "2c1f7d2",
+  "next_action": "Freeze MoNuSAC holdout benchmark protocol and run WP1"
+}

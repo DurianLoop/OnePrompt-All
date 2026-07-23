@@ -1139,3 +1139,76 @@ Phase Y directive: `AdaPromptSet_PhaseY_Policy_Feasibility.md`. Branch: `phaseY-
 - [ ] GATE Holdout evaluation: single frozen model run on 40 holdout queries
 - [ ] Generate Phase Y final report: 18 tables, 20 figures
 
+---
+
+## Phase T — Publication Completion (2026-07-23)
+
+Phase T directive: `reports/AdaPromptSet_PhaseT_Publication_Completion.md`. Branch: `phaseT-publication-completion` (from Phase S HEAD `2c1f7d2`). Starting state: `PHASES_BENCHMARK_CORE_FINDING_ESTABLISHED`. Compute cap: 195 GPU-hours. Formal test LOCKED for entire Phase T.
+
+### Pre-Registration (CPU-only, no SAM inference)
+
+- [x] GATE Read Phase X / Y / R / S artifacts before preregistration.
+  - 2026-07-23: Read `reports/AdaPromptSet_PhaseT_Publication_Completion.md`, `docs/protocol_history.md`, `docs/decision_log.md`, `checklist.md`, `docs/phaseS_*.md`, `reports/phaseS_*.{md,json}`, `reports/phaseS_protocol_snapshot.json`, `reports/phaseS_program_status.json`, `reports/phaseS_risk_register.md`.
+- [x] Create `phaseT-publication-completion` branch from Phase S HEAD `2c1f7d2`.
+  - 2026-07-23: Branch creation recorded in `docs/decision_log.md`.
+- [x] GATE Create 12 preregistration docs under `docs/phaseT_*.md`.
+  - 2026-07-23: goal_read_receipt, publication_charter, claim_registry, dataset_registry, reference_protocol, metric_protocol, external_baseline_protocol, risk_mitigation_protocol, holdout_protocol, cross_dataset_protocol, paper_outline, test_lock_notice.
+- [x] Create 7 reports under `reports/phaseT_*`.
+  - 2026-07-23: program_status (.md + .json), compute_ledger.csv, protocol_snapshot.json, input_hashes.json, publication_readiness.md, risk_register.md.
+- [x] Append Phase T preregistration entry to `docs/protocol_history.md` (no overwrite).
+  - 2026-07-23: Appended `## 2026-07-23 Phase T Preregistration — Publication Completion Program` section.
+- [x] Append Phase T branch creation + preregistration decisions to `docs/decision_log.md` (no overwrite).
+  - 2026-07-23: Appended 2 entries (branch creation from `2c1f7d2`; preregistration freeze of 4-WP structure + 195 GPU-hour cap + claim registry + protocols).
+- [x] GATE Append Phase T checklist items to `checklist.md` (no overwrite).
+  - 2026-07-23: This section appended.
+- [ ] Create preregistration git commit `phaseT: preregister publication completion protocol` before any WP1 inference.
+- [ ] GATE Freeze MoNuSAC holdout benchmark protocol (create `configs/frozen/phaseT_monusac_benchmark.yaml` + `reports/phaseT_monusac_holdout_hashes.json`).
+- [ ] Hash-verify all input files before WP1 inference.
+
+### WP1 — Confirmatory Benchmark (MoNuSAC holdout=40)
+
+- [ ] Run B1–B7 on the 40 holdout queries under the frozen protocol (k∈{1,3,6}, 3 prompt configs, 10 seeds).
+- [ ] GATE WP1 decision (directive §5.6, 10 conditions): holdout confirmed?
+  - Pass state: `PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED`.
+  - Fail state: `PHASET_WP1_MONUSAC_HOLDOUT_FAIL` → STOP; no formal test access.
+
+### WP2 — Cross-Dataset + Cross-Method Replication
+
+- [ ] Generate `reports/phaseT_cross_dataset_audit/` (GlaS / MoNuSeg / DDR availability + exposure matrix + role decision + manifest hashes).
+- [ ] Run GlaS strict-validation (30 queries) under unified protocol.
+- [ ] GATE GlaS directional / strong support decision.
+- [ ] Run MoNuSeg under unified protocol.
+- [ ] GATE MoNuSeg directional / strong support decision.
+- [ ] Run DDR one frozen lesion intent under unified protocol.
+- [ ] GATE DDR directional / strong support decision.
+- [ ] Build external comparator matrix (`reports/phaseT_external_baselines/`).
+- [ ] Reproduce available external methods (Tier 1 / Tier 2).
+- [ ] GATE Minimum external comparator requirement (Option A / B / C).
+
+### WP3 — Risk-Aware Mitigation
+
+- [ ] Train M2 selective prediction model ladder (M2-0 to M2-4) on train.
+- [ ] GATE M2 validation decision (directive §10.5, 6 conditions).
+- [ ] Train M1 dynamic reference budget model ladder (M1-0 to M1-6) on train.
+- [ ] GATE M1 validation decision (directive §9.6, cost-saving OR quality-cost mode).
+- [ ] Freeze final mitigation method (model + threshold + calibration + cost + risk-coverage).
+- [ ] GATE Run final-method holdout ONCE on MoNuSAC holdout=40.
+
+### WP4 — Paper Construction + Mock Review
+
+- [ ] Generate 18 core tables per `docs/phaseT_paper_outline.md`.
+- [ ] Generate 18 core figures per `docs/phaseT_paper_outline.md`.
+- [ ] Update novelty audit (`reports/phaseT_novelty_audit.md`).
+- [ ] Generate mock review (`reports/phaseT_mock_review.md`) + rebuttal plan.
+- [ ] Generate full paper draft under `paper/phaseT/`.
+- [ ] GATE Publication Readiness Gate (directive §20, 12 conditions).
+- [ ] Output unique final Phase T state.
+
+### Final Locks
+
+- [ ] Formal test remains LOCKED for entire Phase T (no exceptions).
+- [ ] No `SUBMISSION_READY` / `PUBLICATION_COMPLETED` / `SOTA` written until §20 passes.
+- [ ] Claim-boundary audit scans all Phase T artifacts for prohibited tokens before final state transition.
+
+Current Phase T status: `PHASES_BENCHMARK_CORE_FINDING_ESTABLISHED` (preregistration files created; awaiting preregistration commit).
+
