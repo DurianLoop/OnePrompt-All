@@ -1,0 +1,34 @@
+{
+  "phase": "PhaseW",
+  "date": "2026-07-27",
+  "input_files": {
+    "monusac_episode": {
+      "path": "reports/phaseU_wp1/sam_b/phase2_episode_instability.csv",
+      "description": "MoNuSAC episode-level data (SAM-B)"
+    },
+    "monusac_raw": {
+      "path": "reports/phaseU_wp1/sam_b/phase2_raw_per_call.csv",
+      "description": "MoNuSAC raw per-call data (SAM-B)"
+    },
+    "query_level_stats": {
+      "path": "reports/phaseV_query_level_stats/query_level_statistics.json",
+      "description": "Phase V query-level statistics"
+    },
+    "component_ablation_fixed": {
+      "path": "reports/phaseV_component_ablation_fixed/component_ablation_fixed.json",
+      "description": "Phase V fixed component ablation results"
+    },
+    "rrn_grouped_cv": {
+      "path": "reports/phaseV_rrn_grouped_cv/rrn_grouped_cv_results.json",
+      "description": "Phase V RRN grouped CV results"
+    },
+    "ramp_results": {
+      "path": "reports/phaseU_ramp/ramp_results.json",
+      "description": "Phase U RAMP results"
+    },
+    "v5_paper": {
+      "path": "paper/phaseV/full_draft_v5.tex",
+      "description": "Phase V paper draft"
+    }
+  }
+}
