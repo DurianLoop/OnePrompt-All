@@ -1,0 +1,11 @@
+phase,work_package,stage,gpu_hours,cumulative_hours,date,notes
+PhaseAB,WP0,integrity,0,0,2026-07-27,CPU only
+PhaseAB,WP1,fresh_data_audit,0,0,2026-07-27,CPU only
+PhaseAB,WP1b,power_analysis,0,0,2026-07-27,CPU only
+PhaseAB,WP2,confirmatory,20,20,2026-07-27,BLOCKED
+PhaseAB,WP3,cross_pipeline,20,40,2026-07-27,reuse existing
+PhaseAB,WP3b,cross_dataset,35,75,2026-07-27,multi-seed
+PhaseAB,WP4,baseline,20,95,2026-07-27,provenance
+PhaseAB,WP5,modern,35,130,2026-07-27,OPTIONAL
+PhaseAB,WP6,paper,0,130,2026-07-27,CPU only
+PhaseAB,WP7,mock_review,0,130,2026-07-27,CPU only

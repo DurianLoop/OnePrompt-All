@@ -1,0 +1,18 @@
+{
+  "phase": "PhaseAB",
+  "date": "2026-07-27",
+  "protocols": {
+    "goal_read_receipt": "docs/phaseAB_goal_read_receipt.md",
+    "scientific_scope": "docs/phaseAB_scientific_scope.md",
+    "method_freeze": "docs/phaseAB_method_freeze.md",
+    "fresh_data_policy": "docs/phaseAB_fresh_data_policy.md",
+    "confirmatory_protocol": "docs/phaseAB_confirmatory_protocol.md",
+    "power_analysis_protocol": "docs/phaseAB_power_analysis_protocol.md",
+    "cross_dataset_protocol": "docs/phaseAB_cross_dataset_protocol.md",
+    "baseline_provenance_protocol": "docs/phaseAB_baseline_provenance_protocol.md",
+    "claim_registry": "docs/phaseAB_claim_registry.md",
+    "test_lock_notice": "docs/phaseAB_test_lock_notice.md",
+    "paper_plan": "docs/phaseAB_paper_plan.md"
+  },
+  "git_commit": "PENDING"
+}

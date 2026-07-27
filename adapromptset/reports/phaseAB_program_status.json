@@ -1,0 +1,27 @@
+{
+  "phase": "PhaseAB",
+  "branch": "phaseAB-fresh-confirmation-paper-assembly",
+  "date": "2026-07-27",
+  "status": "IN_PROGRESS",
+  "predecessor": "PhaseAA (PHASEAA_PAPER_NEAR_READY)",
+  "work_packages": {
+    "WP0": {"status": "PENDING", "description": "Phase AA Integrity Closure"},
+    "WP1": {"status": "PENDING", "description": "Fresh Confirmatory Cohort Acquisition"},
+    "WP1b": {"status": "PENDING", "description": "Power Analysis"},
+    "WP2": {"status": "BLOCKED", "description": "Confirmatory Experiment (needs WP1)"},
+    "WP3": {"status": "PENDING", "description": "Cross-Pipeline Boundary Completion"},
+    "WP3b": {"status": "PENDING", "description": "Cross-Dataset Multi-Seed"},
+    "WP4": {"status": "PENDING", "description": "Baseline Provenance Closure"},
+    "WP5": {"status": "OPTIONAL", "description": "Modern Pipeline Audit"},
+    "WP6": {"status": "PENDING", "description": "Venue-Neutral Paper Assembly"},
+    "WP7": {"status": "PENDING", "description": "Mock Review and Submission Readiness"}
+  },
+  "route": "Route B - Simplified Selective Prediction",
+  "primary_method": "Prediction Consistency + Coverage-Based Abstention",
+  "data_roles": {
+    "development_cohort": "80 MoNuSAC queries",
+    "validation_cohort": "41 MoNuSAC queries",
+    "holdout": null,
+    "confirmatory": null
+  }
+}
