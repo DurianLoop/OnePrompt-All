@@ -45,3 +45,17 @@ This log records whether each local dataset may influence AdaPromptSet MVP tunin
 - Phase Y artifacts: READ (all reports/phaseY_* and manifests/phaseY/*)
 - Phase R0 audit: READ-ONLY (no new SAM inference)
 - Phase R manifests: CREATED (5 train seeds + 1 val fixed)
+
+## 2026-07-27 Phase AA Data Exposure
+
+- MoNuSAC Development Cohort (80 queries): READ-ONLY (existing Phase R/S/T/W artifacts; no new SAM inference)
+- MoNuSAC M2 Validation (41 queries): NOT YET AUDITED (pending AA1 audit)
+- MoNuSAC holdout=40: NOT ACCESSED (locked)
+- MoNuSAC test=101: NOT ACCESSED (locked)
+- MoNuSeg: READ-ONLY (existing Phase T/W artifacts)
+- IDRID: READ-ONLY (existing Phase T/W artifacts)
+- GlaS: NOT ACCESSED
+- DDR: NOT ACCESSED
+- Phase V/W artifacts: READ (all reports/phaseV_*, reports/phaseW_*)
+- Phase AA control files: CREATED (docs/phaseAA_*.md, reports/phaseAA_*, configs/frozen/phaseAA_prediction_consistency.yaml)
+- No new SAM/matcher inference in this preregistration

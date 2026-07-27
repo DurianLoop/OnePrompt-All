@@ -1,0 +1,24 @@
+{
+  "phase": "PhaseAA",
+  "branch": "phaseAA-simple-selective-confirmation",
+  "date": "2026-07-27",
+  "gates": {
+    "AA0": {"status": "PENDING", "description": "Phase V/W contradiction audit"},
+    "AA1": {"status": "PENDING", "description": "41 validation query audit"},
+    "AA2": {"status": "PENDING", "description": "Development Cohort 80-query CV"},
+    "AA3": {"status": "PENDING", "description": "Confirmatory experiment"},
+    "AA4": {"status": "PENDING", "description": "Cross-pipeline generality"},
+    "AA5": {"status": "PENDING", "description": "Cross-dataset validation"},
+    "AA6": {"status": "PENDING", "description": "Baseline provenance"},
+    "AA7": {"status": "PENDING", "description": "Anti-correlation disposition"}
+  },
+  "route": "Route B - Simplified Selective Prediction",
+  "primary_method": "Prediction Consistency + Coverage-Based Abstention",
+  "removed_from_main": ["Full RAMP", "RRN", "weighting", "fusion"],
+  "data_roles": {
+    "development_cohort": "80 MoNuSAC queries (train_001-train_080)",
+    "validation_cohort": "41 M2 validation queries (pending audit)",
+    "holdout": null,
+    "confirmatory": null
+  }
+}

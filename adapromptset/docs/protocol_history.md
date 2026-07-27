@@ -394,3 +394,14 @@ Branch: `phaseR-reference-stable-feasibility`
 - Cross-dataset protocol: GlaS (official train 55 / strict val 30), MoNuSeg, DDR (one frozen lesion intent). Unified protocol: DINOv2-L matcher, SAM-B segmenter, 1 SAM call, k∈{1,3,6}, same metrics. Dataset-specific prompt config allowed but must be frozen on development split.
 - Risk register: 7 risks registered — R1 holdout may not confirm instability [medium], R2 cross-dataset may not replicate [medium], R3 external methods may not be reproducible [high], R4 M1/M2 may not pass [medium], R5 GPU budget insufficient [low], R6 data leakage [low with controls], R7 patient overlap [low with controls].
 - No new SAM/matcher inference has been run. Preregistration commit must precede WP1 holdout protocol freeze and any WP1 inference.
+
+## 2026-07-27 Phase AA — Simplified Selective Prediction Confirmation
+
+- Branch `phaseAA-simple-selective-confirmation` created from Phase W HEAD `31f3d6f`.
+- Phase AA transforms the project from a complex multi-component RAMP framework into a simplified selective prediction paper. Core question: "Can cross-reference prediction inconsistency serve as a simple, model-light risk signal for identifying catastrophic failures and enabling selective prediction in multi-reference visual prompting?"
+- Route B (Simplified Selective Prediction) confirmed as final direction. Full RAMP, RRN, weighting, fusion removed from main method.
+- Data roles frozen: Development Cohort = 80 MoNuSAC queries (NOT holdout), Validation Cohort = 41 M2 validation queries (pending audit).
+- Primary method: Prediction Consistency + Coverage-Based Abstention (no learned weighting, no adaptive fusion, no RRN).
+- 11 control docs created under `docs/phaseAA_*.md`, 7 reports under `reports/phaseAA_*`, 1 frozen config under `configs/frozen/phaseAA_prediction_consistency.yaml`.
+- 8 Gates preregistered: AA0 (Phase V/W contradiction audit), AA1 (41 validation query audit), AA2 (Development Cohort 80-query CV), AA3 (confirmatory experiment), AA4 (cross-pipeline), AA5 (cross-dataset), AA6 (baseline provenance), AA7 (anti-correlation disposition).
+- Compute cap: 135 GPU-hours. No new SAM/matcher inference has been run. Preregistration commit must precede any Phase AA experiments.

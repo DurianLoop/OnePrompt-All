@@ -1212,3 +1212,39 @@ Phase T directive: `reports/AdaPromptSet_PhaseT_Publication_Completion.md`. Bran
 
 Current Phase T status: `PHASES_BENCHMARK_CORE_FINDING_ESTABLISHED` (preregistration files created; awaiting preregistration commit).
 
+## Phase AA — Simplified Selective Prediction Confirmation (2026-07-27)
+
+Phase AA directive: `reports/todo.md`. Branch: `phaseAA-simple-selective-confirmation` (from Phase W HEAD `31f3d6f`). Route: Route B — Simplified Selective Prediction. Starting state: Phase W findings (Full RAMP no value, Prediction Consistency strongest signal, RRN AUROC=0.573, anti-correlation not universal). Compute cap: 135 GPU-hours. Formal test LOCKED.
+
+### Pre-Registration (CPU-only, no SAM inference)
+
+- [x] GATE Read Phase V/W artifacts before preregistration.
+  - 2026-07-27: Read `reports/phaseW_final_experimental_closure.{md,json}`, `reports/phaseW_split_audit/*`, `reports/phaseW_anticorrelation/*`, `reports/phaseW_simple_baselines/*`, `reports/phaseW_risk_coverage/*`, `reports/phaseW_component_ablation/*`, `reports/phaseV_*`, `docs/protocol_history.md`, `docs/decision_log.md`, `checklist.md`, `docs/data_exposure_log.md`.
+- [x] Create `phaseAA-simple-selective-confirmation` branch from Phase W HEAD `31f3d6f`.
+  - 2026-07-27: Branch created.
+- [x] GATE Create 11 preregistration docs under `docs/phaseAA_*.md`.
+  - 2026-07-27: goal_read_receipt, research_question, data_role_protocol, confirmatory_cohort_protocol, prediction_consistency_definition, selective_prediction_protocol, baseline_protocol, statistics_protocol, external_replication_protocol, claim_registry, test_lock_notice.
+- [x] Create 7 reports under `reports/phaseAA_*`.
+  - 2026-07-27: program_status (.md + .json), compute_ledger.csv, protocol_snapshot.json, input_hashes.json, blocker_registry.md.
+- [x] Freeze Prediction Consistency config (`configs/frozen/phaseAA_prediction_consistency.yaml`).
+  - 2026-07-27: Frozen config with reference_count=8, pairwise IoU, mean consensus, coverage levels 0.5-1.0, catastrophic threshold Dice<0.1.
+- [x] Append Phase AA entry to `docs/protocol_history.md` (no overwrite).
+- [x] Append Phase AA branch creation + preregistration decisions to `docs/decision_log.md` (no overwrite).
+- [x] Append Phase AA data exposure to `docs/data_exposure_log.md` (no overwrite).
+- [x] Append Phase AA checklist items to `checklist.md` (no overwrite).
+- [ ] Create preregistration git commit `phaseAA: preregister simplified selective prediction confirmation` before any AA experiments.
+
+### Gates (to be executed after preregistration)
+
+- [ ] GATE AA0: Phase V/W contradiction audit (null model, SAM-L significance, anti-correlation residual).
+- [ ] GATE AA1: 41 M2 validation queries audit for confirmatory eligibility.
+- [ ] GATE AA2: Development Cohort 80-query grouped CV (Prediction Consistency + baselines).
+- [ ] GATE AA3: One-shot confirmatory experiment (only if AA1 passes).
+- [ ] GATE AA4: Cross-pipeline generality (5 pipelines).
+- [ ] GATE AA5: Cross-dataset validation (MoNuSeg, IDRID).
+- [ ] GATE AA6: Baseline provenance (SAM-Med2D audit, external baseline restructuring).
+- [ ] GATE AA7: Anti-correlation final disposition.
+- [ ] Final report: Phase AA closure, paper rewrite, Publication Readiness Gate.
+
+Current Phase AA status: `PREREGISTRATION_PENDING_COMMIT`.
+
