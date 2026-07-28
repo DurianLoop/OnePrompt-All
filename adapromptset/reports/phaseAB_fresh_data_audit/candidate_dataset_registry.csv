@@ -1,0 +1,8 @@
+dataset,n_queries,role,exposure_level,used_for_training,used_for_feature_selection,used_for_threshold,used_for_model_selection,used_for_route_decision,viewed_in_reports,fresh_eligible
+MoNuSAC_train_001-080,80,Development Cohort,Full,Yes,Yes,Yes,Yes,Yes,Yes,No
+MoNuSAC_val_081-121,41,Validation Cohort,High,No,Indirect,Yes,Yes,No,Yes,No
+MoNuSeg,30,External,Medium,No,No,No,No,No,Yes,No
+IDRID,30,External,Medium,No,No,No,No,No,Yes,No
+GlaS,?,Unknown,Unknown,No,No,No,No,No,No,Requires audit
+CPM17,?,Unknown,Unknown,No,No,No,No,No,No,Requires audit
+Formal_Test,?,Locked,None,No,No,No,No,No,No,Requires authorization

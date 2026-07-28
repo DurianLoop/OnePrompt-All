@@ -4,25 +4,31 @@
   "branch": "phaseW-critical-experiment-closure",
   "phaseV_baseline": "PHASEV_EMPIRICAL_SELECTIVE_PREDICTION_READY",
   "work_packages": {
-    "WP0": {"status": "PENDING", "gate": null, "description": "Split provenance audit"},
-    "WP1": {"status": "PENDING", "gate": null, "description": "Component ablation re-run"},
-    "WP2": {"status": "PENDING", "gate": null, "description": "Simple baseline comparison"},
-    "WP3": {"status": "PENDING", "gate": null, "description": "Risk-coverage curves"},
+    "WP0": {"status": "DONE", "gate": "PHASEW_SPLIT_RENAMED_TO_DEVELOPMENT_COHORT", "description": "Split provenance audit"},
+    "WP1": {"status": "DONE", "gate": "PHASEW_FULL_RAMP_NO_ADDED_VALUE", "description": "Component ablation re-run"},
+    "WP2": {"status": "DONE", "gate": "PHASEW_SIMPLE_RISK_MODEL_SUPPORTED", "description": "Simple baseline comparison"},
+    "WP3": {"status": "DONE", "gate": "COVERAGE_CURVES_STABLE", "description": "Risk-coverage curves"},
     "WP4": {"status": "DONE", "gate": "APPENDIX_ONLY", "description": "RRN grouped CV"},
     "WP5": {"status": "PENDING", "gate": null, "description": "SAM-Med2D audit"},
     "WP6": {"status": "PENDING", "gate": null, "description": "External baseline restructuring"},
-    "WP7": {"status": "PENDING", "gate": null, "description": "Anti-correlation residual effect"},
+    "WP7": {"status": "DONE", "gate": "PHASEW_ANTICORRELATION_RESIDUAL_EFFECT_SUPPORTED (SAM-B only)", "description": "Anti-correlation residual effect"},
     "WP8": {"status": "PENDING", "gate": null, "description": "Cross-domain calibration"},
     "WP9": {"status": "PENDING", "gate": null, "description": "Pascal/COCO 4-fold"},
-    "WP10": {"status": "PENDING", "gate": null, "description": "Claim registry rebuild"}
+    "WP10": {"status": "DONE", "gate": "PHASEW_CLAIM_REGISTRY_UPDATED", "description": "Claim registry rebuild"}
   },
+  "final_route": "Route B — Simplified Selective Prediction",
+  "route_gate": "PHASEW_ROUTE_B_SIMPLE_SELECTIVE_PREDICTION",
+  "recommended_title": "Prediction Consistency as a Simple and Effective Risk Estimator for Multi-Reference Visual Prompting",
   "known_issues": [
     "RAMP-full == RAMP-no-weights (weighting has zero effect)",
-    "RRN AUROC=0.573 below 0.65 threshold",
-    "SAM-Med2D checkpoint cannot be loaded",
-    "MoNuSAC 80 queries used as development + holdout",
-    "Pascal/COCO only fold-0"
+    "RRN AUROC=0.573 below 0.65 threshold → Appendix only",
+    "SAM-Med2D checkpoint cannot be loaded → PENDING audit",
+    "MoNuSAC 80 queries = Development Cohort, not holdout",
+    "Pascal/COCO only fold-0 → PENDING 4-fold",
+    "IDRID ECE=0.477 → PENDING calibration",
+    "External baselines have backbone mismatch → PENDING restructure"
   ],
   "max_gpu_hours": 155,
-  "formal_test": "LOCKED"
+  "formal_test": "LOCKED",
+  "final_report": "reports/phaseW_final_experimental_closure.md"
 }

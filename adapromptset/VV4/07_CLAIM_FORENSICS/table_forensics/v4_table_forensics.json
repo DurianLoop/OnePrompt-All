@@ -1,0 +1,134 @@
+[
+  {
+    "Table_ID": "Table-1",
+    "Label": "tab:wp1",
+    "Caption": "Anti-correlation detection across segmenters (DINOv2-L, MoNuSAC)",
+    "Data_Source": "Phase U WP1 segmenter audit (run_phaseU_wp1_segmenter_audit.py)",
+    "Report_Files": "reports/phaseU_wp1/phaseU_wp1_summary.json",
+    "Numbers_Verifiable": "Yes",
+    "Numbers_Match_Code": "Yes (Phase U WP1)",
+    "Issues": "SAM2-S CFR_Red=38.9% is abnormally low. P_Cat=0.196 is highest.",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Table_ID": "Table-2",
+    "Label": "tab:wp2",
+    "Caption": "Matcher independence (SAM-B, MoNuSAC)",
+    "Data_Source": "Phase U WP2 matcher audit (run_phaseU_wp2_matcher_audit.py)",
+    "Report_Files": "reports/phaseU_wp2/wp2_matcher_summary.json",
+    "Numbers_Verifiable": "Yes",
+    "Numbers_Match_Code": "Yes",
+    "Issues": "p>0.05 does not establish equivalence. V4 correctly states 'no significant difference detected'.",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Table_ID": "Table-3",
+    "Label": "tab:wp4",
+    "Caption": "2x2 factorial decomposition (MoNuSAC)",
+    "Data_Source": "Phase U WP4 (run_phaseU_wp4_dinov2b_sam2t.py)",
+    "Report_Files": "reports/phaseU_wp4/wp4_dinov2b_sam2t.json",
+    "Numbers_Verifiable": "Yes",
+    "Numbers_Match_Code": "Yes",
+    "Issues": "None",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Table_ID": "Table-4",
+    "Label": "tab:ramp",
+    "Caption": "CFR reduction at 80% coverage (MoNuSAC)",
+    "Data_Source": "Phase U selective prediction baselines + RAMP",
+    "Report_Files": "reports/phaseU_ramp/ramp_results.json",
+    "Numbers_Verifiable": "Yes",
+    "Numbers_Match_Code": "Partially — RAMP CFR reduction numbers match Phase U, but Phase W shows simple baselines achieve similar results",
+    "Issues": "Phase W: RAMP has zero added value over simple baselines. M2_Inst anti-informative claim is verified.",
+    "Verdict": "VERIFIED_WITH_QUALIFICATION"
+  },
+  {
+    "Table_ID": "Table-5",
+    "Label": "tab:refsel",
+    "Caption": "Reference selection benchmark (MoNuSAC, SAM-B)",
+    "Data_Source": "Phase U RRN (run_phaseU_rrn.py)",
+    "Report_Files": "reports/phaseU_rrn/rrn_results.json",
+    "Numbers_Verifiable": "Yes",
+    "Numbers_Match_Code": "Yes, but single 70/15/15 split (12 test queries), 0 catastrophic cases",
+    "Issues": "Phase V: RRN APPENDIX_ONLY. Phase W: grouped CV AUROC=0.573 < 0.65. Small test set.",
+    "Verdict": "VERIFIED_WITH_QUALIFICATION"
+  },
+  {
+    "Table_ID": "Table-6",
+    "Label": "tab:comparison",
+    "Caption": "Method comparison under shared reference-resampling protocol",
+    "Data_Source": "External baselines (GF-SAM, MAUP) + internal pipelines",
+    "Report_Files": "run_phaseU_external_gfsam.py, run_phaseU_external_maup.py",
+    "Numbers_Verifiable": "Partially",
+    "Numbers_Match_Code": "GF-SAM and MAUP numbers match Phase U. SAM-Med2D checkpoint unloadable (REMOVED per Phase AB). Backbone mismatch noted.",
+    "Issues": "SAM-Med2D: REMOVED. Backbone mismatch: GF-SAM/MAUP use SAM-H, RAMP uses SAM-B. 'Identical conditions' claim is PROHIBITED.",
+    "Verdict": "PARTIALLY_VERIFIED"
+  },
+  {
+    "Table_ID": "Table-7",
+    "Label": "tab:crossdataset",
+    "Caption": "Cross-dataset deployment envelope",
+    "Data_Source": "Phase T WP2 cross-dataset",
+    "Report_Files": "reports/phaseT_wp2_idrid/, reports/phaseT_wp2_monuseg/",
+    "Numbers_Verifiable": "Yes",
+    "Numbers_Match_Code": "Yes",
+    "Issues": "IDRID ECE=0.477 (severe miscalibration). MoNuSeg 0% prevalence makes predictor irrelevant.",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Table_ID": "Table-8",
+    "Label": "tab:abl_comp",
+    "Caption": "Component ablation of RAMP (L+SAM-B, MoNuSAC)",
+    "Data_Source": "Phase U component ablation",
+    "Report_Files": "ramp_results.json",
+    "Numbers_Verifiable": "UNRELIABLE — Phase V notes all variants produced identical Dice",
+    "Numbers_Match_Code": "UNRELIABLE",
+    "Issues": "CRITICAL: Phase V states 'component ablation data unreliable (all variants identical)'. Phase W: Full RAMP has zero added value. These numbers should NOT be cited.",
+    "Verdict": "UNRELIABLE"
+  },
+  {
+    "Table_ID": "Table-9",
+    "Label": "tab:abl_feat",
+    "Caption": "Feature ablation (L+SAM-B, MoNuSAC)",
+    "Data_Source": "Phase U feature ablation",
+    "Report_Files": "",
+    "Numbers_Verifiable": "Partially",
+    "Numbers_Match_Code": "Unknown",
+    "Issues": "f4 removal dropping Cat_AP from 0.966 to 0.250 is plausible but not independently verified.",
+    "Verdict": "PARTIALLY_VERIFIED"
+  },
+  {
+    "Table_ID": "Table-10",
+    "Label": "tab:abl_k",
+    "Caption": "Reference count ablation (L+SAM-B, MoNuSAC)",
+    "Data_Source": "Phase U reference count ablation",
+    "Report_Files": "",
+    "Numbers_Verifiable": "Partially",
+    "Numbers_Match_Code": "Unknown",
+    "Issues": "K=2→29.4%, K=6→55.9%, K=8→58.7% — diminishing returns pattern is plausible.",
+    "Verdict": "PARTIALLY_VERIFIED"
+  },
+  {
+    "Table_ID": "Table-11",
+    "Label": "tab:natural",
+    "Caption": "Cross-domain validation on natural image benchmarks",
+    "Data_Source": "Phase U cross-domain (Pascal-5i, COCO-20i)",
+    "Report_Files": "",
+    "Numbers_Verifiable": "Partially — single fold only",
+    "Numbers_Match_Code": "Unknown",
+    "Issues": "Only fold-0 available. 4-fold needed for valid cross-domain claim. Phase W: WP9 Pascal/COCO 4-Fold = PENDING.",
+    "Verdict": "PARTIALLY_VERIFIED"
+  },
+  {
+    "Table_ID": "Table-regimes",
+    "Label": "tab:regimes",
+    "Caption": "Characterization of the two failure regimes",
+    "Data_Source": "Theoretical/conceptual",
+    "Report_Files": "N/A",
+    "Numbers_Verifiable": "N/A (conceptual table)",
+    "Numbers_Match_Code": "N/A",
+    "Issues": "None",
+    "Verdict": "CONCEPTUAL"
+  }
+]

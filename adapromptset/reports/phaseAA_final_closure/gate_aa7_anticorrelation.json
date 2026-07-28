@@ -1,0 +1,29 @@
+{
+  "gate": "AA7",
+  "status": "PHASEAA_ANTICORRELATION_REMOVED_FROM_MAIN",
+  "date": "2026-07-27",
+  "rationale": [
+    "Gate AA0: PHASEAA_INTEGRITY_AUDIT_FAIL \u2014 null model contradiction unresolved",
+    "Phase W null model was buggy (returned 0.0 instead of proper Null 1 value)",
+    "Corrected \u0394r is POSITIVE for SAM-B pipelines (anti-correlation weaker than null)",
+    "SAM-L not Holm-significant",
+    "Anti-correlation is a MECHANICAL artefact, not a structural property"
+  ],
+  "action": "Remove anti-correlation from main text entirely",
+  "retained_in_main": [
+    "Reference instability",
+    "Prediction consistency",
+    "Selective prediction"
+  ],
+  "appendix_only": [
+    "Brief note that anti-correlation is a mechanical effect in SAM-B pipelines",
+    "No universal/causal/structural claims"
+  ],
+  "prohibited_claims": [
+    "universal anti-correlation",
+    "structural theorem",
+    "causal law",
+    "foundation-model-independent",
+    "instability \u2192 CFR causal chain"
+  ]
+}

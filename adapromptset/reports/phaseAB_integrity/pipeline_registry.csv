@@ -1,0 +1,6 @@
+pipeline_id,matcher,segmenter,matcher_version,segmenter_version,primary,data_source
+P1,DINOv2-L,SAM-B,vitl,default,TRUE,reports/phaseU_wp1/sam_b
+P2,DINOv2-B,SAM-B,vitb,default,FALSE,reports/phaseU_wp2
+P3,DINOv2-L,SAM-L,vitl,vit_l,FALSE,reports/phaseU_wp1/sam_l
+P4,DINOv2-L,SAM2-Tiny,vitl,tiny,FALSE,reports/phaseU_wp1/sam2_t
+P5,DINOv2-L,SAM2-Small,vitl,small,FALSE,reports/phaseU_wp1/sam2_s

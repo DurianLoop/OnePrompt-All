@@ -1,0 +1,16 @@
+File,Path,Size,Date,SHA256,Type,Notes
+full_draft_v4.pdf,D:\SAM\adapromptset\paper\phaseU\full_draft_v4.pdf,562980,2026-07-27 00:53:33,36d5a3e7d4bf61b90d9d3baa04c680f50cc1a1974802850b7f84f44cc8634e44,PDF,CANONICAL_V4_PDF — 唯一显式命名为 full_draft_v4 的 PDF
+full_draft.tex,D:\SAM\adapromptset\paper\phaseU\full_draft.tex,63109,2026-07-27 15:42:33,6c986f4b09213e8d71a8417d7f369441ac90d68ab95c8eb4b30b0d37f6fe70d6,LaTeX_Source,V4_SOURCE — 与 full_draft_v4_ref.tex SHA256 完全一致
+full_draft_v4_ref.tex,D:\SAM\adapromptset\paper\phaseV\full_draft_v4_ref.tex,63109,2026-07-27 11:50:25,6c986f4b09213e8d71a8417d7f369441ac90d68ab95c8eb4b30b0d37f6fe70d6,LaTeX_Source,V4_REFERENCE_COPY — 与 phaseU/full_draft.tex 字节级相同
+paper_submission_v4.zip,D:\SAM\adapromptset\paper\phaseU\paper_submission_v4.zip,1802103,2026-07-27 00:53:59,c835b69484ce64d6bb3362652eb8da2dbcb90cd014a7d76d6b2d1946312f5204,Archive,V4_SUBMISSION_PACKAGE — 内含 full_draft.tex (56447 bytes, 不同版本) + full_draft_v4.pdf + figures + scripts
+full_draft_v4.log,D:\SAM\adapromptset\paper\phaseU\full_draft_v4.log,28352,2026-07-27 00:53:33,,LaTeX_Log,V4 编译日志
+full_draft_v4.out,D:\SAM\adapromptset\paper\phaseU\full_draft_v4.out,7139,2026-07-27 00:53:33,,LaTeX_Output,V4 编译输出
+full_draft_v4.aux,D:\SAM\adapromptset\paper\phaseU\full_draft_v4.aux,15653,2026-07-27 00:53:33,,LaTeX_Aux,V4 辅助文件
+full_draft_v2.pdf,D:\SAM\adapromptset\paper\phaseU\full_draft_v2.pdf,425977,2026-07-26 18:57:18,f8a9615b541cc84c455b640f2ebf02bcae4b2d08687a1c0a2f27ddce9c76e929,PDF,前序版本 V2
+full_draft_v3.pdf,D:\SAM\adapromptset\paper\phaseU\full_draft_v3.pdf,481246,2026-07-26 19:34:20,babbbadb66560026ea7460733669b479cad01ba598a7a3d89aee1b4bf1b038df,PDF,前序版本 V3
+full_draft.pdf,D:\SAM\adapromptset\paper\phaseU\full_draft.pdf,416491,2026-07-26 15:56:55,0f0d10ab108b87993646385a017cd96341e1883ac185a9efb539e6e01f1f1976,PDF,前序版本 V1 (base)
+full_draft_v5.tex,D:\SAM\adapromptset\paper\phaseV\full_draft_v5.tex,49735,2026-07-27 18:07:50,04b2fbf320553245f26eafe14f778beb8acf8d421d439a0eb95c9ced35f7cad7,LaTeX_Source,后续版本 V5 — 标题改为 "Reference-Aware Selective Prediction"
+full_draft_v5.pdf,D:\SAM\adapromptset\paper\phaseV\full_draft_v5.pdf,266940,2026-07-27 13:59:07,75397ed68a0197dbbd0945dac10dcd8422f10ad3d0af9fdf3ca287a40caf7dab,PDF,后续版本 V5 PDF
+v4_git_timeline.md,D:\SAM\adapromptset\VV4\06_REPORTS_AND_DECISIONS\v4_generation\v4_git_timeline.md,,2026-07-28,,Markdown,V4 Git 历史时间线报告
+git_commit_manifest.csv,D:\SAM\adapromptset\VV4\99_MANIFESTS\git_commit_manifest.csv,,2026-07-28,,CSV,Git 提交清单
+full_draft.md,D:\SAM\adapromptset\paper\phaseU\full_draft.md,24820,2026-07-27 15:42:33,,Markdown,PhaseU 草稿 Markdown 版

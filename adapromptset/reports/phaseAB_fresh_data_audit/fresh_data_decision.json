@@ -1,0 +1,17 @@
+{
+  "gate": "WP1",
+  "date": "2026-07-27",
+  "status": "PHASEAB_BLOCKED_NO_FRESH_CONFIRMATORY_DATA",
+  "decision": "No fresh confirmatory cohort available",
+  "consequences": [
+    "Cannot run WP2 confirmatory experiment",
+    "Paper is exploratory/benchmark",
+    "No holdout-confirmed claims",
+    "External datasets are secondary validation only"
+  ],
+  "candidate_datasets": {
+    "audited": ["MoNuSAC", "MoNuSeg", "IDRID"],
+    "requires_user_action": ["GlaS", "CPM17", "Formal_Test"]
+  },
+  "recommendation": "Proceed with exploratory/benchmark paper"
+}

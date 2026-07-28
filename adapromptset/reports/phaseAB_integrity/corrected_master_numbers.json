@@ -1,0 +1,59 @@
+{
+  "phase": "PhaseAB",
+  "date": "2026-07-27",
+  "source": "Phase AA Final Closure + Phase V/W Audit",
+  "primary_pipeline": "DINOv2-L + SAM-B",
+  "master_numbers": {
+    "development_cohort": {
+      "n_queries": 80,
+      "role": "Development Cohort",
+      "b4_prediction_consistency": {
+        "aurc": 0.0158,
+        "excess_aurc": -0.0605,
+        "auroc": 0.036,
+        "cfr_baseline": 0.1536,
+        "cfr_at_80": 0.0156,
+        "cfr_reduction_at_80_pct": 88.6,
+        "dice_at_80": 0.5007,
+        "dice_baseline": 0.4462
+      },
+      "b1_entropy": {
+        "aurc": 0.1281,
+        "auroc": 0.465,
+        "cfr_at_80": 0.1594,
+        "cfr_reduction_at_80_pct": -3.8
+      },
+      "random": {
+        "aurc": 0.1295,
+        "auroc": 0.460,
+        "cfr_at_80": 0.1583,
+        "cfr_reduction_at_80_pct": -3.1
+      }
+    },
+    "cross_pipeline": {
+      "L+SAM-B": {"status": "directional", "aurc": 0.0158, "cfr_red_80": 88.6},
+      "L+SAM-L": {"status": "directional", "aurc": 0.1002, "cfr_red_80": 23.1},
+      "L+SAM2-T": {"status": "directional", "aurc": 0.0910, "cfr_red_80": 9.1},
+      "L+SAM2-S": {"status": "directional", "aurc": 0.1339, "cfr_red_80": -1.6},
+      "B+SAM-B": {"status": "directional", "aurc": 0.0145, "cfr_red_80": 88.6}
+    },
+    "cross_dataset": {
+      "MoNuSeg": {"status": "fail", "reason": "CFR=0.0, no catastrophic failures to detect"},
+      "IDRID": {"status": "boundary", "auroc": 0.024, "aurc": 0.293, "cfr_red_80": 14.5},
+      "Validation41": {"status": "partial", "auroc": 0.222, "aurc": 0.041, "cfr_red_80": 23.1}
+    },
+    "anti_correlation": {
+      "status": "REMOVED",
+      "corrected_delta_r": {"L+SAM-B": 0.071, "B+SAM-B": 0.034},
+      "conclusion": "Mechanical artefact, not structural property"
+    },
+    "rrn": {
+      "auroc": 0.573,
+      "status": "Appendix only"
+    },
+    "full_ramp": {
+      "delta_dice": 0.0,
+      "status": "Removed from main"
+    }
+  }
+}

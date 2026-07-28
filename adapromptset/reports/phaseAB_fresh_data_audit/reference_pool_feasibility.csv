@@ -1,0 +1,6 @@
+dataset,reference_pool_size,reference_pool_disjoint_from_queries,reference_pool_format,feasible
+MoNuSAC,Available,Yes,feature_vectors,Yes
+MoNuSeg,Available,Yes,feature_vectors,Yes
+IDRID,Available,Yes,feature_vectors,Yes
+GlaS,Unknown,Unknown,feature_vectors,Requires audit
+CPM17,Unknown,Unknown,feature_vectors,Requires audit

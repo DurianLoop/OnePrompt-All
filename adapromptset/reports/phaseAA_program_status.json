@@ -3,22 +3,57 @@
   "branch": "phaseAA-simple-selective-confirmation",
   "date": "2026-07-27",
   "gates": {
-    "AA0": {"status": "PENDING", "description": "Phase V/W contradiction audit"},
-    "AA1": {"status": "PENDING", "description": "41 validation query audit"},
-    "AA2": {"status": "PENDING", "description": "Development Cohort 80-query CV"},
-    "AA3": {"status": "PENDING", "description": "Confirmatory experiment"},
-    "AA4": {"status": "PENDING", "description": "Cross-pipeline generality"},
-    "AA5": {"status": "PENDING", "description": "Cross-dataset validation"},
-    "AA6": {"status": "PENDING", "description": "Baseline provenance"},
-    "AA7": {"status": "PENDING", "description": "Anti-correlation disposition"}
+    "AA0": {
+      "status": "PHASEAA_INTEGRITY_AUDIT_FAIL",
+      "description": "Phase V/W contradiction audit \u2014 null model bug confirmed"
+    },
+    "AA1": {
+      "status": "PHASEAA_VALIDATION41_NOT_HOLDOUT",
+      "description": "41 validation query audit \u2014 Option B, not holdout"
+    },
+    "AA2": {
+      "status": "PHASEAA_PC_DEVELOPMENT_PARTIAL_PASS",
+      "description": "Development Cohort 80-query CV \u2014 B4 effective on SAM-B, partial on SAM2"
+    },
+    "AA3": {
+      "status": "PHASEAA_SKIPPED_NO_CONFIRMATORY_COHORT",
+      "description": "Confirmatory experiment \u2014 skipped, no valid cohort"
+    },
+    "AA4": {
+      "status": "PHASEAA_CROSS_PIPELINE_PASS",
+      "description": "Cross-pipeline \u2014 5/5 directional support"
+    },
+    "AA5": {
+      "status": "PHASEAA_EXTERNAL_DIRECTIONAL_SUPPORT",
+      "description": "Cross-dataset \u2014 1 datasets show support"
+    },
+    "AA6": {
+      "status": "PHASEAA_BASELINE_PROVENANCE_PARTIAL",
+      "description": "Baseline provenance \u2014 SAM-Med2D: REMOVE_FROM_MAIN_TABLE"
+    },
+    "AA7": {
+      "status": "PHASEAA_ANTICORRELATION_REMOVED_FROM_MAIN",
+      "description": "Anti-correlation \u2014 removed from main text"
+    }
   },
   "route": "Route B - Simplified Selective Prediction",
   "primary_method": "Prediction Consistency + Coverage-Based Abstention",
-  "removed_from_main": ["Full RAMP", "RRN", "weighting", "fusion"],
+  "removed_from_main": [
+    "Full RAMP",
+    "RRN",
+    "weighting",
+    "fusion",
+    "anti-correlation",
+    "SAM-Med2D"
+  ],
   "data_roles": {
     "development_cohort": "80 MoNuSAC queries (train_001-train_080)",
-    "validation_cohort": "41 M2 validation queries (pending audit)",
+    "validation_cohort": "41 M2 validation queries (NOT holdout)",
     "holdout": null,
-    "confirmatory": null
+    "confirmatory": null,
+    "external_validation": [
+      "MoNuSeg (30 queries)",
+      "IDRID (query count varies)"
+    ]
   }
 }

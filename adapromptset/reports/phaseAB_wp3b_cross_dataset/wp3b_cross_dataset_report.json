@@ -1,0 +1,113 @@
+{
+  "gate": "WP3b",
+  "date": "2026-07-28",
+  "status": "PHASEAB_CROSS_DATASET_ADQUATE",
+  "n_supportive": 1,
+  "n_boundary": 1,
+  "n_failure": 0,
+  "n_total": 3,
+  "conclusion": "Cross-dataset analysis: 1 supportive, 1 boundary, 0 failure.",
+  "datasets": {
+    "MoNuSeg": {
+      "verdict": "supportive",
+      "phase_t_decision": "PHASET_DATASET_STRONG_SUPPORT",
+      "phase_aa_verdict": "fail",
+      "n_queries": 30,
+      "n_seeds": 5,
+      "n_configs": 3,
+      "segmentation_quality": "moderate",
+      "mean_dice": 0.494753,
+      "cfr": 0.0,
+      "best_risk_rho": 0.826611,
+      "best_risk_feature": "prediction_jaccard_k1_within",
+      "mean_pc_across_queries": 0.7299400777777778,
+      "mean_pc_std_across_seeds": 0.07994328685726013,
+      "consensus_dice_k6": 0.509691,
+      "consensus_gain": 0.014938,
+      "query_summary": {
+        "TCGA-21-5786-01Z-00-DX1": {
+          "mean_pc": 0.6977329333333333,
+          "std_pc": 0.09212339265533423,
+          "n_seeds": 15
+        },
+        "TCGA-38-6178-01Z-00-DX1": {
+          "mean_pc": 0.6022358000000001,
+          "std_pc": 0.1261461535971668,
+          "n_seeds": 15
+        },
+        "TCGA-49-4488-01Z-00-DX1": {
+          "mean_pc": 0.7292727333333334,
+          "std_pc": 0.09387607927792659,
+          "n_seeds": 15
+        },
+        "TCGA-50-5931-01Z-00-DX1": {
+          "mean_pc": 0.6536113333333333,
+          "std_pc": 0.12342375239132684,
+          "n_seeds": 15
+        },
+        "TCGA-A7-A13E-01Z-00-DX1": {
+          "mean_pc": 0.6113016666666666,
+          "std_pc": 0.11282226084047224,
+          "n_seeds": 15
+        }
+      }
+    },
+    "IDRID": {
+      "verdict": "boundary",
+      "phase_t_decision": "PHASET_DATASET_FAIL",
+      "phase_aa_verdict": "fail",
+      "n_queries": 30,
+      "n_seeds": 5,
+      "n_configs": 3,
+      "segmentation_quality": "poor",
+      "mean_dice": 0.10219,
+      "cfr": 0.895556,
+      "best_risk_rho": 0.951869,
+      "best_risk_feature": "prediction_jaccard_k1_within",
+      "mean_pc_across_queries": 0.7746298933333333,
+      "mean_pc_std_across_seeds": 0.16629642865435987,
+      "consensus_dice_k6": 0.090439,
+      "consensus_gain": -0.011751,
+      "query_summary": {
+        "IDRiD_25": {
+          "mean_pc": 0.8667972666666667,
+          "std_pc": 0.03503121517630938,
+          "n_seeds": 15
+        },
+        "IDRiD_26": {
+          "mean_pc": 0.7338332,
+          "std_pc": 0.22155447602736444,
+          "n_seeds": 15
+        },
+        "IDRiD_27": {
+          "mean_pc": 0.9230956,
+          "std_pc": 0.0443050148595694,
+          "n_seeds": 15
+        },
+        "IDRiD_28": {
+          "mean_pc": 0.6861926,
+          "std_pc": 0.22209874279692207,
+          "n_seeds": 15
+        },
+        "IDRiD_29": {
+          "mean_pc": 0.8128266,
+          "std_pc": 0.16908299160542434,
+          "n_seeds": 15
+        }
+      }
+    },
+    "Validation41": {
+      "verdict": "partial_pass",
+      "n_queries": 41,
+      "n_seeds": 1,
+      "segmentation_quality": "moderate",
+      "mean_dice": 0.414136300813008,
+      "cfr": 0.12195121951219512,
+      "best_risk_rho": "N/A (single seed)",
+      "best_risk_feature": "prediction_consistency",
+      "auroc": 0.22222222222222227,
+      "aurc": 0.04112315195008362,
+      "cfr_red_80": 23.125
+    }
+  }
+}

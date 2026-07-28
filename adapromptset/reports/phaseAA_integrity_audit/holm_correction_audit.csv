@@ -1,0 +1,8 @@
+pipeline,raw_p,raw_significant,holm_threshold,holm_adjusted,holm_significant,phaseW_label,phaseV_label,correct_label,discrepancy
+L+SAM-B,<0.001,YES,0.01,<0.001,YES,YES,YES,YES,CONSISTENT
+B+SAM-B,<0.001,YES,0.0125,<0.001,YES,YES,YES,YES,CONSISTENT
+L+SAM-L,0.049,YES,0.0167,0.049,NO,YES,NO,NO,PHASEW_OVERSTATES
+L+SAM2-T,0.325,NO,0.025,0.325,NO,NO,NO,NO,CONSISTENT
+L+SAM2-S,0.113,NO,0.05,0.113,NO,NO,NO,NO,CONSISTENT
+
+Note: Phase W marked L+SAM-L as "significant_residual=true" with p_permutation=0.0382. However, Phase V correctly notes that after Holm correction (4 tests), p=0.049 is NOT significant. Phase W overstates significance for SAM-L.

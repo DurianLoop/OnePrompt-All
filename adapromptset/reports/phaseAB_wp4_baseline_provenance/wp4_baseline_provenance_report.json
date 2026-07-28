@@ -1,0 +1,95 @@
+{
+  "gate": "WP4",
+  "date": "2026-07-28",
+  "status": "PHASEAB_BASELINE_PROVENANCE_PASS",
+  "sam_med2d": {
+    "removed": true,
+    "reason": "Unverifiable checkpoint \u2014 no SHA256, no load log, no inference log"
+  },
+  "external_baselines": {
+    "status": "present_in_separate_table",
+    "methods": [
+      "GF-SAM",
+      "MAUP"
+    ],
+    "table_strategy": "Two tables: shared backbone vs official default"
+  },
+  "backbone_stratification": {
+    "shared_backbone": [
+      "Top-K + SAM-B",
+      "CycleSAM + SAM-B"
+    ],
+    "official_default": [
+      "GF-SAM + SAM-H",
+      "MAUP + SAM-H",
+      "H-SAM + SAM-L"
+    ],
+    "removed": [
+      "SAM-Med2D"
+    ]
+  },
+  "baseline_provenance": {
+    "B0_Random": {
+      "code_commit": "phaseAB-fresh-confirmation-paper-assembly",
+      "config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+      "source": "Phase AA Development CV",
+      "reproducible": true,
+      "query_level_results": true
+    },
+    "B1_Entropy": {
+      "code_commit": "phaseAB-fresh-confirmation-paper-assembly",
+      "config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+      "source": "Phase AA Development CV",
+      "reproducible": true,
+      "query_level_results": true
+    },
+    "B2_CandidateJaccard": {
+      "code_commit": "phaseAB-fresh-confirmation-paper-assembly",
+      "config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+      "source": "Phase AA Development CV",
+      "reproducible": true,
+      "query_level_results": true
+    },
+    "B3_PromptOverlap": {
+      "code_commit": "phaseAB-fresh-confirmation-paper-assembly",
+      "config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+      "source": "Phase AA Development CV",
+      "reproducible": true,
+      "query_level_results": true
+    },
+    "B4_PredictionConsistency": {
+      "code_commit": "phaseAB-fresh-confirmation-paper-assembly",
+      "config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+      "source": "Phase AA Development CV",
+      "reproducible": true,
+      "query_level_results": true
+    },
+    "B5_M2Instability": {
+      "code_commit": "phaseAB-fresh-confirmation-paper-assembly",
+      "config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+      "source": "Phase AA Development CV",
+      "reproducible": true,
+      "query_level_results": true
+    }
+  },
+  "external_provenance": {
+    "GF-SAM": {
+      "exists": true,
+      "has_readme": true,
+      "in_main_table": false,
+      "table": "shared_backbone"
+    },
+    "MAUP": {
+      "exists": true,
+      "has_readme": true,
+      "in_main_table": false,
+      "table": "shared_backbone"
+    }
+  },
+  "checks": {
+    "sam_med2d_removed": true,
+    "external_baselines_present": true,
+    "shared_backbone_methods": true,
+    "proper_stratification": true
+  }
+}

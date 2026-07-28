@@ -1,0 +1,22 @@
+% Table 3: Cross-Dataset Evaluation
+\begin{table}[t]
+\centering
+\caption{Cross-dataset evaluation of prediction consistency. Risk signal transfers 
+to external datasets but segmentation quality is dataset-dependent.}
+\label{tab:cross_dataset}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Dataset} & \textbf{N} & \textbf{Base Dice} & \textbf{CFR} & \textbf{Risk $\rho$} & \textbf{AURC} & \textbf{CFR Red.@80} & \textbf{Verdict} \\
+\midrule
+MoNuSAC (Dev) & 80 & 0.446 & 0.154 & 0.827 & 0.016 & +88.6\% & supportive \\
+MoNuSeg       & 30 & 0.494 & 0.000 & 0.827 & 0.000 & 0.0\%    & boundary \\
+IDRID         & 30 & 0.098 & 0.633 & 0.952 & 0.293 & +14.5\%   & boundary \\
+Validation41  & 41 & 0.414 & 0.122 & ¡ª     & 0.041 & +23.1\%   & partial \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\par\small Risk $\rho$ = Spearman correlation between prediction consistency and per-reference Dice variance. 
+\textit{Boundary}: risk signal transfers but either no failures exist (MoNuSeg: CFR=0) or 
+segmentation quality is too low for practical use (IDRID: Dice=0.098). 
+Validation41 uses single seed; $\rho$ not computed.
+\end{table}

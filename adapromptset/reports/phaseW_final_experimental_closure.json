@@ -1,0 +1,91 @@
+{
+  "phase": "PhaseW",
+  "date": "2026-07-27",
+  "status": "COMPLETE",
+  "branch": "phaseW-critical-experiment-closure",
+  "work_packages": {
+    "WP0": {
+      "status": "DONE",
+      "gate": "PHASEW_SPLIT_RENAMED_TO_DEVELOPMENT_COHORT",
+      "description": "Split provenance audit — 80 queries are Development Cohort, not holdout"
+    },
+    "WP1": {
+      "status": "DONE",
+      "gate": "PHASEW_FULL_RAMP_NO_ADDED_VALUE",
+      "description": "Weighting=0, fusion<0, Full RAMP = baseline mean consensus"
+    },
+    "WP2": {
+      "status": "DONE",
+      "gate": "PHASEW_SIMPLE_RISK_MODEL_SUPPORTED",
+      "description": "Prediction Consistency (B4) strongest in 3/5 pipelines"
+    },
+    "WP3": {
+      "status": "DONE",
+      "gate": "COVERAGE_CURVES_STABLE",
+      "description": "Risk-coverage curves computed at 50-100% coverage"
+    },
+    "WP4": {
+      "status": "DONE",
+      "gate": "PHASEW_RRN_APPENDIX_ONLY",
+      "description": "RRN AUROC=0.573 < 0.65 threshold"
+    },
+    "WP5": {
+      "status": "PENDING",
+      "gate": null,
+      "description": "SAM-Med2D checkpoint unloadable; results unverifiable"
+    },
+    "WP6": {
+      "status": "PENDING",
+      "gate": null,
+      "description": "External baselines need backbone-stratified comparison"
+    },
+    "WP7": {
+      "status": "DONE",
+      "gate": "PHASEW_ANTICORRELATION_RESIDUAL_EFFECT_SUPPORTED (SAM-B only)",
+      "description": "Anti-correlation significant for SAM-B, not SAM2"
+    },
+    "WP8": {
+      "status": "PENDING",
+      "gate": null,
+      "description": "IDRID ECE=0.477; low-shot calibration needed"
+    },
+    "WP9": {
+      "status": "PENDING",
+      "gate": null,
+      "description": "Only fold-0; 4-fold needed for cross-domain claims"
+    },
+    "WP10": {
+      "status": "DONE",
+      "gate": "PHASEW_CLAIM_REGISTRY_UPDATED",
+      "description": "1 SUPPORTED, 5 PARTIALLY_SUPPORTED, 7 PROHIBITED, 1 UNSUPPORTED"
+    }
+  },
+  "final_route": "Route B — Simplified Selective Prediction",
+  "recommended_title": "Prediction Consistency as a Simple and Effective Risk Estimator for Multi-Reference Visual Prompting",
+  "route_gate": "PHASEW_ROUTE_B_SIMPLE_SELECTIVE_PREDICTION",
+  "key_findings": {
+    "split": "80 MoNuSAC queries = Development Cohort. No holdout exists.",
+    "component_ablation": "Full RAMP has zero added value. Weighting=0, fusion<0.",
+    "simple_baselines": "Prediction Consistency (B4) is strongest in 3/5 pipelines.",
+    "anti_correlation": "Significant for SAM-B (r=-0.51 to -0.55), not for SAM2.",
+    "rrn": "Appendix-only (AUROC=0.573 < 0.65).",
+    "full_ramp": "Not superior to simple baselines. Route B recommended."
+  },
+  "unresolved_blockers": [
+    "SAM-Med2D checkpoint cannot be loaded",
+    "External baselines have backbone mismatch",
+    "Pascal-5i/COCO-20i only fold-0",
+    "IDRID ECE=0.477 (severe miscalibration)",
+    "No true holdout exists"
+  ],
+  "artifacts": {
+    "split_audit": "reports/phaseW_split_audit/",
+    "component_ablation": "reports/phaseW_component_ablation/component_ablation_results.json",
+    "simple_baselines": "reports/phaseW_simple_baselines/simple_baseline_comparison.json",
+    "risk_coverage": "reports/phaseW_risk_coverage/risk_coverage_curves.json",
+    "anticorrelation": "reports/phaseW_anticorrelation/anticorrelation_residual.json",
+    "rrn_cv": "reports/phaseV_rrn_grouped_cv/rrn_grouped_cv_results.json",
+    "claim_registry": "reports/phaseV_consistency_audit/claim_registry.md",
+    "final_report": "reports/phaseW_final_experimental_closure.md"
+  }
+}

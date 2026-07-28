@@ -1,0 +1,54 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{eq:pc}{{1}{2}{Introduction}{equation.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Visual Prompting for Segmentation}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Selective Prediction and Uncertainty Estimation}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Multi-Reference Segmentation}{2}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Formulation}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Reference Reliability Estimation (RRE{})}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Reference-Resampling Evaluation}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Prediction Consistency}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Coverage-Based Selective Prediction}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Evaluation Metrics}{3}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Method}{3}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Implementation Details}{3}{subsection.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Risk estimation performance on the 80-query MoNuSAC development cohort. Prediction Consistency (B4) achieves the lowest AURC and highest CFR reduction. Lower AURC is better; higher CFR reduction is better.}}{4}{table.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:main_results}{{1}{4}{Risk estimation performance on the 80-query MoNuSAC development cohort. Prediction Consistency (B4) achieves the lowest AURC and highest CFR reduction. Lower AURC is better; higher CFR reduction is better}{table.caption.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Primary Pipeline}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Baselines}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Computational Cost}{4}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments}{4}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Datasets}{4}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Results}{4}{subsection.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Prediction consistency performance across five pipelines on the 80-query development cohort. All pipelines show at least directional support.}}{5}{table.caption.2}\protected@file@percent }
+\newlabel{tab:cross_pipeline}{{2}{5}{Prediction consistency performance across five pipelines on the 80-query development cohort. All pipelines show at least directional support}{table.caption.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Cross-dataset evaluation of prediction consistency. Risk signal transfers to external datasets but segmentation quality is dataset-dependent.}}{5}{table.caption.3}\protected@file@percent }
+\newlabel{tab:cross_dataset}{{3}{5}{Cross-dataset evaluation of prediction consistency. Risk signal transfers to external datasets but segmentation quality is dataset-dependent}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Figures}{5}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Failure Analysis}{5}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}When Prediction Consistency Fails}{5}{subsection.7.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Effect of reference count $m$ on prediction consistency performance (primary pipeline, 80 queries).}}{6}{table.caption.4}\protected@file@percent }
+\newlabel{tab:ablation_ref_count}{{4}{6}{Effect of reference count $m$ on prediction consistency performance (primary pipeline, 80 queries)}{table.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Risk-coverage curves for the primary pipeline (DINOv2-L + SAM-B, 80 queries). (a) CFR vs.\ coverage: Prediction consistency substantially reduces CFR across all coverage levels. (b) Selective Dice vs.\ coverage: Dice of accepted queries is maintained or improved.}}{6}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:risk_coverage}{{1}{6}{Risk-coverage curves for the primary pipeline (DINOv2-L + SAM-B, 80 queries). (a) CFR vs.\ coverage: Prediction consistency substantially reduces CFR across all coverage levels. (b) Selective Dice vs.\ coverage: Dice of accepted queries is maintained or improved}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}When Prediction Consistency Works}{6}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Limitations}{6}{section.8}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Cross-pipeline summary. (a) AURC comparison between prediction consistency and random ranking. (b) CFR reduction at 80\% coverage. SAM-B pipelines (P1, P2) show the strongest effects.}}{7}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:cross_pipeline}{{2}{7}{Cross-pipeline summary. (a) AURC comparison between prediction consistency and random ranking. (b) CFR reduction at 80\% coverage. SAM-B pipelines (P1, P2) show the strongest effects}{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{7}{section.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{7}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}RRN Results}{7}{subsection.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Anti-Correlation as Mechanical Artefact}{7}{subsection.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Full RAMP Component Ablation}{7}{subsection.A.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Cross-dataset boundary analysis. Prediction consistency (x-axis) vs.\ catastrophic failure rate (y-axis) per query, colored by mean Dice. Spearman $\rho $ shown for each dataset.}}{8}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:cross_dataset}{{3}{8}{Cross-dataset boundary analysis. Prediction consistency (x-axis) vs.\ catastrophic failure rate (y-axis) per query, colored by mean Dice. Spearman $\rho $ shown for each dataset}{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Method overview. Prediction consistency requires no query GT, no additional training, and no extra forward passes beyond those already performed in multi-reference inference.}}{8}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:method}{{4}{8}{Method overview. Prediction consistency requires no query GT, no additional training, and no extra forward passes beyond those already performed in multi-reference inference}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.4}Power Analysis}{8}{subsection.A.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.5}Reproducibility Checklist}{8}{subsection.A.5}\protected@file@percent }
+\gdef \@abspage@last{8}

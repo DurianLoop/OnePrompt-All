@@ -1,0 +1,83 @@
+{
+  "audit_date": "2026-07-27",
+  "gate_status": "PHASEV_P0_NUMERICAL_CONSISTENCY_FAIL",
+  "corrected_numbers": {
+    "anti_correlation_pearson_r": {
+      "old": "-0.43 to -0.71",
+      "corrected": "-0.18 to -0.49 (significant only for SAM-B: r=-0.491, p<0.001)",
+      "source": "theory_verification_results.json",
+      "note": "SAM-L (p=0.055), SAM2-S (p=0.105), SAM2-T (p=0.913), DINOv2-B+SAM-B (p=0.516) not significant"
+    },
+    "n_segmenters": {
+      "old": 6,
+      "corrected": 4,
+      "names": ["SAM-B", "SAM-L", "SAM2-Tiny", "SAM2-Small"],
+      "note": "SAM-H and MedSAM available but no anti-correlation data collected"
+    },
+    "n_matchers": {
+      "old": 4,
+      "corrected": 2,
+      "names": ["DINOv2-L", "DINOv2-B"]
+    },
+    "cfr_reduction_range": {
+      "old": "56-84%",
+      "corrected": "37.5-84.4%",
+      "per_pipeline": {
+        "L+SAM-B": "55.9%",
+        "L+SAM-L": "84.4%",
+        "L+SAM2-T": "37.5%",
+        "B+SAM-B": "55.9%"
+      },
+      "note": "37.5% (SAM2-T) was previously omitted from the range"
+    },
+    "ramp_training_free": {
+      "old": "training-free",
+      "corrected": "frozen foundation models with lightweight supervised risk estimator (gradient boosting)",
+      "note": "Uses M2-3 gradient boosting = learned model; NOT training-free"
+    },
+    "ramp_calibration_free": {
+      "old": "calibration-free",
+      "corrected": "coverage-based ranking without fixed probability threshold",
+      "note": "IDRID ECE=0.477; uses 0.3/0.7 thresholds; NOT calibration-free"
+    },
+    "n_ref_selection_strategies": {
+      "old": 6,
+      "corrected": 5,
+      "names": ["random", "similarity (f2)", "entropy (f1)", "RRN (learned)", "oracle"],
+      "note": "CLIP-similarity listed in baselines but not in table"
+    },
+    "equivalence_claim": {
+      "old": "equivalence",
+      "corrected": "no statistically significant difference detected (p>0.05)",
+      "note": "p>0.05 does not imply equivalence; need TOST for equivalence claim"
+    },
+    "rnn_test_set": {
+      "corrected": "12 test queries (0 catastrophic), grouped nested 5-fold CV needed",
+      "note": "Current 70/15/15 split gives only 12 test queries with 0 catastrophic cases"
+    },
+    "natural_image_folds": {
+      "old": "full Pascal-5i/COCO-20i",
+      "corrected": "fold-0 only (single fold)",
+      "note": "Need 4-fold evaluation for valid cross-domain claim"
+    },
+    "component_ablation": {
+      "status": "UNRELIABLE",
+      "note": "All ablation variants produce identical dice in ramp_results.json; data needs regeneration"
+    },
+    "external_baseline_backbone": {
+      "corrected": "GF-SAM/SAM-H, MAUP/SAM-H, H-SAM/SAM-L vs RAMP/SAM-B",
+      "note": "Not 'identical conditions' as claimed; backbone differs"
+    }
+  },
+  "claims_requiring_removal": [
+    "training-free (RAMP uses gradient boosting)",
+    "calibration-free (ECE=0.477 on IDRID)",
+    "six segmenters and four matchers (actually 4 and 2)",
+    "56-84% CFR reduction (37.5% omitted)",
+    "Pearson r=-0.43 to -0.71 (actual range is -0.18 to -0.49)",
+    "equivalence (p>0.05 ≠ equivalence)",
+    "identical conditions (backbone differs)",
+    "component ablation CFR_Red values (data unreliable)",
+    "formal theorem proves anti-correlation (empirical association only)"
+  ]
+}

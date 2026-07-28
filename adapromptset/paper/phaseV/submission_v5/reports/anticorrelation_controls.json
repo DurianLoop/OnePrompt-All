@@ -1,0 +1,47 @@
+{
+  "control_a": {
+    "coupled_correlation": -0.6187369850862952,
+    "split_correlation_mean": -0.5051125246601978,
+    "split_correlation_std": 0.028769767503461028,
+    "split_correlation_ci_95": [
+      -0.5510972160254921,
+      -0.44169453779594015
+    ],
+    "n_splits": 100,
+    "verdict": "no_evidence_of_coupling"
+  },
+  "control_b": {
+    "gt_free_instability_vs_cfr_pearson": -0.5873451684813177,
+    "gt_free_instability_vs_cfr_spearman": -0.5394640989415664,
+    "gt_free_instability_vs_cfr_p": 1.023081474376997e-08,
+    "verdict": "association_persists"
+  },
+  "control_c": {
+    "null1_randombeta": -0.5831614884806027,
+    "null2_shuffled": 0.6427194103420066,
+    "null3_uniform": 0.3809982258997139,
+    "observed": -0.6187369850862952,
+    "effect_size_vs_null1": -0.03557549660569248,
+    "effect_size_vs_null2": -1.2614563954283018,
+    "effect_size_vs_null3": -0.999735210986009
+  },
+  "control_d": {
+    "instability_cfr_pearson": -0.6187369850862952,
+    "instability_mean_dice_pearson": 0.6039663883252435,
+    "cfr_mean_dice_pearson": -0.8549468257037747,
+    "partial_correlation": -0.24763552687556595,
+    "partial_correlation_ci_95": [
+      -0.41221528600379087,
+      -0.06544556445524803
+    ],
+    "n_bootstrap": 10000
+  },
+  "gate_status": "PHASEV_ANTICORRELATION_STRUCTURAL_SUPPORT",
+  "conditions": {
+    "split_direction_stable": 1.0,
+    "split_ci_excludes_zero": 1.0,
+    "gt_free_significant": 1.0,
+    "observed_stronger_than_null": 1.0,
+    "partial_after_control": 1.0
+  }
+}

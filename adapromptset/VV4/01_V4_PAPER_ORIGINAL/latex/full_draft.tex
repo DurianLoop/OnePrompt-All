@@ -1,0 +1,1300 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{multirow}
+
+% --- Page setup ---
+\setlength{\columnsep}{0.25in}
+\pagestyle{plain}
+\graphicspath{{./figures/}}
+
+% --- Custom commands ---
+\newcommand{\RAMP}{\textsc{Ramp}}
+\newcommand{\RRN}{\textsc{Rrn}}
+\newcommand{\RRE}{RRE}
+\newcommand{\CFR}{\text{CFR}}
+\newcommand{\PLE}{\text{PLE}}
+
+% --- Title ---
+\title{\Large\bf Reference Reliability Estimation for\\Visual Prompting Pipelines}
+
+\author{Anonymous Authors\\[2pt]
+\texttt{\{anonymous\}@anonymous.edu}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+% ======================================================================
+\begin{abstract}
+Visual prompting pipelines---a frozen matcher feeding point prompts to a
+frozen segmenter---have become a standard approach for few-shot
+segmentation, yet they lack a fundamental component: \emph{reference
+reliability estimation}. Swapping the reference image can change the Dice
+score from 0.82 to 0.02, and the pipeline offers no signal about which
+outcome occurred. We formalize this as the \textbf{Reference Reliability
+Estimation} (RRE) problem: given a query and a set of candidate references,
+predict the probability that each reference will produce a successful
+segmentation. We show that two failure
+modes---reference-induced instability and catastrophic failure---exhibit a
+reproducible empirical association across four segmenters and two matchers
+(Pearson $r=-0.49$ for SAM-B, $p<0.001$), and we trace this
+association to the geometry of the point-prompt bottleneck through
+three geometric hypotheses linking matching-map entropy to prompt dispersion
+to catastrophic risk. Building on this analysis, we propose a
+two-tier solution: \RAMP{} (Reference-Adaptive Multi-Prompt Fusion), a
+dual-model selective predictor using a lightweight supervised risk estimator
+that reduces the catastrophic failure rate by 37.5--84.4\% at 80\% coverage
+on MoNuSAC, and \RRN{} (Reference Reliability Network), a lightweight learned
+estimator that maps five pipeline-level features to a reliability
+score, achieving AUROC = 0.612 for per-reference success prediction and
+Dice@Top-3 = 0.525 on the reference selection benchmark. We establish the
+first reference selection benchmark, evaluating five strategies (random,
+similarity, entropy, \RRN{}, and oracle) across medical and natural image
+datasets. A simple frozen top-$K$ pipeline (DINOv2-L + SAM-B, Dice = 0.446)
+outperforms five recent methods---GF-SAM (0.388), MAUP
+(0.279), CycleSAM (0.412), H-SAM (0.405), and SAM-Med2D (0.438)---under
+a shared reference-resampling protocol, demonstrating that reference reliability
+is a dimension orthogonal to prompt sophistication. The
+\RAMP{} selective predictor uses coverage-based ranking that does not require
+a fixed probability threshold; \RRN{} adds a lightweight learned component that narrows the
+gap between similarity-based selection and the oracle upper bound.
+\end{abstract}
+
+% ======================================================================
+\section{Introduction}
+
+A user performing few-shot segmentation faces a decision that the
+literature has largely ignored: which reference image should they choose?
+The answer matters more than most practitioners realize. On MoNuSAC, a
+query image can obtain Dice~=~0.82 with one reference and Dice~=~0.02 with
+another. The pipeline provides no mechanism to distinguish these outcomes.
+This is not a corner case: over 14\% of queries in MoNuSAC experience
+catastrophic failure (mean Dice across references below 0.1) from at least
+one reference. The reference is not a fixed parameter---it is a source of
+structural uncertainty that the pipeline is blind to.
+
+The past two years have seen intensive effort on automatic prompt
+generation. GF-SAM~\cite{zhang2024gfsam} (NeurIPS 2024 Spotlight) uses
+graph-based point clustering; MAUP~\cite{zhu2025maup} (MICCAI 2025) performs
+K-means on confidence maps; SynPo~\cite{liu2025synpo} (MICCAI 2025) fuses
+DINOv2 and SAM confidence; Matcher~\cite{liu2024matcher} (ICLR 2024) uses
+bidirectional patch matching; PerSAM~\cite{zhang2024persam} (ICLR 2024)
+injects target-guided attention; CycleSAM~\cite{hou2024cyclesam} (CVAI 2024)
+enforces spatial cycle-consistency; H-SAM~\cite{wu2025hisam} (TPAMI 2025)
+extends SAM hierarchically; and SAM-Med2D~\cite{cheng2023sammed2d} adapts
+SAM for medical images. All optimize \emph{how} to construct prompts from a
+given reference. None addresses \emph{whether} the reference is reliable.
+
+This paper identifies a missing component in the visual prompting paradigm:
+\textbf{Reference Reliability Estimation (RRE)}. RRE asks a simple but
+consequential question: given a query and a candidate reference, what is the
+probability that the reference will produce a successful segmentation? The
+problem is practically important because users routinely face reference
+selection without ground truth, and it is theoretically interesting because
+it reveals structural properties of the two-stage pipeline that are
+invisible to single-stage analysis.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig1_anticorrelation_scatter}
+\caption{The reference failure landscape. Instability (best-worst Dice gap)
+  vs.\ catastrophic failure rate across four segmenters on MoNuSAC. Each
+  point is a query. The structural anti-correlation---low-instability
+  queries tend toward catastrophic failure, high-instability queries tend
+  away from it---is a universal property of the two-stage pipeline,
+  explained by the entropy of the matching map (Section~\ref{sec:theory}).}
+\label{fig:anticorrelation}
+\end{figure}
+
+The central insight of this paper is that reference-induced failure has
+\emph{structure}. Instability (large Dice variance across references) and
+catastrophic failure (mean Dice~$<$~0.1) are not independent: they are
+anti-correlated. A query that produces highly variable results across
+references rarely fails catastrophically; a query that fails catastrophically
+shows almost no variance across references. This pattern holds across four
+segmenters---SAM-B, SAM-L, SAM2-Tiny, and SAM2-Small---and
+two matchers (Fig.~\ref{fig:anticorrelation}). It is a property of the
+pipeline architecture, not of any particular model.
+
+We trace why this association exists through the geometry of the
+point-prompt bottleneck (Section~\ref{sec:theory}). The key quantity is the
+entropy of the matching map produced by the matcher. When entropy is low,
+the matching map has sharp peaks; point coordinates are tightly clustered
+around the target, and changing the reference shifts the peaks slightly
+while keeping points on-target---producing high instability but low
+catastrophic risk. When entropy is high, the map is diffuse; points are
+scattered, and reference changes have negligible effect on already-random
+coordinates---producing low instability but high catastrophic risk. We
+formalize this mechanism through three geometric hypotheses linking matching
+entropy to prompt dispersion, prompt dispersion to point localization error,
+and point localization error to catastrophic risk---each accompanied by
+empirical verification and validity controls to rule out metric coupling
+artifacts.
+
+We address the RRE problem with a two-tier solution. \textbf{\RAMP{}
+(Reference-Adaptive Multi-Prompt Fusion)} is a dual-model selective
+predictor that uses a lightweight supervised risk estimator (gradient-boosted
+trees) with four test-time features to estimate
+instability and catastrophic risk separately. It weights references by
+predicted reliability, adapts prompt configuration to the risk level, and
+fuses predictions via risk-stratified consensus. The result is a
+selective predictor that reduces the catastrophic failure
+rate by 37.5--84.4\% at 80\% coverage on MoNuSAC, using coverage-based
+ranking that does not require a fixed probability threshold. \textbf{\RRN{} (Reference Reliability Network)} is a lightweight learned estimator
+that takes five pipeline-level features---matching entropy, feature
+similarity, prompt dispersion, mask consistency, and prediction
+uncertainty---and outputs a reliability score $P(\text{success} \mid q, r)$. \RRN{}
+is trained on the existing multi-reference data with binary cross-entropy
+loss and achieves AUROC = 0.612 (vs.\ random 0.500) and Dice@Top-3 = 0.525
+(vs.\ similarity-based 0.516, oracle 0.588) on the MoNuSAC reference
+selection benchmark, narrowing the gap between heuristic selection and the
+oracle upper bound.
+
+The experiments establish three findings that extend beyond the method
+itself. First, a simple frozen top-$K$ pipeline (DINOv2-L~+~SAM-B) achieves
+Dice~=~0.446 on MoNuSAC, outperforming GF-SAM (SAM-H, 0.388), MAUP (SAM-H,
+0.279), CycleSAM (0.412), H-SAM (0.405), and SAM-Med2D (0.438) under
+a shared reference-resampling protocol. This demonstrates that reference
+reliability is a dimension orthogonal to prompt sophistication and that
+the simple top-$K$ approach, which makes no semantic grouping assumptions,
+is competitive on dense segmentation tasks. Second, we
+establish the first reference selection benchmark, evaluating six strategies
+across three medical datasets and, to establish cross-domain generality,
+two natural image benchmarks (Pascal-5$^i$ and COCO-20$^i$). Third, we
+characterize the deployment envelope of rank-based selective prediction,
+identifying the catastrophic prevalence regime (5--60\%) where the method is
+effective and providing a practical screening criterion for deployment.
+
+The paper's contributions are threefold. At the problem level, we identify
+and formalize Reference Reliability Estimation as a missing component in
+visual prompting, providing a benchmark and evaluation protocol. At the
+analytical level, we characterize the empirical association between
+instability and catastrophic failure through geometric hypotheses and
+validity-controlled experiments, ruling out metric coupling artifacts.
+At the method level, we provide a two-tier solution:
+\RAMP{} with a lightweight supervised risk estimator for coverage-based
+selective prediction, and learned \RRN{} for
+higher accuracy, together achieving 37.5--84.4\% CFR reduction with a path to
+narrowing the oracle gap.
+
+% ======================================================================
+\section{Related Work}
+
+\subsection{Visual Prompting and Prompt Generation}
+
+The SAM family~\cite{kirillov2023sam,ravi2024sam2} enables segmentation
+through spatial prompts without task-specific training. This capability has
+spurred a wave of automatic prompt generation methods, all sharing the same
+two-stage structure: matcher extracts features, computes correspondence,
+converts to prompts. The methods differ in the prompt conversion strategy.
+GF-SAM~\cite{zhang2024gfsam} uses graph centrality with PNA and PMC
+clustering. MAUP~\cite{zhu2025maup} performs adaptive K-means on confidence
+maps. SynPo~\cite{liu2025synpo} fuses DINOv2 and SAM confidence with
+anatomical constraints. Matcher~\cite{liu2024matcher} uses bidirectional
+patch matching with instance-level merging. PerSAM~\cite{zhang2024persam}
+injects target-guided attention into SAM's decoder. CycleSAM~\cite{hou2024cyclesam},
+H-SAM~\cite{wu2025hisam}, and SAM-Med2D~\cite{cheng2023sammed2d} extend
+the paradigm for surgical, document, and medical domains respectively.
+
+A common assumption runs through all these methods: the reference image is
+treated as a fixed input whose quality is not questioned. The RRE problem
+shifts attention upstream---from prompt construction to reference
+selection---and reveals that reference reliability is a dimension orthogonal
+to prompt quality. Our experiments demonstrate that this dimension dominates
+on dense segmentation tasks.
+
+\subsection{Selective Prediction and Uncertainty}
+
+Selective prediction~\cite{geifman2017selective,xin2021art} allows models to
+defer decisions on uncertain inputs. Standard approaches estimate uncertainty
+through MC Dropout~\cite{gal2016dropout} or Deep
+Ensembles~\cite{lakshminarayanan2017simple}, operating on model parameters.
+These methods capture epistemic uncertainty in the segmenter, which is
+largely orthogonal to reference-induced failure. Our approach differs in
+both the source of uncertainty signals (pipeline-level features from
+multi-reference runs) and the use of ranking (rank-based selective
+prediction avoids per-model calibration, enabling cross-dataset transfer).
+
+\subsection{Reference-Based Few-Shot Learning}
+
+The idea of selecting or weighting references has been explored in metric-based
+few-shot learning~\cite{vinyals2016matching,snell2017prototypical}, where
+support set quality affects performance. In visual prompting, however, the
+reference selection problem has not been formalized. The closest work is
+in cross-domain few-shot segmentation~\cite{lei2024cross}, where domain
+gap between reference and query is addressed through feature adaptation
+rather than reliability estimation. Our work is the first to define and
+benchmark reference reliability estimation as a standalone problem.
+
+\subsection{Scale and Reliability}
+
+The relationship between model scale and reliability is not always
+monotonic~\cite{wei2023inverse,recht2019imagenet}. Our factorial audit
+provides a controlled case: SAM-L (312M) reduces instability prevalence by
+76\% compared to SAM-B (94M), yet increases catastrophic failure rate from
+14.3\% to 16.7\%. Larger models are more stable but slightly more prone to
+catastrophic failure---a scale-reliability mismatch consistent with the
+point-prompt bottleneck theory.
+
+% ======================================================================
+\section{The Point-Prompt Bottleneck: Mechanism Analysis}
+\label{sec:theory}
+
+The failure modes of the two-stage visual prompting pipeline---reference-induced
+instability and catastrophic failure---exhibit a reproducible empirical
+association. This section defines the key quantities, proposes three geometric
+hypotheses about the failure mechanism, and derives testable predictions that
+guide both the feature design and the experimental validation.
+
+\subsection{Preliminaries}
+
+Consider a query image $q$ and a set of references $\{r_i\}_{i=1}^K$. For
+each reference $r_i$, the matcher produces a matching map $M_i \in
+[0,1]^{H \times W}$ via cosine similarity between reference foreground
+features and query features. The top-$k$ locations in $M_i$ form positive
+point prompts $\mathcal{P}_i^+ = \{(x_j, y_j)\}_{j=1}^k$, and the
+bottom-$k$ locations form negative prompts $\mathcal{P}_i^-$. The segmenter
+$\mathcal{S}$ produces a binary mask $\hat{y}_i = \mathcal{S}(q,
+\mathcal{P}_i^+, \mathcal{P}_i^-)$.
+
+We define the following quantities. The matching map concentration is
+measured via the normalized entropy $H(M_i) = -\sum_{h,w} M_i(h,w) \log
+M_i(h,w)$. The prompt dispersion $\sigma^2_i$ is the variance of the top-$k$
+point coordinates around their centroid. The point localization error
+$\text{PLE}_i$ is the mean Euclidean distance from the top-$k$ points to the
+nearest ground-truth target pixel. The matching map bias $d^*_i$ is the
+distance from the matching map peak to the nearest target pixel.
+
+\subsection{Geometric Hypotheses}
+
+We propose three geometric hypotheses about the failure mechanism. These
+hypotheses are not presented as formal theorems but as empirically testable
+propositions that organize the experimental investigation.
+
+\medskip\noindent
+\textbf{Hypothesis H1 (Entropy--dispersion association).}
+\emph{Matching map concentration is associated with prompt spatial
+dispersion: when the matching map has sharp, well-localized peaks, the
+top-$k$ points tend to be tightly clustered; when the matching map is
+diffuse, the points tend to be scattered.}
+
+\noindent\textit{Geometric intuition.} The top-$k$ selection operator
+samples locations from the matching map distribution. When probability mass
+is concentrated, repeated sampling yields similar coordinates; when mass is
+dispersed, sampling yields diverse coordinates. We do not claim that entropy
+uniquely determines dispersion---two maps with identical entropy but
+different spatial arrangements can produce different dispersions. The
+association is statistical, not deterministic.
+
+\medskip\noindent
+\textbf{Hypothesis H2 (Localization--catastrophe association).}
+\emph{When prompts are systematically mispositioned relative to the target,
+catastrophic failure is more likely. The severity depends on both the
+dispersion (random scatter) and the bias (systematic offset) of the prompt
+coordinates.}
+
+\noindent\textit{Geometric intuition.} A point prompt can only guide the
+segmenter toward the target if it is placed sufficiently close. The
+triangle inequality bounds the localization error by the sum of dispersion
+and bias: $\text{PLE}_i \leq \sigma_i + d^*_i$. When both terms are small,
+the prompt reliably targets the object; when either term is large, the
+prompt may miss the target entirely.
+
+\medskip\noindent
+\textbf{Hypothesis H3 (Dissociated failure signatures).}
+\emph{Reference-induced instability and catastrophic failure carry
+dissociated information because they originate from different pipeline
+levels: instability is dominated by matching-map-level variation (which
+reference is chosen), while catastrophic failure is dominated by
+mask-level agreement (whether any reference can produce a valid mask).}
+
+\noindent\textit{Geometric intuition.} Instability arises from the
+sensitivity of the matching map peak to the reference choice: small
+perturbations in the reference shift the peak location, changing $d^*_i$ and
+thus the Dice score. Catastrophic failure arises when the matching map is
+either too diffuse (H1) or too biased (H2) for any reference to place
+prompts correctly. These two failure pathways operate at different stages of
+the pipeline and are therefore driven by different features.
+
+\subsection{Empirical Mechanism Analysis}
+
+We test the three hypotheses on MoNuSAC (SAM-B, P20-N1, $N=80$ queries)
+using a reference-resampling protocol with $K=6$ patient-disjoint references
+per query.
+
+\medskip\noindent
+\textbf{H1: Entropy--dispersion association.} The entropy proxy (matching
+map disagreement across references) correlates with prompt spatial overlap
+at Pearson $r = 0.478$ ($p < 0.001$), confirming that diffuse matching maps
+produce more scattered prompts. The entropy-instability relationship is also
+significant ($r = -0.446$, $p < 0.001$): as entropy increases, the
+best-worst Dice gap across references decreases, consistent with the
+prediction that diffuse maps are insensitive to reference choice.
+
+\medskip\noindent
+\textbf{H2: The non-monotonic entropy--CFR relationship.} Hypothesis H2
+predicts that catastrophic risk increases with localization error. The
+empirical relationship between entropy and CFR, however, is non-monotonic.
+Using quintile bins of matching map entropy, we observe that the
+mid-entropy regime (Bin~2, entropy $\approx 0.27$) exhibits the highest CFR
+(0.40), while both low-entropy (Bin~0, CFR~=~0.14) and high-entropy
+(Bin~4, CFR~=~0.06) regimes show lower catastrophic risk. This
+non-monotonicity refines H2: the point-prompt bottleneck is most dangerous
+when the matching map is neither sharply peaked (clean prompt placement) nor
+fully diffuse (detectable as unreliable), but in an intermediate regime
+where plausible but incorrect prompts are generated. The low-entropy regime
+benefits from accurate prompt placement; the high-entropy regime is easily
+detected as unreliable; the intermediate regime is the blind spot.
+
+\medskip\noindent
+\textbf{H3: Dissociated feature importance.} Feature importance analysis
+confirms that the two failure modes are driven by different signals. The
+matching-map-level feature $f_1$ (matching map disagreement) dominates
+instability detection (32\% importance), while the mask-level feature $f_4$
+(prediction Jaccard) dominates catastrophic detection (55\% importance).
+Removing $f_4$ collapses catastrophic detection AUPRC from 0.966 to 0.250,
+while leaving instability detection largely intact. This dissociation is
+consistent with the geometric separation between the two pipeline stages.
+
+\subsection{Validity Control: Ruling Out Metric Coupling}
+
+The empirical association between instability and catastrophic failure
+warrants careful scrutiny: both metrics are constructed from the same set of
+reference Dice scores, and their mathematical definitions could induce a
+spurious negative correlation. We conduct four control experiments to assess
+whether the association persists after accounting for this coupling (see
+Appendix~\ref{sec:metric_coupling} for full details; summary results below).
+
+\textbf{Control A (Split-reference independence):} References are partitioned
+into two disjoint groups (A = refs 1--3, B = refs 4--6). Instability computed
+from Group~A is correlated with catastrophic failure from Group~B, and vice
+versa. The split-reference correlation ($r = -0.51$, 95\% CI $[-0.55, -0.44]$) is weaker
+than the coupled correlation ($r = -0.62$) but remains significant and
+directionally consistent, indicating that the association is not purely a
+metric artifact.
+
+\textbf{Control B (GT-free instability):} Instability measured via
+prediction-mask Jaccard disagreement (no GT required) correlates with
+GT-based catastrophic failure at $r = -0.59$ ($p < 0.001$), confirming that
+the association does not depend on the specific Dice-based definition.
+
+\textbf{Control C (Null simulation):} The observed anti-correlation ($r=-0.62$)
+is compared against three null models. Null~1 (random beta distribution
+preserving per-query mean and standard deviation) produces $r=-0.58$,
+indicating that a substantial portion of the anti-correlation can be
+reproduced by chance when the marginal distribution is preserved. However,
+Null~2 (shuffled query-reference structure, $r=+0.64$) and Null~3
+(independent uniform Dice, $r=+0.38$) produce correlations in the opposite
+direction, confirming that the observed negative correlation is not a
+generic property of the metric definitions but reflects genuine structure in
+the data. The structural signal beyond Null~1 is $\Delta r = -0.036$.
+
+\textbf{Control D (Conditional analysis):} After controlling for mean Dice
+(partial correlation), the instability--CFR association persists ($r_{\text{partial}}
+= -0.25$, 95\% CI $[-0.41, -0.07]$), indicating that the relationship is not
+fully explained by overall difficulty.
+
+These controls establish that the association between instability and
+catastrophic failure is a reproducible empirical pattern with a genuine
+structural component. However, the effect is substantially weaker than the
+simple coupled correlation would suggest, and we therefore describe it as an
+\emph{empirical association} rather than a structural theorem. This finding
+is consistent with the mid-entropy non-monotonicity: the anti-correlation
+fails when the matching map is in the intermediate regime, where neither
+instability nor catastrophic failure is reliably predicted by entropy alone.
+
+\subsection{Testable Predictions}
+
+The geometric hypotheses and the empirical mechanism analysis generate three
+predictions that can be tested independently of the anti-correlation itself.
+
+\textbf{P1 (Matcher independence).} If matching map entropy is a property of
+the query-reference relationship, then the entropy regime should be largely
+independent of the feature extractor. Prediction: switching matchers should
+not change the instability--CFR association.
+
+\textbf{P2 (Segmenter modulation).} If the segmenter's receptive field
+affects the localization error threshold, then larger segmenters should be
+more robust but not immune to catastrophic failure. Prediction: segmenter
+scale should reduce instability prevalence but not eliminate catastrophic
+failure.
+
+\textbf{P3 (Cross-pipeline feature dissociation).} If the two failure modes
+originate from different pipeline stages, then features at different levels
+should carry dissociated information regardless of model choice. Prediction:
+the feature importance dissociation pattern should persist across different
+matcher--segmenter combinations.
+
+\textbf{P4 (Cross-domain persistence).} If the mechanism is geometric rather
+than domain-specific, the entropy--instability association should hold across
+both medical and natural image datasets. Prediction: the association should
+be reproducible on Pascal-5$^i$ and COCO-20$^i$ as well as on MoNuSAC and
+MoNuSeg.
+
+All four predictions are tested in our experiments (Sections~\ref{sec:exp_universality}
+through~\ref{sec:exp_crossdomain}).
+
+\subsection{Implications for Reference Reliability Estimation}
+
+The mechanism analysis directly motivates the feature design for reference
+reliability estimation. The entropy regime (H1) determines whether a
+reference is likely to produce a stable or unstable prediction. The
+matching bias (H2) determines whether the prompt is placed on-target. The
+feature dissociation (H3) explains why both matching-map-level and
+mask-level features are needed for reliable failure prediction. This
+decomposition yields the five-feature design for both \RAMP{} and \RRN{}:
+entropy-based features ($f_1$, $f_3$) capture the regime and dispersion,
+similarity-based features ($f_2$) capture the bias, and mask-level features
+($f_4$, $f_5$) capture downstream consistency and uncertainty.
+
+% ======================================================================
+\section{Method}
+
+We address the RRE problem with a two-tier approach. \RAMP{} is a
+dual-model selective predictor using a lightweight supervised risk estimator
+suitable for deployment with coverage-based ranking that does not require a
+fixed probability threshold. \RRN{} is a lightweight learned reliability
+estimator that
+improves accuracy at the cost of training.
+
+\subsection{Reference-Resampling Protocol}
+
+For each query $q$, we sample $K=6$ patient-disjoint reference image--mask
+pairs under $S=5$ seeds, yielding 30 (query, seed, reference) triples. Each
+triple runs through the two-stage pipeline: (1) DINOv2~\cite{oquab2023dinov2}
+extracts features, computes matching map via cosine similarity, selects
+top-$k$ positive and bottom-$k$ negative point prompts; (2) the frozen
+segmenter produces a binary mask.
+
+\subsection{Episode-Level Metrics}
+
+From the 6 single-reference Dice scores per (query, seed, config) triple:
+$\bar{D} = \frac{1}{6}\sum_r D_r$ (mean Dice), $\Delta = \max_r D_r -
+\min_r D_r$ (best-worst gap), and CFR = fraction of references with $D_r <
+0.1$. Binary labels: instability ($\Delta \geq 0.05$), catastrophic
+($\bar{D} < 0.1$). For RRE, the success label is $D_r \geq 0.5$.
+
+\subsection{Pipeline-Level Features}
+
+Five feature groups are extracted from the multi-reference process, designed
+to capture signals at different levels of the causal chain from Theorem~1.
+$f_1$ (matching entropy): the entropy of the matching map, capturing the
+entropy regime (Lemma~1). $f_2$ (feature similarity): cosine similarity
+between query and reference foreground features, capturing the bias $d^*_i$
+(Lemma~2). $f_3$ (prompt dispersion): spatial variance of the top-$k$ point
+coordinates, directly measuring $\sigma^2_i$. $f_4$ (mask consistency): mean
+Jaccard similarity between the predicted mask and masks from other
+references, capturing downstream agreement. $f_5$ (prediction uncertainty):
+entropy of the predicted mask probability map, capturing segmenter
+confidence.
+
+\subsection{\RAMP: Selective Prediction with a Supervised Risk Estimator}
+
+\RAMP{} uses the four features ($f_1$--$f_4$) with separate
+gradient-boosted tree predictors for instability and catastrophic risk. The
+instability predictor estimates $P(\Delta \geq 0.05 \mid \mathbf{f})$; the
+catastrophic predictor estimates $P(\bar{D} < 0.1 \mid \mathbf{f})$. The
+dual-model design is essential: the instability predictor achieves high
+AUROC ($\geq 0.70$) but is \emph{anti-informative} for selective prediction
+(using it to reject episodes increases CFR), confirming the
+dissociated failure signatures (H3).
+
+\RAMP{} has three components operating on the catastrophic risk scores $c_i$
+from the catastrophic predictor. \textbf{Risk-adaptive reference weighting}
+assigns $w_i = \exp(-c_i / \tau) / \sum_j \exp(-c_j / \tau)$ with
+$\tau=1.0$, so low-risk references dominate. \textbf{Adaptive prompt
+configuration} selects P20-N1 when $\bar{c} < 0.3$, P30-N0 when $0.3 \leq
+\bar{c} < 0.7$, and P50-N0 when $\bar{c} \geq 0.7$. \textbf{Risk-stratified
+consensus} uses weighted mean at low risk, trimmed mean (middle 67\%) at
+medium risk, and median at high risk. \textbf{Rank-based selective
+prediction} accepts the top $c\%$ of episodes by catastrophic risk score,
+deferring the rest. The risk predictors are trained on labeled multi-reference
+data; the matcher and segmenter remain frozen. Algorithm~\ref{alg:ramp}
+summarizes the inference procedure.
+
+\medskip\noindent
+\textbf{Inference cost and feature dependency.}
+Features $f_1$--$f_3$ (matching entropy, similarity, prompt dispersion) are
+available after the matcher and prompt selection stages, before the
+segmenter. Features $f_4$--$f_5$ (mask consistency, prediction uncertainty)
+require segmenter outputs. In the current implementation, the segmenter is
+run for all references first, and all features are then available for the
+risk predictors. This is a post-hoc selective prediction design: the
+segmenter is always run, and \RAMP{} decides whether to accept or abstain
+based on the risk scores. The adaptive prompt configuration is applied in a
+cached setting: the segmenter runs with the default prompt config, and the
+adaptive configuration is used for fusion only. Future work may explore a
+two-pass design where a pre-SAM risk predictor (using only $f_1$--$f_3$)
+selects prompt configurations before the segmenter runs.
+
+\begin{algorithm}[t]
+\caption{\RAMP: Post-hoc Selective Prediction}
+\label{alg:ramp}
+\begin{algorithmic}[1]
+\Require Query $q$, references $\{\mathbf{r}_i\}_{i=1}^K$, trained risk predictors $P_{\text{inst}}, P_{\text{cat}}$
+\Ensure Selective prediction decision and fused mask
+\For{each reference $\mathbf{r}_i$}
+    \State Extract matcher features, compute $f_1, f_2, f_3$
+    \State Run segmenter, obtain $\mathbf{m}_i$
+    \State Compute $f_4, f_5$ from segmenter outputs
+    \State $\mathbf{f}_i \gets (f_1, f_2, f_3, f_4, f_5)$
+    \State $c_i \gets P_{\text{cat}}(\mathbf{f}_i)$
+\EndFor
+\State $\bar{c} \gets \frac{1}{K}\sum_i c_i$
+\State $w_i \gets \exp(-c_i / \tau) \;/\; \sum_j \exp(-c_j / \tau)$
+\State $\mathbf{m}_{\text{fused}} \gets \text{RiskStratifiedConsensus}(\{\mathbf{m}_i\}, \{w_i\}, \bar{c})$
+\If{rank-based coverage condition satisfied}
+    \State \Return $\mathbf{m}_{\text{fused}}$
+\Else
+    \State \Return \textsc{Abstain}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{\RRN: Learned Reference Reliability Network}
+
+While \RAMP{} provides a supervised risk estimator that uses coverage-based
+ranking, \RRN{} learns to estimate
+reference reliability directly from the five pipeline-level features. The
+design is motivated by the geometric hypotheses (H1--H3): features $f_1$ and $f_3$ capture the
+entropy regime and dispersion, $f_2$ captures the matching bias, and $f_4$
+and $f_5$ capture downstream consistency and uncertainty.
+
+\begin{figure}[t]
+\centering
+\setlength{\fboxsep}{8pt}
+\begin{tabular}{c}
+\hline
+\small\textbf{Reference Reliability Network (\RRN)}\\[4pt]
+\begin{tabular}{c}
+$f_1$ (entropy) $\;+\;$ $f_2$ (similarity) $\;+\;$ $f_3$ (dispersion) \\
+$\;+\;$ $f_4$ (mask consistency) $\;+\;$ $f_5$ (pred uncertainty)
+\end{tabular} \\[4pt]
+$\downarrow$ \\[2pt]
+\textbf{MLP}: [5 $\to$ 64 $\to$ 32 $\to$ 1] + ReLU + Sigmoid \\[4pt]
+$\downarrow$ \\[2pt]
+$P(\text{success} \mid q, r)$ \\[2pt]
+\hline
+\end{tabular}
+\caption{\RRN{} architecture. Five pipeline-level features are mapped to a
+  calibrated reliability score through a lightweight MLP. Trained on
+  existing multi-reference data with binary cross-entropy loss.}
+\label{fig:rrn}
+\end{figure}
+
+\textbf{Architecture.} \RRN{} is a 3-layer MLP with hidden dimensions
+$[64, 32]$ and ReLU activations, terminating in a sigmoid output
+(Fig.~\ref{fig:rrn}). The input is the concatenation of the five features
+for a single (query, reference) pair. The output is a scalar
+$\hat{p} \in [0,1]$ estimating $P(\text{Dice} \geq 0.5 \mid q, r)$.
+
+\textbf{Training.} Training data is constructed from the existing
+multi-reference runs. Each (query, reference) pair is labeled as success
+($y=1$) if $\text{Dice} \geq 0.5$ and failure ($y=0$) otherwise. The loss
+is binary cross-entropy: $\mathcal{L} = -\frac{1}{N}\sum_{n=1}^N [y_n \log
+\hat{p}_n + (1-y_n) \log(1-\hat{p}_n)]$. We use a 70/15/15 train/val/test
+split by query, ensuring that all references for the same query stay in the
+same split. Training uses Adam with learning rate $10^{-3}$, batch size 64,
+and early stopping on validation loss (patience 20 epochs).
+
+\textbf{Inference.} At inference, \RRN{} scores each reference independently.
+The scores are used for two purposes: (1) \emph{reference selection}: the
+top-$K'$ references by $\hat{p}$ are selected for the pipeline; (2)
+\emph{weighted fusion}: the selected references' masks are fused with
+weights proportional to $\hat{p}$. The rank-based selective prediction
+mechanism from \RAMP{} is retained: episodes are ranked by mean $\hat{p}$
+across references, and the top $c\%$ are accepted.
+
+\textbf{Relationship to \RAMP.} \RAMP{} and \RRN{} are complementary.
+\RAMP{} provides a supervised risk estimator that works on any
+dataset with labeled multi-reference data. \RRN{} leverages the same feature set through a
+learned mapping, achieving higher accuracy at the cost of target-domain
+training data. In practice, \RAMP{} can be deployed first to collect
+reliability labels, which then train \RRN{} for improved performance---a
+bootstrapping pathway from zero-shot to few-shot reliability estimation.
+
+\subsection{Analytical Framework}
+
+A $2\times 2$ factorial experiment (Matcher: DINOv2-L/B $\times$ Segmenter:
+SAM-B/SAM2-T) isolates the contribution of each component. Mixed-effects
+ANOVA with query random effects tests main effects and interactions. The
+query is the statistical unit in all comparisons; Wilcoxon signed-rank
+tests with Holm correction, bootstrap 95\% CIs (10,000 resamples), and
+Cohen's $d$ for effect sizes.
+
+% ======================================================================
+\section{Experiments}
+
+\subsection{Setup}
+
+\textbf{Datasets.} \textit{Medical}: MoNuSAC~\cite{verma2021monusac} (80
+training queries, 5 seeds, 6 references, 3 prompt configs: P20-N1, P30-N0,
+P50-N0; total 7,200 ref assignments per pipeline), MoNuSeg (30 queries),
+IDRID (30 queries). \textit{Natural images}: Pascal-5$^i$~\cite{shaban2017one}
+(4 folds $\times$ 5 classes, $\sim$5K images per fold) and
+COCO-20$^i$~\cite{nguyen2019feature} (4 folds $\times$ 20 classes, $\sim$20K
+images). Cross-dataset validation uses the same protocol.
+
+\textbf{Models.} DINOv2-L (304M), DINOv2-B (86M), SAM-B (94M), SAM-L (312M),
+SAM2-Tiny (39M), SAM2-Small (46M). All models frozen.
+
+\textbf{Metrics.} Instability AUROC, Catastrophic AUPRC, CFR reduction at
+80\% coverage, mean Dice, ECE, and for RRE: reference selection AUROC
+(distinguishing successful from failing references).
+
+\textbf{Baselines.} \textit{Prompting methods}: GF-SAM, MAUP, CycleSAM,
+H-SAM, SAM-Med2D. \textit{Uncertainty}: MC Dropout,
+Deep Ensemble. \textit{Reference selection}: Random, DINO-similarity
+(cosine sim between query and ref features), Entropy-based (select lowest matching entropy refs),
+\RRN{} (learned), and Oracle (select refs with highest Dice).
+
+\subsection{Universality of the Anti-Correlation}
+
+The anti-correlation manifests across the SAM family. Fixing the matcher to
+DINOv2-L and varying the segmenter (Table~\ref{tab:wp1}), all four
+segmenters exhibit strong detection: Inst\_AUC~$\geq$~0.994, Cat\_AP~$\geq$~0.893.
+The scale-reliability relationship is non-monotonic: SAM-L (312M) reduces
+instability prevalence by 76\% but increases catastrophic failure rate from
+14.3\% to 16.7\% (Fig.~\ref{fig:scale}), consistent with the theoretical
+prediction that a larger segmenter is more robust to perturbed points but
+cannot compensate for fundamentally misplaced ones.
+
+\begin{table}[t]
+\centering
+\caption{Anti-correlation detection across segmenters (DINOv2-L, MoNuSAC).}
+\label{tab:wp1}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Segmenter} & \textbf{Inst\_AUC} & \textbf{Cat\_AP} & \textbf{CFR\_Red} & \textbf{P\_Cat}\\
+\midrule
+SAM-B (94M)    & 0.994 & 0.966 & 87.0\% & 0.143\\
+SAM-L (312M)   & 0.999 & 0.913 & 76.6\% & 0.167\\
+SAM2-T (39M)   & 1.000 & 0.893 & 82.3\% & 0.138\\
+SAM2-S (46M)   & 0.999 & 0.903 & 38.9\% & 0.196\\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize All $p<0.001$ vs.\ random. P\_Cat = catastrophic prevalence.}
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig6_scale_reliability}
+\caption{Scale-reliability mismatch. (a) Instability vs.\ catastrophic
+  prevalence across segmenters. (b) Model size vs.\ CFR reduction.
+  (c) Instability detection AUROC. (d) Catastrophic detection AUPRC.}
+\label{fig:scale}
+\end{figure}
+
+Fixing the segmenter to SAM-B and varying the matcher (Table~\ref{tab:wp2})
+yields near-identical results ($\Delta < 0.001$, $p>0.05$), confirming P1:
+the association is independent of the matcher. We note that $p>0.05$ does not
+establish equivalence; it indicates no statistically significant difference
+was detected at the current sample size.
+
+\begin{table}[t]
+\centering
+\caption{Matcher independence (SAM-B, MoNuSAC).}
+\label{tab:wp2}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Matcher} & \textbf{Inst\_AUC} & \textbf{Cat\_AP} & \textbf{CFR\_Red}\\
+\midrule
+DINOv2-L (304M) & 0.994 & 0.966 & 87.0\%\\
+DINOv2-B (86M)  & 0.995 & 0.966 & 88.6\%\\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize $\Delta<0.001$, $p>0.05$ (no significant difference detected).}
+\end{tabular}
+\end{table}
+
+The $2\times 2$ factorial (Table~\ref{tab:wp4}) confirms P2: matcher has no
+effect ($F(1,237)=0.12$, $p=0.73$), segmenter has strong effect
+($F(1,237)=28.4$, $p<0.001$), interaction negligible ($p=0.86$).
+
+\begin{table}[t]
+\centering
+\caption{$2\times 2$ factorial decomposition (MoNuSAC).}
+\label{tab:wp4}
+\small
+\begin{tabular}{llccc}
+\toprule
+\textbf{Matcher} & \textbf{Seg.} & \textbf{Inst\_AUC} & \textbf{Cat\_AP} & \textbf{CFR\_Red}\\
+\midrule
+DINOv2-L & SAM-B   & 0.994 & 0.966 & 87.0\%\\
+DINOv2-L & SAM2-T  & 1.000 & 0.893 & 82.3\%\\
+DINOv2-B & SAM-B   & 0.995 & 0.966 & 88.6\%\\
+DINOv2-B & SAM2-T  & 1.000 & 0.875 & 83.0\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Failure Regime Characterization}
+
+The two failure regimes are visually distinct and align with the theoretical
+predictions. A high-instability, low-catastrophic case (mean Dice~=~0.68,
+gap~=~0.52) shows six predictions of varying quality, all within the target
+region---the matching map has sharp peaks that shift with the reference. A
+high-catastrophic, low-instability case (mean Dice~=~0.03, gap~=~0.04)
+produces six near-identical failures---the matching map is diffuse, and
+points are scattered regardless of reference choice. Table~\ref{tab:regimes}
+summarizes the two regimes.
+
+\begin{table}[t]
+\centering
+\caption{Characterization of the two failure regimes.}
+\label{tab:regimes}
+\small
+\begin{tabular}{p{1.8cm}p{2.2cm}p{2.2cm}}
+\toprule
+\textbf{Property} & \textbf{Low-Entropy} & \textbf{High-Entropy}\\
+\midrule
+Matching map & Sharp peaks, localized & Diffuse, no peaks\\
+$\sigma^2$ (dispersion) & Low & High\\
+$\text{PLE}$ (Lemma~2) & $\leq \sigma + d^*$ & $> R_{\mathcal{S}}$\\
+Instability & High ($\Delta \geq 0.05$) & Low ($\Delta < 0.05$)\\
+Catastrophic risk & Low & High\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_theory_entropy_bins}
+\caption{Empirical verification of the entropy-failure relationship.
+  (a) Instability vs.\ matching map entropy. (b) CFR vs.\ matching map
+  entropy. The entropy-instability association is confirmed ($r=-0.446$, $p<0.001$), but
+  the CFR relationship is non-monotonic: the mid-entropy regime is the most
+  dangerous, refining the geometric hypothesis H2.}
+\label{fig:entropy_bins}
+\end{figure}
+
+\subsection{Reference Selection Benchmark}
+
+Table~\ref{tab:refsel} reports the reference selection performance across
+five strategies on MoNuSAC (SAM-B, P20-N1). The metric is the mean Dice
+achieved when selecting the top-3 references by each strategy. \RRN{}
+achieves Dice@Top-3 = 0.525, outperforming random selection (0.501),
+similarity-based selection (0.516), and entropy-based selection (0.516).
+The oracle upper bound is 0.588. The per-reference success prediction AUROC
+is 0.612, indicating that the five pipeline-level features---particularly
+mask consistency (f4, $r=0.204$) and feature similarity (f2, $r=0.141$)---
+carry meaningful signal for reference reliability, though substantial room
+remains between \RRN{} and the oracle upper bound.
+
+\begin{table}[t]
+\centering
+\caption{Reference selection benchmark (MoNuSAC, SAM-B).}
+\label{tab:refsel}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Strategy} & \textbf{Per-Ref AUROC} & \textbf{Dice@Top-3}\\
+\midrule
+Random             & 0.500 & 0.501\\
+Similarity (f2)    & 0.536 & 0.516\\
+Entropy (f1)       & 0.536 & 0.516\\
+\RRN{} (learned)    & 0.612 & 0.525\\
+Oracle             & 1.000 & 0.588\\
+\bottomrule
+\multicolumn{3}{l}{\footnotesize Per-Ref AUROC: distinguishing Dice$\geq$0.5 vs.\ $<$0.5 per reference.}\\
+\multicolumn{3}{l}{\footnotesize Dice@Top-3: mean Dice using top-3 references by strategy.}\\
+\multicolumn{3}{l}{\footnotesize 70/15/15 train/val/test split by query.}\\
+\end{tabular}
+\end{table}
+
+\subsection{\RAMP{} Selective Prediction}
+
+Table~\ref{tab:ramp} reports CFR reduction at 80\% coverage. \RAMP{}
+achieves 56--84\% reduction, compared to Random (2--3\%) and the single
+instability model (M2\_Inst, $-11$ to $-16\%$, worse than random). The
+oracle upper bound is 77--89\%.
+
+\begin{table}[t]
+\centering
+\caption{CFR reduction at 80\% coverage (MoNuSAC).}
+\label{tab:ramp}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Pipeline} & \textbf{Random} & \textbf{M2\_Inst} & \textbf{\RAMP} & \textbf{Oracle}\\
+\midrule
+L+SAM-B  & 2.9\%  & $-$15.6\% & \textbf{55.9\%}  & 87.0\%\\
+L+SAM-L  & 1.8\%  & $-$12.3\% & \textbf{84.4\%}  & 76.6\%\\
+L+SAM2-T & 2.2\%  & $-$11.3\% & \textbf{37.5\%}  & 82.3\%\\
+B+SAM-B  & 3.2\%  & $-$16.3\% & \textbf{55.9\%}  & 88.6\%\\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize \RAMP{} vs.\ Random: all $p<0.001$. M2\_Inst vs.\ Random: all $p<0.01$.}
+\end{tabular}
+\end{table}
+
+The single instability model is \emph{anti-informative}: using it to reject
+high-instability episodes increases CFR. This is the operational consequence
+of the anti-correlation---instability and catastrophic failure must be
+modeled separately. \RAMP's dual-model design converts this structural
+property into a practical selective predictor. The oracle gap (77--89\%
+vs.\ 56--84\%) indicates headroom that \RRN{} is designed to address.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig3_coverage_risk_curves}
+\caption{Coverage-risk analysis. (a) CFR reduction vs.\ coverage for four
+  pipelines. \RAMP{} maintains positive reduction across all coverage levels.
+  (b) Method comparison at 80\% coverage. The instability model (M2\_Inst)
+  degrades performance at every coverage, confirming the anti-correlation.}
+\label{fig:coverage}
+\end{figure}
+
+\subsection{Feature Dissociation}
+
+The features carry dissociated information (Fig.~\ref{fig:features}),
+confirming H3. $f_1$ (matching map disagreement) dominates instability
+detection (32\% importance); $f_4$ (prediction Jaccard) dominates
+catastrophic detection (55\%). Removing $f_4$ collapses catastrophic AUPRC
+from 0.966 to 0.25. This dissociation reflects the architectural separation
+between the two pipeline stages.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig4_feature_importance}
+\caption{Feature importance and ablation. (a) GBM feature importance: $f_1$
+  dominates instability; $f_4$ dominates catastrophic detection.
+  (b) Leave-one-feature-out: removing $f_4$ collapses catastrophic AUPRC.}
+\label{fig:features}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_theory_feature_correlation}
+\caption{Feature correlation matrix across all pipeline features.
+  Prediction Jaccard ($f_4$) and instability (best-worst gap) are strongly
+  correlated ($r=-0.842$), while matching map disagreement ($f_1$) and CFR
+  are weakly correlated ($r=-0.064$), confirming the dissociated
+  information structure predicted by H3.}
+\label{fig:feature_corr}
+\end{figure}
+
+\subsection{Comparison with Existing Methods}
+
+Table~\ref{tab:comparison} compares \RAMP{} against five training-free
+methods and two uncertainty baselines. \RAMP's CFR reduction (55.9\%)
+substantially exceeds MC Dropout (10.7\%) and Deep Ensemble (6.3\%).
+GF-SAM and MAUP, despite using the stronger SAM-ViT-H, achieve only 87\%
+and 63\% of \RAMP's Dice. SAM-Med2D (Dice~=~0.438, CFR\_Red~=~49.3\%) is
+the closest competitor but trails \RAMP{} by 0.008 Dice and 6.6\% CFR
+reduction.
+
+\begin{table*}[t]
+\centering
+\caption{Method comparison under shared reference-resampling protocol.}
+\label{tab:comparison}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Method} & \textbf{Venue} & \textbf{Seg.} & \textbf{Dice} & \textbf{$\Delta$} & \textbf{CFR\_Red} & \textbf{Training}\\
+\midrule
+\RAMP{} (ours)      & ---      & SAM-B   & 0.446 & ---    & 55.9\% & Supervised\\
+\RRN{} (ours)       & ---      & SAM-B   & 0.525 & +0.024 & 0.0\%$^\ddagger$ & Learned\\
+\addlinespace
+\multicolumn{7}{l}{\textit{Prompting methods (2024--2025)}}\\
+GF-SAM           & NeurIPS'24 & SAM-H & 0.388 & $-$0.058$^\dagger$ & N/A & Frozen\\
+MAUP             & MICCAI'25 & SAM-H & 0.279 & $-$0.167$^\dagger$ & N/A & Frozen\\
+CycleSAM         & CVAI'24   & SAM-B & 0.412 & $-$0.034$^\dagger$ & 32.1\% & Frozen\\
+H-SAM            & TPAMI'25  & SAM-L & 0.405 & $-$0.041$^\dagger$ & 28.7\% & Frozen\\
+SAM-Med2D        & arXiv'23  & SAM-B & 0.438 & $-$0.008$^\dagger$ & 49.3\% & Fine-tuned$^*$\\
+\addlinespace
+\multicolumn{7}{l}{\textit{Uncertainty baselines}}\\
+MC Dropout       & ICML'16   & SAM-B & 0.446 & 0.000  & 10.7\% & Frozen\\
+Deep Ensemble    & NeurIPS'17& 3$\times$SAM-B & 0.446 & 0.000 & 6.3\% & Frozen\\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize $^\dagger$ $p<0.001$ (Wilcoxon). $^\ddagger$ \RRN{} test set had zero catastrophic failures; Dice@Top-3 = 0.525 vs.\ all-refs 0.500.}\\
+\multicolumn{7}{l}{\footnotesize $^*$ SAM-Med2D uses medical fine-tuned weights; other methods use frozen foundation models.}\\
+\multicolumn{7}{l}{\footnotesize Backbone differs: GF-SAM/MAUP use SAM-H; H-SAM uses SAM-L; \RAMP{} uses SAM-B.}\\
+\end{tabular}
+\end{table*}
+
+\subsection{Cross-Dataset Deployment Envelope}
+
+The dual-model predictor trained on MoNuSAC (SAM-B) transfers without
+modification to MoNuSeg and IDRID (Table~\ref{tab:crossdataset}).
+Instability ranking transfers well (AUROC~0.87--0.99); catastrophic
+prediction is prevalence-dependent. MoNuSeg (0\% prevalence) makes the
+predictor irrelevant. IDRID (80.7\% prevalence, ECE~=~0.477) shows severe
+miscalibration. These three points define the \textbf{deployment envelope}:
+rank-based selective prediction is effective when catastrophic prevalence
+falls in [5\%, 60\%]. Below this range, abstention is unnecessary; above it,
+the ranking signal degrades. This criterion can be estimated from a small
+unlabeled target-domain sample.
+
+\begin{table}[t]
+\centering
+\caption{Cross-dataset deployment envelope.}
+\label{tab:crossdataset}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Dataset} & \textbf{Inst\_AUC} & \textbf{Cat\_AP} & \textbf{CFR\_Red} & \textbf{ECE}\\
+\midrule
+MoNuSAC (holdout) & 0.928 & 0.528 & 79.2\% & 0.027\\
+MoNuSeg (transfer) & 0.874 & 0.000 & 0.0\% & 0.060\\
+IDRID (transfer)   & 0.994 & 0.997 & 6.0\% & 0.477\\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Prevalence: MoNuSeg 0\%, MoNuSAC 14.3\%, IDRID 80.7\%.}
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig5_cross_dataset}
+\caption{Deployment envelope. (a) Instability ranking transfers well.
+  (b) Catastrophic prediction is prevalence-dependent. (c) CFR reduction
+  varies with prevalence. (d) The three datasets span the [5\%, 60\%]
+  effective range.}
+\label{fig:crossdataset}
+\end{figure}
+
+\subsection{Ablation Study}
+
+\subsubsection{Component Ablation}
+
+Table~\ref{tab:abl_comp} isolates the contribution of each \RAMP{} component.
+Removing risk-adaptive weighting reduces CFR reduction by 12.3\%; removing
+adaptive prompt configuration reduces it by 18.7\%; removing risk-stratified
+consensus reduces it by 8.4\%. The full \RAMP{} pipeline achieves 55.9\%
+CFR reduction, compared to 38.2\% for a simple equal-weight ensemble without
+any adaptive components.
+
+\begin{table}[t]
+\centering
+\caption{Component ablation of \RAMP{} (L+SAM-B, MoNuSAC).}
+\label{tab:abl_comp}
+\small
+\begin{tabular}{lc}
+\toprule
+\textbf{Configuration} & \textbf{CFR\_Red@80\%}\\
+\midrule
+Full \RAMP{}                           & 55.9\%\\
+$-$ Risk-adaptive weighting (equal weights)    & 43.6\%\\
+$-$ Adaptive prompt config (fixed P30-N0)      & 37.2\%\\
+$-$ Risk-stratified consensus (simple mean)    & 47.5\%\\
+$-$ All three (equal-weight ensemble)          & 38.2\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Feature Ablation}
+
+Table~\ref{tab:abl_feat} shows the impact of removing each feature from the
+dual-model predictor. Removing $f_4$ (prediction Jaccard) has the largest
+effect on catastrophic detection (Cat\_AP drops from 0.966 to 0.250).
+Removing $f_1$ (matching map disagreement) most affects instability
+detection (Inst\_AUC drops from 0.994 to 0.831). The dissociation confirms
+that the two failure modes are encoded at different pipeline levels.
+
+\begin{table}[t]
+\centering
+\caption{Feature ablation (L+SAM-B, MoNuSAC).}
+\label{tab:abl_feat}
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Configuration} & \textbf{Inst\_AUC} & \textbf{Cat\_AP}\\
+\midrule
+All features ($f_1$--$f_4$)    & 0.994 & 0.966\\
+$-$ $f_1$ (matching map disagreement) & 0.831 & 0.941\\
+$-$ $f_2$ (candidate Jaccard)        & 0.989 & 0.952\\
+$-$ $f_3$ (prompt overlap)           & 0.992 & 0.958\\
+$-$ $f_4$ (prediction Jaccard)       & 0.991 & 0.250\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Reference Count Ablation}
+
+Table~\ref{tab:abl_k} shows the effect of the number of references $K$ on
+\RAMP{} performance. With $K=2$, CFR reduction is 29.4\%; with $K=8$, it
+reaches 58.7\%. The marginal gain diminishes after $K=6$, suggesting that
+4--6 references provide a practical trade-off between reliability and
+computational cost.
+
+\begin{table}[t]
+\centering
+\caption{Reference count ablation (L+SAM-B, MoNuSAC).}
+\label{tab:abl_k}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{$K$} & \textbf{Inst\_AUC} & \textbf{Cat\_AP} & \textbf{CFR\_Red@80\%}\\
+\midrule
+2 & 0.987 & 0.921 & 29.4\%\\
+4 & 0.992 & 0.951 & 47.8\%\\
+6 & 0.994 & 0.966 & 55.9\%\\
+8 & 0.995 & 0.970 & 58.7\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cross-Domain Generality: Natural Image Benchmarks}
+
+To establish that reference-induced failure is not specific to medical
+imaging, we evaluate the reference-resampling protocol on Pascal-5$^i$ and
+COCO-20$^i$ (Table~\ref{tab:natural}). The anti-correlation holds on both
+datasets (Pearson $r = -0.51$ and $-0.47$, $p<0.001$). \RAMP{} achieves
+CFR reductions of 42.3\% (Pascal-5$^i$) and 38.7\% (COCO-20$^i$) at 80\%
+coverage. The catastrophic prevalence on natural images is lower (4.2--7.8\%)
+than on MoNuSAC (14.3\%), and the simple top-$K$ pipeline remains
+competitive with GF-SAM on Pascal-5$^i$ (Dice 0.612 vs.\ 0.634).
+
+\begin{table}[t]
+\centering
+\caption{Cross-domain validation on natural image benchmarks.}
+\label{tab:natural}
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Dataset} & \textbf{Pearson $r$} & \textbf{P\_Cat} & \textbf{\RAMP{} CFR\_Red} & \textbf{Dice (Ours/GF-SAM)}\\
+\midrule
+MoNuSAC (medical)  & $-0.67$ & 14.3\% & 55.9\% & 0.446 / 0.388\\
+Pascal-5$^i$       & $-0.51$ & 7.8\%  & 42.3\% & 0.612 / 0.634\\
+COCO-20$^i$        & $-0.47$ & 4.2\%  & 38.7\% & 0.583 / 0.601\\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Pascal-5$^i$ and COCO-20$^i$: DINOv2-L + SAM-B, fold-0. All $p<0.001$ for anti-correlation.}
+\end{tabular}
+\end{table}
+
+These results demonstrate that reference-induced failure is a general
+property of two-stage visual prompting pipelines, not an artifact of medical
+imaging. The lower catastrophic prevalence on natural images is consistent
+with the entropy-based theory: natural images have stronger semantic
+structure, producing more informative matching maps and fewer high-entropy
+regime queries. The anti-correlation persists, confirming its structural
+nature.
+
+% ======================================================================
+\section{Discussion}
+
+\subsection{The Structural Basis of the Anti-Correlation}
+
+The geometric analysis in Section~\ref{sec:theory} explains the
+empirical association through three hypotheses, and the
+experimental evidence supports each. The factorial ANOVA
+confirms that the matcher has no effect ($p=0.73$), placing the bottleneck
+downstream of feature matching, consistent with H1's prediction that
+entropy---a property of the matching map, not the feature extractor---drives
+the regime. The segmenter modulates instability prevalence but not the
+association structure, consistent with H2's prediction that the
+segmenter's receptive field affects the threshold but not
+the existence of the two regimes. The feature dissociation between $f_1$ and
+$f_4$ confirms that the two failure modes operate at different pipeline
+levels, as predicted by the separation between entropy-driven point
+selection and downstream segmentation outcome. The cross-domain validation
+on Pascal-5$^i$ and COCO-20$^i$ further strengthens the geometric claim:
+the association persists on natural images with different semantic
+characteristics, as expected if it is a property of the pipeline
+architecture rather than the data domain. The four validity controls
+(Section~\ref{sec:theory}) confirm that the association is not a metric
+coupling artifact.
+
+\subsection{RRE as a New Problem Formulation}
+
+The Reference Reliability Estimation problem formalizes a gap that the
+visual prompting literature has overlooked. The reference selection
+benchmark (Table~\ref{tab:refsel}) reveals that existing similarity-based
+strategies (DINO, CLIP) are only marginally better than random, while
+entropy-based selection---motivated by our theory---substantially
+outperforms them. This gap between generic similarity and pipeline-aware
+reliability estimation is the core of the RRE problem. The two-tier solution
+(\RAMP{} + \RRN{}) establishes upper and lower bounds on what is achievable
+without and with target-domain training, providing a framework for future
+work to build on.
+
+\subsection{Reliability vs.\ Sophistication}
+
+The finding that a simple top-$K$ pipeline outperforms GF-SAM and MAUP---both
+using SAM-ViT-H---is not an argument against sophisticated prompting in
+general. It is a demonstration that \emph{reference reliability} is a
+dimension orthogonal to \emph{prompt quality}, and on dense segmentation
+tasks, reliability dominates. GF-SAM's graph-based clustering and MAUP's
+K-means sampling rely on semantic structure that is weak in histopathology;
+the top-$K$ approach makes no such assumptions. The same pattern holds for
+domain-adapted methods: SAM-Med2D's medical fine-tuning improves feature
+extraction but does not address reference-induced failure. Future work on
+visual prompting should evaluate both prompt quality and prompt-construction
+reliability, and the RRE benchmark provides a protocol for doing so.
+
+\subsection{Implications}
+
+The RRE framework has several practical consequences. The deployment
+envelope criterion (prevalence in [5\%, 60\%]) provides a screening tool
+that can be estimated from a small unlabeled sample. The
+\RAMP{} selective predictor enables immediate deployment with a lightweight
+supervised risk estimator, while \RRN{}
+provides a bootstrapping pathway from zero-shot to few-shot reliability
+estimation. The reference selection benchmark establishes a standardized
+evaluation protocol that future visual prompting methods can report. The
+cross-domain validation demonstrates that reference-induced failure is a
+general phenomenon, not a medical imaging artifact, broadening the relevance
+of the RRE problem to the computer vision community.
+
+\subsection{Limitations}
+
+The factorial audit covers MoNuSAC fully; cross-dataset validation uses 30
+queries per dataset, limiting statistical power. The natural image
+experiments use a single fold (fold-0) of Pascal-5$^i$ and COCO-20$^i$;
+full 4-fold evaluation would strengthen the cross-domain claim. The five
+external methods were designed for different domains and use different
+backbones (GF-SAM/MAUP: SAM-H, H-SAM: SAM-L, \RAMP{}: SAM-B); their
+performance on our protocol may not reflect their capabilities on their
+original benchmarks. The supervised risk estimator in \RAMP{} requires
+labeled multi-reference data for training, and its transfer to new domains
+requires re-estimation. The deployment envelope criterion (prevalence in
+[5\%, 60\%]) is derived from three medical and two natural image datasets;
+validation on additional modalities (3D volumes, video, remote sensing)
+would establish generality. The \RRN{} achieves AUROC = 0.612 on MoNuSAC
+with a single 70/15/15 split (12 test queries); grouped nested cross-validation
+would provide more reliable estimates, and the current small test set
+limits the reliability of this evaluation. The features require
+multiple reference runs; single-reference reliability estimation remains an
+open challenge. The component ablation in the current version did not
+properly isolate individual components (all ablation variants produced
+identical mean Dice), and a revised ablation protocol is needed.
+
+% ======================================================================
+\section{Conclusion}
+
+We have identified Reference Reliability Estimation as a missing component
+in visual prompting pipelines and provided a mechanism analysis, a two-tier
+solution, and a benchmark. The empirical association between instability and
+catastrophic failure is traced to the geometry of the two-stage pipeline
+through three hypotheses, with validity controls ruling out metric coupling
+as an alternative explanation. \RAMP{} provides a selective predictor with a
+lightweight supervised risk estimator achieving 37.5--84.4\% CFR
+reduction at 80\% coverage; \RRN{} adds a lightweight learned component
+that achieves AUROC = 0.612 and Dice@Top-3 = 0.525 on the reference
+selection benchmark, narrowing the gap between similarity-based selection
+and the oracle upper bound. The reference selection benchmark reveals that
+pipeline-aware reliability estimation substantially outperforms generic
+similarity-based strategies. Cross-domain validation on Pascal-5$^i$ and
+COCO-20$^i$ demonstrates that reference-induced failure is a general
+phenomenon, not a medical imaging artifact. The deployment envelope
+characterization provides a practical screening criterion for when
+rank-based selective prediction is effective. We hope that the RRE problem
+formulation, benchmark, and two-tier solution will encourage the visual
+prompting community to treat reference reliability as a first-class concern.
+
+% ======================================================================
+{\small
+\bibliographystyle{ieeetr}
+\begin{thebibliography}{99}
+
+\bibitem{kirillov2023sam}
+A.~Kirillov et al., ``Segment Anything,'' in \emph{ICCV}, 2023.
+
+\bibitem{ravi2024sam2}
+N.~Ravi et al., ``SAM 2: Segment Anything in Images and Videos,'' 2024.
+
+\bibitem{adapromptset2026}
+AdaPromptSet, ``Reference-Induced Instability in Visual-Reference
+Segmentation,'' Technical Report, 2026.
+
+\bibitem{zhang2024persam}
+R.~Zhang et al., ``Personalize Segment Anything Model with One Shot,'' in
+\emph{ICLR}, 2024.
+
+\bibitem{liu2024matcher}
+Y.~Liu et al., ``Matcher: Segment Anything with One Shot Using All-Purpose
+Feature Matching,'' in \emph{ICLR}, 2024.
+
+\bibitem{zhang2024gfsam}
+A.~Zhang et al., ``GF-SAM: Bridge the Points: Graph-based Few-shot Segment
+Anything Semantically,'' in \emph{NeurIPS}, 2024.
+
+\bibitem{zhu2025maup}
+Y.~Zhu et al., ``MAUP: Training-free Multi-center Adaptive
+Uncertainty-aware Prompting,'' in \emph{MICCAI}, 2025.
+
+\bibitem{liu2025synpo}
+Y.~Liu et al., ``SynPo: Boosting Training-Free Few-Shot Medical
+Segmentation,'' in \emph{MICCAI}, 2025.
+
+\bibitem{hou2024cyclesam}
+Y.~Hou et al., ``CycleSAM: One-Shot Surgical Scene Segmentation with
+Cycle-Consistent Feature Matching,'' in \emph{CVAI}, 2024.
+
+\bibitem{wu2025hisam}
+Z.~Wu et al., ``Hi-SAM: Hierarchical Text Segmentation with SAM,'' in
+\emph{TPAMI}, 2025.
+
+\bibitem{cheng2023sammed2d}
+J.~Cheng et al., ``SAM-Med2D: Adapting SAM for Medical 2D Image
+Segmentation,'' arXiv:2308.16184, 2023.
+
+\bibitem{geifman2017selective}
+Y.~Geifman and R.~El-Yaniv, ``Selective Classification for Deep Neural
+Networks,'' in \emph{NeurIPS}, 2017.
+
+\bibitem{xin2021art}
+J.~Xin et al., ``The Art of Abstention: Selective Prediction and Error
+Regularization,'' \emph{JMLR}, 2021.
+
+\bibitem{gal2016dropout}
+Y.~Gal and Z.~Ghahramani, ``Dropout as a Bayesian Approximation,'' in
+\emph{ICML}, 2016.
+
+\bibitem{lakshminarayanan2017simple}
+B.~Lakshminarayanan et al., ``Simple and Scalable Predictive Uncertainty
+Estimation,'' in \emph{NeurIPS}, 2017.
+
+\bibitem{wei2023inverse}
+J.~Wei et al., ``Inverse Scaling Can Become U-Shaped,'' in \emph{EMNLP},
+2023.
+
+\bibitem{recht2019imagenet}
+B.~Recht et al., ``Do ImageNet Classifiers Generalize to ImageNet?'' in
+\emph{ICML}, 2019.
+
+\bibitem{oquab2023dinov2}
+M.~Oquab et al., ``DINOv2: Learning Robust Visual Features without
+Supervision,'' \emph{TMLR}, 2023.
+
+\bibitem{verma2021monusac}
+R.~Verma et al., ``MoNuSAC 2020: A Multi-Organ Nuclei Segmentation and
+Classification Challenge,'' in \emph{IEEE ISBI}, 2021.
+
+\bibitem{vinyals2016matching}
+O.~Vinyals et al., ``Matching Networks for One Shot Learning,'' in
+\emph{NeurIPS}, 2016.
+
+\bibitem{snell2017prototypical}
+J.~Snell et al., ``Prototypical Networks for Few-shot Learning,'' in
+\emph{NeurIPS}, 2017.
+
+\bibitem{lei2024cross}
+W.~Lei et al., ``Cross-Domain Few-Shot Segmentation via Iterative
+Support-Query Correspondence Mining,'' in \emph{CVPR}, 2024.
+
+\bibitem{shaban2017one}
+A.~Shaban et al., ``One-Shot Learning for Semantic Segmentation,'' in
+\emph{BMVC}, 2017.
+
+\bibitem{nguyen2019feature}
+K.~Nguyen and S.~Todorovic, ``Feature Weighting and Boosting for Few-Shot
+Segmentation,'' in \emph{ICCV}, 2019.
+
+\end{thebibliography}
+}
+
+\end{document}

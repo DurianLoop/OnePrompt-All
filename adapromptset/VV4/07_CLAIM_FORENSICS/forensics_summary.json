@@ -1,0 +1,38 @@
+{
+  "script": "run_vv4_forensics.py",
+  "generated": "2026-07-28 12:04:25",
+  "canonical_v4": "D:\\SAM\\adapromptset\\paper\\phaseU\\full_draft.tex",
+  "outputs": {
+    "WP3": "D:\\SAM\\adapromptset\\VV4\\07_CLAIM_FORENSICS\\extracted_claims\\v4_claim_registry.csv",
+    "WP4": "D:\\SAM\\adapromptset\\VV4\\07_CLAIM_FORENSICS\\claim_to_artifact\\claim_artifact_matrix.csv",
+    "WP5": "D:\\SAM\\adapromptset\\VV4\\07_CLAIM_FORENSICS\\hallucination_audit\\hallucination_report.md",
+    "WP6": "D:\\SAM\\adapromptset\\VV4\\07_CLAIM_FORENSICS\\table_forensics\\v4_table_forensics.csv",
+    "WP7": "D:\\SAM\\adapromptset\\VV4\\07_CLAIM_FORENSICS\\figure_forensics\\v4_figure_forensics.csv",
+    "WP9": "D:\\SAM\\adapromptset\\VV4\\06_REPORTS_AND_DECISIONS\\claim_registries\\v4_vs_later_phases.csv",
+    "WP10": "D:\\SAM\\adapromptset\\VV4\\07_CLAIM_FORENSICS\\hallucination_audit\\hallucination_registry.csv",
+    "WP11": "D:\\SAM\\adapromptset\\VV4\\09_V4_SALVAGE\\v4_section_salvage_map.csv"
+  },
+  "statistics": {
+    "total_claims": 92,
+    "claims_with_evidence": 45,
+    "high_risk_claims_audited": 12,
+    "tables_audited": 12,
+    "figures_audited": 12,
+    "hallucination_class_A": 14,
+    "hallucination_class_B": 17,
+    "hallucination_class_C": 4,
+    "hallucination_class_D": 48,
+    "hallucination_class_E": 8,
+    "hallucination_class_I": 1,
+    "sections_salvageable": 5,
+    "sections_need_rewrite": 6
+  },
+  "key_confirmations": {
+    "anti_correlation_overthrown": "YES — Phase W/AB. Significant only for SAM-B, not SAM2. Null model corrected.",
+    "sam_med2d_removed": "YES — Phase AB. Checkpoint unloadable, REMOVED from main table.",
+    "ramp_weighting_fusion_zero_effect": "YES — Phase W. PHASEW_FULL_RAMP_NO_ADDED_VALUE.",
+    "prediction_consistency_sole_method": "YES — Phase AB. B4 is the only effective risk signal.",
+    "no_fresh_cohort": "YES — Phase AB. No confirmatory cohort exists.",
+    "development_cohort": "YES — Phase W. 80 MoNuSAC queries are Development Cohort, not holdout."
+  }
+}

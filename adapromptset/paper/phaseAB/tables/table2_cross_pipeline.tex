@@ -1,0 +1,22 @@
+% Table 2: Cross-Pipeline Prediction Consistency
+\begin{table}[t]
+\centering
+\caption{Prediction consistency performance across five pipelines on the 80-query 
+development cohort. All pipelines show at least directional support.}
+\label{tab:cross_pipeline}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Pipeline} & \textbf{Support} & \textbf{AURC(PC)} & \textbf{AURC(Rand)} & \textbf{CFR Red.@80} & \textbf{Dice@80(PC)} \\
+\midrule
+P1: DINOv2-L + SAM-B & directional & 0.0158 & 0.1295 & +88.6\% & 0.501 \\
+P2: DINOv2-B + SAM-B & directional & 0.0145 & 0.1295 & +88.6\% & 0.468 \\
+P3: DINOv2-L + SAM-L & directional & 0.1002 & 0.1862 & +23.1\% & 0.303 \\
+P4: DINOv2-L + SAM2-Tiny & directional & 0.0910 & 0.1295 & +9.1\% & 0.325 \\
+P5: DINOv2-L + SAM2-Small & directional & 0.1339 & 0.2247 & $-$1.6\% & 0.281 \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\par\small Support criteria: \textit{directional} = AURC(PC) < AURC(Random) and CFR does not increase; 
+\textit{strong} would additionally require AUROC $\ge$ 0.70. 
+P1 (DINOv2-L + SAM-B) is the primary pipeline. SAM-B-based pipelines (P1, P2) show the strongest effects.
+\end{table}

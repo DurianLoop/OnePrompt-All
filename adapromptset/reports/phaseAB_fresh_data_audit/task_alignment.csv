@@ -1,0 +1,6 @@
+dataset,task,modality,organ,segmentation_target,match_to_primary,notes
+MoNuSAC,nuclei_segmentation,H&E,multi-organ,nuclei,Exact,"Primary dataset"
+MoNuSeg,nuclei_segmentation,H&E,multi-organ,nuclei,Exact,"Different staining protocol"
+IDRID,lesion_segmentation,fundus,retina,lesions,Different,"Different task, organ, modality"
+GlaS,gland_segmentation,H&E,colon,glands,Similar,"Different organ, same modality"
+CPM17,nuclei_segmentation,H&E,multi-organ,nuclei,Exact,"Small dataset (17 images)"
