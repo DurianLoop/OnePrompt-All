@@ -1,0 +1,122 @@
+[
+  {
+    "Figure_ID": "Fig-1",
+    "Filename": "fig1_anticorrelation_scatter",
+    "Caption": "The reference failure landscape: instability vs catastrophic failure rate",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "Phase U WP1 segmenter audit data",
+    "Data_Verifiable": "Yes",
+    "Issues": "Anti-correlation is significant only for SAM-B pipelines (Phase W). V4 presents it as universal, which is misleading.",
+    "Verdict": "MISLEADING — anti-correlation not universal"
+  },
+  {
+    "Figure_ID": "Fig-2",
+    "Filename": "fig2_pipeline_diagram",
+    "Caption": "Pipeline diagram",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "N/A (diagram)",
+    "Data_Verifiable": "N/A",
+    "Issues": "None",
+    "Verdict": "CONCEPTUAL"
+  },
+  {
+    "Figure_ID": "Fig-3",
+    "Filename": "fig3_coverage_risk_curves",
+    "Caption": "Coverage-risk analysis",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "Phase U selective prediction results",
+    "Data_Verifiable": "Yes",
+    "Issues": "Phase W: coverage curves stable across 50-100%. M2_Inst degrades performance at every coverage (confirmed).",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-4",
+    "Filename": "fig4_feature_importance",
+    "Caption": "Feature importance and ablation",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "Phase U feature importance analysis",
+    "Data_Verifiable": "Yes",
+    "Issues": "f4 dominates catastrophic detection (55%) — confirmed by feature ablation.",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-5",
+    "Filename": "fig5_cross_dataset",
+    "Caption": "Deployment envelope",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "Phase T WP2 cross-dataset",
+    "Data_Verifiable": "Yes",
+    "Issues": "IDRID ECE=0.477 (severe miscalibration).",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-6",
+    "Filename": "fig6_scale_reliability",
+    "Caption": "Scale-reliability mismatch",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "Phase U WP1 data",
+    "Data_Verifiable": "Yes",
+    "Issues": "Scale-reliability mismatch is confirmed: SAM-L reduces instability but increases CFR.",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-7",
+    "Filename": "fig7_external_comparator",
+    "Caption": "External comparator",
+    "Generation_Script": "paper/phaseU/generate_figures.py",
+    "Data_Source": "Phase U external baselines (GF-SAM, MAUP)",
+    "Data_Verifiable": "Yes",
+    "Issues": "Backbone mismatch (SAM-H vs SAM-B).",
+    "Verdict": "VERIFIED_WITH_QUALIFICATION"
+  },
+  {
+    "Figure_ID": "Fig-Theory-1",
+    "Filename": "fig_theory_anticorrelation_matrix",
+    "Caption": "Anti-correlation matrix",
+    "Generation_Script": "run_phaseU_theory_figures.py",
+    "Data_Source": "Theory verification",
+    "Data_Verifiable": "Partially",
+    "Issues": "Anti-correlation not universal (Phase W).",
+    "Verdict": "PARTIALLY_VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-Theory-2",
+    "Filename": "fig_theory_dispersion",
+    "Caption": "Dispersion analysis",
+    "Generation_Script": "run_phaseU_theory_figures.py",
+    "Data_Source": "Theory verification",
+    "Data_Verifiable": "Yes",
+    "Issues": "None",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-Theory-3",
+    "Filename": "fig_theory_entropy_bins",
+    "Caption": "Empirical verification of entropy-failure relationship",
+    "Generation_Script": "run_phaseU_theory_figures.py",
+    "Data_Source": "theory_verification_results.json",
+    "Data_Verifiable": "Yes",
+    "Issues": "Non-monotonic entropy-CFR relationship is plausible. Mid-entropy regime as blind spot is interesting.",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-Theory-4",
+    "Filename": "fig_theory_failure_landscape",
+    "Caption": "Failure landscape",
+    "Generation_Script": "run_phaseU_theory_figures.py",
+    "Data_Source": "Theory verification",
+    "Data_Verifiable": "Yes",
+    "Issues": "None",
+    "Verdict": "VERIFIED"
+  },
+  {
+    "Figure_ID": "Fig-Theory-5",
+    "Filename": "fig_theory_feature_correlation",
+    "Caption": "Feature correlation matrix",
+    "Generation_Script": "run_phaseU_theory_figures.py",
+    "Data_Source": "Theory verification",
+    "Data_Verifiable": "Yes",
+    "Issues": "f4 r=-0.842 with instability, f1 r=-0.064 with CFR — dissociation confirmed.",
+    "Verdict": "VERIFIED"
+  }
+]

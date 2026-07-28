@@ -1,0 +1,25 @@
+{
+  "gate_r1": {
+    "query_count": 80,
+    "seed_count": 5,
+    "config_count": 3,
+    "configs": [
+      "P20-N1",
+      "P30-N0",
+      "P50-N0"
+    ],
+    "pct_queries_best_worst_gap_ge_0p05": 0.8875,
+    "mean_reference_std": 0.073675,
+    "seed_direction_consistent": true,
+    "sensitive_config": "P20-N1",
+    "not_code_error": true,
+    "conditions": {
+      "cond1_30pct_best_worst_gap_ge_0p05": true,
+      "cond2_mean_ref_std_ge_0p02": true,
+      "cond3_direction_consistent_across_seeds": true,
+      "cond4_one_config_shows_sensitivity": true,
+      "cond5_not_code_error": true
+    },
+    "decision": "PHASER_GATE_R1_REFERENCE_INSTABILITY_CONFIRMED"
+  }
+}

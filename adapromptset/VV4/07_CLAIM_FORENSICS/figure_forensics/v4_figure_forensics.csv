@@ -1,0 +1,13 @@
+Figure_ID,Filename,Caption,Generation_Script,Data_Source,Data_Verifiable,Issues,Verdict
+Fig-1,fig1_anticorrelation_scatter,The reference failure landscape: instability vs catastrophic failure rate,paper/phaseU/generate_figures.py,Phase U WP1 segmenter audit data,Yes,"Anti-correlation is significant only for SAM-B pipelines (Phase W). V4 presents it as universal, which is misleading.",MISLEADING — anti-correlation not universal
+Fig-2,fig2_pipeline_diagram,Pipeline diagram,paper/phaseU/generate_figures.py,N/A (diagram),N/A,None,CONCEPTUAL
+Fig-3,fig3_coverage_risk_curves,Coverage-risk analysis,paper/phaseU/generate_figures.py,Phase U selective prediction results,Yes,Phase W: coverage curves stable across 50-100%. M2_Inst degrades performance at every coverage (confirmed).,VERIFIED
+Fig-4,fig4_feature_importance,Feature importance and ablation,paper/phaseU/generate_figures.py,Phase U feature importance analysis,Yes,f4 dominates catastrophic detection (55%) — confirmed by feature ablation.,VERIFIED
+Fig-5,fig5_cross_dataset,Deployment envelope,paper/phaseU/generate_figures.py,Phase T WP2 cross-dataset,Yes,IDRID ECE=0.477 (severe miscalibration).,VERIFIED
+Fig-6,fig6_scale_reliability,Scale-reliability mismatch,paper/phaseU/generate_figures.py,Phase U WP1 data,Yes,Scale-reliability mismatch is confirmed: SAM-L reduces instability but increases CFR.,VERIFIED
+Fig-7,fig7_external_comparator,External comparator,paper/phaseU/generate_figures.py,"Phase U external baselines (GF-SAM, MAUP)",Yes,Backbone mismatch (SAM-H vs SAM-B).,VERIFIED_WITH_QUALIFICATION
+Fig-Theory-1,fig_theory_anticorrelation_matrix,Anti-correlation matrix,run_phaseU_theory_figures.py,Theory verification,Partially,Anti-correlation not universal (Phase W).,PARTIALLY_VERIFIED
+Fig-Theory-2,fig_theory_dispersion,Dispersion analysis,run_phaseU_theory_figures.py,Theory verification,Yes,None,VERIFIED
+Fig-Theory-3,fig_theory_entropy_bins,Empirical verification of entropy-failure relationship,run_phaseU_theory_figures.py,theory_verification_results.json,Yes,Non-monotonic entropy-CFR relationship is plausible. Mid-entropy regime as blind spot is interesting.,VERIFIED
+Fig-Theory-4,fig_theory_failure_landscape,Failure landscape,run_phaseU_theory_figures.py,Theory verification,Yes,None,VERIFIED
+Fig-Theory-5,fig_theory_feature_correlation,Feature correlation matrix,run_phaseU_theory_figures.py,Theory verification,Yes,"f4 r=-0.842 with instability, f1 r=-0.064 with CFR — dissociation confirmed.",VERIFIED

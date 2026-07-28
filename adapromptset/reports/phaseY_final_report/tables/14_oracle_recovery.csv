@@ -1,0 +1,5 @@
+Method,Mean Dice,Fixed Dice,Stable Oracle Dice,Oracle Gap,Policy Gap,Recovery %
+Stable Oracle (upper bound),0.4399,0.4338,0.4399,0.0061,0.0061,100.0%
+Raw Bank Oracle (upper bound),0.5007,0.4338,0.4399,0.0061,0.0669,1105.8%
+Raw Search Oracle (privileged),0.5947,0.4338,0.4399,0.0061,0.1609,2659.1%
+Cross-Ref Search Oracle (privileged),0.4105,0.4338,0.4399,0.0061,-0.0233,-385.4%

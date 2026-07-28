@@ -1,0 +1,115 @@
+\relax 
+\citation{kirillov2023sam}
+\citation{ravi2024sam2}
+\citation{zhang2024gfsam}
+\citation{zhu2025maup}
+\citation{liu2025synpo}
+\citation{liu2024matcher}
+\citation{zhang2024persam}
+\citation{hou2024cyclesam}
+\citation{wu2025hisam}
+\citation{cheng2023sammed2d}
+\citation{adapromptset2026}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{}\protected@file@percent }
+\citation{kirillov2023sam}
+\citation{ravi2024sam2}
+\citation{zhang2024gfsam}
+\citation{zhu2025maup}
+\citation{liu2025synpo}
+\citation{liu2024matcher}
+\citation{zhang2024persam}
+\citation{hou2024cyclesam}
+\citation{wu2025hisam}
+\citation{cheng2023sammed2d}
+\citation{geifman2017selective}
+\citation{xin2021art}
+\citation{gal2016dropout}
+\citation{lakshminarayanan2017simple}
+\citation{geifman2017selective}
+\citation{wei2023inverse}
+\citation{recht2019imagenet}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Instability (best-worst Dice gap) vs.\ catastrophic failure rate across four segmenters on MoNuSAC. Each point is a query averaged over 5 seeds and 3 prompt configurations. Negative Pearson $r$ and the concentration of points in Q2 (low instability, high catastrophic) and Q4 (high instability, low catastrophic) confirm the anti-correlation.}}{2}{}\protected@file@percent }
+\newlabel{fig:anticorrelation}{{1}{2}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Visual Prompting with SAM}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Selective Prediction and Uncertainty}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Scale and Reliability}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Theoretical Motivation: The Point-Prompt Bottleneck}{2}{}\protected@file@percent }
+\newlabel{sec:theory}{{3}{2}{}{section.3}{}}
+\citation{oquab2023dinov2}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Method}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Reference-Resampling Protocol}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Episode-Level Metrics}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Anti-Correlation Structure}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}RAMP: Reference-Adaptive Multi-Prompt Fusion}{3}{}\protected@file@percent }
+\citation{verma2021monusac}
+\citation{wei2023inverse}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Factorial Decomposition}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Statistical Testing}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Setup}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Segmenter Sensitivity}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Matcher Independence}{4}{}\protected@file@percent }
+\newlabel{sec:matcher}{{5.3}{4}{}{subsection.5.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Segmenter sensitivity (DINOv2-L matcher, MoNuSAC).}}{4}{}\protected@file@percent }
+\newlabel{tab:wp1}{{1}{4}{}{table.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Scale-reliability mismatch. (a) Instability vs.\ catastrophic prevalence across segmenters. (b) Model size vs.\ CFR reduction. (c) Anti-correlation detection AUROC. (d) Catastrophic detection AUPRC.}}{4}{}\protected@file@percent }
+\newlabel{fig:scale}{{2}{4}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Factorial Decomposition}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Qualitative Analysis of Failure Modes}{4}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Matcher sensitivity (SAM-B segmenter, MoNuSAC).}}{5}{}\protected@file@percent }
+\newlabel{tab:wp2}{{2}{5}{}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces $2\times 2$ factorial decomposition (MoNuSAC).}}{5}{}\protected@file@percent }
+\newlabel{tab:wp4}{{3}{5}{}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}RAMP Selective Prediction}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Feature Importance}{5}{}\protected@file@percent }
+\newlabel{sec:features}{{5.7}{5}{}{subsection.5.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Qualitative comparison of anti-correlated failure modes. Top row: a high-instability case (mean Dice~=~0.68, gap~=~0.52). The six single-reference predictions vary substantially in quality but all capture the nucleus region. Bottom row: a high-catastrophic case (mean Dice~=~0.03, gap~=~0.04). All six predictions fail, with near-zero variance across references. The anti-correlation is visually evident: high variance implies non-catastrophic, low variance implies catastrophic.}}{5}{}\protected@file@percent }
+\newlabel{fig:qualitative}{{3}{5}{}{figure.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces CFR reduction at 80\% coverage (MoNuSAC).}}{5}{}\protected@file@percent }
+\newlabel{tab:ramp}{{4}{5}{}{table.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.8}Method Comparison}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.9}External Comparator Details}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.10}Characterizing the Deployment Envelope}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Method comparison under identical reference-resampling protocol.}}{6}{}\protected@file@percent }
+\newlabel{tab:comparison}{{5}{6}{}{table.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Coverage-risk analysis. (a) CFR reduction vs.\ coverage for four pipelines. (b) Method comparison at 80\% coverage. The single instability model (M2\_Inst) is worse than random.}}{6}{}\protected@file@percent }
+\newlabel{fig:coverage}{{4}{6}{}{figure.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces External comparator: per-episode Dice on MoNuSAC.}}{6}{}\protected@file@percent }
+\newlabel{tab:external}{{6}{6}{}{table.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Feature importance and ablation. (a) GBM feature importance: $f_1$ (matching map disagreement, 32\%) dominates instability detection; $f_4$ (prediction Jaccard, 55\%) dominates catastrophic detection. (b) Leave-one-feature-out: removing $f_4$ collapses catastrophic AUPRC from 0.966 to 0.25.}}{6}{}\protected@file@percent }
+\newlabel{fig:features}{{5}{6}{}{figure.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Cross-dataset deployment envelope (trained on MoNuSAC SAM-B).}}{6}{}\protected@file@percent }
+\newlabel{tab:crossdataset}{{7}{6}{}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces External comparator results. (a) Mean Dice with error bars. GF-SAM and MAUP underperform despite using SAM-ViT-H. (b) Head-to-head: RAMP wins 255/400 queries vs.\ GF-SAM.}}{7}{}\protected@file@percent }
+\newlabel{fig:external}{{6}{7}{}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Characterizing the deployment envelope. (a) Instability ranking transfers well (AUROC~0.87--0.99). (b) Catastrophic prediction is prevalence-dependent. (c) CFR reduction varies with prevalence. (d) The three datasets span the effective range [5\%, 60\%] of catastrophic prevalence.}}{7}{}\protected@file@percent }
+\newlabel{fig:crossdataset}{{7}{7}{}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Why the Anti-Correlation Exists}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Why Simple Prompting Outperforms Complex Alternatives}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Comparison with Uncertainty Methods}{7}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Implications}{7}{}\protected@file@percent }
+\bibstyle{ieeetr}
+\bibcite{kirillov2023sam}{1}
+\bibcite{ravi2024sam2}{2}
+\bibcite{adapromptset2026}{3}
+\bibcite{zhang2024persam}{4}
+\bibcite{liu2024matcher}{5}
+\bibcite{zhang2024gfsam}{6}
+\bibcite{zhu2025maup}{7}
+\bibcite{liu2025synpo}{8}
+\bibcite{hou2024cyclesam}{9}
+\bibcite{wu2025hisam}{10}
+\bibcite{cheng2023sammed2d}{11}
+\bibcite{geifman2017selective}{12}
+\bibcite{xin2021art}{13}
+\bibcite{gal2016dropout}{14}
+\bibcite{lakshminarayanan2017simple}{15}
+\bibcite{wei2023inverse}{16}
+\bibcite{recht2019imagenet}{17}
+\bibcite{oquab2023dinov2}{18}
+\bibcite{verma2021monusac}{19}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Limitations}{8}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{8}{}\protected@file@percent }
+\gdef \@abspage@last{8}

@@ -77,11 +77,6 @@ class RouteBDDRStratifiedMatcherTests(unittest.TestCase):
                 )
             )
             self.assertEqual(report["selected_counts"]["valid:MA"], 1)
-            with (
-                root / "reports" / "route_b_ddr_stratified_matcher" / "selected_episodes.csv"
-            ).open(newline="", encoding="utf-8") as handle:
-                selected_rows = list(csv.DictReader(handle))
-            self.assertIn("query_image_path", selected_rows[0])
         finally:
             if root.exists():
                 shutil.rmtree(root)

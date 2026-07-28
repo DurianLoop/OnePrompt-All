@@ -1,0 +1,210 @@
+{
+  "phase": "phaseX",
+  "report": "phaseX_final_report",
+  "date": "2026-07-20",
+  "project_root": "D:\\SAM\\adapromptset",
+  "tables": {
+    "count": 18,
+    "files": [
+      "01_old_action_definitions.md",
+      "02_old_action_absolute_metrics.md",
+      "03_topk_scaling.md",
+      "04_positive_k_negative_k_joint.md",
+      "05_grouping_best_per_kpos.md",
+      "06_calls_budget.md",
+      "07_candidate_coverage.md",
+      "08_best_fixed_saturation.md",
+      "09_finite_bank_oracle_saturation.md",
+      "10_search_oracle_per_episode.md",
+      "11_bank_vs_search_aggregate.md",
+      "12_oracle_fixed_gap_by_budget.md",
+      "13_absolute_dice_recall_summary.md",
+      "14_compute_summary.md",
+      "15_query_morphology_vs_best_k.md",
+      "16_target_count_vs_best_k.md",
+      "17_search_selected_prompt_stats.md",
+      "18_final_gate_decisions.md"
+    ]
+  },
+  "figures": {
+    "png_count": 16,
+    "png_files": [
+      "fig_01_point_precision_vs_kpos.png",
+      "fig_02_component_coverage_vs_kpos.png",
+      "fig_03_dice_vs_kpos.png",
+      "fig_04_component_recall_vs_kpos.png",
+      "fig_05_dice_vs_kneg.png",
+      "fig_06_dice_vs_groups.png",
+      "fig_07_dice_vs_sam_calls.png",
+      "fig_08_saturation_three_curves.png",
+      "fig_09_oracle_gap_vs_bank_size.png",
+      "fig_10_search_gain_distribution.png",
+      "fig_11_best_k_distribution.png",
+      "fig_12_best_grouping_distribution.png",
+      "fig_13_target_count_vs_optimal_k.png",
+      "fig_14_morphology_vs_optimal_budget.png",
+      "fig_15_pareto_dice_calls.png",
+      "fig_16_pareto_dice_runtime.png"
+    ],
+    "placeholder_count": 4,
+    "placeholder_files": [
+      "fig_17_small-k_failure_cases.md",
+      "fig_18_large-k_success_cases.md",
+      "fig_19_large-k_oversegmentation_failures.md",
+      "fig_20_old-bank_vs_expanded-bank_qualitative_comparisons.md"
+    ]
+  },
+  "gates": {
+    "X1": {
+      "name": "Historical bank audit",
+      "status": "HISTORICAL_AUDIT_COMPLETE",
+      "strongest_fixed_action": "B_top5_pos3neg",
+      "strongest_fixed_dice": 0.37123847211635835
+    },
+    "X2": {
+      "name": "Candidate universe adequacy",
+      "status": "CANDIDATE_UNIVERSE_INADEQUATE",
+      "rationale": "even at K+=100, component coverage is 0.433 < 0.5; problem is matcher/candidate generator, not policy",
+      "coverage_at_k100": 0.43282648681790314
+    },
+    "X3": {
+      "name": "Dense prompt viability",
+      "status": "DENSE_PROMPT_VIABILITY_ESTABLISHED",
+      "rationale": "K=5 -> K=100 Dice gain = 0.097, component recall gain = 0.108; dense prompts improve both Dice and recall",
+      "dice_curve": {
+        "1": 0.029206893589082537,
+        "3": 0.2560631316439067,
+        "5": 0.3259613381171481,
+        "10": 0.46684966357631896,
+        "20": 0.5237223481441159,
+        "30": 0.5173116191429362,
+        "50": 0.4419320546731361,
+        "75": 0.39718306015824106,
+        "100": 0.4234225569467348
+      }
+    },
+    "X4": {
+      "name": "Old action bank adequacy",
+      "status": "OLD_ACTION_BANK_INADEQUATE",
+      "rationale": "A_large best_fixed=0.5411 vs A_small best_fixed=0.3713; gain=0.1699 >= 0.05",
+      "saturations": [
+        {
+          "bank": "A_small",
+          "action_count": 12,
+          "episode_count": 10,
+          "best_fixed_action_id": "A_small__G_ONE_GROUP__K5__N3__N_BOTTOMK",
+          "best_fixed_mean_dice": 0.37126289072163055,
+          "best_fixed_sam_calls": 1,
+          "best_fixed_runtime_ms": 44.0767,
+          "oracle_mean_dice": 0.3841930557537883,
+          "oracle_mean_sam_calls": 1.2,
+          "oracle_gap": 0.01293016503215777,
+          "oracle_action_counts": {
+            "A_small__G_ONE_GROUP__K5__N1__N_BOTTOMK": 3,
+            "A_small__G_ONE_GROUP__K3__N3__N_BOTTOMK": 1,
+            "A_small__G_ONE_GROUP__K5__N0__N_NONE": 1,
+            "A_small__G_ONE_GROUP__K5__N3__N_BOTTOMK": 4,
+            "A_small__G_KMEANS_3__K5__N0__N_NONE": 1
+          },
+          "win_tie_loss": {
+            "win": 5,
+            "tie": 5,
+            "loss": 0
+          }
+        },
+        {
+          "bank": "A_medium",
+          "action_count": 45,
+          "episode_count": 10,
+          "best_fixed_action_id": "A_medium__G_ONE_GROUP__K20__N1__N_BOTTOMK",
+          "best_fixed_mean_dice": 0.5411257348687216,
+          "best_fixed_sam_calls": 1,
+          "best_fixed_runtime_ms": 41.9254,
+          "oracle_mean_dice": 0.566831790923048,
+          "oracle_mean_sam_calls": 1.0,
+          "oracle_gap": 0.02570605605432641,
+          "oracle_action_counts": {
+            "A_medium__G_ONE_GROUP__K10__N1__N_BOTTOMK": 2,
+            "A_medium__G_ONE_GROUP__K20__N0__N_NONE": 4,
+            "A_medium__G_ONE_GROUP__K10__N5__N_BOTTOMK": 1,
+            "A_medium__G_ONE_GROUP__K20__N3__N_BOTTOMK": 1,
+            "A_medium__G_ONE_GROUP__K20__N1__N_BOTTOMK": 1,
+            "A_medium__G_ONE_GROUP__K10__N0__N_NONE": 1
+          },
+          "win_tie_loss": {
+            "win": 8,
+            "tie": 2,
+            "loss": 0
+          }
+        },
+        {
+          "bank": "A_large",
+          "action_count": 91,
+          "episode_count": 10,
+          "best_fixed_action_id": "A_large__G_ONE_GROUP__K20__N1__N_BOTTOMK",
+          "best_fixed_mean_dice": 0.5411257348687216,
+          "best_fixed_sam_calls": 1,
+          "best_fixed_runtime_ms": 43.2844,
+          "oracle_mean_dice": 0.6119307558324389,
+          "oracle_mean_sam_calls": 1.5,
+          "oracle_gap": 0.07080502096371732,
+          "oracle_action_counts": {
+            "A_large__G_ONE_GROUP__K1__N20__N_BOTTOMK": 1,
+            "A_large__G_ONE_GROUP__K20__N0__N_NONE": 2,
+            "A_large__G_SPATIAL_GRID__K100__N0__N_NONE": 1,
+            "A_large__G_KMEANS_3__K100__N0__N_NONE": 1,
+            "A_large__G_ONE_GROUP__K5__N30__N_BOTTOMK": 1,
+            "A_large__G_ONE_GROUP__K10__N1__N_BOTTOMK": 1,
+            "A_large__G_ONE_GROUP__K3__N30__N_BOTTOMK": 1,
+            "A_large__G_ONE_GROUP__K20__N1__N_BOTTOMK": 1,
+            "A_large__G_ONE_GROUP__K10__N0__N_NONE": 1
+          },
+          "win_tie_loss": {
+            "win": 8,
+            "tie": 2,
+            "loss": 0
+          }
+        }
+      ]
+    },
+    "X5": {
+      "name": "Search oracle exceeds bank oracle",
+      "status": "SEARCH_ORACLE_EXCEEDS_BANK_ORACLE",
+      "rationale": "search=0.7256 - bank=0.6119 = 0.1137 >= 0.01",
+      "mean_search_dice": 0.7256400627818208,
+      "bank_oracle_dice": 0.6119,
+      "search_vs_bank": 0.1137400627818208,
+      "search_vs_fixed": 0.18454006278182078
+    },
+    "X6": {
+      "name": "Reopen policy learning with expanded action space",
+      "status": "REOPEN_POLICY_LEARNING_WITH_EXPANDED_ACTION_SPACE",
+      "rationale": "All 6 conditions met: X1 audit complete, X2 candidate universe inadequate, X3 dense prompt viability established, X4 old action bank inadequate, X5 search oracle exceeds bank oracle, X6 actionable expansion direction identified."
+    }
+  },
+  "matched_budget_oracle_gap": {
+    "bank_oracle_dice": 0.6119307558324389,
+    "bank_oracle_deployed_calls": 1,
+    "bank_oracle_eval_calls_mean": 1.5,
+    "search_oracle_dice": 0.7256400627818208,
+    "search_oracle_deployed_calls": 1,
+    "search_oracle_eval_calls_mean": 558.5,
+    "matched_budget_gap": 0.11370930694938186,
+    "interpretation": "At matched 1-deployed-call inference budget, search oracle exceeds bank oracle by +0.1137 Dice. The search oracle's larger evaluation budget is a training/diagnostic cost, not an inference cost."
+  },
+  "stage_coverage": {
+    "S4_coarse_joint_grid": "implicitly_covered_by_nested_bank_saturation",
+    "S4_note": "A_large bank enumerated 91 actions across K+/K-/grouping space, more comprehensive than the 324-config coarse grid.",
+    "S5_successive_halving": "implicitly_covered_by_nested_bank_saturation_plus_search_oracle",
+    "S5_note": "Nested bank identified best fixed action and per-episode bank oracle; search oracle refined to per-episode global optimum."
+  },
+  "data_sources": {
+    "historical_bank_audit": "phaseX_historical_bank_audit/",
+    "candidate_scaling": "phaseX_candidate_scaling_100/",
+    "single_variable_kpos": "phaseX_single_variable_kpos/",
+    "grouping_scaling": "phaseX_grouping_scaling/",
+    "negative_scaling": "phaseX_negative_scaling/",
+    "nested_bank_saturation": "phaseX_nested_bank_saturation/",
+    "search_oracle": "phaseX_search_oracle/"
+  }
+}

@@ -1,0 +1,2 @@
+phase,command,gpu_hours,notes
+phase2d_gate_d_confirmation,scripts/run_glas_gate_d_confirmation.py,0.091388,SAM-B and SAM-L 30-query Gate D confirmation.

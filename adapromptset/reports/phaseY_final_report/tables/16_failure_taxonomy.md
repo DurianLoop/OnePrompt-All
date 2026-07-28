@@ -1,0 +1,9 @@
+# Table 16: Failure Taxonomy
+
+| Failure Category | Count | Rate | Example Queries |
+|---|---|---|---|
+| Over-segmentation (high recall, low IoU) | 0 | 0.0% |  |
+| Under-segmentation (low Dice, partial recall) | 0 | 0.0% |  |
+| Missed components (recall < 0.5) | 0 | 0.0% |  |
+| False positive regions (low Dice, high recall) | 0 | 0.0% |  |
+

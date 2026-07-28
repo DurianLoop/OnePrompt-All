@@ -1,0 +1,105 @@
+{
+  "phase": "R",
+  "final_state": "PHASER_REFERENCE_STABILITY_NOT_FEASIBLE_DETERMINISTIC",
+  "date": "2026-07-22",
+  "gates": {
+    "R1": {
+      "status": "PHASER_GATE_R1_REFERENCE_INSTABILITY_CONFIRMED",
+      "passed": true,
+      "conditions_passed": "5/5",
+      "pct_queries_best_worst_gap_ge_0p05": 0.8875,
+      "mean_reference_std": 0.073675,
+      "sensitive_config": "P20-N1",
+      "sam_calls": 7200,
+      "gpu_hours": 0.13935
+    },
+    "R2": {
+      "status": "PHASER_GATE_R2_CONSENSUS_NO_GAIN",
+      "passed": false,
+      "conditions_passed": "7/8",
+      "failed_condition": "cond3_variance_reduction_ge_25pct",
+      "best_config": "P30-N0",
+      "best_method": "B2_mean",
+      "best_beta": 0.25,
+      "best_tau": 0.83,
+      "mean_consensus_dice": 0.475608,
+      "mean_b1_random_dice": 0.429655,
+      "delta_dice": 0.045953,
+      "bootstrap_ci": [
+        0.012529,
+        0.083533
+      ],
+      "var_single": 0.054308,
+      "var_consensus": 0.057056,
+      "variance_reduction": -0.050601,
+      "cfr_b1": 0.121951,
+      "cfr_consensus": 0.073171,
+      "sam_calls": 3138,
+      "gpu_hours": 0.075464
+    },
+    "R3": {
+      "status": "BLOCKED",
+      "reason": "R2 failed"
+    },
+    "R4": {
+      "status": "BLOCKED",
+      "reason": "R2 and R3 both failed"
+    },
+    "glas": {
+      "status": "BLOCKED",
+      "reason": "MoNuSAC R2 failed"
+    }
+  },
+  "formal_test": "LOCKED_UNUSED",
+  "compute": {
+    "used_gpu_hours": 0.2153,
+    "cap_gpu_hours": 85,
+    "remaining": 84.7847,
+    "total_sam_calls": 10338,
+    "r1_sam_calls": 7200,
+    "r2_sam_calls": 3138,
+    "r1_gpu_hours": 0.13935,
+    "r2_gpu_hours": 0.075464
+  },
+  "strongest_single_reference_baseline": {
+    "method": "B1_random",
+    "mean_dice": 0.4297,
+    "config": "P30-N0"
+  },
+  "strongest_deterministic_consensus": {
+    "method": "B2_mean",
+    "mean_dice": 0.4756,
+    "config": "P30-N0",
+    "beta": 0.25,
+    "tau": 0.83
+  },
+  "strongest_weighted_consensus": null,
+  "dice_gain": 0.046,
+  "variance_reduction": -0.050601,
+  "catastrophic_failure_change": -0.0488,
+  "holdout_result": null,
+  "glas_diagnostic": null,
+  "r0_historical_audit": {
+    "mean_best_worst_gap": 0.1874,
+    "mean_reference_std": 0.0687,
+    "pct_queries_gap_ge_0p05": 0.829,
+    "exact_action_agreement_ab": 0.0488,
+    "stable_oracle_gap": 0.0061
+  },
+  "key_artifacts": [
+    "reports/phaseR_final_report.md",
+    "reports/phaseR_final_report.json",
+    "reports/phaseR_final/ (18 tables + 20 figures)",
+    "reports/phaseR_gateR1/gateR1_summary.json",
+    "reports/phaseR_gateR2/gateR2_summary.json",
+    "reports/phaseR_gate_status.md",
+    "reports/phaseR_compute_ledger.csv"
+  ],
+  "one_command_reproduction": "git checkout 7317949 && python src/adapromptset/scripts/run_phaseR_gateR1.py && python src/adapromptset/scripts/run_phaseR_gateR2.py && python src/adapromptset/scripts/run_phaseR_final_report.py",
+  "unresolved_blockers": [
+    "Variance reduction mechanism: deterministic consensus increases variance by 5% instead of reducing it; a different approach (e.g., reliability learning) is needed but blocked by R2 gating.",
+    "Reliability learning (R3) blocked: B7 weighted consensus requires R2 pass; no alternative path currently preregistered.",
+    "Holdout confirmation (R4) blocked: no holdout evidence for any stability claim.",
+    "Cross-dataset generalization unknown: GlaS diagnostic blocked."
+  ]
+}

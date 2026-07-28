@@ -1,0 +1,55 @@
+# Phase R Frozen Statistics and Gate Thresholds
+# Frozen at: 2026-07-22T11:59:57
+# Directive sections: 10-13
+
+bootstrap:
+  n_resamples: 10000
+  ci_level: 0.95
+  unit: query
+
+catastrophic_failure_threshold: 0.10
+
+gate_r1:
+  cond1: ">= 30% train queries best-worst gap >= 0.05"
+  cond2: "mean ref std >= 0.02"
+  cond3: "direction consistent across 5 seeds"
+  cond4: ">= 1 config shows sensitivity"
+  cond5: "not code/coordinate/leakage error"
+  pass: PHASER_GATE_R1_REFERENCE_INSTABILITY_CONFIRMED
+  fail: PHASER_GATE_R1_REFERENCE_INSTABILITY_NOT_REPLICATED
+
+gate_r2:
+  cond1: "Delta Dice >= 0.010 vs Random Single"
+  cond2: "bootstrap CI lower > 0"
+  cond3: "variance reduction >= 25%"
+  cond4: "catastrophic failure not increase"
+  cond5: "A/B prediction overlap improve"
+  cond6: "1 SAM call"
+  cond7: "no query GT"
+  cond8: ">= 2 of 3 configs consistent"
+  pass: PHASER_GATE_R2_DETERMINISTIC_CONSENSUS_PASS
+  fail: PHASER_GATE_R2_CONSENSUS_NO_GAIN
+
+gate_r3:
+  cond1: "Delta Dice >= 0.005 vs best deterministic"
+  cond2: "Delta Dice >= 0.015 vs Random Single"
+  cond3: "bootstrap CI > 0"
+  cond4: "Spearman rho >= 0.30"
+  cond5: "worst-reference risk reduce"
+  cond6: "catastrophic failure not increase"
+  cond7: "3 seeds consistent"
+  cond8: "weights not collapsed"
+  cond9: "no query GT"
+  pass: PHASER_GATE_R3_REFERENCE_WEIGHTING_PASS
+  fail: PHASER_GATE_R3_REFERENCE_WEIGHTING_NOT_LEARNABLE
+
+gate_r4:
+  cond1: "Delta Dice >= 0.0075 vs Random Single"
+  cond2: "bootstrap > 0"
+  cond3: "variance reduction >= 20%"
+  cond4: "catastrophic failure not increase"
+  cond5: "worst-query tail improve"
+  cond6: "1 SAM call"
+  cond7: "no post-holdout tuning"
+  pass: PHASER_REFERENCE_STABILITY_CONFIRMED
+  fail: PHASER_HOLDOUT_CONFIRMATION_FAIL

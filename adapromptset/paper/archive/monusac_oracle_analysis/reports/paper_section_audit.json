@@ -1,0 +1,47 @@
+{
+  "checked_sections": {
+    "abstract": "paper/sections/00_abstract.tex",
+    "conclusion": "paper/sections/07_conclusion.tex",
+    "experiments": "paper/sections/04_experiments.tex",
+    "intro": "paper/sections/01_intro.tex",
+    "limitations": "paper/sections/06_limitations.tex",
+    "method": "paper/sections/03_method.tex",
+    "related": "paper/sections/02_related.tex",
+    "results": "paper/sections/05_results.tex"
+  },
+  "checked_tables": {
+    "action_summary": "paper/tables/table_action_summary.tex",
+    "oracle_pivot": "paper/tables/table_oracle_pivot.tex",
+    "representation_pivot": "paper/tables/table_representation_pivot.tex"
+  },
+  "checks": {
+    "abstract_claim_free": true,
+    "conclusion_oracle_analysis_only": true,
+    "experiments_statistical_units_present": true,
+    "limitations_action_bank_upper_bound": true,
+    "limitations_frozen_matcher_irrecoverable": true,
+    "limitations_reference_quality": true,
+    "limitations_utility_generation_cost": true,
+    "method_action_bank_figure_current_subset": true,
+    "method_figure_frozen_learned_train_only": true,
+    "method_no_end_to_end_differentiable": true,
+    "oracle_privileged_caption_boundaries": true,
+    "related_work_boundaries_present": true,
+    "required_sections_present": true,
+    "results_cost_and_accuracy_present": true
+  },
+  "prohibited_claim_tokens": [
+    "state of the art",
+    "state-of-the-art",
+    "policy improves",
+    "adaptive policy improves",
+    "model-agnostic",
+    "generalizable",
+    "generalization",
+    "plug-and-play",
+    "efficiency gain"
+  ],
+  "schema_version": "adapromptset.paper_section_audit.v1",
+  "status": "PASS",
+  "violations": []
+}

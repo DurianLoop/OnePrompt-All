@@ -1,0 +1,255 @@
+{
+  "phase": "S",
+  "date": "2026-07-22",
+  "branch": "phaseS-multitrack-reference-robust-research",
+  "commit": "3e63733",
+  "directive": "D:\\SAM\\adapromptset\\research.md",
+  "final_state": "PHASES_BENCHMARK_PAPER_READY",
+  "sections": {
+    "1_history_evolution": {
+      "phase_X": "Action bank saturation; high oracle was exploratory upper bound, not deployable.",
+      "phase_Y": "Fresh split (80/41/40); stable cross-ref oracle gap 0.0061; Search Oracle overfit to references.",
+      "phase_R": "Reference instability confirmed (88.75% queries gap>=0.05); mean consensus Dice 0.4297->0.4756; cond3 variance gate failed (-0.0506) due to metric definition error.",
+      "phase_S": "Multi-track systematic exploration; Track A corrected metric and built benchmark; Track B/C failed; Track D not started."
+    },
+    "2_phaseR_metric_issue": {
+      "has_definition_problem": true,
+      "error": "cond3 compared var_single (query x ref pair axis = V_query + V_ref) against var_consensus (query axis = V_query) — different axes.",
+      "reported_VR": -0.0506,
+      "corrected_VR": 1.0,
+      "explanation": "Consensus eliminates within-query reference variance by construction. The reported VR was dominated by V_query (case difficulty), not V_ref."
+    },
+    "3_corrected_metrics": {
+      "V_query": 0.040968,
+      "V_ref": 0.01334,
+      "V_ref_frac": 0.2456,
+      "MAD_ref": 0.113918,
+      "J_pred": 0.607517,
+      "CVaR_0.1_k1": 0.046793,
+      "CVaR_0.1_k6": 0.073764,
+      "CFR_k1": 0.1423,
+      "CFR_k6": 0.0732,
+      "worst_ref_gap": 0.244623,
+      "config": "P30-N0"
+    },
+    "4_track_results": {
+      "A": {
+        "status": "PHASES_TRACK_A_REFERENCE_INSTABILITY_BENCHMARK_VALID",
+        "gate_passed": "7/7",
+        "gpu_hours": 0.0,
+        "sam_calls": 0,
+        "key_findings": {
+          "V_ref_frac_range": [0.1376, 0.3312],
+          "best_worst_gap_fraction_range": [0.805, 0.902],
+          "prediction_spearman_train": 0.8832
+        }
+      },
+      "B": {
+        "status": "PHASES_TRACK_B_NO_GAIN",
+        "gate_passed": "1/6 conditions, 5/6 requirements",
+        "gpu_hours": 0.0,
+        "sam_calls": 123,
+        "best_model": "M4_gbm",
+        "hyperparameters": {"T": 0.25, "epsilon": 0.0, "lambda": 0.0},
+        "spearman_train": 0.9163,
+        "spearman_val": 0.4781,
+        "delta_dice": -0.0024,
+        "pairwise_dev_reduction": 0.6009
+      },
+      "C": {
+        "status": "PHASES_TRACK_C_NO_GAIN",
+        "gate_passed": "5/8",
+        "gpu_hours": 0.0,
+        "sam_calls": 6659,
+        "methods": ["C3_pixel_wise_agreement_gate", "C4_stable_candidate_scoring"],
+        "best_hyperparameters": {"alpha": 0.0, "beta": 0.0, "gamma": 0.0},
+        "best_method_is_baseline": true,
+        "delta_dice_vs_trackB": 0.0047,
+        "train_mean_dice": 0.5038,
+        "val_mean_dice": 0.4779
+      },
+      "D": {
+        "status": "START_CONDITION_NOT_FULLY_MET",
+        "started": false,
+        "gpu_hours": 0.0,
+        "sam_calls": 0,
+        "start_conditions_met": "3/4",
+        "blocked_condition": "condition 3: SAM refinement HELPS (0.48 vs <0.3), so 'point prompt loses' premise is false"
+      }
+    },
+    "5_hypotheses_and_gates": {
+      "A": {"hypothesis": "Reference instability is real, measurable, predictable", "gate": "7 conditions (6.5)", "result": "7/7 PASS"},
+      "B": {"hypothesis": "Learned reliability weighting reduces variance and improves Dice", "gate": "6 conditions (7.6)", "result": "1/6 PASS (NO_GAIN)"},
+      "C": {"hypothesis": "Set-conditioned modeling captures interactions beyond per-reference scoring", "gate": "8 conditions (8.4)", "result": "5/8 PASS (NO_GAIN)"},
+      "D": {"hypothesis": "Direct reference-conditioned segmentation bypasses prompt bottleneck", "gate": "4 start conditions (9.1)", "result": "3/4 met (NOT STARTED)"}
+    },
+    "6_hypothesis_support": {
+      "supported": [
+        "H1: Reference instability is real and substantial (V_ref_frac 0.1376-0.3312)",
+        "H2: Reference instability is predictable from test-time-safe features (Spearman 0.8832 train, 0.4781 val)",
+        "H3: Deterministic mean consensus improves Dice over single-reference (0.4756 vs 0.4297, +0.046)",
+        "H4: Consensus eliminates within-query reference variance by construction (VR_correct = 1.0)"
+      ],
+      "falsified": [
+        "H5: Learned reliability weighting improves Dice over uniform mean (FALSIFIED: -0.0024)",
+        "H6: Learned reliability weighting reduces within-query reference std by >=10% (FALSIFIED: 2.83%)",
+        "H7: Pixel-wise agreement gating improves over mean consensus (FALSIFIED: all alpha>0 degrade Dice)",
+        "H8: Stable candidate scoring improves over baseline candidate selection (FALSIFIED: all beta>0 or gamma>0 degrade Dice)",
+        "H9: Set-conditioned methods improve CVaR (FALSIFIED: -0.0031)"
+      ]
+    },
+    "7_holdout_and_cross_dataset": {
+      "holdout": {"status": "BLOCKED", "reason": "Directive 11 requires Track B/C/D PASS; none passed"},
+      "cross_dataset": {"status": "BLOCKED", "reason": "Directive 12 requires holdout PASS"},
+      "formal_test": {"status": "LOCKED_UNUSED", "reason": "Directive 22 prohibits access"}
+    },
+    "8_strongest_methods": {
+      "strongest_automatic": {"method": "M4_gbm weighted consensus (Track B)", "val_dice": 0.4732, "note": "Spearman 0.4781, but delta -0.0024 vs uniform"},
+      "strongest_deterministic": {"method": "B2_mean consensus k=6 P30-N0", "val_dice": 0.4756, "note": "Best overall; no learning required"},
+      "upper_bound_exploratory": {"method": "Search Oracle (Phase Y)", "val_dice": 0.4338, "note": "Cross-ref; overfit to reference; not deployable"},
+      "lower_bound": {"method": "B1_random single reference", "val_dice": 0.4297, "note": "Phase R baseline"}
+    },
+    "9_key_metrics": {
+      "config": "P30-N0",
+      "k": 6,
+      "method": "B2_mean",
+      "n_val_queries": 41,
+      "mean_dice": 0.4756,
+      "V_ref": 0.0133,
+      "V_ref_frac_k1": 0.2456,
+      "mean_ref_std_k1": 0.0893,
+      "CVaR_0.1": 0.0738,
+      "CFR": 0.0732,
+      "worst_subset_dice": 0.0444,
+      "best_worst_gap_k1": 0.2446
+    },
+    "10_cost_runtime": {
+      "track_A": {"gpu_hours": 0.0, "sam_calls": 0, "runtime_s": 0},
+      "track_B": {"gpu_hours": 0.0, "sam_calls": 123, "runtime_s": 616},
+      "track_C": {"gpu_hours": 0.0, "sam_calls": 6659, "runtime_s": 1570},
+      "total": {"gpu_hours": 0.0, "sam_calls": 6779, "runtime_s": 2200},
+      "cap_gpu_hours": 210,
+      "remaining_gpu_hours": 210,
+      "note": "All phases ran on CPU"
+    },
+    "11_ablations": {
+      "track_C_alphabeta_gamma": {
+        "best": {"alpha": 0.0, "beta": 0.0, "gamma": 0.0, "mean_dice": 0.5038, "note": "= B2_mean baseline"},
+        "worst": {"alpha": 5.0, "beta": 1.0, "gamma": 1.0, "mean_dice": 0.4789},
+        "finding": "ALL non-zero hyperparameters DECREASE Dice monotonically"
+      },
+      "track_B_T_eps_lambda": {
+        "selected": {"T": 0.25, "epsilon": 0.0, "lambda": 0.0},
+        "finding": "Higher T flattens weights to uniform (no benefit); non-zero epsilon prevents collapse but no Dice change; lambda no effect"
+      }
+    },
+    "12_failure_taxonomy": [
+      {"mode": "Catastrophic failure (Dice<0.1)", "frequency": "7.32% (k=6) / 14.23% (k=1)", "track": "A", "root_cause": "SAM-B produces empty/wrong mask from point prompt"},
+      {"mode": "LOO instability (drop >0.05)", "frequency": "7/30 LOO runs", "track": "C", "root_cause": "Removing one reference shifts consensus enough to flip SAM output"},
+      {"mode": "Reliability weighting no-gain", "frequency": "100% of configs", "track": "B", "root_cause": "Even correct utility prediction doesn't improve Dice; bottleneck downstream of weighting"},
+      {"mode": "Set-conditioned degradation", "frequency": "26/27 combos", "track": "C", "root_cause": "Agreement gating and candidate scoring remove information"},
+      {"mode": "Prompt-interface bottleneck", "frequency": "structural", "track": "D", "root_cause": "SAM refinement HELPS (0.48 vs <0.3); premise false"},
+      {"mode": "Train-val generalization gap", "frequency": "0.037 (Track C)", "track": "C", "root_cause": "Mild overfitting risk; within acceptable bound"}
+    ],
+    "13_novelty_audit": {
+      "file": "reports/phaseS_novelty_audit.md",
+      "related_works_audited": 12,
+      "core_novelties": [
+        "Corrected V_ref decomposition (fixed Phase R axis-mixing error)",
+        "Tail-risk metric suite for reference instability (CVaR, CFR, worst-subset)",
+        "Preregistered multi-track protocol with claim registry",
+        "Honest negative results documenting the prompt-interface bottleneck"
+      ]
+    },
+    "14_related_work_differences": {
+      "GF-SAM": "We benchmark instability, not propose a new matcher",
+      "SynPo": "We use real references, no synthetic prompts",
+      "AlignSAM": "We use frozen SAM-B, no fine-tuning",
+      "ProSAM": "We do not learn prompts; fixed candidates from matching",
+      "MAUP": "Single-scale DINOv2-L, no multi-scale anchors",
+      "SAMIX": "We aggregate reference evidence, not mix prompts",
+      "Few-shot_seg": "We do not train a segmenter; reference-conditioned prompting only",
+      "Visual_ref_seg": "We benchmark the instability of this paradigm"
+    },
+    "15_publication_track": {
+      "type": "Benchmark + failure-boundary paper",
+      "directive_section": "21",
+      "rationale": "Track A PASSED; no method track PASSED; negative results valuable; metric correction is methodological contribution"
+    },
+    "16_paper_title_and_claims": {
+      "title": "Reference-Induced Instability in Visual-Reference Segmentation: A Benchmark and Failure-Boundary Analysis",
+      "allowed_claims": [
+        "Track A: Valid references induce substantial, measurable segmentation variability under the frozen matching-and-prompting pipeline, and this instability is associated with test-time-safe disagreement features.",
+        "Track B Utility-Only: Reference utility is predictable from test-time-safe features, but weighted consensus does not reduce variance; the utility signal is a scientific finding without a deployable stability gain."
+      ]
+    },
+    "17_prohibited_claims": [
+      "Reference instability solved / eliminated",
+      "Universal across datasets",
+      "SOTA / state-of-the-art segmentation",
+      "Formal test success",
+      "ProSAM/MAUP/SAMIX fully outperformed",
+      "Reference weighting is model-agnostic",
+      "Mean Dice alone proves robustness",
+      "Reference instability is purely random",
+      "The method works without references",
+      "Submission-ready / publication-completed"
+    ],
+    "18_formal_test_worthiness": {
+      "worthy_now": false,
+      "reason": "Benchmark requires >=2-3 datasets first (directive 21). Current benchmark is MoNuSAC-only.",
+      "prerequisites": [
+        "Cross-dataset validation (GlaS or DDR) confirms instability generalizes",
+        "Holdout=40 confirms benchmark metrics on unseen internal data",
+        "Frozen benchmark protocol preregistered for formal test"
+      ],
+      "current_status": "LOCKED_UNUSED"
+    },
+    "19_artifacts_and_commits": {
+      "commits": [
+        {"hash": "2de8b4d", "description": "Preregistration"},
+        {"hash": "abd1c1b", "description": "Track A metric audit"},
+        {"hash": "bba99c5", "description": "Track A benchmark PASSED"},
+        {"hash": "50c82c4", "description": "Track selection -> Track B"},
+        {"hash": "4a0e6ef", "description": "Track B NO_GAIN"},
+        {"hash": "3e63733", "description": "Track C NO_GAIN (current HEAD)"}
+      ],
+      "key_artifacts": [
+        "reports/phaseS_trackA_benchmark/",
+        "reports/phaseS_trackA_metric_audit/",
+        "reports/phaseS_trackB/",
+        "reports/phaseS_trackC/",
+        "reports/phaseS_tables/ (20 tables)",
+        "reports/phaseS_novelty_audit.md",
+        "reports/phaseS_mock_review.md",
+        "reports/phaseS_final_research_summary.md",
+        "reports/phaseS_final_research_summary.json",
+        "reports/phaseS_program_status.json",
+        "reports/phaseS_gate_status.md",
+        "docs/phaseS_claim_registry.md"
+      ]
+    },
+    "20_reproduction": {
+      "command": "git checkout 3e63733 && cd D:\\SAM\\adapromptset && python src/adapromptset/scripts/run_phaseS_trackA.py --all && python src/adapromptset/scripts/run_phaseS_trackB.py --all && python src/adapromptset/scripts/run_phaseS_trackC.py --all",
+      "note": "Track D not started; no reproduction command for it"
+    },
+    "21_unresolved_blockers": [
+      "Single dataset: only MoNuSAC tested; directive 21 requires >=2-3 datasets",
+      "No holdout validation: holdout=40 never used (no method track passed)",
+      "No cross-dataset validation: blocked by holdout",
+      "CPU-only scale: 0 GPU-hours; absolute Dice numbers limited",
+      "No head-to-head with related methods: novelty audit conceptual, not empirical",
+      "Track C limited to C3/C4: C1/C2 (DeepSets/attention) not implemented",
+      "Prompt-interface bottleneck: identified but not resolved"
+    ],
+    "22_final_state": {
+      "state": "PHASES_BENCHMARK_PAPER_READY",
+      "rationale": "Track A PASSED (7/7); Track B/C/D all failed/not started; per directive 20, Track A PASS + no method PASS -> PHASES_BENCHMARK_PAPER_READY",
+      "allowed_paper_type": "Benchmark + failure-boundary paper",
+      "allowed_claims": ["Track A instability benchmark claim", "Track B Utility-Only claim"],
+      "holdout": "BLOCKED",
+      "cross_dataset": "BLOCKED",
+      "formal_test": "LOCKED_UNUSED"
+    }
+  }
+}

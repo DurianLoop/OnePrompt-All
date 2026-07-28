@@ -1,0 +1,23 @@
+{
+  "date": "2026-07-22T11:57:27",
+  "train_seeds": [
+    20260722,
+    20261722,
+    20262722,
+    20263722,
+    20264722
+  ],
+  "validation_seed": 20260722,
+  "refs_per_query": 6,
+  "train_query_count": 80,
+  "validation_query_count": 41,
+  "train_manifest_rows": 2400,
+  "validation_manifest_rows": 246,
+  "verification": {
+    "train_ab_disjoint": true,
+    "train_patient_disjoint": true,
+    "validation_ab_disjoint": true,
+    "validation_patient_disjoint": true
+  },
+  "status": "PHASER_MANIFESTS_COMPLETE"
+}

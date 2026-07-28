@@ -1,0 +1,61 @@
+# Data Exposure Log
+
+This log records whether each local dataset may influence AdaPromptSet MVP tuning.
+
+| Dataset | Role | Root | Tuning | Notes |
+|---|---|---|---|---|
+| MoNuSAC | main development | `D:\SAM\code\datasets\MoNuSAC\processed` | tuning_allowed=True | Primary MVP development dataset; formal test remains locked by gate protocol. |
+| MoNuSeg | sanity/historical | `D:\SAM\code\datasets\MonuSeg\official` | tuning_allowed=False | Used for sanity and historical alignment, not for MVP action-bank redesign. |
+| GlaS | first morphology-shift extension | `D:\SAM\external\research_data\extracted\GlaS\Warwick QU Dataset (Released 2016_07_08)` | tuning_allowed=False | Extension/confirmation only until MoNuSAC gates pass. |
+| GlaS Phase 3 region internal pool | region proposal calibration/selection | `manifests/phase3/glas_region_calibration_40.csv`; `manifests/phase3/glas_region_selection_15.csv` | tuning_allowed=True within official-train 55 pool only | Used only for region parameter/action-family selection under Phase 3; strict validation and testA/testB cannot tune parameters. |
+| GlaS Phase 3 strict validation | region gate validation | `manifests/phase2/glas/episodes_val.csv` | tuning_allowed=False | Used for Gate R1/R2/R3 validation after preregistration; cannot choose thresholds or add actions. |
+| GlaS testA/testB | locked formal test | `manifests/phase2/glas/locked_test_cases.csv` | tuning_allowed=False | Remains locked and unused until a final Phase 3 method is frozen. |
+| Phase 4+ read-only audit | evidence diagnosis only | `reports/phase3_*`; `reports/phase2_glas/*`; historical gate reports | tuning_allowed=False | May diagnose failure and choose a research track; may not create new method outputs or alter frozen conclusions. |
+| DDR train/valid | fresh candidate domain | `D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation` | tuning_allowed=True after protocol freeze | May support future Phase 4+ development under a registered track; DDR test remains locked. |
+| DDR test | locked formal domain test | `D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\test` | tuning_allowed=False | Must not be accessed until DDR final method/protocol freeze. |
+| DDR Route B train/valid manifest | benchmark development manifest | `manifests/phase4plus/ddr_route_b_{train,valid}_*.csv` | tuning_allowed=True within Route B protocol only | File hashes, dimensions, and positive-query prevalence observed for train/valid; formal-test access remains false. |
+| DDR Route B reference/query episodes | benchmark development episodes | `manifests/phase4plus/ddr_route_b_{train,valid}_reference_query_episodes.csv` | tuning_allowed=True within Route B protocol only | Same-intent references selected deterministically; valid references are train-only; reference rows are repeated support views, not independent samples. |
+| DDR Route B matcher smoke | development-smoke evidence | `reports/route_b_ddr_development_smoke/` | tuning_allowed=True within Route B protocol only | One valid MA query was evaluated with train support. Query GT used for evaluation only; no SAM inference; no formal-test access. |
+| DDR Route B stratified matcher smoke | stratified development evidence | `reports/route_b_ddr_stratified_matcher/` | tuning_allowed=True within Route B protocol only | Sixteen train/valid query-intent units evaluated with DINOv2-L only. Query GT used for evaluation only; no SAM inference; no formal-test access. |
+| DDR Route B failure taxonomy | control-aware development taxonomy | `reports/route_b_ddr_failure_taxonomy/` | tuning_allowed=True within Route B protocol only | CPU-only control and morphology labels over the same 16 train/valid rows. Query GT used for evaluation labels only; no formal-test access. |
+
+
+| MoNuSAC train/validation | Phase X action-space audit | `manifests/episodes/monusac/episodes_train.csv`; `manifests/episodes/monusac/episodes_val.csv` | tuning_allowed=True within Phase X protocol only | Used for candidate coverage scaling, dense prompt scaling, search oracle, and saturation audit. MoNuSAC test remains locked. |
+| Phase X preregistration artifacts | CPU-only audit + docs | `docs/phaseX_*.md`; `reports/phaseX_*`; `reports/phaseX_historical_bank_audit/*` | tuning_allowed=False | Read-only summaries of historical artifacts; no new model inference; no formal-test access. |
+| Phase X Gate X2 candidate scaling (historical 5-positive pool) | CPU-only candidate-pool audit | `reports/phaseX_candidate_scaling/*` | tuning_allowed=True within Phase X protocol only | Reads existing `reports/candidate_pilot/candidate_pilot_candidates.csv` (5 positives/episode from historical pilot) and MoNuSAC validation query masks. No SAM inference; no formal-test access. |
+| Phase X Gate X2 candidate scaling (regenerated 100-positive pool) | CPU-only candidate-pool audit + DINOv2-L regeneration | `reports/phaseX_candidate_pilot_100/*`; `reports/phaseX_candidate_scaling_100/*` | tuning_allowed=True within Phase X protocol only | DINOv2-L run on CPU (0 GPU-hours) over 10 MoNuSAC validation episodes with positive_limit=100. Query GT used only for diagnostic metrics. No SAM inference; no formal-test access. |
+| Phase X Stage S2 single-variable K+ scaling | SAM-B inference on validation | `reports/phaseX_single_variable_kpos/*` | tuning_allowed=True within Phase X protocol only | SAM-B run on CPU (0 GPU-hours) over 10 MoNuSAC validation episodes with K+ in {1,3,5,10,20,30,50,75,100}. Query GT used for Dice/IoU/AJI/component recall evaluation only. No formal-test access. |
+| Phase X Stage S3 grouping scaling | SAM-B inference on validation | `reports/phaseX_grouping_scaling/*` | tuning_allowed=True within Phase X protocol only | SAM-B run on CPU (0 GPU-hours, 4159.8s) over 10 MoNuSAC validation episodes with K+ in {10,20,30,50,100} × 12 frozen grouping families (600 action evaluations). Query GT used for Dice/IoU/AJI/component recall evaluation only. No formal-test access. |
+| Phase X Stage S4 negative scaling | SAM-B inference on validation | `reports/phaseX_negative_scaling/*` | tuning_allowed=True within Phase X protocol only | SAM-B run on CPU (0 GPU-hours, 62.2s) over 10 MoNuSAC validation episodes with K+=20, G_ONE_GROUP, K- in {0,1,3,5,10,20} × 3 selectors (N_NONE, N_BOTTOMK, N_HIGH_BACKGROUND). Query GT used for Dice/IoU/AJI/component recall evaluation only. No formal-test access. |
+| Phase X nested bank saturation | SAM-B inference on validation | `reports/phaseX_nested_bank_saturation/*` | tuning_allowed=True within Phase X protocol only | SAM-B run on CPU (0 GPU-hours, 647.3s with corrected cumulative K+/K- grids) over 10 MoNuSAC validation episodes with 3 nested banks (A_small: 12 actions, A_medium: 45 actions, A_large: 91 actions). Query GT used for Dice/IoU/AJI/component recall evaluation only. No formal-test access. |
+| Phase X Gate X5 search oracle | GT-guided SAM-B inference on validation | `reports/phaseX_search_oracle/*` | tuning_allowed=True within Phase X protocol only | GT-guided search oracle (section 13) ran SAM-B on CPU (0 GPU-hours, 966.0s) over 10 MoNuSAC validation episodes. Start config: K+=20, K-=1, N_BOTTOMK, G_ONE_GROUP, 1 call. Search budget: B_point=100, B_call=1. Greedy add/remove/swap over the frozen 100-positive candidate pool. Mean 558.5 SAM calls per episode (search budget, not deployed calls — final action uses 1 call). Query GT used for Dice evaluation during search and for final metrics. Diagnostic only (section 10): search outputs must not become automatic actions without a separate train-only abstraction step. No formal-test access. |
+| Phase Y data audit | CPU-only manifest processing | `reports/phaseY_data_audit/*` | tuning_allowed=False | Read-only audit of MoNuSAC processed manifest (310 cases). No SAM inference; no formal-test access. Identified 10 Phase X exposed patients and excluded them from fresh pool. |
+| Phase Y fresh query split | CPU-only patient-level split | `manifests/phaseY/policy_train_queries.csv`; `manifests/phaseY/policy_validation_queries.csv`; `manifests/phaseY/confirmatory_holdout_queries.csv` | tuning_allowed=True within Phase Y protocol only | 161 fresh cases across 36 patients split into train=80/val=41/holdout=40. Patient-level disjoint. No test access. Split seed=20260721 frozen. |
+| Phase Y reference sets A/B | CPU-only reference sampling | `manifests/phaseY/reference_set_A.csv`; `manifests/phaseY/reference_set_B.csv` | tuning_allowed=True within Phase Y protocol only | 3+3 non-overlapping references per query, patient-disjoint from query, sourced from train fold only. 483 rows each (161 queries × 3). Seed=20260721 frozen. No result-based selection. |
+| Phase Y preregistration artifacts | CPU-only doc/config generation | `docs/phaseY_*.md`; `reports/phaseY_*`; `configs/actions/phaseY_*.yaml` | tuning_allowed=False | Preregistration docs, protocol snapshot, input hashes, compute ledger, gate status, action bank YAML. No SAM inference; no formal-test access. |
+
+## 2026-07-22 Phase R Data Exposure
+
+- MoNuSAC train=80: READ (queries and reference pool)
+- MoNuSAC validation=41: READ (queries; reference A/B fixed)
+- MoNuSAC holdout=40: NOT ACCESSED (locked)
+- MoNuSAC test=101: NOT ACCESSED (locked)
+- GlaS: NOT ACCESSED (pending R2 pass)
+- DDR: NOT ACCESSED (optional, pending R2 pass)
+- Phase Y artifacts: READ (all reports/phaseY_* and manifests/phaseY/*)
+- Phase R0 audit: READ-ONLY (no new SAM inference)
+- Phase R manifests: CREATED (5 train seeds + 1 val fixed)
+
+## 2026-07-27 Phase AA Data Exposure
+
+- MoNuSAC Development Cohort (80 queries): READ-ONLY (existing Phase R/S/T/W artifacts; no new SAM inference)
+- MoNuSAC M2 Validation (41 queries): NOT YET AUDITED (pending AA1 audit)
+- MoNuSAC holdout=40: NOT ACCESSED (locked)
+- MoNuSAC test=101: NOT ACCESSED (locked)
+- MoNuSeg: READ-ONLY (existing Phase T/W artifacts)
+- IDRID: READ-ONLY (existing Phase T/W artifacts)
+- GlaS: NOT ACCESSED
+- DDR: NOT ACCESSED
+- Phase V/W artifacts: READ (all reports/phaseV_*, reports/phaseW_*)
+- Phase AA control files: CREATED (docs/phaseAA_*.md, reports/phaseAA_*, configs/frozen/phaseAA_prediction_consistency.yaml)
+- No new SAM/matcher inference in this preregistration

@@ -1,0 +1,17 @@
+split,intent,query_unit_id,query_image_id,query_mask_path,reference_unit_id,reference_image_id,reference_source_split
+train,EX,DDR:train:007-2200-100:EX,007-2200-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\EX\007-2200-100.tif,DDR:train:007-3457-200:EX,007-3457-200,train
+train,EX,DDR:train:007-2287-100:EX,007-2287-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\EX\007-2287-100.tif,DDR:train:007-4747-200:EX,007-4747-200,train
+train,HE,DDR:train:007-1782-100:HE,007-1782-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\HE\007-1782-100.tif,DDR:train:007-6717-400:HE,007-6717-400,train
+train,HE,DDR:train:007-1819-100:HE,007-1819-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\HE\007-1819-100.tif,DDR:train:007-4655-200:HE,007-4655-200,train
+train,MA,DDR:train:007-1774-100:MA,007-1774-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\MA\007-1774-100.tif,DDR:train:007-5454-300:MA,007-5454-300,train
+train,MA,DDR:train:007-1811-100:MA,007-1811-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\MA\007-1811-100.tif,DDR:train:007-5079-300:MA,007-5079-300,train
+train,SE,DDR:train:007-2214-100:SE,007-2214-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\SE\007-2214-100.tif,DDR:train:007-5169-300:SE,007-5169-300,train
+train,SE,DDR:train:007-3375-200:SE,007-3375-200,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\train\label\SE\007-3375-200.tif,DDR:train:007-4319-200:SE,007-4319-200,train
+valid,EX,DDR:valid:007-5797-300:EX,007-5797-300,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\EX\007-5797-300.tif,DDR:train:007-4268-200:EX,007-4268-200,train
+valid,EX,DDR:valid:007-5800-300:EX,007-5800-300,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\EX\007-5800-300.tif,DDR:train:007-3448-200:EX,007-3448-200,train
+valid,HE,DDR:valid:007-2852-100:HE,007-2852-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\HE\007-2852-100.tif,DDR:train:007-2769-100:HE,007-2769-100,train
+valid,HE,DDR:valid:007-2976-100:HE,007-2976-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\HE\007-2976-100.tif,DDR:train:007-6847-400:HE,007-6847-400,train
+valid,MA,DDR:valid:007-2846-100:MA,007-2846-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\MA\007-2846-100.tif,DDR:train:007-4668-200:MA,007-4668-200,train
+valid,MA,DDR:valid:007-2848-100:MA,007-2848-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\MA\007-2848-100.tif,DDR:train:007-5458-300:MA,007-5458-300,train
+valid,SE,DDR:valid:007-2852-100:SE,007-2852-100,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\SE\007-2852-100.tif,DDR:train:007-5285-300:SE,007-5285-300,train
+valid,SE,DDR:valid:007-5730-300:SE,007-5730-300,D:\SAM\code\ddr_datasets\DDR-dataset-01\lesion_segmentation\valid\label\SE\007-5730-300.tif,DDR:train:007-4961-300:SE,007-4961-300,train

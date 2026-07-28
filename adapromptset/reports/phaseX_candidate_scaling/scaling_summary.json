@@ -1,0 +1,57 @@
+{
+  "phase": "phaseX",
+  "stage": "candidate_scaling",
+  "gate": "X2",
+  "date": "2026-07-20",
+  "episode_count": 10,
+  "pool_max_positive": 9,
+  "pool_max_negative": 9,
+  "positive_k_grid": [
+    1,
+    3,
+    5,
+    10,
+    20,
+    30,
+    50,
+    75,
+    100
+  ],
+  "negative_k_grid": [
+    0,
+    1,
+    3,
+    5,
+    10,
+    20,
+    30,
+    50
+  ],
+  "gate_x2_status": "CANDIDATE_UNIVERSE_INADEQUATE",
+  "gate_x2_rationale": "component coverage at K+=10 (grid ceiling for pool max 9) is 0.052 < 0.5; candidate pool too small to reach K+=100 and already inadequate",
+  "coverage_curve": {
+    "1": 0.011857755977927651,
+    "3": 0.011857755977927651,
+    "5": 0.02328632740649908,
+    "10": 0.052004904966278354,
+    "20": 0.052004904966278354,
+    "30": 0.052004904966278354,
+    "50": 0.052004904966278354,
+    "75": 0.052004904966278354,
+    "100": 0.052004904966278354
+  },
+  "precision_curve": {
+    "1": 0.5,
+    "3": 0.5,
+    "5": 0.5,
+    "10": 0.5111111111111111,
+    "20": 0.5111111111111111,
+    "30": 0.5111111111111111,
+    "50": 0.5111111111111111,
+    "75": 0.5111111111111111,
+    "100": 0.5111111111111111
+  },
+  "elapsed_seconds": 3.976,
+  "cpu_only": true,
+  "sam_inference_run": false
+}

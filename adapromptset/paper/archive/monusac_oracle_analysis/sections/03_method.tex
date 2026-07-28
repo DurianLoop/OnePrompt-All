@@ -1,0 +1,24 @@
+\section{Method}
+The MVP freezes DINOv2-L and SAM-B, builds candidate pools from matching evidence, and evaluates predeclared prompt-set actions. Each prompt group maps to one segmenter call, and all automatic methods share the same candidate evidence and fusion path. Figure~\ref{fig:method-overview} distinguishes frozen matcher, frozen segmenter, learned utility predictor, train/validation only utility labels, and the test-time safe path.
+\input{figures/method_overview}
+Figure~\ref{fig:action-bank} visualizes the current v2 MVP action-bank subset as complete prompt-set proposals with SAM calls and prompt points. KMeans, density grouping, and GF-SAM-style graph families are marked as deferred rather than claimed as implemented.
+\input{figures/action_bank}
+\subsection{Frozen Evidence and Complete Actions}
+The matcher produces reference-query evidence, candidate scores, and global descriptors. The segmenter consumes labeled point groups and returns masks. AdaPromptSet does not update either component during the MVP. This design is intentionally restrictive: the only object allowed to vary at the action level is the set of prompts and the grouping of those prompts into SAM calls. A complete action therefore contains the positive points, negative points, grouping rule, budget, and post-processing assumptions needed to execute a segmentation attempt.
+
+The oracle used in this paper is defined over the frozen action bank. For query $q$ and action $a$, let $D(q,a)$ be the measured Dice score after executing the full action. The fixed-rule score is
+\begin{equation}
+D_{\mathrm{fixed}}=\frac{1}{|Q|}\sum_{q\in Q}D(q,a^\star_{\mathrm{val}}),
+\label{eq:fixed-score}
+\end{equation}
+where $a^\star_{\mathrm{val}}$ is the validation-selected fixed action. The analysis oracle is
+\begin{equation}
+D_{\mathrm{oracle}}=\frac{1}{|Q|}\sum_{q\in Q}\max_{a\in\mathcal{A}}D(q,a),
+\label{eq:oracle-score}
+\end{equation}
+and the gap used by Gate F is $D_{\mathrm{oracle}}-D_{\mathrm{fixed}}$. Equations~\ref{eq:fixed-score} and~\ref{eq:oracle-score} are analysis definitions only; the oracle is never used as a deployable selection rule or as checkpoint-selection feedback.
+
+\subsection{Gate-Driven Stopping Rule}
+The registered Gate F requires a meaningful oracle gap before training any MoNuSAC policy. If the gap is too small, policy training is prohibited, and the valid outputs are fixed-rule/action-oracle analysis, representation diagnostics, or a predeclared new-domain pilot. The current v2 bank is already the one allowed MoNuSAC rescue bank. Therefore, the project cannot respond to the failed gate by adding another MoNuSAC action family or by searching actions at test time. This constraint is as important as the model code: it prevents the analysis from chasing a positive story after observing the validation outcome.
+
+The method section consequently describes an auditable experimental object rather than a final deployed system. The strongest fixed action, the oracle labels, and the representation diagnostics are all derived from the same frozen episodes and action utility records. Privileged inputs are separated from automatic methods, and current tables explicitly state when no privileged-input row is included. This is why the paper can report negative or insufficient evidence without changing the meaning of the method.

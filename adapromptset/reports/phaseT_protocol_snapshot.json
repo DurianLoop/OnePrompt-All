@@ -1,0 +1,52 @@
+{
+  "phase": "T",
+  "date": "2026-07-23",
+  "branch": "phaseT-publication-completion",
+  "base_commit": "2c1f7d2",
+  "directive": "D:\\SAM\\adapromptset\\reports\\AdaPromptSet_PhaseT_Publication_Completion.md",
+  "frozen_pipeline": {
+    "matcher": "DINOv2-L",
+    "segmenter": "SAM-B",
+    "image_size": 518,
+    "patch_size": 14,
+    "grid_size": 37,
+    "configs": ["P20-N1", "P30-N0", "P50-N0"]
+  },
+  "reference_protocol": {
+    "pool": "train-only",
+    "references_per_query": 6,
+    "k_values": [1, 3, 6],
+    "resampling_seeds_train": 10,
+    "resampling_seeds_validation": "fixed (A/B allocation)",
+    "resampling_seeds_holdout": "fixed (frozen at WP1 freeze)",
+    "patient_disjoint": true
+  },
+  "statistics": {
+    "catastrophic_threshold": 0.1,
+    "bootstrap_iterations": 10000,
+    "bootstrap_ci": 0.95,
+    "statistical_unit": "query",
+    "multi_model_correction": "holm",
+    "win_tie_loss_epsilon": 0.001
+  },
+  "data_roles": {
+    "monusac_train": 80,
+    "monusac_validation": 41,
+    "monusac_holdout": 40,
+    "monusac_test_locked": 101,
+    "glas_train": 55,
+    "glas_validation": 30,
+    "glas_testA_locked": 60,
+    "glas_testB_locked": 20,
+    "monuseg_train": 37,
+    "monuseg_test_locked": 14,
+    "ddr_train": 383,
+    "ddr_valid": 149,
+    "ddr_test_locked": 225
+  },
+  "compute_cap_gpu_hours": 195,
+  "compute_checkpoints": [40, 90, 140, 195],
+  "formal_test": "LOCKED_UNUSED",
+  "holdout_runs_allowed": 1,
+  "preregistration_complete": true
+}

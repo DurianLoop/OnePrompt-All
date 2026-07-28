@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Phase 2D interpretation correction. P3 grouped sparse points fail, while the privileged P4 region box remains effective; C2 is an alternative-reference control.}
+\label{tab:phase2d_interpretation}
+\begin{tabular}{llllllll}
+\hline
+Segmenter & Prompt & Dice & C1 & C2 & Margin vs C1 & Margin vs C2 & Win vs C2 \\
+\hline
+SAM-B & P3 component grouped centroids & 0.510 & 0.669 & 0.666 & -0.160 & -0.156 & 0.433 \\
+SAM-B & P4 union mask bounding box & 0.728 & 0.683 & 0.663 & 0.044 & 0.064 & 0.633 \\
+SAM-L & P3 component grouped centroids & 0.471 & 0.545 & 0.590 & -0.074 & -0.119 & 0.367 \\
+SAM-L & P4 union mask bounding box & 0.723 & 0.684 & 0.629 & 0.039 & 0.095 & 0.667 \\
+\hline
+\end{tabular}
+\end{table*}

@@ -1,0 +1,87 @@
+{
+  "claim_boundary": "stratified_development_smoke_only_not_benchmark_result",
+  "dataset": "DDR",
+  "date": "2026-07-19",
+  "device": "cuda:0",
+  "formal_test_access": false,
+  "gpu_hours": 0.0022232231667213558,
+  "issues": [],
+  "matcher": "DINOv2-L",
+  "matcher_checkpoint": "D:\\SAM\\assets\\checkpoints\\dinov2_vitl14_pretrain.pth",
+  "matcher_checkpoint_sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+  "outputs": {
+    "query_metrics": "D:\\SAM\\adapromptset\\reports\\route_b_ddr_stratified_matcher\\query_metrics.csv",
+    "selected_episodes": "D:\\SAM\\adapromptset\\reports\\route_b_ddr_stratified_matcher\\selected_episodes.csv"
+  },
+  "queries_per_intent": 2,
+  "route": "B_reference_promptability_benchmark",
+  "runtime_seconds": 8.00360340019688,
+  "schema_version": "adapromptset.route_b.ddr_stratified_matcher.v1",
+  "segmenter_inference": false,
+  "selected_counts": {
+    "train:EX": 2,
+    "train:HE": 2,
+    "train:MA": 2,
+    "train:SE": 2,
+    "valid:EX": 2,
+    "valid:HE": 2,
+    "valid:MA": 2,
+    "valid:SE": 2
+  },
+  "selected_episode_count": 16,
+  "status": "PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE",
+  "summary": {
+    "by_split_intent": {
+      "train:EX": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      },
+      "train:HE": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      },
+      "train:MA": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      },
+      "train:SE": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      },
+      "valid:EX": {
+        "mean_component_coverage": 0.02,
+        "mean_point_precision": 0.1,
+        "n": 2
+      },
+      "valid:HE": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      },
+      "valid:MA": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      },
+      "valid:SE": {
+        "mean_component_coverage": 0.0,
+        "mean_point_precision": 0.0,
+        "n": 2
+      }
+    },
+    "mean_component_coverage": 0.0025,
+    "mean_point_precision": 0.0125,
+    "median_component_coverage": 0.0,
+    "median_point_precision": 0.0,
+    "n": 16,
+    "zero_component_coverage_fraction": 0.9375,
+    "zero_precision_fraction": 0.9375
+  },
+  "test_files_read": false,
+  "uses_query_gt_for_evaluation": true,
+  "uses_query_gt_for_generation": false
+}

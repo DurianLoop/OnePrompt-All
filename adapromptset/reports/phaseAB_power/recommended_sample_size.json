@@ -1,0 +1,8 @@
+{
+  "recommended_n": 75,
+  "min_n_for_power_80": 20,
+  "min_n_for_events_10": 75,
+  "current_n": 80,
+  "can_confirm": true,
+  "note": "No fresh cohort available \u2014 confirmatory experiment blocked"
+}

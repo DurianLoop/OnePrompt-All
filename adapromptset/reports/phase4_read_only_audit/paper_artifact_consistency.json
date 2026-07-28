@@ -1,0 +1,10 @@
+{
+  "gate_state_consistent": true,
+  "latex_log_problem_count": 0,
+  "pdf_exists": true,
+  "pdf_hash_matches_report": true,
+  "pdf_sha256_actual": "B75339E91F5F9BCE1F77DA8FA84E3E1F9095DB2623954D78E376B9FB14B0DD2A",
+  "pdf_sha256_reported": "B75339E91F5F9BCE1F77DA8FA84E3E1F9095DB2623954D78E376B9FB14B0DD2A",
+  "r03_metric_consistent": true,
+  "status": "PASS"
+}

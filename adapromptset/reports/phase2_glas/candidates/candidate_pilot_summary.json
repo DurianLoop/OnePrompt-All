@@ -1,0 +1,34 @@
+{
+  "status": "FAIL",
+  "issues": [
+    "negative blank/padding fraction exceeds 0.5"
+  ],
+  "episode_count": 90,
+  "max_positive_limit": 5,
+  "mean_point_precision": 0.9711111111111111,
+  "mean_random_precision": 0.5488888888888889,
+  "precision_delta": 0.4222222222222223,
+  "mean_component_coverage": 0.41882027248255316,
+  "mean_negative_blank_fraction": 0.13555555555555557,
+  "formal_gate_c": "FAIL",
+  "device": "cuda:0",
+  "elapsed_seconds": 64.594,
+  "gpu_hours_estimate": 0.017943,
+  "predeclared_rules": {
+    "min_episodes": 90,
+    "precision_margin": 0.05,
+    "positive_limits": [
+      1,
+      3,
+      5
+    ],
+    "dataset_role": "GlaS validation extension",
+    "test_split_used": false,
+    "query_mask_use": "diagnostic metrics and random-baseline evaluation only"
+  },
+  "matcher_checkpoint_sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+  "artifacts": {
+    "metrics_csv": "D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates\\candidate_pilot_metrics.csv",
+    "candidates_csv": "D:\\SAM\\adapromptset\\reports\\phase2_glas\\candidates\\candidate_pilot_candidates.csv"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "phase": "T",
+  "state": "PHASET_BENCHMARK_NEEDS_MORE_EVIDENCE",
+  "final_state": "PHASET_BENCHMARK_NEEDS_MORE_EVIDENCE",
+  "final_state_date": "2026-07-23",
+  "work_packages": {
+    "WP1": "PASS",
+    "WP2": "PARTIAL",
+    "WP3": "PARTIAL",
+    "WP4": "PASS"
+  },
+  "publication_readiness_gate": {
+    "n_conditions": 12,
+    "n_pass": 10,
+    "n_fail": 2,
+    "pass_conditions": [1, 3, 4, 6, 7, 8, 9, 10, 11, 12],
+    "fail_conditions": [2, 5],
+    "fail_reasons": {
+      "2": "only 1 of 2 required cross-dataset directional supports (MoNuSeg STRONG_SUPPORT, IDRID FAIL)",
+      "5": "mean consensus gain not directionally stable across all datasets (IDRID reverses: gain -0.0118)"
+    },
+    "cond_3_note": "PASS under section 7.3 Option C (sufficient justification + B1-B7 alternative strong baselines; lowered positioning)",
+    "is_paper_candidate_ready": false,
+    "submission_route": "lowered-positioning benchmark route available as fallback; hybrid and full benchmark-only blocked by conditions 2, 5"
+  },
+  "compute": {
+    "cap_gpu_hours": 195,
+    "used_gpu_hours": 0,
+    "remaining_gpu_hours": 195,
+    "checkpoints": [40, 90, 140, 195]
+  },
+  "branch": "phaseT-publication-completion",
+  "base_commit": "2c1f7d2",
+  "wp1_result": {
+    "n_conditions": 10,
+    "n_pass": 10,
+    "n_queries": 40,
+    "seed_count": 10,
+    "configs": ["P20-N1", "P30-N0", "P50-N0"],
+    "key_metrics": {
+      "frac_queries_best_worst_gap_ge_0p05": 0.925,
+      "v_ref_frac_k1_range": "0.1264-0.2627",
+      "consensus_gain": 0.026631,
+      "bootstrap_ci_lower": 0.014009,
+      "best_disagreement_rho": 0.724109,
+      "best_disagreement_feature": "prediction_jaccard_k1_within"
+    },
+    "decision": "PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED"
+  },
+  "wp2_result": {
+    "monuseg": {
+      "decision": "PHASET_DATASET_STRONG_SUPPORT",
+      "directional_pass": "5/5",
+      "strong_pass": "4/4",
+      "n_queries": 30,
+      "consensus_gain": 0.014938,
+      "best_rho": 0.826611
+    },
+    "idrid": {
+      "decision": "PHASET_DATASET_FAIL",
+      "directional_pass": "4/5",
+      "strong_pass": "2/4",
+      "n_queries": 30,
+      "consensus_gain": -0.011751,
+      "best_rho": 0.9519,
+      "failed_condition": "d3_consensus_dice_ge_single_dice",
+      "note": "Instability replicates but consensus hurts for sparse retinal EX lesions"
+    },
+    "glas": "NOT_AVAILABLE",
+    "minimum_benchmark_requirement": "NOT MET (1/2 datasets directional support)",
+    "external_methods_reproduced": 0
+  },
+  "wp3_result": {
+    "m1_dynamic_budget": {
+      "decision": "PHASET_M1_DYNAMIC_BUDGET_NO_GAIN",
+      "best_model": "M1-3_handcrafted_threshold",
+      "selected_lambda_c": 0.0,
+      "selected_lambda_r": 0.0,
+      "policy_avg_k": 5.6341,
+      "reduction_vs_k6": 0.061,
+      "cost_saving_mode_pass": false,
+      "quality_cost_mode_pass": false
+    },
+    "m2_selective_prediction_val": {
+      "decision": "PHASET_M2_SELECTIVE_PREDICTION_PASS",
+      "approach": "dual_model (instability + catastrophic, anti-correlated labels)",
+      "n_conditions_pass": "5/5",
+      "best_model_cat": "M2-2_logistic_regression",
+      "best_model_inst": "M2-2_logistic_regression",
+      "instability_AUROC": 0.9443,
+      "catastrophic_AUPRC": 0.4338,
+      "prevalence_catastrophic": 0.1171,
+      "ECE": 0.0425,
+      "CFR_reduction_at_80pct": 0.392,
+      "dice_change_at_80pct": 0.0214
+    },
+    "m2_selective_prediction_holdout": {
+      "decision": "PHASET_M2_SELECTIVE_PREDICTION_PASS",
+      "n_conditions_pass": "6/6",
+      "holdout_instability_AUROC": 0.9283,
+      "holdout_catastrophic_AUPRC": 0.5277,
+      "holdout_prevalence_catastrophic": 0.05,
+      "holdout_ECE": 0.027,
+      "holdout_CFR_reduction_at_80pct": 0.7917,
+      "holdout_dice_change_at_80pct": 0.009,
+      "cond6_direction_consistent": true,
+      "frozen_model": "reports/phaseT_wp3_m2/m2_model.pkl"
+    },
+    "m2_cross_dataset_transfer_supplementary": {
+      "note": "Not a gate condition. Supplementary evidence for M2 generalizability.",
+      "monuseg_transfer": {"AUROC": 0.874, "AUPRC_cat": 0.0, "ECE": 0.0601, "CFR_reduction": 0.0, "dice_change": 0.0131, "note": "0 catastrophic failures; AUPRC/CFR vacuously 0"},
+      "idrid_transfer": {"AUROC": 0.9938, "AUPRC_cat": 0.9973, "ECE": 0.4767, "CFR_reduction": 0.0599, "dice_change": 0.0128, "note": "ranking transfers, calibration does NOT (ECE 0.48 >> 0.10)"},
+      "key_finding": "M2 ranking transfers (AUROC 0.87-0.99) but calibration does NOT transfer to IDRID",
+      "evidence": "reports/phaseT_wp3_m2_transfer/m2_transfer_summary.json"
+    }
+  },
+  "wp4_result": {
+    "tables_generated": 18,
+    "figures_generated": 18,
+    "novelty_audit": "reports/phaseT_novelty_audit.md",
+    "mock_review": "reports/phaseT_mock_review.md",
+    "rebuttal_plan": "reports/phaseT_rebuttal_plan.md",
+    "paper_draft": "paper/phaseT/full_draft.md (~7000 words, 16 section files)",
+    "claim_registry": "docs/phaseT_claim_registry.md",
+    "publication_readiness": "reports/phaseT_publication_readiness.md",
+    "final_report": "reports/phaseT_final_publication_report.{md,json}"
+  },
+  "formal_test_status": "LOCKED (section 21 not triggered; PHASET_PAPER_CANDIDATE_READY not reached)",
+  "next_actions_require_user_authorization": [
+    "WP2b: Reproduce GF-SAM and MAUP under unified reference-resampling protocol (requires external code download per section 23.1); addresses condition 3",
+    "Add 1 more supporting dataset (GlaS local, or non-medical Pascal-5i/COCO-20i); addresses conditions 2 and 5",
+    "Re-test M2 selective prediction on new dataset for cross-dataset generalization"
+  ],
+  "prohibited_token_audit": {
+    "SOTA": "absent",
+    "SUBMISSION_READY": "absent",
+    "PUBLICATION_COMPLETED": "absent",
+    "universal_across_datasets_as_claim": "absent",
+    "instability_solved_as_claim": "absent"
+  }
+}

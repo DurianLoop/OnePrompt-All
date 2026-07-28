@@ -1,0 +1,21 @@
+# Phase Y Compact Policy Bank (PLACEHOLDER)
+# Directive: AdaPromptSet_PhaseY_Policy_Feasibility.md section 7.2
+#
+# This file is a PLACEHOLDER at preregistration time.
+# The compact bank (12-32 actions) is derived from the full audit bank
+# via train-only Pareto pruning AFTER the preregistration commit.
+# Pruning rules (section 7.2):
+#   1. Drop actions dominated in Dice/calls/runtime by another action
+#   2. Drop actions clearly inferior across all train folds
+#   3. Within a family, if Dice diff < 0.003, keep the simpler action
+#   4. Validation and holdout do NOT participate in pruning
+#   5. Target compact bank size: 12-32 actions
+
+bank_name: phaseY_compact_policy_bank
+bank_version: pending
+status: PLACEHOLDER_PENDING_PARETO_PRUNING
+target_size_min: 12
+target_size_max: 32
+source_bank: phaseY_full_single_call_bank
+pruning_scope: policy_train_queries_only
+actions: []

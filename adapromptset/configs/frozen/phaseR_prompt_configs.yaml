@@ -1,0 +1,29 @@
+# Phase R Frozen Prompt Configs
+# Frozen at: 2026-07-22T11:59:57
+# Directive section: 6
+
+configs:
+  - name: P20-N1
+    action_id: R_P_TOPK_K20_N1_N_BOTTOMK_G1_C1
+    k_positive: 20
+    k_negative: 1
+    positive_selector: P_TOPK
+    negative_selector: N_BOTTOMK
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+  - name: P30-N0
+    action_id: R_P_TOPK_K30_N0_N_NONE_G1_C1
+    k_positive: 30
+    k_negative: 0
+    positive_selector: P_TOPK
+    negative_selector: N_NONE
+    grouping: G_ONE_GROUP
+    sam_calls: 1
+  - name: P50-N0
+    action_id: R_P_TOPK_K50_N0_N_NONE_G1_C1
+    k_positive: 50
+    k_negative: 0
+    positive_selector: P_TOPK
+    negative_selector: N_NONE
+    grouping: G_ONE_GROUP
+    sam_calls: 1

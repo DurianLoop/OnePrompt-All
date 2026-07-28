@@ -1,0 +1,148 @@
+# Phase AB Prediction Consistency Frozen Configuration
+# Date: 2026-07-28
+# Status: FROZEN — Do not modify after WP2 confirmatory experiment
+
+prediction_consistency:
+  name: "Prediction Consistency Risk Score"
+  version: "2.0"
+  frozen_date: "2026-07-28"
+  predecessor: "Phase AA v1.0 (deprecated)"
+
+  # ── Core Formula ──
+  # C_pred(q) = (2 / (m*(m-1))) * sum_{i<j} IoU(M_hat_{q,i}, M_hat_{q,j})
+  # R_PC(q) = 1 - C_pred(q)
+
+  input:
+    reference_count: 6
+    reference_sampling: "random"
+    reference_sampling_seed: 42
+    patient_query_disjoint: true
+
+  computation:
+    pairwise_metric: "IoU"
+    empty_mask_vs_empty_mask: 0.0
+    empty_mask_vs_nonempty_mask: 0.0
+    computation_scale: "original_resolution"
+    binary_threshold: 0.5
+    postprocess: "none"
+
+  risk_score:
+    formula: "R_PC(q) = 1 - C_pred(q)"
+    C_pred_definition: "mean pairwise IoU over all reference pairs"
+    nan_handling: "treat_as_zero"
+    tie_handling: "random"
+
+  coverage_levels: [0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0]
+
+  catastrophic_threshold:
+    dice: 0.1
+    description: "Dice < 0.1 considered catastrophic failure"
+
+  # ── Primary Pipeline ──
+  primary_pipeline:
+    matcher: "DINOv2-L"
+    segmenter: "SAM-B"
+    description: "P1 = DINOv2-L + SAM-B"
+
+  # ── All Validated Pipelines ──
+  pipelines:
+    P1: {matcher: "DINOv2-L", segmenter: "SAM-B"}
+    P2: {matcher: "DINOv2-B", segmenter: "SAM-B"}
+    P3: {matcher: "DINOv2-L", segmenter: "SAM-L"}
+    P4: {matcher: "DINOv2-L", segmenter: "SAM2-Tiny"}
+    P5: {matcher: "DINOv2-L", segmenter: "SAM2-Small"}
+
+  # ── Confirmatory Comparators ──
+  comparators:
+    - id: "B0_Random"
+      name: "Random Ranking"
+      type: "baseline"
+      description: "Random risk score assignment"
+    - id: "B1_Entropy"
+      name: "Matching Entropy"
+      type: "baseline"
+      description: "Entropy of DINO matching similarity distribution"
+    - id: "B2_CandidateJaccard"
+      name: "Candidate Jaccard"
+      type: "baseline"
+      description: "Mean pairwise Jaccard of candidate (pre-segmentation) regions"
+    - id: "B3_PromptOverlap"
+      name: "Prompt Overlap"
+      type: "baseline"
+      description: "Overlap of prompt points across references"
+    - id: "B4_PredictionConsistency"
+      name: "Prediction Consistency"
+      type: "primary"
+      description: "R_PC(q) = 1 - mean pairwise IoU of segmentations"
+    - id: "B5_M2Instability"
+      name: "M2-Instability"
+      type: "baseline"
+      formula: "std(Dice) / mean(Dice)"
+
+  # ── Primary Endpoint ──
+  primary_endpoint: "AURC difference vs Random Ranking"
+  secondary_endpoints:
+    - "CFR@80 relative reduction"
+    - "Selective Dice@80"
+    - "AUROC"
+
+  # ── Gate Criteria ──
+  confirmatory_gate:
+    - "AURC_PC < AURC_Random"
+    - "AURC paired CI does not cross 0"
+    - "AUROC >= 0.70"
+    - "CFR@80 relative reduction >= 30%"
+    - "Dice@80 within 0.005 of Random accepted set"
+    - "Risk-coverage curve directionally reasonable"
+    - "No query GT used in risk construction"
+    - "Query is statistical unit"
+
+  cross_pipeline_gate:
+    strong_support:
+      - "AUROC >= 0.70"
+      - "AURC better than Random"
+      - "CFR@80 does not increase"
+    directional_support:
+      - "AURC point estimate better"
+      - "CFR does not increase"
+    no_support:
+      - "AURC no improvement or CFR worsens"
+
+  cross_dataset_gate:
+    supportive:
+      - "AUROC >= 0.70"
+      - "AURC better than Random"
+      - "CFR@80 relative reduction >= 20%"
+    boundary:
+      - "RISK_SIGNAL_TRANSFERS_SEGMENTATION_FAILS"
+    failure:
+      - "NO_RISK_TRANSFER"
+
+  # ── Prohibited Claims ──
+  prohibited_claims:
+    - "training-free"
+    - "calibration-free"
+    - "universal property"
+    - "formal theorem"
+    - "identical conditions"
+    - "six segmenters / four matchers"
+    - "56-84%"
+    - "holdout-confirmed"
+    - "reference reliability dominates prompt sophistication"
+    - "Full RAMP"
+    - "learned weighting"
+    - "adaptive fusion"
+    - "RRN as main method"
+    - "anti-correlation theorem"
+    - "deployment envelope"
+    - "SAM-Med2D"
+    - "fold-0 natural-image generality"
+
+  # ── Allowed Claims ──
+  allowed_claims:
+    - "Prediction consistency provides a simple, GT-free risk signal"
+    - "Selective prediction reduces catastrophic failures"
+    - "Cross-pipeline support varies by architecture"
+    - "Cross-dataset transfer has boundary conditions"
+    - "Method is strongest for SAM-B pipelines"
+    - "Paper is exploratory/benchmark"

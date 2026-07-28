@@ -1,0 +1,12 @@
+\section{Experimental Protocol}
+MoNuSAC is the development dataset, MoNuSeg is a sanity and historical check, and GlaS is the first extension dataset. IDRID is read-only, and CPM-17 is deferred until its manifest is repaired. Statistical reporting treats query/case, and patient clusters where available, as the unit of analysis; multi-reference episodes are repeated measurements and not independent samples.
+
+\subsection{Data Roles and Exposure Control}
+The data audit covers three current manifest datasets with 526 profiled rows: MoNuSAC, MoNuSeg, and GlaS. MoNuSAC is the only dataset used for the MVP oracle-gap decision. GlaS has complete local image-mask pairs and is preserved as a morphology-shift extension, but the current strict validation smoke has only one validation episode. DDR is available for eye-lesion infrastructure checks under a union-mask stage-one rule, while IDRID is read-only and CPM-17 is deferred because the local public-version assets are incomplete. These roles are recorded before any new-domain claim is allowed.
+
+Reference exposure is audited separately from image availability. The reference pool is train-only and reference-test leakage is zero in the current report. Multi-reference episodes are aggregated back to the query level before statistics, so repeated references for a query do not inflate the number of independent samples. This is the central statistical limitation of the present pilot: the query count and patient-cluster count are too small for a formal positive result, even though the action-utility pipeline runs end to end.
+
+\subsection{Compute and Reproducibility}
+Every major run writes metadata, configuration hashes, source hashes, and a compute ledger. The current ledger records 73 rows and approximately 0.053 GPU-hours across audits, matcher and SAM smokes, candidate pilots, oracle-gap pilots, and report generation. This number is not a claim of efficiency; it is a provenance record for the current MVP evidence. Runtime comparisons in the paper therefore remain descriptive unless a future same-hardware experiment shows both quality and wall-clock benefit under a frozen protocol.
+
+The formal test path remains locked behind the failed gate. Because MoNuSAC Gate F did not pass, no MoNuSAC policy training, post-hoc MoNuSAC action redesign, or query-time action-bank search is allowed. A later external pilot would need a fresh predeclared protocol and enough non-leaky query units before any new selector could be trained or evaluated.

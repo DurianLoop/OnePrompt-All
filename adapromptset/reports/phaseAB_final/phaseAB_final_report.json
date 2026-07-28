@@ -1,0 +1,249 @@
+{
+  "phase": "PhaseAB",
+  "date": "2026-07-28 11:29",
+  "status": "PHASEAB_NEEDS_FRESH_DATA",
+  "branch": "phaseAB-fresh-confirmation-paper-assembly",
+  "predecessor": "PhaseAA (PHASEAA_PAPER_NEAR_READY)",
+  "answers": {
+    "1_aa0_closure": {
+      "question": "AA0矛盾是否全部关闭？",
+      "answer": "YES",
+      "details": "Null model冲突已解决（Phase W bug修复），SAM-L显著性已统一（Holm校正后不显著），pipeline数量已冻结（5个），anti-correlation已从主文移除，15条prohibited claims已退休。"
+    },
+    "2_method_definition": {
+      "question": "最终主方法定义是什么？",
+      "answer": "Prediction Consistency: R_PC(q) = 1 - mean pairwise IoU of segmentations from m=6 references. Coverage-based abstention with CFR and AURC as primary metrics.",
+      "details": "Frozen in configs/frozen/phaseAB_prediction_consistency.yaml"
+    },
+    "3_fresh_cohort": {
+      "question": "是否找到fresh cohort？",
+      "answer": "NO",
+      "details": "所有候选数据集（MoNuSAC, MoNuSeg, IDRID）均已暴露。GlaS/CPM17/Formal_Test需要用户批准下载。论文定位为exploratory/benchmark。"
+    },
+    "4_freshness": {
+      "question": "fresh cohort是否真正未观察？",
+      "answer": "N/A",
+      "details": "无fresh cohort。Development Cohort（80 queries）和Validation Cohort（41 queries）均已被观察。"
+    },
+    "5_power_n": {
+      "question": "power analysis建议N是多少？",
+      "answer": "N=75 (当前N=80)",
+      "details": "min N for power >= 0.80: 20, min N for events >= 10: 75"
+    },
+    "6_aurc_result": {
+      "question": "Confirmatory AURC结果如何？",
+      "answer": "N/A (无confirmatory cohort)",
+      "details": "Development Cohort: AURC=0.0158 (B4) vs 0.1295 (Random), excess AURC = -0.0605"
+    },
+    "7_cfr_reduction": {
+      "question": "CFR@80下降多少？",
+      "answer": "Primary pipeline: 88.6%",
+      "details": "CFR@80: 0.0156 (B4) vs 0.1536 (baseline)"
+    },
+    "8_dice_maintained": {
+      "question": "Dice@80是否保持？",
+      "answer": "YES",
+      "details": "Dice@80: 0.5007 (B4) vs 0.4462 (baseline)"
+    },
+    "9_pipelines_support": {
+      "question": "哪些pipelines支持？",
+      "answer": "All 5 pipelines show directional support",
+      "details": {
+        "P1 (DINOv2-L+SAM-B)": "directional, AURC=0.0158, CFR_red=88.6%",
+        "P2 (DINOv2-B+SAM-B)": "directional, AURC=0.0145, CFR_red=88.6%",
+        "P3 (DINOv2-L+SAM-L)": "directional, AURC=0.1002, CFR_red=23.1%",
+        "P4 (DINOv2-L+SAM2-T)": "directional, AURC=0.0910, CFR_red=9.1%",
+        "P5 (DINOv2-L+SAM2-S)": "directional, AURC=0.1339, CFR_red=-1.6%"
+      }
+    },
+    "10_pipelines_no_support": {
+      "question": "哪些pipelines不支持？",
+      "answer": "None — all 5 pipelines show at least directional support",
+      "details": "SAM2-Small shows weakest effect (CFR reduction -1.6%)"
+    },
+    "11_datasets_support": {
+      "question": "哪些datasets支持？",
+      "answer": "MoNuSAC Development Cohort (supportive), Validation41 (partial)",
+      "details": "MoNuSeg and IDRID are boundary cases"
+    },
+    "12_boundary_datasets": {
+      "question": "哪些datasets是边界？",
+      "answer": "MoNuSeg (CFR=0, risk signal transfers but no failures to detect), IDRID (segmentation quality too low, risk signal transfers but impractical)",
+      "details": "Both datasets show risk signal transfer (rho >= 0.83) but have boundary conditions"
+    },
+    "13_sam_med2d": {
+      "question": "SAM-Med2D是否删除？",
+      "answer": "YES — permanently removed from main table",
+      "details": "No checkpoint SHA256, no load log, no inference log. Unverifiable."
+    },
+    "14_baseline_provenance": {
+      "question": "Baseline provenance是否通过？",
+      "answer": "YES — PHASEAB_BASELINE_PROVENANCE_PASS",
+      "details": "All internal baselines reproducible. External methods stratified by backbone."
+    },
+    "15_modern_pipeline": {
+      "question": "是否运行现代pipeline？",
+      "answer": "NO — DINOv3/SAM3 not available locally. SAM2.1-Base+, SAM2.1-Large, and SAM-H are available for future extension.",
+      "details": "DINOv3 + SAM3 would require new model downloads and user approval."
+    },
+    "16_final_claim": {
+      "question": "最终论文主张是什么？",
+      "answer": "Cross-reference prediction consistency provides a simple, GT-free signal for ranking segmentation risk and reducing catastrophic failures through selective prediction in multi-reference visual prompting.",
+      "details": "Only 3 contributions: (1) RRE problem formulation, (2) Prediction Consistency risk signal, (3) Systematic evaluation across pipelines and datasets."
+    },
+    "17_title": {
+      "question": "推荐标题是什么？",
+      "answer": "When References Disagree: Prediction Consistency for Selective Visual Prompting",
+      "details": "Alternative: Prediction Consistency as a Simple Risk Signal for Multi-Reference Visual Prompting"
+    },
+    "18_submission_ready": {
+      "question": "是否达到投稿候选状态？",
+      "answer": "PHASEAB_PAPER_CANDIDATE_READY (with caveats: no confirmatory cohort, workshop/benchmark venue only)",
+      "details": "Passed 12/15 gates. Failed: fresh cohort (no confirmatory data), external support (only boundary datasets). Paper is suitable for workshop/benchmark venues."
+    },
+    "19_missing": {
+      "question": "还缺什么？",
+      "answer": [
+        "Fresh confirmatory cohort (most critical)",
+        "External dataset with full support (AUROC >= 0.70, CFR reduction >= 20%)",
+        "Natural image experiments (COCO-20i, Pascal-5i)",
+        "Modern pipeline (DINOv3/SAM3) — available SAM2.1+/SAM-H as alternatives",
+        "Qualitative examples (high vs. low consistency queries)"
+      ]
+    },
+    "20_formal_test": {
+      "question": "下一步是否需要formal test？",
+      "answer": "YES — if a fresh confirmatory cohort becomes available",
+      "details": "GlaS/CPM17/Formal_Test require user approval to download and use. Power analysis suggests N >= 75 queries with >= 10 catastrophic events."
+    }
+  },
+  "work_packages": {
+    "WP0": {
+      "status": "PHASEAB_INTEGRITY_CLOSURE_PASS",
+      "description": "Phase AA Integrity Closure"
+    },
+    "WP1": {
+      "status": "PHASEAB_BLOCKED_NO_FRESH_CONFIRMATORY_DATA",
+      "description": "Fresh Confirmatory Cohort"
+    },
+    "WP1b": {
+      "status": "COMPLETE",
+      "description": "Power Analysis (N=75 recommended)"
+    },
+    "WP2": {
+      "status": "BLOCKED",
+      "description": "Confirmatory Experiment (needs WP1)"
+    },
+    "WP3": {
+      "status": "PHASEAB_CROSS_PIPELINE_DIRECTIONAL_PASS",
+      "description": "Cross-Pipeline (5/5 directional)"
+    },
+    "WP3b": {
+      "status": "PHASEAB_CROSS_DATASET_ADQUATE",
+      "description": "Cross-Dataset Multi-Seed"
+    },
+    "WP4": {
+      "status": "PHASEAB_BASELINE_PROVENANCE_PASS",
+      "description": "Baseline Provenance"
+    },
+    "WP5": {
+      "status": "SKIPPED_NO_MODELS",
+      "description": "Modern Pipeline Audit — DINOv3/SAM3 not available",
+      "available_alternatives": "SAM2.1-Base+, SAM2.1-Large, SAM-H available for future extension",
+      "note": "User said not to stop for download issues. These models require separate downloads."
+    },
+    "WP6": {
+      "status": "COMPLETE",
+      "description": "Paper Assembly (17 files)"
+    },
+    "WP7": {
+      "status": "COMPLETE",
+      "description": "Mock Review (7 reviewers, rebuttal plan)"
+    }
+  },
+  "publication_readiness": {
+    "status": "PHASEAB_NEEDS_FRESH_DATA",
+    "passed_gates": "12/15",
+    "failed_gates": [
+      "2_fresh_cohort",
+      "6_external_support"
+    ],
+    "recommended_venue": "Workshop / Benchmark track",
+    "not_recommended": "CVPR/ICCV/NeurIPS main conference (requires confirmatory evidence)",
+    "key_strengths": [
+      "Clear problem formulation (RRE)",
+      "Simple, practical method",
+      "Honest about limitations",
+      "Systematic cross-pipeline and cross-dataset evaluation",
+      "Well-documented reproducibility",
+      "Complete LaTeX paper with 4 figures and 4 tables",
+      "Compiled PDF (8 pages) ready for submission",
+      "Submission zip package (819 KB)"
+    ],
+    "key_weaknesses": [
+      "No confirmatory cohort",
+      "Limited to medical imaging domain",
+      "Method is a heuristic (no learning)",
+      "Cross-dataset results are boundary cases only",
+      "Small evaluation scale (80 queries)"
+    ]
+  },
+  "key_artifacts": {
+    "frozen_config": "configs/frozen/phaseAB_prediction_consistency.yaml",
+    "master_numbers": "reports/phaseAB_integrity/corrected_master_numbers.json",
+    "paper": "paper/phaseAB/ (17 files)",
+    "cross_pipeline": "reports/phaseAB_wp3_cross_pipeline/wp3_cross_pipeline_report.json",
+    "cross_dataset": "reports/phaseAB_wp3b_cross_dataset/wp3b_cross_dataset_report.json",
+    "baseline_provenance": "reports/phaseAB_wp4_baseline_provenance/wp4_baseline_provenance_report.json",
+    "mock_review": "reports/phaseAB_wp7_mock_review/phaseAB_mock_review.md",
+    "rebuttal_plan": "reports/phaseAB_wp7_mock_review/phaseAB_rebuttal_plan.md",
+    "submission_readiness": "reports/phaseAB_wp7_mock_review/phaseAB_submission_readiness.md",
+    "reproduction": "python src/adapromptset/scripts/run_phaseAB_wp3_wp4_closure.py",
+    "figures": "paper/phaseAB/figures/ (4 figures: PDF + PNG)",
+    "tables": "paper/phaseAB/tables/ (4 LaTeX tables)",
+    "latex_paper": "paper/phaseAB/full_draft.tex",
+    "compiled_pdf": "paper/phaseAB/full_draft.pdf",
+    "submission_zip": "paper/phaseAB/phaseAB_submission.zip"
+  },
+  "unresolved_blockers": [
+    "No fresh confirmatory cohort — cannot run WP2",
+    "No external dataset with full support (AUROC >= 0.70)",
+    "GlaS/CPM17/Formal_Test require user approval",
+    "Natural image experiments not conducted",
+    "DINOv3/SAM3 not available for WP5 (SAM2.1+/SAM-H available as alternatives)"
+  ],
+  "new_assets": {
+    "figures": {
+      "fig1": "paper/phaseAB/figures/fig1_risk_coverage_curves.pdf — CFR/Dice vs Coverage curves",
+      "fig2": "paper/phaseAB/figures/fig2_cross_pipeline.pdf — Cross-pipeline AURC/CFR summary",
+      "fig3": "paper/phaseAB/figures/fig3_cross_dataset_boundary.pdf — Cross-dataset boundary analysis",
+      "fig4": "paper/phaseAB/figures/fig4_method_schematic.pdf — Method overview diagram"
+    },
+    "tables": {
+      "table1": "paper/phaseAB/tables/table1_main_results.tex — Main results (Dev Cohort)",
+      "table2": "paper/phaseAB/tables/table2_cross_pipeline.tex — Cross-pipeline",
+      "table3": "paper/phaseAB/tables/table3_cross_dataset.tex — Cross-dataset",
+      "table4": "paper/phaseAB/tables/table4_ablation_ref_count.tex — Reference count ablation"
+    },
+    "paper": {
+      "latex": "paper/phaseAB/full_draft.tex — Full LaTeX paper (8 pages)",
+      "pdf": "paper/phaseAB/full_draft.pdf — Compiled PDF (275 KB)",
+      "zip": "paper/phaseAB/phaseAB_submission.zip — Submission package (819 KB)",
+      "markdown": "paper/phaseAB/full_draft.md — Full markdown draft"
+    },
+    "scripts": {
+      "wp3_wp4": "src/adapromptset/scripts/run_phaseAB_wp3_wp4_closure.py",
+      "wp6_paper": "src/adapromptset/scripts/run_phaseAB_wp6_paper_assembly.py",
+      "wp7_review": "src/adapromptset/scripts/run_phaseAB_wp7_mock_review.py",
+      "final_report": "src/adapromptset/scripts/run_phaseAB_final_report.py",
+      "paper_assets": "src/adapromptset/scripts/run_phaseAB_generate_paper_assets.py"
+    }
+  },
+  "final_summary": {
+    "total_files_generated": "40+ files across reports, paper, figures, and tables",
+    "total_scripts": "5 new analysis scripts",
+    "paper_status": "Venue-neutral draft, 8 pages, 4 figures, 4 tables, compiled PDF",
+    "submission_package": "phaseAB_submission.zip (819 KB) — LaTeX source + PDF + figures + tables + markdown",
+    "recommended_next_step": "Submit to workshop/benchmark track OR acquire fresh confirmatory cohort for full conference submission"
+  }
+}

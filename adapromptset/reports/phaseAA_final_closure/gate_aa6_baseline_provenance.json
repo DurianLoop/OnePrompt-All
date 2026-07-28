@@ -1,0 +1,37 @@
+{
+  "gate": "AA6",
+  "status": "PHASEAA_BASELINE_PROVENANCE_PARTIAL",
+  "date": "2026-07-27",
+  "sam_med2d": {
+    "status": "DIRECTORY_NOT_FOUND",
+    "recommendation": "REMOVE_FROM_MAIN_TABLE",
+    "details": {}
+  },
+  "external_baselines": {
+    "status": "RESULTS_FOUND",
+    "methods": {
+      "GF-SAM": {
+        "exists": true,
+        "has_readme": true
+      },
+      "MAUP": {
+        "exists": true,
+        "has_readme": true
+      }
+    }
+  },
+  "backbone_stratification": {
+    "shared_backbone_table": [
+      "Top-K + SAM-B",
+      "CycleSAM + SAM-B"
+    ],
+    "official_default_table": [
+      "GF-SAM + SAM-H",
+      "MAUP + SAM-H",
+      "H-SAM + SAM-L"
+    ],
+    "removed": [
+      "SAM-Med2D"
+    ]
+  }
+}

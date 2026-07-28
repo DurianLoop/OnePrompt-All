@@ -1,0 +1,425 @@
+{
+  "gate_c": {
+    "best_config": "P30-N0",
+    "best_alpha": 0.0,
+    "best_beta": 0.0,
+    "best_gamma": 0.0,
+    "query_count": 41,
+    "mean_trackC_dice": 0.477861,
+    "mean_trackB_dice": 0.473183,
+    "delta_dice_vs_trackB": 0.004678,
+    "mean_b2mean_dice": 0.475608,
+    "cvar_0p1_trackC": 0.073753,
+    "cvar_0p1_trackB": 0.076829,
+    "cvar_improvement": -0.003076,
+    "cfr_trackC": 0.073171,
+    "cfr_trackB": 0.073171,
+    "mean_train_dice": 0.514755,
+    "train_val_gap": 0.036894,
+    "seed_consistency": {
+      "seeds_total": 3,
+      "seeds_consistent": 3
+    },
+    "refcount_direction": {
+      "k6_positive": false,
+      "k3_positive": false
+    },
+    "loo_stability": {
+      "total": 30,
+      "crashes": 0,
+      "big_drops": 7
+    },
+    "phase2_runtime_seconds": 194.849,
+    "trackB_phase2_runtime_seconds": 308.5,
+    "n_learned_params": 0,
+    "bootstrap": {
+      "mean": 0.004678,
+      "ci_lower": -0.011944,
+      "ci_upper": 0.024198
+    },
+    "conditions": {
+      "cond1_delta_dice_ge_0p005_vs_trackB": false,
+      "cond2_cvar_improvement_ge_0p01": false,
+      "cond3_catastrophic_failure_not_increase": true,
+      "cond4_3_seeds_consistent": true,
+      "cond5_refcount_variation_stable": true,
+      "cond6_loo_no_crash": false,
+      "cond7_params_runtime_acceptable": true,
+      "cond8_train_val_gap_lt_0p05": true
+    },
+    "n_conditions_pass": 5,
+    "gate_pass": false,
+    "decision": "PHASES_TRACK_C_NO_GAIN",
+    "comparison": [
+      {
+        "query_case_id": "train_034",
+        "dice_trackC": 0.891974,
+        "dice_trackB": 0.865398,
+        "delta": 0.026576,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_035",
+        "dice_trackC": 0.059113,
+        "dice_trackB": 0.059984,
+        "delta": -0.000871,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_036",
+        "dice_trackC": 0.234397,
+        "dice_trackB": 0.235188,
+        "delta": -0.000791,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_037",
+        "dice_trackC": 0.170975,
+        "dice_trackB": 0.174711,
+        "delta": -0.003736,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_038",
+        "dice_trackC": 0.494551,
+        "dice_trackB": 0.487927,
+        "delta": 0.006624,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_043",
+        "dice_trackC": 0.327823,
+        "dice_trackB": 0.326579,
+        "delta": 0.001245,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_044",
+        "dice_trackC": 0.413573,
+        "dice_trackB": 0.464969,
+        "delta": -0.051396,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_045",
+        "dice_trackC": 0.113636,
+        "dice_trackB": 0.118756,
+        "delta": -0.005119,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_046",
+        "dice_trackC": 0.509419,
+        "dice_trackB": 0.481562,
+        "delta": 0.027857,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_057",
+        "dice_trackC": 0.715948,
+        "dice_trackB": 0.603837,
+        "delta": 0.112111,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_058",
+        "dice_trackC": 0.232004,
+        "dice_trackB": 0.242176,
+        "delta": -0.010172,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_059",
+        "dice_trackC": 0.289716,
+        "dice_trackB": 0.317149,
+        "delta": -0.027432,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_060",
+        "dice_trackC": 0.12641,
+        "dice_trackB": 0.12446,
+        "delta": 0.00195,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_061",
+        "dice_trackC": 0.793917,
+        "dice_trackB": 0.780107,
+        "delta": 0.013811,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_062",
+        "dice_trackC": 0.044438,
+        "dice_trackB": 0.045335,
+        "delta": -0.000897,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_063",
+        "dice_trackC": 0.104176,
+        "dice_trackB": 0.104176,
+        "delta": 0.0,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_064",
+        "dice_trackC": 0.561709,
+        "dice_trackB": 0.455455,
+        "delta": 0.106254,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_094",
+        "dice_trackC": 0.683416,
+        "dice_trackB": 0.678422,
+        "delta": 0.004994,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_095",
+        "dice_trackC": 0.505305,
+        "dice_trackB": 0.59622,
+        "delta": -0.090914,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_096",
+        "dice_trackC": 0.619916,
+        "dice_trackB": 0.619082,
+        "delta": 0.000834,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_097",
+        "dice_trackC": 0.667441,
+        "dice_trackB": 0.660777,
+        "delta": 0.006664,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_098",
+        "dice_trackC": 0.476326,
+        "dice_trackB": 0.468578,
+        "delta": 0.007748,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_099",
+        "dice_trackC": 0.735205,
+        "dice_trackB": 0.729522,
+        "delta": 0.005683,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_100",
+        "dice_trackC": 0.504345,
+        "dice_trackB": 0.496867,
+        "delta": 0.007478,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_101",
+        "dice_trackC": 0.6619,
+        "dice_trackB": 0.557372,
+        "delta": 0.104528,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_102",
+        "dice_trackC": 0.105019,
+        "dice_trackB": 0.185853,
+        "delta": -0.080834,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_103",
+        "dice_trackC": 0.200938,
+        "dice_trackB": 0.204138,
+        "delta": -0.0032,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_144",
+        "dice_trackC": 0.505426,
+        "dice_trackB": 0.52552,
+        "delta": -0.020093,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_145",
+        "dice_trackC": 0.598595,
+        "dice_trackB": 0.656699,
+        "delta": -0.058105,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_146",
+        "dice_trackC": 0.736882,
+        "dice_trackB": 0.77654,
+        "delta": -0.039658,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_147",
+        "dice_trackC": 0.590711,
+        "dice_trackB": 0.593467,
+        "delta": -0.002756,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_163",
+        "dice_trackC": 0.554763,
+        "dice_trackB": 0.557588,
+        "delta": -0.002825,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_164",
+        "dice_trackC": 0.681079,
+        "dice_trackB": 0.67239,
+        "delta": 0.008689,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_165",
+        "dice_trackC": 0.528936,
+        "dice_trackB": 0.632787,
+        "delta": -0.103851,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_166",
+        "dice_trackC": 0.627862,
+        "dice_trackB": 0.634068,
+        "delta": -0.006206,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_167",
+        "dice_trackC": 0.75269,
+        "dice_trackB": 0.757426,
+        "delta": -0.004736,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_168",
+        "dice_trackC": 0.61887,
+        "dice_trackB": 0.596829,
+        "delta": 0.022041,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_169",
+        "dice_trackC": 0.697478,
+        "dice_trackB": 0.434388,
+        "delta": 0.26309,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_183",
+        "dice_trackC": 0.704503,
+        "dice_trackB": 0.716721,
+        "delta": -0.012218,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_184",
+        "dice_trackC": 0.056019,
+        "dice_trackB": 0.055894,
+        "delta": 0.000125,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      },
+      {
+        "query_case_id": "train_185",
+        "dice_trackC": 0.694887,
+        "dice_trackB": 0.70559,
+        "delta": -0.010703,
+        "alpha": "0.0",
+        "beta": "0.0",
+        "gamma": "0.0"
+      }
+    ]
+  }
+}

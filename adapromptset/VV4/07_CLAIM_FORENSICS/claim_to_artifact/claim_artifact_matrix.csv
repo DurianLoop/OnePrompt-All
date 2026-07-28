@@ -1,0 +1,93 @@
+Claim_ID,Claim_Text,Category,Code_Files,Data_Files,Report_Files,Has_Evidence,Evidence_Quality
+C-V4-0001,Visual prompting pipelines lack reference reliability estimation (RRE),Problem-definition,,,,No,None
+C-V4-0002,Swapping reference can change Dice from 0.82 to 0.02,Numerical,,,,No,None
+C-V4-0003,RRE is formalized as predicting probability of successful segmentation per refer,Problem-definition,,,,No,None
+C-V4-0004,Anti-correlation between instability and catastrophic failure: r=-0.49 for SAM-B,Statistical,,,,No,None
+C-V4-0005,Anti-correlation holds across 4 segmenters and 2 matchers,Cross-pipeline,src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py; src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0006,Three geometric hypotheses explain the anti-correlation via matching-map entropy,Mathematical,,,,No,None
+C-V4-0007,RAMP: dual-model selective predictor with supervised risk estimator (GB trees),Method,src\adapromptset\scripts\run_phaseU_ramp.py; src\adapromptset\scripts\run_phaseU_selective_prediction_baselines.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0008,RAMP reduces CFR by 37.5-84.4% at 80% coverage on MoNuSAC,Numerical,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0009,"RRN: lightweight learned estimator, AUROC=0.612, Dice@Top-3=0.525",Numerical,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0010,First reference selection benchmark established,Novelty,,,,No,None
+C-V4-0011,"Frozen top-K pipeline (DINOv2-L+SAM-B, Dice=0.446) outperforms GF-SAM (0.388), M",Comparative,,,,No,None
+C-V4-0012,RAMP uses coverage-based ranking without fixed probability threshold,Calibration,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0013,RRN narrows gap between similarity-based selection and oracle upper bound,Comparative,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0014,14% of MoNuSAC queries experience catastrophic failure from at least one referen,Numerical,,,,No,None
+C-V4-0015,"GF-SAM (NeurIPS 2024 Spotlight), MAUP (MICCAI 2025), SynPo (MICCAI 2025), Matche",Literature,src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0016,None of the existing methods address whether the reference is reliable,Literature,,,,No,None
+C-V4-0017,RRE is practically important and theoretically interesting,Novelty,,,,No,None
+C-V4-0018,Anti-correlation is a universal property of the two-stage pipeline architecture,Novelty,,,,No,None
+C-V4-0019,Instability and catastrophic failure are anti-correlated across 4 segmenters and,Cross-pipeline,src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py; src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0020,Entropy of matching map explains the anti-correlation,Mathematical,,,,No,None
+C-V4-0021,"RAMP: risk-adaptive weighting, adaptive prompt config, risk-stratified consensus",Method,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0022,RRN: 5 pipeline features → reliability score via MLP,Method,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0023,First reference selection benchmark with 6 strategies across 3 medical + 2 natur,Novelty,,,,No,None
+C-V4-0024,Deployment envelope: catastrophic prevalence 5-60%,Deployment,,,,No,None
+C-V4-0025,"Paper has threefold contributions: problem, analytical, method",Novelty,,,,No,None
+C-V4-0026,SAM family enables segmentation through spatial prompts without task-specific tr,Literature,,,,No,None
+C-V4-0027,All prompt generation methods share: matcher→features→correspondence→prompts,Literature,src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0028,Reference reliability is a dimension orthogonal to prompt quality,Novelty,,,,No,None
+C-V4-0029,"Selective prediction methods (MC Dropout, Deep Ensembles) capture epistemic unce",Literature,src\adapromptset\scripts\run_phaseU_selective_prediction_baselines.py; src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py,,,Yes,Partial
+C-V4-0030,RRE is the first to define and benchmark reference reliability estimation as a s,Novelty,,,,No,None
+C-V4-0031,SAM-L (312M) reduces instability prevalence by 76% vs SAM-B (94M) but increases ,Numerical,,,,No,None
+C-V4-0032,H1: Matching map concentration is associated with prompt spatial dispersion,Mathematical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0033,"H2: When prompts are systematically mispositioned, catastrophic failure is more ",Mathematical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0034,H3: Instability and catastrophic failure carry dissociated information from diff,Mathematical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0035,"H1 tested: entropy-instability r=-0.446, p<0.001",Statistical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0036,"H2: non-monotonic entropy-CFR relationship, mid-entropy most dangerous",Mathematical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0037,"H3: f1 dominates instability (32% importance), f4 dominates catastrophic (55% im",Numerical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0038,"Control A: split-reference r=-0.51, 95% CI [-0.55, -0.44]",Statistical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0039,"Control B: GT-free instability r=-0.59 with GT-based CFR, p<0.001",Statistical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0040,Control C: Null 1 (random beta) r=-0.58; Null 2 (shuffled) r=+0.64; Null 3 (unif,Statistical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0041,Control D: partial correlation r_partial=-0.25 after controlling mean Dice,Statistical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0042,"Anti-correlation described as empirical association, not structural theorem",Statistical,src\adapromptset\scripts\run_phaseU_theory_figures.py,,,Yes,Partial
+C-V4-0043,"P1-P4: matcher independence, segmenter modulation, cross-pipeline dissociation, ",Mathematical,src\adapromptset\scripts\run_phaseU_theory_figures.py; src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py; src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0044,"Reference-resampling protocol: K=6 references, S=5 seeds, 30 triples per query",Method,,,,No,None
+C-V4-0045,"Episode-level metrics: mean Dice, best-worst gap, CFR; binary labels: instabilit",Method,,,,No,None
+C-V4-0046,"Five pipeline features: f1 entropy, f2 similarity, f3 dispersion, f4 mask consis",Method,,,,No,None
+C-V4-0047,"RAMP uses gradient-boosted trees with f1-f4, separate models for instability and",Method,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0048,"RAMP has three components: risk-adaptive weighting, adaptive prompt config, risk",Method,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0049,"RAMP is post-hoc: segmenter runs first, then risk predictor decides accept/absta",Method,src\adapromptset\scripts\run_phaseU_ramp.py; src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0050,"RRN: MLP [5→64→32→1] + ReLU + Sigmoid, trained with BCE on 70/15/15 split",Method,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0051,"RRN training: Adam lr=1e-3, batch 64, early stopping patience 20",Method,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0052,"2x2 factorial (Matcher: DINOv2-L/B × Segmenter: SAM-B/SAM2-T), mixed-effects ANO",Method,src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py; src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py; src\adapromptset\scripts\run_phaseU_wp4_dinov2b_sam2t.py,,,Yes,Partial
+C-V4-0053,"Wilcoxon signed-rank with Holm correction, bootstrap 95% CI (10k resamples), Coh",Statistical,,,,No,None
+C-V4-0054,"MoNuSAC: 80 training queries, 5 seeds, 6 refs, 3 prompt configs, 7200 ref assign",Numerical,,,,No,None
+C-V4-0055,Pascal-5i: 4 folds × 5 classes; COCO-20i: 4 folds × 20 classes,Cross-dataset,,,,No,None
+C-V4-0056,"Table 1 (WP1): All 4 segmenters Inst_AUC≥0.994, Cat_AP≥0.893",Numerical,src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py,,,Yes,Partial
+C-V4-0057,"SAM2-S CFR_Red=38.9%, P_Cat=0.196 (weakest)",Numerical,,,,No,None
+C-V4-0058,"Table 2 (WP2): Matcher independence Δ<0.001, p>0.05",Statistical,src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0059,"Table 3 (WP4): Matcher F(1,237)=0.12 p=0.73, Segmenter F(1,237)=28.4 p<0.001",Statistical,src\adapromptset\scripts\run_phaseU_wp1_segmenter_audit.py; src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py,,,Yes,Partial
+C-V4-0060,"Table 5 (refsel): RRN Dice@Top-3=0.525 vs similarity 0.516, oracle 0.588",Numerical,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0061,RRN per-reference AUROC=0.612,Numerical,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0062,"Table 4 (RAMP): CFR reduction 55.9% (L+SAM-B), 84.4% (L+SAM-L), 37.5% (L+SAM2-T)",Numerical,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0063,M2_Inst is anti-informative: -11% to -16% CFR reduction,Numerical,,,,No,None
+C-V4-0064,"Table 6 (comparison): GF-SAM Dice=0.388, MAUP=0.279, CycleSAM=0.412, H-SAM=0.405",Comparative,,,,No,None
+C-V4-0065,"RAMP CFR reduction 55.9% vs MC Dropout 10.7%, Deep Ensemble 6.3%",Comparative,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0066,"Cross-dataset: MoNuSeg prevalence 0%, IDRID prevalence 80.7%",Cross-dataset,,,,No,None
+C-V4-0067,"Deployment envelope: effective when prevalence ∈ [5%, 60%]",Deployment,,,,No,None
+C-V4-0068,"Component ablation: weighting Δ=12.3%, prompt config Δ=18.7%, consensus Δ=8.4%",Numerical,,,,No,None
+C-V4-0069,Feature ablation: removing f4 drops Cat_AP from 0.966 to 0.250,Numerical,,,,No,None
+C-V4-0070,"Reference count: K=2→29.4%, K=6→55.9%, K=8→58.7% CFR reduction",Numerical,,,,No,None
+C-V4-0071,"Cross-domain: Pascal-5i r=-0.51, COCO-20i r=-0.47, both p<0.001",Statistical,,,,No,None
+C-V4-0072,"Pascal-5i RAMP CFR_Red=42.3%, COCO-20i CFR_Red=38.7%",Numerical,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0073,"Factorial ANOVA confirms matcher has no effect (p=0.73), bottleneck downstream",Statistical,src\adapromptset\scripts\run_phaseU_wp2_matcher_audit.py; src\adapromptset\scripts\run_phaseU_wp4_dinov2b_sam2t.py,,,Yes,Partial
+C-V4-0074,Feature dissociation between f1 and f4 confirms two failure modes operate at dif,Mathematical,,,,No,None
+C-V4-0075,Cross-domain validation on Pascal-5i and COCO-20i strengthens geometric claim,Cross-dataset,,,,No,None
+C-V4-0076,Similarity-based strategies only marginally better than random for reference sel,Numerical,,,,No,None
+C-V4-0077,Simple top-K pipeline outperforms GF-SAM and MAUP on dense segmentation,Comparative,,,,No,None
+C-V4-0078,SAM-Med2D medical fine-tuning does not address reference-induced failure,Comparative,,,,No,None
+C-V4-0079,Deployment envelope criterion can be estimated from small unlabeled sample,Deployment,,,,No,None
+C-V4-0080,RRN provides bootstrapping pathway from zero-shot to few-shot reliability estima,Method,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0081,"Cross-dataset uses 30 queries per dataset, limiting statistical power",Reproducibility,,,,No,None
+C-V4-0082,Natural image experiments use single fold (fold-0) only,Reproducibility,,,,No,None
+C-V4-0083,"External methods use different backbones (GF-SAM/MAUP: SAM-H, H-SAM: SAM-L)",Comparative,src\adapromptset\scripts\run_phaseU_external_gfsam.py; src\adapromptset\scripts\run_phaseU_external_maup.py,,,Yes,Partial
+C-V4-0084,RAMP requires labeled multi-reference data for training,Reproducibility,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0085,RRN uses single 70/15/15 split with only 12 test queries,Reproducibility,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0086,Features require multiple reference runs; single-reference estimation remains op,Method,,,,No,None
+C-V4-0087,Component ablation did not properly isolate individual components,Reproducibility,,,,No,None
+C-V4-0088,RRE identified as missing component in visual prompting pipelines,Novelty,,,,No,None
+C-V4-0089,RAMP achieves 37.5-84.4% CFR reduction at 80% coverage,Numerical,src\adapromptset\scripts\run_phaseU_ramp.py,,reports\phaseU_ramp\ramp_results.json,Yes,Strong
+C-V4-0090,"RRN achieves AUROC=0.612, Dice@Top-3=0.525",Numerical,src\adapromptset\scripts\run_phaseU_rrn.py,,reports\phaseU_rrn\rrn_results.json,Yes,Strong
+C-V4-0091,"Reference-induced failure is a general phenomenon, not medical imaging artifact",Cross-dataset,,,,No,None
+C-V4-0092,Deployment envelope provides practical screening criterion,Deployment,,,,No,None

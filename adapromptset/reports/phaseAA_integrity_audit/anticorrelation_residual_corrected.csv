@@ -1,0 +1,10 @@
+pipeline,r_observed,p_observed,r_null_null1,delta_r_corrected,delta_r_ci_95_low,delta_r_ci_95_high,p_permutation,holm_corrected,correct_significant
+L+SAM-B,-0.512,<0.001,-0.583,+0.071,TBD,TBD,TBD,YES,NO (residual is positive)
+B+SAM-B,-0.549,<0.001,-0.583,+0.034,TBD,TBD,TBD,YES,NO (residual is positive)
+L+SAM-L,-0.221,0.049,TBD,TBD,TBD,TBD,TBD,NO,NO
+L+SAM2-T,-0.111,0.325,TBD,TBD,TBD,TBD,TBD,NO,NO
+L+SAM2-S,-0.179,0.113,TBD,TBD,TBD,TBD,TBD,NO,NO
+
+Note: The corrected Δr for SAM-B pipelines is POSITIVE (+0.071 and +0.034), meaning the observed anti-correlation is WEAKER than the null model predicts. This contradicts the Phase W claim of a "significant structural residual." The Phase W bug (r_null=0.0) made Δr = r_observed, falsely suggesting a strong structural effect.
+
+The correct interpretation: the anti-correlation between instability and CFR is a MECHANICAL artefact of mean Dice level, not a structural property of the pipeline. The "structural" residual is in the wrong direction.

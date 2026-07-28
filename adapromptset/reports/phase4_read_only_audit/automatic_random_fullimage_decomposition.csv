@@ -1,0 +1,5 @@
+family,automatic_metric,matched_random_metric,automatic_minus_random,full_image_foreground_recall,full_image_precision,full_image_background_spill,automatic_area_ratio,interpretation
+R00_direct_matching_mask,0.17875410077174622,0.5950752888714109,-0.4163211880996647,1.000000,0.537079,0.462921,0.053841748532868224,undercoverage_or_low_raw_mask_quality
+R03_automatic_union_box,0.7447848837766036,0.7188198047016523,0.025965079074951342,1.000000,0.537079,0.462921,0.6980662681434883,large_box_prior_confounded
+R04_automatic_largest_component_box,0.019409747984548625,0.017211203236751075,0.0021985447477975524,1.000000,0.537079,0.462921,0.017627072742902858,undercoverage_or_low_raw_mask_quality
+R05_automatic_top3_component_boxes,0.2717468468691182,0.25517906758193165,0.016567779287186512,1.000000,0.537079,0.462921,0.03606187544411483,undercoverage_or_low_raw_mask_quality

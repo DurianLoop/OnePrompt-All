@@ -147,7 +147,6 @@ def run_route_b_ddr_stratified_matcher(
         "intent",
         "query_unit_id",
         "query_image_id",
-        "query_image_path",
         "query_mask_path",
         "reference_unit_id",
         "reference_image_id",

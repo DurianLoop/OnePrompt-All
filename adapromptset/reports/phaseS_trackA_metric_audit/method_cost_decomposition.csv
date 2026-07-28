@@ -1,0 +1,7 @@
+method,hyperparam,mean_dice,mean_runtime_ms,n_sam_calls_per_query,total_sam_calls,n_queries
+B1_random,,0.429655,10.026927,1,41,41
+B2_mean,,0.475608,8.978390,1,41,41
+B3_median,,0.440828,13.545000,1,41,41
+B4_trimmed,,0.457839,9.571098,1,41,41
+B5_disagreement,0.25,0.463104,9.675951,1,41,41
+B6_quantile,0.83,0.454360,9.775146,1,41,41

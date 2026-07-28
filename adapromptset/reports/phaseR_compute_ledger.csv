@@ -1,0 +1,8 @@
+stage,date,gpu_hours,device,description
+historical_audit,2026-07-22,0.00,cpu,Phase R0 read-only audit (8 files)
+reference_pool_audit,2026-07-22,0.00,cpu,Reference pool sufficiency check
+manifest_build,2026-07-22,0.00,cpu,Train resampling + validation A/B manifests
+preregistration,2026-07-22,0.00,cpu,All preregistration documents
+gateR1,2026-07-22,0.13935,cuda,80 queries x 5 seeds x 6 refs x 3 configs = 7200 SAM calls
+gateR2,2026-07-22,0.07546,cuda,80 train (5 seeds x 3 configs x 10 variants) + 41 val (3 configs x multi-method) = 3138 SAM calls
+total,2026-07-22,0.21481,,Phase R total GPU usage (R1 + R2)

@@ -1,0 +1,51 @@
+\documentclass[11pt,twocolumn]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{times}
+\usepackage{url}
+\emergencystretch=2em
+
+\pdfinfo{
+  /Title (When Prompt Interfaces Fail: A Gated Study of Reference-Guided Foundation Segmentation in Pathology)
+  /Author (Internal AdaPromptSet Phase 3 Draft)
+  /Subject (GlaS automatic region prompt feasibility)
+  /Keywords (SAM, DINOv2, region prompts, medical image segmentation, gated validation)
+}
+
+\title{When Prompt Interfaces Fail:\\A Gated Study of Reference-Guided Foundation Segmentation in Pathology}
+\author{Internal AdaPromptSet Phase 3 Draft}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\input{sections/00_abstract}
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_protocol}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_limitations}
+\input{sections/07_reproducibility}
+\input{sections/08_conclusion}
+\input{sections/09_artifact_index}
+
+\begin{thebibliography}{9}
+\bibitem{sam}
+Kirillov et al. Segment Anything. ICCV, 2023.
+
+\bibitem{dinov2}
+Oquab et al. DINOv2: Learning Robust Visual Features without Supervision. TMLR, 2024.
+
+\bibitem{glas}
+Sirinukunwattana et al. Gland Segmentation in Colon Histology Images: The GlaS Challenge Contest. Medical Image Analysis, 2017.
+
+\bibitem{medsam}
+Ma et al. Segment Anything in Medical Images. Nature Communications, 2024.
+
+\bibitem{matcher}
+Liu et al. One-shot object localization and reference-guided segmentation with frozen visual features. Reference-guided segmentation family, 2023.
+\end{thebibliography}
+
+\end{document}

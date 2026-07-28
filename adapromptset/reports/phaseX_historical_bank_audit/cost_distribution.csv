@@ -1,0 +1,13 @@
+action_id,action_family,episode_count,mean_sam_calls,mean_decoder_calls,mean_cache_hits,mean_runtime_ms,max_runtime_ms,min_runtime_ms
+A_top3_one_group,single_group_positive,10,1.0,1.0,0.0,34.3329,60.342,28.161
+B_top3_pos1neg,single_group_positive_negative,10,1.0,1.0,0.0,40.8428,62.675,28.304
+B_top5_pos3neg,single_group_positive_negative,10,1.0,1.0,0.0,41.4394,70.897,27.016
+B_top5_pos1neg,single_group_positive_negative,10,1.0,1.0,0.0,42.064,69.32,25.17
+B_top3_pos3neg,single_group_positive_negative,10,1.0,1.0,0.0,48.8868,69.81,28.296
+A_top5_one_group,single_group_positive,10,1.0,1.0,0.0,49.0305,75.867,29.141
+A_top1_one_group,single_group_positive,10,1.0,1.0,0.0,61.8901,211.929,25.936
+R_split5_2groups,rescue_split_groups,10,2.0,1.0,1.0,91.08070000000001,119.945,66.832
+R_split5_2groups_localneg,rescue_group_specific_negatives,10,2.0,2.0,0.0,107.0628,187.636,72.094
+C_top3_independent,independent_positive_groups,10,3.0,2.0,1.0,175.0818,221.629,111.13
+C_top5_independent,independent_positive_groups,10,5.0,2.0,3.0,390.78630000000004,474.409,265.853
+R_top5_independent_localneg,rescue_group_specific_negatives,10,5.0,5.0,0.0,448.45079999999996,597.892,300.512

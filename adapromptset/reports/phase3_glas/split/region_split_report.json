@@ -1,0 +1,44 @@
+{
+  "artifacts": {
+    "calibration_csv": "manifests/phase3/glas_region_calibration_40.csv",
+    "references_csv": "manifests/phase3/glas_region_references.csv",
+    "report_json": "reports/phase3_glas/split/region_split_report.json",
+    "report_md": "reports/phase3_glas/split/region_split_report.md",
+    "selection_csv": "manifests/phase3/glas_region_selection_15.csv"
+  },
+  "component_bin_counts": {
+    "region_calibration": {
+      "high_component_count": 13,
+      "low_component_count": 15,
+      "mid_component_count": 12
+    },
+    "region_selection": {
+      "high_component_count": 5,
+      "low_component_count": 5,
+      "mid_component_count": 5
+    }
+  },
+  "counts": {
+    "locked_test_cases_used": 0,
+    "references": 165,
+    "region_calibration": 40,
+    "region_selection": 15
+  },
+  "grade_counts": {
+    "region_calibration": {
+      "benign": 17,
+      "malignant": 23
+    },
+    "region_selection": {
+      "benign": 7,
+      "malignant": 8
+    }
+  },
+  "references_per_query": 3,
+  "schema_version": "adapromptset.phase3.glas_region_split.v1",
+  "seed": 20260719,
+  "source_assignments": "D:\\SAM\\adapromptset\\manifests\\phase2\\glas\\case_assignments.csv",
+  "source_assignments_sha256": "0E3B35444993DE858DA59F92E1F00DB126A5E7A85E2FC77252C347FF3E322A34",
+  "status": "PASS_PHASE3_GLAS_REGION_40_15_SPLIT",
+  "testA_testB_access": false
+}

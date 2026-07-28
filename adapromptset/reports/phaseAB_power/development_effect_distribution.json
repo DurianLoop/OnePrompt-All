@@ -1,0 +1,7 @@
+{
+  "n_queries": 80,
+  "b4_aurc": 0.015804558486673743,
+  "cfr_baseline": 0.1375,
+  "catastrophic_events": 11,
+  "catastrophic_prevalence": 0.1375
+}

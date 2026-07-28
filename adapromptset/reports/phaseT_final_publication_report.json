@@ -1,0 +1,298 @@
+{
+  "report": "Phase T Final Publication Report",
+  "date": "2026-07-23",
+  "branch": "phaseT-publication-completion",
+  "directive": "D:/SAM/adapromptset/reports/AdaPromptSet_PhaseT_Publication_Completion.md",
+  "section": 24,
+  "final_state": "PHASET_BENCHMARK_NEEDS_MORE_EVIDENCE",
+  "questions": {
+    "Q1_monusac_holdout_confirmed": {
+      "answer": "YES",
+      "state": "PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED",
+      "n_conditions_pass": "10/10",
+      "evidence": "reports/phaseT_wp1_holdout/gateWP1_summary.md",
+      "key_metrics": {
+        "n_holdout_queries": 40,
+        "n_seeds": 10,
+        "pct_queries_best_worst_gap_ge_0p05": 0.925,
+        "mean_within_query_ref_std_k1": 0.0742,
+        "v_ref_frac_per_config": {"P20-N1": 0.2627, "P30-N0": 0.211, "P50-N0": 0.1264},
+        "patient_disjoint_violations": 0
+      }
+    },
+    "Q2_mean_consensus_beats_random_single": {
+      "answer": "YES on MoNuSAC holdout and MoNuSeg; NO on IDRID",
+      "results": {
+        "monusac_holdout": {"consensus_k6_dice": 0.5058, "single_k1_dice": 0.4792, "gain": 0.0266, "bootstrap_ci_lower": 0.014, "pass": true},
+        "monuseg": {"consensus_k6_dice": 0.5097, "single_k1_dice": 0.4948, "gain": 0.0149, "bootstrap_ci_lower": 0.0069, "pass": true},
+        "idrid": {"consensus_k6_dice": 0.0904, "single_k1_dice": 0.1022, "gain": -0.0118, "bootstrap_ci_lower": -0.0318, "pass": false}
+      }
+    },
+    "Q3_corrected_metrics": {
+      "monusac_holdout_P30_N0": {
+        "k1": {"V_ref": 0.008818, "V_ref_frac": 0.211, "mean_ref_std": 0.077195, "best_worst_gap": 0.21412, "CVaR_0.1": 0.075086, "CFR": 0.0633},
+        "k3": {"V_ref": 0.007938, "V_ref_frac": 0.1843, "mean_ref_std": 0.07275, "best_worst_gap": 0.230197, "CVaR_0.1": 0.093938, "CFR": 0.0575},
+        "k6": {"V_ref": 0.00679, "V_ref_frac": 0.159, "mean_ref_std": 0.061878, "best_worst_gap": 0.196472, "CVaR_0.1": 0.10265, "CFR": 0.0575}
+      },
+      "v_ref_frac_range_all_configs_k1": [0.1264, 0.2627],
+      "phase_S_corrected_range": [0.1376, 0.3312],
+      "consistency": "within_valid_range"
+    },
+    "Q4_reference_count_cost_curve": {
+      "monusac_holdout_avg": {
+        "k1": {"mean_dice": 0.4792, "CVaR_0.1": 0.0751, "CFR": 0.0633, "mean_worst": 0.301, "ref_passes": 1},
+        "k3": {"mean_dice": 0.501, "CVaR_0.1": 0.0939, "CFR": 0.0575, "mean_worst": 0.3718, "ref_passes": 3},
+        "k6": {"mean_dice": 0.5058, "CVaR_0.1": 0.1027, "CFR": 0.0575, "mean_worst": 0.4004, "ref_passes": 6}
+      },
+      "dice_saturation": "gain_1_to_3=+0.024, gain_3_to_6=+0.005",
+      "sam_calls": 1,
+      "pareto_table": "reports/phaseT_tables/table_12_cost_quality_pareto_m1.md"
+    },
+    "Q5_supporting_datasets": {
+      "monuseg": {
+        "state": "PHASET_DATASET_STRONG_SUPPORT",
+        "directional_pass": "5/5",
+        "strong_pass": "4/4",
+        "consensus_gain": 0.0149,
+        "best_spearman": 0.8266,
+        "evidence": "reports/phaseT_wp2_monuseg/gateWP2_summary.md"
+      }
+    },
+    "Q6_unsupported_datasets": {
+      "idrid": {
+        "state": "PHASET_DATASET_FAIL",
+        "directional_pass": "4/5",
+        "strong_pass": "2/4",
+        "consensus_gain": -0.0118,
+        "bootstrap_ci_lower": -0.0318,
+        "d3_fail_reason": "consensus k=6 Dice 0.0904 < single k=1 Dice 0.1022; mutually-destructive consensus on sparse vascular lesions",
+        "evidence": "reports/phaseT_wp2_idrid/gateWP2_summary.md"
+      }
+    },
+    "Q7_external_methods_reproduced": {
+      "answer": "NONE",
+      "n_reproduced": 0,
+      "tier2_reproducible_pending_authorization": ["GF-SAM", "MAUP"],
+      "tier3_no_code": ["SynPo", "ProSAM"],
+      "tier4_not_applicable": ["SAMIX", "AlignSAM", "Point Prompt Defender"],
+      "evidence": "reports/phaseT_external_baselines/comparator_availability.csv, reports/phaseT_external_baselines/unsupported_comparators.md"
+    },
+    "Q8_external_methods_instability": {
+      "answer": "UNKNOWN - no external method reproduced",
+      "note": "No fabricated numerical results. Concept comparison only in reports/phaseT_novelty_audit.md and reports/phaseT_mock_review.md."
+    },
+    "Q9_dynamic_budget_effective": {
+      "answer": "NO",
+      "state": "PHASET_M1_DYNAMIC_BUDGET_NO_GAIN",
+      "best_model": "M1-3_handcrafted_threshold",
+      "selected_lambda_c": 0.0,
+      "selected_lambda_r": 0.0,
+      "policy_avg_k": 5.6341,
+      "reduction_vs_k6": 0.061,
+      "cost_saving_mode_pass": false,
+      "quality_cost_mode_pass": false,
+      "root_cause": "CV selects zero cost/quality penalties; cost-quality utility surface flat near k=6",
+      "evidence": "reports/phaseT_wp3_m1/m1_gate_summary.json"
+    },
+    "Q10_selective_prediction_effective": {
+      "answer": "YES",
+      "state": "PHASET_M2_SELECTIVE_PREDICTION_PASS",
+      "val_conditions_pass": "5/5",
+      "approach": "dual_model (instability + catastrophic)",
+      "val_metrics": {
+        "instability_AUROC": 0.9443,
+        "catastrophic_AUPRC": 0.4338,
+        "prevalence_catastrophic": 0.1171,
+        "ECE": 0.0425,
+        "CFR_reduction_at_80pct": 0.392,
+        "dice_change_at_80pct": 0.0214
+      },
+      "evidence": "reports/phaseT_wp3_m2/m2_gate_summary.json"
+    },
+    "Q11_holdout_confirmed_mitigation": {
+      "answer": "YES",
+      "state": "PHASET_M2_SELECTIVE_PREDICTION_PASS",
+      "holdout_conditions_pass": "6/6",
+      "holdout_metrics": {
+        "AUROC_instability": 0.9283,
+        "AUPRC_catastrophic": 0.5277,
+        "prevalence_catastrophic": 0.05,
+        "ECE": 0.027,
+        "CFR_reduction_at_80pct": 0.7917,
+        "dice_change_at_80pct": 0.009,
+        "cond6_direction_consistent": true
+      },
+      "frozen_model": "reports/phaseT_wp3_m2/m2_model.pkl",
+      "evidence": "reports/phaseT_wp3_m2_holdout/m2_holdout_summary.json",
+      "supplementary_cross_dataset_transfer": {
+        "note": "Not a gate condition. Supplementary evidence for M2 generalizability.",
+        "monuseg": {"AUROC": 0.874, "AUPRC_cat": 0.0, "ECE": 0.0601, "CFR_reduction": 0.0, "dice_change": 0.0131, "note": "0 catastrophic failures; AUPRC/CFR vacuously 0"},
+        "idrid": {"AUROC": 0.9938, "AUPRC_cat": 0.9973, "ECE": 0.4767, "CFR_reduction": 0.0599, "dice_change": 0.0128, "note": "ranking transfers, calibration does NOT"},
+        "key_finding": "M2 ranking transfers (AUROC 0.87-0.99) but calibration does NOT transfer to IDRID (ECE 0.48 >> 0.10)",
+        "evidence": "reports/phaseT_wp3_m2_transfer/m2_transfer_summary.json"
+      }
+    },
+    "Q12_strongest_automatic_method": {
+      "name": "M2 dual-model selective prediction (M2-2 logistic regression)",
+      "val_AUROC": 0.9443,
+      "val_AUPRC": 0.4338,
+      "val_CFR_reduction_80pct": 0.392,
+      "holdout_AUROC": 0.9283,
+      "holdout_AUPRC": 0.5277,
+      "holdout_CFR_reduction_80pct": 0.7917,
+      "note": "M2 improves reliability via abstention; does NOT improve top-line Dice. Strongest aggregation method is B2 Mean Consensus."
+    },
+    "Q13_strongest_deterministic_baseline": {
+      "name": "B2 Mean Consensus (k=6)",
+      "monusac_holdout": {"dice": 0.5058, "CVaR_0.1": 0.1027, "CFR": 0.0575},
+      "gain_vs_B1_random_single": {"dice": 0.0266, "CVaR_0.1": 0.0276, "CFR": -0.0058},
+      "beats": ["B3 Median", "B4 Trimmed Mean", "B5 Disagreement-Penalized", "B6 Quantile Consensus", "B7 Phase S Learned Weighting"],
+      "sam_calls": 1,
+      "dinov2_matching_passes": 6
+    },
+    "Q14_benchmark_only_ready": {
+      "answer": "NO",
+      "conditions_pass": [1, 3, 4, 6, 8, 9, 10, 11, 12],
+      "conditions_fail": [2, 5],
+      "cond_3_note": "PASS under section 7.3 Option C (sufficient justification + B1-B7 alternative strong baselines; lowered positioning)",
+      "blockers": [
+        "only 1 of 2 required cross-dataset directional supports (IDRID fails)",
+        "mean consensus gain not directionally stable across all datasets (IDRID reverses)"
+      ]
+    },
+    "Q15_hybrid_paper_ready": {
+      "answer": "NO",
+      "additional_pass": [7],
+      "still_fail": [2, 5],
+      "note": "M2 selective prediction is holdout-confirmed on MoNuSAC. M2 cross-dataset transfer shows ranking transfers (AUROC 0.87-0.99) but calibration does NOT transfer to IDRID."
+    },
+    "Q16_missing_experiments": [
+      "Add >=1 more supporting dataset (GlaS local NOT_AVAILABLE, or non-medical Pascal-5i/COCO-20i); addresses conditions 2 and 5; requires user authorization per section 23.1/23.9",
+      "WP2b - Reproduce >=1 external method (GF-SAM and/or MAUP) to upgrade cond 3 from Option C to Option A/B; requires user authorization to download external code (section 23.1)",
+      "Re-test M2 on the new dataset (M2 cross-dataset transfer to MoNuSeg/IDRID already done - see Q11 supplementary)",
+      "Optional: target-domain M2 recalibration (transfer shows ranking transfers but calibration does NOT)",
+      "Optional: re-test M1 dynamic budget on a dataset where cost-quality trade-off may be more favorable"
+    ],
+    "Q17_recommended_submission_type": {
+      "type": "Benchmark / failure-boundary paper with selective prediction as secondary risk-awareness contribution",
+      "primary_contribution": "reference-induced instability benchmark with correct variance decomposition, tail-risk metrics, unified reference-resampling protocol",
+      "secondary_contribution": "mean consensus strong baseline + M2 selective prediction reliability layer",
+      "venue_fit": ["MICCAI", "Medical Image Analysis", "IEEE TMI", "NeurIPS Datasets & Benchmarks"],
+      "positioning": "NOT a method paper claiming to solve instability. Frames instability as measurable, predictable, but only partially mitigable.",
+      "condition": "Requires addressing missing experiments in Q16 first"
+    },
+    "Q18_recommended_title": {
+      "primary": "Reference-Induced Instability in Visual-Reference SAM Segmentation: A Multi-Dataset Benchmark and Risk-Aware Selective Mitigation",
+      "alternatives": [
+        "How Much Does the Reference Matter? A Variance-Decomposition Benchmark for Visual-Reference Medical Segmentation",
+        "Predictable but Not Solvable: Reference Instability and Selective Abstention for Frozen SAM Segmentation"
+      ],
+      "prohibited_phrases": ["SOTA", "solving", "universal"]
+    },
+    "Q19_core_contributions": [
+      "Phenomenon & metrics: reference-induced instability definition with corrected variance decomposition (V_ref, V_ref_frac), tail-risk metrics (CVaR_0.1, CVaR_0.2, CFR, best-worst gap), prediction consistency (J_pred, MAD_ref). Phase S V_ref bug fixed.",
+      "Unified reference-resampling protocol: patient-disjoint, k in {1,3,6}, 10 seeds, 3 prompt configs, shared across datasets, frozen before holdout.",
+      "Confirmatory benchmark on unseen MoNuSAC holdout (n=40): 10/10 WP1 gate conditions pass.",
+      "Cross-dataset evidence: MoNuSeg STRONG_SUPPORT (9/9); IDRID FAIL - establishes instability is real/predictable but mean-consensus mitigation is dataset-dependent, NOT universal.",
+      "Strong deterministic baseline: B2 Mean Consensus k=6 improves Dice +0.0266, CVaR +0.0276, CFR -0.0058 on MoNuSAC holdout, with 1 SAM call.",
+      "Risk-aware mitigation: M2 dual-model selective prediction (separate instability + catastrophic models) - AUROC 0.94 val / 0.93 holdout, AUPRC 0.43 val / 0.53 holdout, CFR reduction 39.2% val / 79.2% holdout at 80% coverage. Dual-model design necessary because labels are anti-correlated.",
+      "Failure taxonomy: 4 modes - small-sparse-target, diffuse-map, prompt-interface, reference-catastrophic.",
+      "Negative results: M1 dynamic budget NO_GAIN (CV selects zero penalties); Phase S learned weighting does not beat uniform mean (-0.0024 Dice)."
+    ],
+    "Q20_prohibited_claims": [
+      "SOTA",
+      "SUBMISSION_READY",
+      "PUBLICATION_COMPLETED",
+      "universal across datasets",
+      "instability solved",
+      "M1 / dynamic budget is effective",
+      "learned weighting beats uniform mean",
+      "external methods reproduced",
+      "formal test accessed",
+      "consensus improves Dice on all datasets",
+      "M2 generalizes across datasets"
+    ],
+    "Q21_formal_test_warranted": {
+      "answer": "NOT YET",
+      "reason": "PHASET_PAPER_CANDIDATE_READY blocked by conditions 2, 3, 5. Formal test access requires the candidate-ready state plus user approval (directive section 21).",
+      "prerequisites": [
+        "Address Q16 missing experiments",
+        "Generate docs/phaseU_formal_test_freeze.md, configs/frozen/phaseU_final_benchmark.yaml, reports/phaseU_test_hashes.json, reports/phaseU_statistical_plan.md, reports/phaseU_qualitative_plan.md",
+        "User approval"
+      ],
+      "if_blocked_permanently": "If conditions 2, 3, 5 cannot be addressed, formal test access is NOT warranted. Position paper as benchmark with holdout-confirmed mitigation on a single dataset."
+    },
+    "Q22_key_artifacts": {
+      "directive": "reports/AdaPromptSet_PhaseT_Publication_Completion.md",
+      "wp1_holdout_gate": "reports/phaseT_wp1_holdout/gateWP1_summary.{json,md}",
+      "wp2_monuseg_gate": "reports/phaseT_wp2_monuseg/gateWP2_summary.{json,md}",
+      "wp2_idrid_gate": "reports/phaseT_wp2_idrid/gateWP2_summary.{json,md}",
+      "wp3_m1_gate": "reports/phaseT_wp3_m1/m1_gate_summary.{json,md}",
+      "wp3_m2_val_gate": "reports/phaseT_wp3_m2/m2_gate_summary.{json,md}",
+      "wp3_m2_holdout_gate": "reports/phaseT_wp3_m2_holdout/m2_holdout_summary.{json,md}",
+      "m2_frozen_model": "reports/phaseT_wp3_m2/m2_model.pkl",
+      "m1_frozen_model": "reports/phaseT_wp3_m1/m1_model.pkl",
+      "cross_dataset_audit_dir": "reports/phaseT_cross_dataset_audit/",
+      "external_baselines_dir": "reports/phaseT_external_baselines/",
+      "tables_dir": "reports/phaseT_tables/ (table_01 through table_18)",
+      "figures_dir": "reports/phaseT_figures/ (fig_01 through fig_18)",
+      "novelty_audit": "reports/phaseT_novelty_audit.md",
+      "mock_review": "reports/phaseT_mock_review.md",
+      "rebuttal_plan": "reports/phaseT_rebuttal_plan.md",
+      "paper_dir": "paper/phaseT/ (full_draft.md + 15 section files)",
+      "claim_registry": ["docs/phaseT_claim_registry.md", "reports/phaseT_tables/table_18_claim_registry.md"],
+      "publication_readiness": "reports/phaseT_publication_readiness.md",
+      "test_lock_notice": "docs/phaseT_test_lock_notice.md",
+      "compute_ledger": "reports/phaseT_compute_ledger.csv",
+      "input_hashes": "reports/phaseT_input_hashes.json",
+      "program_status": "reports/phaseT_program_status.{md,json}",
+      "risk_register": "reports/phaseT_risk_register.md",
+      "protocol_snapshot": "reports/phaseT_protocol_snapshot.json",
+      "this_report_md": "reports/phaseT_final_publication_report.md",
+      "this_report_json": "reports/phaseT_final_publication_report.json"
+    },
+    "Q23_one_command_reproduction": {
+      "prerequisites": "conda env with numpy scipy scikit-learn pandas matplotlib pyyaml; local MoNuSAC, MoNuSeg, IDRID data per docs/phaseT_dataset_registry.md",
+      "commands": [
+        "cd D:/SAM/adapromptset",
+        "python src/adapromptset/scripts/run_phaseT_wp1_holdout.py --config configs/frozen/phaseT_monusac_benchmark.yaml --out-dir reports/phaseT_wp1_holdout",
+        "python src/adapromptset/scripts/run_phaseT_wp2_cross_dataset.py --dataset monuseg --out-dir reports/phaseT_wp2_monuseg",
+        "python src/adapromptset/scripts/run_phaseT_wp2_cross_dataset.py --dataset idrid --out-dir reports/phaseT_wp2_idrid",
+        "python src/adapromptset/scripts/run_phaseT_wp3_m1_dynamic_budget.py --train-dir reports/phaseT_wp3_train --val-dir reports/phaseT_wp3_validation --out-dir reports/phaseT_wp3_m1",
+        "python src/adapromptset/scripts/run_phaseT_wp3_m2_selective.py --train-dir reports/phaseT_wp3_train --val-dir reports/phaseT_wp3_validation --out-dir reports/phaseT_wp3_m2",
+        "python src/adapromptset/scripts/run_phaseT_wp3_m2_holdout.py --train-dir reports/phaseT_wp3_train --val-dir reports/phaseT_wp3_validation --holdout-dir reports/phaseT_wp1_holdout --frozen-model reports/phaseT_wp3_m2/m2_model.pkl --out-dir reports/phaseT_wp3_m2_holdout",
+        "python src/adapromptset/scripts/generate_phaseT_tables.py",
+        "python src/adapromptset/scripts/generate_phaseT_figures.py",
+        "Evaluate reports/phaseT_publication_readiness.md conditions 1-12. Expected final state: PHASET_BENCHMARK_NEEDS_MORE_EVIDENCE"
+      ],
+      "frozen_protocol_config": "configs/frozen/phaseT_monusac_benchmark.yaml",
+      "input_hashes": "reports/phaseT_input_hashes.json"
+    },
+    "Q24_final_state": {
+      "state": "PHASET_BENCHMARK_NEEDS_MORE_EVIDENCE",
+      "gate_pass_count": "10 of 12",
+      "pass_conditions": [1, 3, 4, 6, 7, 8, 9, 10, 11, 12],
+      "fail_conditions": [2, 5],
+      "fail_reasons": {
+        "2": "only 1 of 2 required cross-dataset directional supports (IDRID fails)",
+        "5": "mean consensus gain not directionally stable across all datasets (IDRID reverses: gain -0.0118)"
+      },
+      "cond_3_note": "PASS under section 7.3 Option C (sufficient justification + B1-B7 alternative strong baselines; lowered positioning)",
+      "m2_transfer_note": "M2 ranking transfers cross-dataset (AUROC 0.87-0.99) but calibration does NOT transfer to IDRID (ECE 0.48)",
+      "core_finding_solid": true,
+      "bottleneck": "breadth of cross-dataset evidence (conditions 2, 5), not core phenomenon quality",
+      "is_paper_candidate_ready": false,
+      "is_direction_supported": true,
+      "is_research_direction_not_supported": false,
+      "remaining_blockers_require_user_authorization": true
+    }
+  },
+  "prohibited_token_audit": {
+    "SOTA": "absent",
+    "SUBMISSION_READY": "absent",
+    "PUBLICATION_COMPLETED": "absent",
+    "universal across datasets": "absent (mentioned only as a prohibited claim)",
+    "instability solved": "absent (mentioned only as a prohibited claim)",
+    "PHASET_PAPER_CANDIDATE_READY_as_current_state": "absent (mentioned only as the blocked target state)"
+  }
+}

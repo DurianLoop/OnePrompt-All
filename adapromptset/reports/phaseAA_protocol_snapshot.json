@@ -1,0 +1,26 @@
+{
+  "date": "2026-07-27",
+  "branch": "phaseAA-simple-selective-confirmation",
+  "protocol_files": [
+    "docs/phaseAA_goal_read_receipt.md",
+    "docs/phaseAA_research_question.md",
+    "docs/phaseAA_data_role_protocol.md",
+    "docs/phaseAA_confirmatory_cohort_protocol.md",
+    "docs/phaseAA_prediction_consistency_definition.md",
+    "docs/phaseAA_selective_prediction_protocol.md",
+    "docs/phaseAA_baseline_protocol.md",
+    "docs/phaseAA_statistics_protocol.md",
+    "docs/phaseAA_external_replication_protocol.md",
+    "docs/phaseAA_claim_registry.md",
+    "docs/phaseAA_test_lock_notice.md"
+  ],
+  "primary_method": "Prediction Consistency + Coverage-Based Abstention",
+  "development_cohort": "80 MoNuSAC queries",
+  "pipelines": [
+    "DINOv2-L+SAM-B",
+    "DINOv2-B+SAM-B",
+    "DINOv2-L+SAM-L",
+    "DINOv2-L+SAM2-Tiny",
+    "DINOv2-L+SAM2-Small"
+  ]
+}

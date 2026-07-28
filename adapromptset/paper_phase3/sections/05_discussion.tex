@@ -1,0 +1,9 @@
+\section{Discussion}
+
+The strongest evidence in Phase 3 is negative but useful. It shows that a reference-conditioned region-prompt route cannot be assumed simply because privileged GT boxes work. The frozen DINOv2-L/local-peaks evidence can find high-precision fragments, yet the fragments do not produce region proposals that beat matched random controls with sufficient query-level consistency. The gap between privileged P4 and automatic R1 therefore becomes an automatic-proposal gap, not a SAM refinement result.
+
+This distinction protects the scientific claim. If we had skipped R1 and run SAM on weak proposals, a later Dice failure would conflate proposal quality with the segmenter's ability to refine a region. Conversely, if a few qualitative examples looked good, they would not justify method claims under the pre-registered win-rate and matched-control thresholds. R1 forces the pipeline to prove that the automatic prompt input is already meaningful before spending SAM calls.
+
+The result also reframes AdaPromptSet. The original budget-constrained prompt-set selection story remains too strong for the available evidence. A more accurate direction is reference-conditioned prompt representation analysis: determining when a point, box, mask, direct matching mask, or deterministic region is justified by frozen evidence. In this GlaS setting, the answer is that the tested automatic region proposals are insufficient.
+
+One practical consequence is that the next legal experiment cannot be a quiet threshold expansion or per-query strict-validation tweak. It would require a new pre-registered rescue protocol using only allowed development data or a new external data source, with explicit data-manifest and method gates. Without that, the correct final state is \texttt{STOP\_GLAS\_REGION\_PROPOSAL\_FAILURE}.

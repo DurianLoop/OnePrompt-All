@@ -1,0 +1,61 @@
+{
+  "authorizes": "development_input_manifests_only",
+  "dataset": "DDR",
+  "date": "2026-07-19",
+  "does_not_authorize": [
+    "formal_test_access",
+    "submission_ready_claim",
+    "method_positive_claim"
+  ],
+  "formal_test_access": false,
+  "generated_splits": [
+    "train",
+    "valid"
+  ],
+  "issues": [],
+  "output_sha256": {
+    "train_episodes": "6717AB7C7A15A704C60D32A2068F7796831B1E84895A854CC7D5B86C31DA9493",
+    "valid_episodes": "2E8FB3425378FA8719F75767CE5DCA843FC63990C0FA1FDE085CF1B86CA56520"
+  },
+  "outputs": {
+    "train_episodes": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_train_reference_query_episodes.csv",
+    "valid_episodes": "D:\\SAM\\adapromptset\\manifests\\phase4plus\\ddr_route_b_valid_reference_query_episodes.csv"
+  },
+  "references_per_query": 3,
+  "route": "B_reference_promptability_benchmark",
+  "schema_version": "adapromptset.route_b.ddr_episodes.v1",
+  "selection_seed": "route-b-ddr-episode-v1",
+  "split_summaries": {
+    "train": {
+      "covered_query_count": 964,
+      "episode_rows": 2892,
+      "episode_rows_by_intent": {
+        "EX": 735,
+        "HE": 882,
+        "MA": 942,
+        "SE": 333
+      },
+      "positive_query_count": 964,
+      "references_per_query": 3
+    },
+    "valid": {
+      "covered_query_count": 401,
+      "episode_rows": 1203,
+      "episode_rows_by_intent": {
+        "EX": 210,
+        "HE": 339,
+        "MA": 396,
+        "SE": 258
+      },
+      "positive_query_count": 401,
+      "references_per_query": 3
+    }
+  },
+  "statistical_unit_note": "Query image/case is the independent unit; reference rows and image-intent rows are repeated task views.",
+  "status": "PASS_DDR_ROUTE_B_EPISODES",
+  "test_as_reference_source": false,
+  "test_files_read": false,
+  "total_episode_rows": 4095,
+  "train_reference_source_rule": "train_excluding_query",
+  "valid_reference_source_rule": "train_only"
+}

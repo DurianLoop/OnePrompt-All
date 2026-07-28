@@ -1,0 +1,111 @@
+{
+  "artifacts": {
+    "cache_manifest": {
+      "path": "cache/glas_candidates/candidate_cache_manifest.json",
+      "sha256": "4B526E3776EA67D61D768A9C4A28CDD879EE14A53C351C5BFD8D0284FC4FDBB5"
+    },
+    "candidate_pool_curve_csv": {
+      "path": "reports/phase2_glas/candidates/candidate_pool_curve.csv",
+      "sha256": "083F62BF43752563486534572519EFD7E7434DFEE81C511844DCB0B9A07A2A77"
+    },
+    "candidates_csv": {
+      "path": "reports/phase2_glas/candidates/candidate_pilot_candidates.csv",
+      "sha256": "0DF9FA62A184AF50BBD4E047975989E4F5D2DBB2582521F8E9F319650FAD905A"
+    },
+    "metrics_csv": {
+      "path": "reports/phase2_glas/candidates/candidate_pilot_metrics.csv",
+      "sha256": "53E0B38914BDD4521271F670A524F1DDC5FADA365A8DC0557A190CC8FF04BFC9"
+    },
+    "query_level_metrics_csv": {
+      "path": "reports/phase2_glas/candidates/query_level_candidate_metrics.csv",
+      "sha256": "114156F78E03298AC83164363990E3D898E8E34E87B104CF729AFF6A8B9EBEAC"
+    }
+  },
+  "checks": {
+    "component_coverage": false,
+    "coordinate_validation": true,
+    "coverage_curve_nondecreasing": true,
+    "expected_query_count": true,
+    "expected_reference_episode_count": true,
+    "negative_pool_not_easy_blank": true,
+    "precision_enrichment": true
+  },
+  "coverage_curve": [
+    {
+      "mean_component_coverage": 0.17173261436419332,
+      "mean_negative_blank_fraction": 0.13333333333333333,
+      "mean_point_precision": 0.9444444444444444,
+      "mean_precision_delta": 0.45555555555555555,
+      "mean_random_precision": 0.4888888888888889,
+      "positive_limit": 1,
+      "query_count": 30
+    },
+    {
+      "mean_component_coverage": 0.3233986270389779,
+      "mean_negative_blank_fraction": 0.14074074074074072,
+      "mean_point_precision": 0.9666666666666667,
+      "mean_precision_delta": 0.3888888888888889,
+      "mean_random_precision": 0.5777777777777777,
+      "positive_limit": 3,
+      "query_count": 30
+    },
+    {
+      "mean_component_coverage": 0.41882027248255316,
+      "mean_negative_blank_fraction": 0.13555555555555557,
+      "mean_point_precision": 0.9711111111111111,
+      "mean_precision_delta": 0.4222222222222222,
+      "mean_random_precision": 0.5488888888888889,
+      "positive_limit": 5,
+      "query_count": 30
+    }
+  ],
+  "decision": "REDESIGN_GLAS_CANDIDATES_ONCE_ALLOWED",
+  "episode_count": 90,
+  "expected_episode_count": 90,
+  "expected_query_count": 30,
+  "figures": {
+    "coverage_vs_pool": {
+      "bytes": 43788,
+      "path": "paper_phase2/figures/candidate_diagnostics/coverage_vs_pool.png",
+      "sha256": "8895F76801D10384A954D764C6466A42EDC0E4444BC425DEE036B9A2522C0C42"
+    },
+    "negative_blank_vs_pool": {
+      "bytes": 50223,
+      "path": "paper_phase2/figures/candidate_diagnostics/negative_blank_vs_pool.png",
+      "sha256": "7AF0B94D124F6A1750A3FA4F0C3E0C0EEC1051C7A8C50266EED571F72DA99A24"
+    },
+    "precision_vs_pool": {
+      "bytes": 44636,
+      "path": "paper_phase2/figures/candidate_diagnostics/precision_vs_pool.png",
+      "sha256": "4072FAFE6BC07DE02A734FF37F3A91CC79C47FCA846B4ED5F9B2E8F16584A831"
+    }
+  },
+  "issues": [
+    "component coverage 0.4188 < required 0.6000"
+  ],
+  "max_pool_metrics": {
+    "mean_component_coverage": 0.41882027248255316,
+    "mean_negative_blank_fraction": 0.13555555555555557,
+    "mean_point_precision": 0.9711111111111111,
+    "mean_precision_delta": 0.4222222222222223,
+    "mean_random_precision": 0.5488888888888889,
+    "precision_ratio": 1.7692307692307694,
+    "validation_issue_count": 0
+  },
+  "max_positive_limit": 5,
+  "prohibited_next_actions": [
+    "glas_policy_training_before_gate_f",
+    "formal_testA_or_testB_before_freeze",
+    "posthoc_validation_oracle_action_addition"
+  ],
+  "query_count": 30,
+  "references_per_query": 3,
+  "schema_version": "adapromptset.phase2.glas_gate_c.v1",
+  "status": "FAIL",
+  "thresholds": {
+    "max_negative_blank_fraction": 0.5,
+    "min_component_coverage": 0.6,
+    "min_precision_delta": 0.15,
+    "min_precision_ratio": 1.5
+  }
+}

@@ -50,7 +50,6 @@ adapromptset-build-route-b-ddr-episodes = "adapromptset.scripts.build_route_b_dd
 adapromptset-run-route-b-ddr-matcher-smoke = "adapromptset.scripts.run_route_b_ddr_matcher_smoke:main"
 adapromptset-run-route-b-ddr-stratified-matcher = "adapromptset.scripts.run_route_b_ddr_stratified_matcher:main"
 adapromptset-analyze-route-b-ddr-failure-taxonomy = "adapromptset.scripts.analyze_route_b_ddr_failure_taxonomy:main"
-adapromptset-run-route-b-ddr-privileged-sam-controls = "adapromptset.scripts.run_route_b_ddr_privileged_sam_controls:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

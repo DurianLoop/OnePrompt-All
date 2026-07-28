@@ -1,0 +1,168 @@
+{
+  "gate": "Track A \u00a76.5 Reference Instability Benchmark Gate",
+  "n_conditions": 7,
+  "n_pass": 7,
+  "conditions": {
+    "cond1_corrected_metrics_significant": {
+      "pass": true,
+      "details": "V_ref>0 and V_ref_frac>5% for >=1 config; per-config V_ref_frac={'P20-N1': 0.3312, 'P30-N0': 0.2456, 'P50-N0': 0.1376}"
+    },
+    "cond2_30pct_queries_gap_ge_005": {
+      "pass": true,
+      "details": "fraction of val queries with best-worst gap>=0.05 per config={'P20-N1': 0.902, 'P30-N0': 0.829, 'P50-N0': 0.805}"
+    },
+    "cond3_mean_ref_std_ge_002": {
+      "pass": true,
+      "details": "mean within-query ref std (k=1) per config={'P20-N1': 0.1006, 'P30-N0': 0.0893, 'P50-N0': 0.0686}"
+    },
+    "cond4_metric_definitions_match_code": {
+      "pass": true,
+      "details": "Track A \u00a76.3 audit verified code/metric consistency (variance_code_trace.md)."
+    },
+    "cond5_subset_size_trend_explainable": {
+      "pass": true,
+      "details": "V_ref(k=1)>V_ref(k=3)>V_ref(k=6) for >=1 config; per-config={'P20-N1': (0.016721, 0.00987, 0.0), 'P30-N0': (0.01334, 0.006285, 0.0), 'P50-N0': (0.007837, 0.003261, 0.0)}"
+    },
+    "cond6_stability_metric_linked_to_catastrophic": {
+      "pass": true,
+      "details": "Spearman(ref_std|gap, catastrophic) per config; best |rho|={'P20-N1': 0.031, 'P30-N0': 0.0192, 'P50-N0': -0.3953}"
+    },
+    "cond7_test_time_safe_feature_predicts_instability": {
+      "pass": true,
+      "details": "best Spearman |rho| (TRAIN) = 0.8832 feature=prediction_jaccard_mean metric=std_dice config=P50-N0; threshold 0.25"
+    }
+  },
+  "cond1_details": {
+    "P20-N1": {
+      "v_ref": 0.01672096950352816,
+      "v_ref_frac": 0.3312077002902577,
+      "v_query": 0.033763875772938975,
+      "pass": true
+    },
+    "P30-N0": {
+      "v_ref": 0.013339890291101053,
+      "v_ref_frac": 0.24563505314719458,
+      "v_query": 0.040967872872926046,
+      "pass": true
+    },
+    "P50-N0": {
+      "v_ref": 0.00783723755297896,
+      "v_ref_frac": 0.1376418009977198,
+      "v_query": 0.049102133307976234,
+      "pass": true
+    }
+  },
+  "cond2_details": {
+    "P20-N1": {
+      "frac_ge_005": 0.9024390243902439,
+      "n": 41,
+      "pass": true
+    },
+    "P30-N0": {
+      "frac_ge_005": 0.8292682926829268,
+      "n": 41,
+      "pass": true
+    },
+    "P50-N0": {
+      "frac_ge_005": 0.8048780487804879,
+      "n": 41,
+      "pass": true
+    }
+  },
+  "cond3_details": {
+    "P20-N1": {
+      "mean_within_query_std": 0.1005949123940856,
+      "pass": true
+    },
+    "P30-N0": {
+      "mean_within_query_std": 0.08927317562974944,
+      "pass": true
+    },
+    "P50-N0": {
+      "mean_within_query_std": 0.06855462290250627,
+      "pass": true
+    }
+  },
+  "cond5_details": {
+    "P20-N1": {
+      "v_ref_k1": 0.01672096950352816,
+      "v_ref_k3": 0.009870050370179366,
+      "v_ref_k6": 0.0,
+      "monotone": true
+    },
+    "P30-N0": {
+      "v_ref_k1": 0.013339890291101053,
+      "v_ref_k3": 0.00628541904159289,
+      "v_ref_k6": 0.0,
+      "monotone": true
+    },
+    "P50-N0": {
+      "v_ref_k1": 0.00783723755297896,
+      "v_ref_k3": 0.0032605869831406225,
+      "v_ref_k6": 0.0,
+      "monotone": true
+    }
+  },
+  "cond6_details": {
+    "P20-N1": {
+      "n": 41,
+      "n_catastrophic": 13,
+      "rho_ref_std_vs_cat": 0.022149059748072943,
+      "p_ref_std_vs_cat": 0.8906719573070851,
+      "rho_gap_vs_cat": 0.031008683647302124,
+      "p_gap_vs_cat": 0.8473832221218549,
+      "best_rho": 0.031008683647302124,
+      "best_p": 0.8473832221218549,
+      "pass": false
+    },
+    "P30-N0": {
+      "n": 41,
+      "n_catastrophic": 10,
+      "rho_ref_std_vs_cat": 0.019200614429492776,
+      "p_ref_std_vs_cat": 0.9051543734601104,
+      "rho_gap_vs_cat": 0.014400460822119581,
+      "p_gap_vs_cat": 0.9287950814947327,
+      "best_rho": 0.019200614429492776,
+      "best_p": 0.9051543734601104,
+      "pass": false
+    },
+    "P50-N0": {
+      "n": 41,
+      "n_catastrophic": 8,
+      "rho_ref_std_vs_cat": -0.3849158000916216,
+      "p_ref_std_vs_cat": 0.01295439971137106,
+      "rho_gap_vs_cat": -0.39531892982382755,
+      "p_gap_vs_cat": 0.010523247450893444,
+      "best_rho": -0.39531892982382755,
+      "best_p": 0.010523247450893444,
+      "pass": true
+    }
+  },
+  "cond7_details": {
+    "P20-N1": {
+      "abs_rho": 0.7995713160506316,
+      "rho": -0.7995713160506316,
+      "feature": "prediction_jaccard_mean",
+      "metric": "best_worst_gap",
+      "p": 3.689067266661164e-90,
+      "n": 400
+    },
+    "P30-N0": {
+      "abs_rho": 0.8207299420621378,
+      "rho": -0.8207299420621378,
+      "feature": "prediction_jaccard_mean",
+      "metric": "std_dice",
+      "p": 8.392787842212257e-99,
+      "n": 400
+    },
+    "P50-N0": {
+      "abs_rho": 0.8832324155056397,
+      "rho": -0.8832324155056397,
+      "feature": "prediction_jaccard_mean",
+      "metric": "std_dice",
+      "p": 5.732742521644374e-133,
+      "n": 400
+    }
+  },
+  "decision": "PHASES_TRACK_A_REFERENCE_INSTABILITY_BENCHMARK_VALID"
+}

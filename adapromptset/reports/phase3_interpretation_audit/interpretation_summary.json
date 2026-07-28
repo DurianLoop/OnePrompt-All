@@ -1,0 +1,122 @@
+{
+  "artifacts": {
+    "area_bias": "reports/phase3_interpretation_audit/p3_area_bias.csv",
+    "component_recall": "reports/phase3_interpretation_audit/p3_component_recall.csv",
+    "control_decomposition": "reports/phase3_interpretation_audit/phase2d_control_decomposition.csv",
+    "failure_taxonomy": "reports/phase3_interpretation_audit/p3_failure_taxonomy.csv",
+    "overlap_analysis": "reports/phase3_interpretation_audit/p3_overlap_analysis.csv"
+  },
+  "c2_rationale": "C2 uses another GlaS gland reference from the frozen support manifest, so it is not a true negative control.",
+  "c2_relabel": "alternative_reference_control",
+  "failure_type_counts": {
+    "image_wide_output": 19,
+    "low_dice_catastrophic": 13,
+    "non_catastrophic_control_advantage": 16,
+    "under_coverage_false_negative_dominant": 12
+  },
+  "high_component_mean_margin": -0.14457818068935696,
+  "interpretation_state": "PIVOT_GLAS_REGION_PROMPT_REQUIRED",
+  "low_component_mean_margin": 0.026973783181849054,
+  "p2_control_decomposition": {
+    "SAM-B": {
+      "c2_label": "alternative_reference_control",
+      "mean_c1_minus_c2": 0.0406997915820044,
+      "mean_c1_random_dice": 0.6930124815765542,
+      "mean_c2_alternative_reference_dice": 0.6523126899945497,
+      "mean_matched_control_dice": 0.6726625857855519,
+      "mean_privileged_dice": 0.6090342981343808,
+      "mean_privileged_minus_c1": -0.08397818344217332,
+      "mean_privileged_minus_c2": -0.04327839186016892,
+      "prompt_family": "P2_fixed_multi_centroid_one_group",
+      "query_count": 30,
+      "segmenter": "SAM-B",
+      "win_rate_vs_c1": 0.4,
+      "win_rate_vs_c2": 0.5
+    },
+    "SAM-L": {
+      "c2_label": "alternative_reference_control",
+      "mean_c1_minus_c2": 0.011019233219734833,
+      "mean_c1_random_dice": 0.6586877419020701,
+      "mean_c2_alternative_reference_dice": 0.6476685086823353,
+      "mean_matched_control_dice": 0.6531781252922026,
+      "mean_privileged_dice": 0.6597049580664652,
+      "mean_privileged_minus_c1": 0.0010172161643951072,
+      "mean_privileged_minus_c2": 0.012036449384129939,
+      "prompt_family": "P2_fixed_multi_centroid_one_group",
+      "query_count": 30,
+      "segmenter": "SAM-L",
+      "win_rate_vs_c1": 0.5666666666666667,
+      "win_rate_vs_c2": 0.5333333333333333
+    }
+  },
+  "p3_control_decomposition": {
+    "SAM-B": {
+      "c2_label": "alternative_reference_control",
+      "mean_c1_minus_c2": 0.0034147700195343226,
+      "mean_c1_random_dice": 0.6692056552817437,
+      "mean_c2_alternative_reference_dice": 0.6657908852622094,
+      "mean_matched_control_dice": 0.6674982702719765,
+      "mean_privileged_dice": 0.5095610236224194,
+      "mean_privileged_minus_c1": -0.15964463165932433,
+      "mean_privileged_minus_c2": -0.15622986163979,
+      "prompt_family": "P3_component_grouped_centroids",
+      "query_count": 30,
+      "segmenter": "SAM-B",
+      "win_rate_vs_c1": 0.43333333333333335,
+      "win_rate_vs_c2": 0.43333333333333335
+    },
+    "SAM-L": {
+      "c2_label": "alternative_reference_control",
+      "mean_c1_minus_c2": -0.04499815720616295,
+      "mean_c1_random_dice": 0.5451144548419118,
+      "mean_c2_alternative_reference_dice": 0.5901126120480747,
+      "mean_matched_control_dice": 0.5676135334449932,
+      "mean_privileged_dice": 0.47070481149007765,
+      "mean_privileged_minus_c1": -0.0744096433518341,
+      "mean_privileged_minus_c2": -0.11940780055799705,
+      "prompt_family": "P3_component_grouped_centroids",
+      "query_count": 30,
+      "segmenter": "SAM-L",
+      "win_rate_vs_c1": 0.4,
+      "win_rate_vs_c2": 0.36666666666666664
+    }
+  },
+  "p3_group_overlap_limitation": "per-group P3 masks were not saved in Phase 2D; only fused Dice/IoU consistency and area-derived proxies can be audited without rerunning inference.",
+  "p4_box_upper_bound": {
+    "SAM-B": {
+      "c2_label": "alternative_reference_control",
+      "mean_c1_minus_c2": 0.01982624970481363,
+      "mean_c1_random_dice": 0.683189843675493,
+      "mean_c2_alternative_reference_dice": 0.6633635939706793,
+      "mean_matched_control_dice": 0.6732767188230862,
+      "mean_privileged_dice": 0.7276371435778408,
+      "mean_privileged_minus_c1": 0.044447299902347845,
+      "mean_privileged_minus_c2": 0.06427354960716147,
+      "prompt_family": "P4_union_mask_bounding_box",
+      "query_count": 30,
+      "segmenter": "SAM-B",
+      "win_rate_vs_c1": 0.5333333333333333,
+      "win_rate_vs_c2": 0.6333333333333333
+    },
+    "SAM-L": {
+      "c2_label": "alternative_reference_control",
+      "mean_c1_minus_c2": 0.05555315062909675,
+      "mean_c1_random_dice": 0.6842532508359226,
+      "mean_c2_alternative_reference_dice": 0.6287001002068259,
+      "mean_matched_control_dice": 0.6564766755213742,
+      "mean_privileged_dice": 0.7234776769026617,
+      "mean_privileged_minus_c1": 0.0392244260667391,
+      "mean_privileged_minus_c2": 0.09477757669583585,
+      "prompt_family": "P4_union_mask_bounding_box",
+      "query_count": 30,
+      "segmenter": "SAM-L",
+      "win_rate_vs_c1": 0.5,
+      "win_rate_vs_c2": 0.6666666666666666
+    }
+  },
+  "schema_version": "adapromptset.phase3.interpretation_audit.v1",
+  "scientific_correction": "grouped sparse point prompting failed; region prompting remains viable as indicated by the privileged box upper bound",
+  "source_phase2d_state": "STOP_GLAS_SEGMENTER_FAILURE_CONFIRMED",
+  "status": "PHASE3_INTERPRETATION_AUDIT_COMPLETE",
+  "testA_testB_access": false
+}

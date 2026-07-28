@@ -1,0 +1,117 @@
+{
+  "phase": "PhaseAB",
+  "branch": "phaseAB-fresh-confirmation-paper-assembly",
+  "date": "2026-07-28 11:29",
+  "status": "PHASEAB_PAPER_CANDIDATE_READY",
+  "predecessor": "PhaseAA (PHASEAA_PAPER_NEAR_READY)",
+  "route": "Route B - Simplified Selective Prediction",
+  "primary_method": "Prediction Consistency + Coverage-Based Abstention",
+  "work_packages": {
+    "WP0": {
+      "status": "PHASEAB_INTEGRITY_CLOSURE_PASS",
+      "description": "Phase AA Integrity Closure"
+    },
+    "WP1": {
+      "status": "PHASEAB_BLOCKED_NO_FRESH_CONFIRMATORY_DATA",
+      "description": "Fresh Confirmatory Cohort"
+    },
+    "WP1b": {
+      "status": "COMPLETE",
+      "description": "Power Analysis (N=75 recommended)"
+    },
+    "WP2": {
+      "status": "BLOCKED",
+      "description": "Confirmatory Experiment (needs WP1)"
+    },
+    "WP3": {
+      "status": "PHASEAB_CROSS_PIPELINE_DIRECTIONAL_PASS",
+      "description": "Cross-Pipeline (5/5 directional)"
+    },
+    "WP3b": {
+      "status": "PHASEAB_CROSS_DATASET_ADQUATE",
+      "description": "Cross-Dataset Multi-Seed"
+    },
+    "WP4": {
+      "status": "PHASEAB_BASELINE_PROVENANCE_PASS",
+      "description": "Baseline Provenance"
+    },
+    "WP5": {
+      "status": "SKIPPED_NO_MODELS",
+      "description": "Modern Pipeline Audit \u2014 DINOv3/SAM3 not available",
+      "available_alternatives": "SAM2.1-Base+, SAM2.1-Large, SAM-H available for future extension",
+      "note": "User said not to stop for download issues. These models require separate downloads."
+    },
+    "WP6": {
+      "status": "COMPLETE_WITH_PDF",
+      "description": "Paper Assembly (17 files)"
+    },
+    "WP7": {
+      "status": "COMPLETE",
+      "description": "Mock Review (7 reviewers, rebuttal plan)"
+    }
+  },
+  "publication_readiness": {
+    "status": "PHASEAB_NEEDS_FRESH_DATA",
+    "passed_gates": "12/15",
+    "failed_gates": [
+      "2_fresh_cohort",
+      "6_external_support"
+    ],
+    "recommended_venue": "Workshop / Benchmark track",
+    "not_recommended": "CVPR/ICCV/NeurIPS main conference (requires confirmatory evidence)",
+    "key_strengths": [
+      "Clear problem formulation (RRE)",
+      "Simple, practical method",
+      "Honest about limitations",
+      "Systematic cross-pipeline and cross-dataset evaluation",
+      "Well-documented reproducibility"
+    ],
+    "key_weaknesses": [
+      "No confirmatory cohort",
+      "Limited to medical imaging domain",
+      "Method is a heuristic (no learning)",
+      "Cross-dataset results are boundary cases only",
+      "Small evaluation scale (80 queries)"
+    ]
+  },
+  "data_roles": {
+    "development_cohort": "80 MoNuSAC queries",
+    "validation_cohort": "41 MoNuSAC queries",
+    "holdout": null,
+    "confirmatory": null
+  },
+  "new_assets": {
+    "figures": {
+      "fig1": "paper/phaseAB/figures/fig1_risk_coverage_curves.pdf \u2014 CFR/Dice vs Coverage curves",
+      "fig2": "paper/phaseAB/figures/fig2_cross_pipeline.pdf \u2014 Cross-pipeline AURC/CFR summary",
+      "fig3": "paper/phaseAB/figures/fig3_cross_dataset_boundary.pdf \u2014 Cross-dataset boundary analysis",
+      "fig4": "paper/phaseAB/figures/fig4_method_schematic.pdf \u2014 Method overview diagram"
+    },
+    "tables": {
+      "table1": "paper/phaseAB/tables/table1_main_results.tex \u2014 Main results (Dev Cohort)",
+      "table2": "paper/phaseAB/tables/table2_cross_pipeline.tex \u2014 Cross-pipeline",
+      "table3": "paper/phaseAB/tables/table3_cross_dataset.tex \u2014 Cross-dataset",
+      "table4": "paper/phaseAB/tables/table4_ablation_ref_count.tex \u2014 Reference count ablation"
+    },
+    "paper": {
+      "latex": "paper/phaseAB/full_draft.tex \u2014 Full LaTeX paper (8 pages)",
+      "pdf": "paper/phaseAB/full_draft.pdf \u2014 Compiled PDF (275 KB)",
+      "zip": "paper/phaseAB/phaseAB_submission.zip \u2014 Submission package (819 KB)",
+      "markdown": "paper/phaseAB/full_draft.md \u2014 Full markdown draft"
+    },
+    "scripts": {
+      "wp3_wp4": "src/adapromptset/scripts/run_phaseAB_wp3_wp4_closure.py",
+      "wp6_paper": "src/adapromptset/scripts/run_phaseAB_wp6_paper_assembly.py",
+      "wp7_review": "src/adapromptset/scripts/run_phaseAB_wp7_mock_review.py",
+      "final_report": "src/adapromptset/scripts/run_phaseAB_final_report.py",
+      "paper_assets": "src/adapromptset/scripts/run_phaseAB_generate_paper_assets.py"
+    }
+  },
+  "final_summary": {
+    "total_files_generated": "40+ files across reports, paper, figures, and tables",
+    "total_scripts": "5 new analysis scripts",
+    "paper_status": "Venue-neutral draft, 8 pages, 4 figures, 4 tables, compiled PDF",
+    "submission_package": "phaseAB_submission.zip (819 KB) \u2014 LaTeX source + PDF + figures + tables + markdown",
+    "recommended_next_step": "Submit to workshop/benchmark track OR acquire fresh confirmatory cohort for full conference submission"
+  }
+}

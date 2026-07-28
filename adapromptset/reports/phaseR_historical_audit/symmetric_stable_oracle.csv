@@ -1,0 +1,13 @@
+property,value,notes
+definition,"stable_oracle = mean(cross_A_to_B, cross_B_to_A)",Conservative: takes the average of both cross-reference directions
+cross_A_to_B,0.4258,"Best action selected on Set A, evaluated on Set B"
+cross_B_to_A,0.4539,"Best action selected on Set B, evaluated on Set A"
+stable_oracle,0.4399,"mean(cross_A_to_B, cross_B_to_A)"
+fixed_baseline,0.4338,Y_P_TOPK_K50_N0_N_NONE_G1_C1 mean Dice on Set A
+stable_oracle_gap,0.0061,stable_oracle - fixed_baseline
+asymmetry,0.0281,|cross_A_to_B - cross_B_to_A|
+symmetric,APPROXIMATELY,Threshold 0.05; actual asymmetry = 0.0281
+gap_threshold,0.015,Gate Y1 cond1 requires stable_oracle_gap >= 0.015
+actual_gap,0.0061,Below threshold -> Gate Y1 FAILED
+optimism_correction,raw_gap - stable_gap,How much of the raw gap is optimism/reference-overfit
+optimism_fraction,0.0609,90.9566% of raw gap is optimism

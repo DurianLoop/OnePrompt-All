@@ -1,0 +1,145 @@
+{
+  "phase": "phaseX",
+  "name": "Phase X \u2014 Action-Space Adequacy, Dense Prompt Scaling, and Search-Oracle Audit",
+  "branch": "phaseX-action-space-oracle-audit",
+  "preregistration_date": "2026-07-20",
+  "directive": "D:\\SAM\\adapromptset\\AdaPromptSet_ActionSpace_Oracle_Retry.md",
+  "scope": "MoNuSAC train/validation only; no formal test access",
+  "frozen_grids": {
+    "positive_k": [
+      1,
+      3,
+      5,
+      10,
+      20,
+      30,
+      50,
+      75,
+      100
+    ],
+    "negative_k": [
+      0,
+      1,
+      3,
+      5,
+      10,
+      20,
+      30,
+      50
+    ],
+    "positive_selectors": [
+      "P_TOPK",
+      "P_LOCAL_PEAKS",
+      "P_SPATIAL_NMS",
+      "P_SPREAD",
+      "P_COMPONENT_BALANCED",
+      "P_DIVERSITY_GREEDY"
+    ],
+    "negative_selectors": [
+      "N_NONE",
+      "N_BOTTOMK",
+      "N_HIGH_BACKGROUND",
+      "N_BOUNDARY_HARD",
+      "N_LOCAL_CONFUSION",
+      "N_DIVERSITY"
+    ],
+    "groupings": [
+      "G_ONE_GROUP",
+      "G_ONE_POINT_PER_GROUP",
+      "G_FIXED_CHUNK_5",
+      "G_FIXED_CHUNK_10",
+      "G_FIXED_CHUNK_20",
+      "G_KMEANS_3",
+      "G_KMEANS_5",
+      "G_KMEANS_10",
+      "G_KMEANS_20",
+      "G_SPATIAL_GRID",
+      "G_GRAPH",
+      "G_CANDIDATE_COMPONENT"
+    ],
+    "call_budgets": [
+      1,
+      3,
+      5,
+      10,
+      20
+    ],
+    "point_budgets": [
+      5,
+      10,
+      20,
+      50,
+      100,
+      150
+    ]
+  },
+  "nested_banks": {
+    "A_small": {
+      "max_positive": 5,
+      "max_negative": 4,
+      "max_calls": 3
+    },
+    "A_medium": {
+      "max_positive": 20,
+      "max_negative": 10,
+      "max_calls": 5
+    },
+    "A_large": {
+      "max_positive": 100,
+      "max_negative": 30,
+      "max_calls": 20
+    }
+  },
+  "search_oracle": {
+    "beam_widths": [
+      4,
+      8
+    ],
+    "depths": [
+      10,
+      20,
+      50
+    ],
+    "call_budgets": [
+      1,
+      3,
+      5,
+      10,
+      20
+    ],
+    "point_budgets": [
+      10,
+      20,
+      50,
+      100
+    ]
+  },
+  "adaptive_value_thresholds": {
+    "min_dice_gap": 0.01,
+    "min_query_fraction": 0.25
+  },
+  "compute_caps_gpu_hours": {
+    "historical_audit": 0.0,
+    "candidate_scaling": 4.0,
+    "single_variable_k_scaling": 12.0,
+    "grouping_scaling": 16.0,
+    "negative_scaling": 12.0,
+    "coarse_joint_grid": 24.0,
+    "successive_halving_validation": 24.0,
+    "greedy_beam_search_oracle": 40.0,
+    "statistics_and_figures": 0.0,
+    "interim_report_threshold": 40.0,
+    "reevaluate_search_value_threshold": 90.0,
+    "total_initial_cap": 132.0
+  },
+  "historical_anchors": {
+    "v2_bank_hash": "35E44B3B937A9D6AA9E969CDAFC9AC6F45A77E5BA1EF72BC6770E4B5F16D75B8",
+    "v2_valid_action_count": 12,
+    "strongest_fixed_action_id": "B_top5_pos3neg",
+    "finite_bank_oracle_mean_dice": 0.376249802278007,
+    "strongest_fixed_mean_dice": 0.37123847211635835,
+    "finite_bank_oracle_gap": 0.0050113301616486194,
+    "historical_phase5_status": "PIVOT_ORACLE_ANALYSIS",
+    "historical_episode_count": 10
+  }
+}

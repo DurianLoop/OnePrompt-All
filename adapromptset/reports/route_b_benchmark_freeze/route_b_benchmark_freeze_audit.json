@@ -1,0 +1,29 @@
+{
+  "authorizes": "development_only_evidence_generation",
+  "config": "configs\\experiments\\route_b_promptability_benchmark_v1.json",
+  "config_sha256": "F0A29F270103935289A27BB81A09279A7207114568F134403148C73A7F76CE66",
+  "date": "2026-07-19",
+  "ddr_manifest_report": "reports\\route_b_ddr_manifest\\ddr_route_b_manifest_report.json",
+  "ddr_manifest_report_sha256": "161E082CEB0855AB891C02CCA01009FB7171BA2570316C7A5BF248000D7386B3",
+  "does_not_authorize": [
+    "formal_test_access",
+    "submission_ready_claim",
+    "method_positive_claim",
+    "test_tuned_thresholds"
+  ],
+  "findings": {
+    "config_disallows_formal_test": true,
+    "ddr_formal_test_access": false,
+    "ddr_manifest_pass": true,
+    "ddr_test_files_read": false,
+    "missing_controls": [],
+    "missing_metrics": [],
+    "missing_output_columns": [],
+    "missing_representations": [],
+    "missing_row_families": []
+  },
+  "issues": [],
+  "route": "B_reference_promptability_benchmark",
+  "schema_version": "adapromptset.route_b.benchmark_freeze_audit.v1",
+  "status": "PASS_ROUTE_B_B1_PREREQ_FREEZE"
+}

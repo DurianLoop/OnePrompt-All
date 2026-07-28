@@ -1,0 +1,198 @@
+{
+  "phase": "phaseY",
+  "name": "Phase Y — Fresh-Query Confirmation, Oracle Stability, and Deployable Policy Feasibility",
+  "branch": "phaseY-policy-feasibility",
+  "preregistration_date": "2026-07-21",
+  "directive": "D:\\SAM\\adapromptset\\AdaPromptSet_PhaseY_Policy_Feasibility.md",
+  "directive_sha256": "FEABAD2B8E48EE929B5C2A1C8F5EB5EB9C63CB49A103C72CDF4AA0659EE017B4",
+  "scope": "MoNuSAC train/validation only; no formal test access",
+  "main_question": "Can a query-conditioned, single-call prompt-configuration policy outperform the strongest fixed dense prompt under a strictly matched deployment budget?",
+  "frozen_scope": {
+    "matcher": "DINOv2-L",
+    "segmenter": "SAM-B",
+    "sam_calls": 1,
+    "prompt_groups": 1,
+    "fusion": "none",
+    "multimask_rule": "frozen",
+    "postprocess": "frozen"
+  },
+  "prohibited_in_main_experiment": [
+    "2-100 SAM calls",
+    "one-point-per-group",
+    "mask union",
+    "KMeans multi-group calls",
+    "graph multi-group calls",
+    "SAM-L / SAM2 / MedSAM",
+    "GlaS / DDR",
+    "formal test",
+    "PPO / DQN",
+    "continuous coordinate generation",
+    "GT-guided search outputs as deployable actions"
+  ],
+  "frozen_grids": {
+    "k_positive": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      40,
+      50,
+      75,
+      100
+    ],
+    "k_negative": [
+      0,
+      1,
+      3,
+      5
+    ],
+    "positive_selectors": [
+      "P_TOPK",
+      "P_SPREAD",
+      "P_LOCAL_PEAKS"
+    ],
+    "negative_selectors_k0": [
+      "N_NONE"
+    ],
+    "negative_selectors_kgt0": [
+      "N_BOTTOMK",
+      "N_HIGH_BACKGROUND"
+    ],
+    "grouping": "G_ONE_GROUP",
+    "sam_calls": 1
+  },
+  "full_audit_bank": {
+    "total_actions": 210,
+    "bank_name": "phaseY_full_single_call_bank",
+    "bank_version": "v1",
+    "config_path": "configs/actions/phaseY_full_single_call_bank.yaml"
+  },
+  "compact_policy_bank": {
+    "status": "PLACEHOLDER_PENDING_PARETO_PRUNING",
+    "target_size_min": 12,
+    "target_size_max": 32,
+    "config_path": "configs/actions/phaseY_compact_policy_bank.yaml",
+    "pruning_scope": "policy_train_queries_only"
+  },
+  "data_split": {
+    "source": "MoNuSAC processed manifest (310 cases)",
+    "split_unit": "patient",
+    "target_train": 80,
+    "target_validation": 40,
+    "target_holdout": 40,
+    "actual_train": 80,
+    "actual_validation": 41,
+    "actual_holdout": 40,
+    "patient_level_disjoint": true,
+    "phasex_excluded_patients": 10,
+    "test_locked": true,
+    "manifests_dir": "manifests/phaseY/"
+  },
+  "reference_sets": {
+    "set_A_size": 3,
+    "set_B_size": 3,
+    "disjoint_per_query": true,
+    "patient_disjoint_from_query": true,
+    "references_from_train_only": true,
+    "fixed_seed": 20260721
+  },
+  "gates": {
+    "Y1": {
+      "name": "Fresh-Query Action Heterogeneity",
+      "pass_state": "PHASEY_GATE_Y1_STABLE_HETEROGENEITY",
+      "fail_states": [
+        "PHASEY_GATE_Y1_REFERENCE_UNSTABLE",
+        "PHASEY_GATE_Y1_SELECTION_BIAS_DOMINATES",
+        "PHASEY_GATE_Y1_ORACLE_GAP_SMALL"
+      ],
+      "conditions": [
+        "stable_oracle_gap >= 0.015 Dice",
+        "paired bootstrap 95% CI lower bound > 0",
+        ">=30% validation queries have stable best-action family != strongest fixed",
+        "cross-reference action-rank median Spearman rho > 0.30",
+        "oracle optimism <= 60% of raw oracle gap",
+        "all actions fixed at 1 SAM call (no call-count confound)"
+      ]
+    },
+    "Y2": {
+      "name": "Search Oracle Stability",
+      "pass_state": "PHASEY_GATE_Y2_SEARCH_LABELS_STABLE",
+      "fail_state": "PHASEY_GATE_Y2_SEARCH_ORACLE_OVERFIT",
+      "conditions": [
+        "cross-reference search >= 0.03 Dice over strongest fixed",
+        "paired bootstrap CI lower bound > 0",
+        "search optimism <= 50% of raw search gap",
+        "median |K_A - K_B| <= 8 OR cross Dice diff <= 0.01",
+        ">=70% queries: A-search prompt beats strongest fixed on B"
+      ]
+    },
+    "Y3": {
+      "name": "Bank Policy Validation",
+      "pass_state": "PHASEY_GATE_Y3_BANK_POLICY_VALIDATED",
+      "fail_state": "PHASEY_GATE_Y3_BANK_POLICY_INSUFFICIENT",
+      "conditions": [
+        "Delta Dice >= 0.010 over strongest fixed on validation",
+        "paired bootstrap 95% CI lower bound > 0",
+        "oracle recovery >= 30%"
+      ]
+    },
+    "Y4": {
+      "name": "Point-Subset Learnability",
+      "pass_state": "PHASEY_GATE_Y4_POINT_SUBSET_LEARNABLE",
+      "fail_state": "PHASEY_GATE_Y4_POINT_SUBSET_NOT_LEARNABLE",
+      "conditions": [
+        "Delta Dice >= 0.015 over strongest fixed, OR",
+        "Delta Dice >= 0.0075 over bank policy",
+        "paired bootstrap 95% CI lower bound > 0"
+      ]
+    }
+  },
+  "model_ladders": {
+    "bank_action": [
+      "M0_global_prior",
+      "M1_morphology_heuristic",
+      "M2_multiclass_classifier",
+      "M3_per_action_regression",
+      "M4_pairwise_ranking",
+      "M5_hierarchical_router"
+    ],
+    "point_subset": [
+      "P0_topk_contrast",
+      "P1_pointwise_regression",
+      "P2_pairwise_ranking",
+      "P3_diversity_reranker",
+      "P4_set_encoder",
+      "P5_learned_greedy_selector"
+    ]
+  },
+  "statistics": {
+    "unit": "query",
+    "reference_episodes_not_independent": true,
+    "bootstrap_method": "paired patient-cluster bootstrap",
+    "bootstrap_iterations": 10000,
+    "ci_level": 0.95,
+    "multiple_testing": "Benjamini-Hochberg FDR at 0.05",
+    "historical_10_episodes": "EXPLORATORY_PHASEX_EVIDENCE — excluded from confirmatory stats"
+  },
+  "compute_caps_gpu_hours": {
+    "data_audit_and_split": 0.0,
+    "preregistration": 0.0,
+    "utility_matrix_Y1": 40.0,
+    "search_oracle_Y2": 30.0,
+    "bank_policy_Y3": 40.0,
+    "point_subset_Y4": 30.0,
+    "holdout_evaluation": 10.0,
+    "statistics_and_figures": 5.0,
+    "total_cap": 155.0
+  },
+  "historical_anchors": {
+    "phasex_status": "REOPEN_POLICY_LEARNING_WITH_EXPANDED_ACTION_SPACE",
+    "top20_n1_fixed_dice": 0.5411,
+    "a_large_bank_oracle_dice": 0.6119,
+    "search_oracle_dice": 0.7256,
+    "phasex_episode_count": 10,
+    "label": "EXPLORATORY_PHASEX_EVIDENCE"
+  }
+}

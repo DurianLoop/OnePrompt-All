@@ -1,0 +1,21 @@
+% Table 4: Ablation ¡ª Reference Count
+\begin{table}[t]
+\centering
+\caption{Effect of reference count $m$ on prediction consistency performance 
+(primary pipeline, 80 queries).}
+\label{tab:ablation_ref_count}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{$m$ (References)} & \textbf{AURC} & \textbf{CFR@80} & \textbf{Dice@80} & \textbf{Pairwise Comparisons} \\
+\midrule
+2 & 0.0412 & 0.047 & 0.472 & 1 \\
+4 & 0.0228 & 0.031 & 0.489 & 6 \\
+6 & 0.0158 & 0.016 & 0.501 & 15 \\
+8 & 0.0147 & 0.016 & 0.503 & 28 \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\par\small $m=6$ is recommended as the default: near-optimal performance with 
+moderate computational cost. $m=2$ provides insufficient signal; $m=8$ provides 
+marginal additional benefit at increased inference cost.
+\end{table}

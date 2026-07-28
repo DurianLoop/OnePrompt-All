@@ -1,0 +1,20 @@
+{
+  "date": "2026-07-22T18:00:09",
+  "device": "cpu",
+  "cuda_available": false,
+  "phases_run": [
+    1,
+    2,
+    3
+  ],
+  "runtime_seconds": 1570.581,
+  "gpu_hours": 0.0,
+  "total_sam_calls": 6659,
+  "phase1_query_count": 80,
+  "phase2_query_count": 41,
+  "gate_c_decision": "PHASES_TRACK_C_NO_GAIN",
+  "gate_c_pass": false,
+  "best_alpha": 0.0,
+  "best_beta": 0.0,
+  "best_gamma": 0.0
+}

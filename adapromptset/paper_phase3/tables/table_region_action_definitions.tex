@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Pre-registered Phase 3 region action bank. Privileged upper bounds are separated from automatic actions.}
+\label{tab:region_actions}
+\begin{tabular}{llllll}
+\hline
+ID & Action & Type & Calls & Role & Phase 3 note \\
+\hline
+R00 & Direct matching mask & mask & 0 & automatic & raw proposal baseline \\
+R01 & Full-image box & box & 1 & control & trivial control \\
+R02 & Size-matched random box & box & 1 & control & matched random control \\
+R03 & Automatic union box & box & 1 & automatic & tight union of proposals \\
+R04 & Largest-component box & box & 1 & automatic & largest proposal component \\
+R05 & Top-3 component boxes & box & <=3 & automatic & largest three components \\
+R06 & Hard mask prompt & mask & 1 & automatic & blocked by R1 \\
+R07 & Soft-logit mask prompt & mask & 1 & automatic & blocked by R1 \\
+R08 & Box + soft mask & hybrid & 1 & automatic & blocked by R1 \\
+R09 & Top-point baseline & point & 1 & automatic & not grouped P3 reopening \\
+U01-U03 & GT region upper bounds & privileged & 1-3 & upper bound & not automatic \\
+\hline
+\end{tabular}
+\end{table*}

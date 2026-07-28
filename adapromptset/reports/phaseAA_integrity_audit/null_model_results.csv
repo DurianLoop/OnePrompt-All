@@ -1,0 +1,6 @@
+pipeline,r_observed,p_observed,r_null_null1,p_null1,delta_r_corrected,delta_r_phaseW_buggy,null_explains_pct_phaseV,null_explains_pct_phaseW
+L+SAM-B,-0.512,<0.001,-0.583,N/A,+0.071,-0.512,94%,0%
+B+SAM-B,-0.549,<0.001,-0.583,N/A,+0.034,-0.549,94%,0%
+L+SAM-L,-0.221,0.049,TBD,TBD,TBD,-0.221,TBD,0%
+L+SAM2-T,-0.111,0.325,TBD,TBD,TBD,-0.111,TBD,0%
+L+SAM2-S,-0.179,0.113,TBD,TBD,TBD,-0.179,TBD,0%

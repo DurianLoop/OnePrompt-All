@@ -1,0 +1,18 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Downstream Phase 3 quantities are explicitly blocked by R1 failure rather than silently omitted.}
+\label{tab:downstream_status}
+\begin{tabular}{lll}
+\hline
+Stage & State & Reported value \\
+\hline
+R2 SAM region viability & BLOCKED\_BY\_R1\_FAILURE & not run \\
+SAM gain & BLOCKED\_BY\_R1\_FAILURE & N/A \\
+Region recovery & BLOCKED\_BY\_R1\_FAILURE & N/A \\
+R3 oracle gap & BLOCKED\_BY\_R1\_FAILURE & N/A \\
+Router & PROHIBITED\_BY\_R1\_FAILURE & not trained \\
+Formal test & PROHIBITED\_BY\_R1\_FAILURE & testA/testB locked \\
+\hline
+\end{tabular}
+\end{table*}

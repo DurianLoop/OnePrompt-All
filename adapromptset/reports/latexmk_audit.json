@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "clean_copy_log_exists": true,
+    "clean_copy_pdf_exists": true,
+    "latexmk_exit_zero": false,
+    "log_problem_scan_clean": true
+  },
+  "clean_copy_dir": "tmp/latexmk_clean_0db8148a1df64b16827549198b436051",
+  "command": "latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex",
+  "log_findings": [],
+  "log_problem_patterns": [
+    "Overfull",
+    "undefined",
+    "Citation .* undefined",
+    "LaTeX Warning: Label\\(s\\) may have changed",
+    "Rerun",
+    "File .* not found",
+    "Missing"
+  ],
+  "pdf": {
+    "bytes": 361714,
+    "exists": true,
+    "pages": "8"
+  },
+  "returncode": 4294967295,
+  "schema_version": "adapromptset.latexmk_audit.v1",
+  "source_paper_dir": "paper",
+  "status": "FAIL",
+  "stderr_tail": "log4cxx: setFile(C:\\Users\\user\\AppData\\Local\\MiKTeX\\miktex\\log/latexmk.log,true) call failed.\nlog4cxx: IO Exception : status code = 720005(\u62d2\u7edd\u8bbf\u95ee\u3002  )\n",
+  "stdout_tail": "",
+  "violations": [
+    {
+      "check": "latexmk_exit_zero",
+      "reason": "latexmk_clean_build_failed"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+dataset,has_labels,label_type,label_format,accessible,notes
+MoNuSAC,Yes,instance_mask,binary_mask,Yes,"Full access"
+MoNuSeg,Yes,instance_mask,binary_mask,Yes,"Full access"
+IDRID,Yes,lesion_mask,binary_mask,Yes,"Full access"
+GlaS,Unknown,instance_mask,binary_mask,Unknown,"Need to check availability"
+CPM17,Unknown,instance_mask,binary_mask,Unknown,"Need to check availability"
+Formal_Test,Yes,unknown,unknown,No,"Locked — requires user authorization"

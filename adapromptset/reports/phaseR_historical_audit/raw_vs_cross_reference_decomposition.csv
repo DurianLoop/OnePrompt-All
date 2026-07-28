@@ -1,0 +1,13 @@
+metric,Y1_oracle_value,Y2_search_value,definition
+fixed_baseline_dice,0.4338,N/A,Best fixed action mean Dice on Set A
+raw_A,0.5007,N/A,Raw oracle/search on Set A (in-sample reference)
+raw_B,0.4836,N/A,Raw oracle/search on Set B (in-sample reference)
+cross_A_to_B,0.4258,N/A,Best-on-A action/search evaluated on Set B
+cross_B_to_A,0.4539,N/A,Best-on-B action/search evaluated on Set A
+stable_result,0.4399,N/A,"Y1: mean(cross_A_to_B, cross_B_to_A); Y2: mean cross-search Dice"
+raw_gap,0.0669,N/A,raw - fixed
+stable_gap,0.0061,0.0000,stable - fixed
+optimism_A,0.0749,N/A,raw_A - cross_A_to_B
+optimism_ratio,1.1197,N/A,optimism / raw_gap
+bootstrap_ci_lo,-0.0572,N/A,Paired bootstrap CI lower bound
+bootstrap_ci_hi,0.0699,N/A,Paired bootstrap CI upper bound

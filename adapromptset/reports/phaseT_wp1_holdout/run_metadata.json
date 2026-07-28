@@ -1,0 +1,13 @@
+{
+  "date": "2026-07-23T13:00:15",
+  "device": "cpu",
+  "cuda_available": false,
+  "runtime_seconds": 0.0,
+  "gpu_hours": 0.0,
+  "total_sam_calls": 0,
+  "total_episodes": 0,
+  "query_count": 0,
+  "seed_count": 10,
+  "config_count": 3,
+  "gate_wp1_decision": "PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED"
+}

@@ -1,0 +1,13 @@
+{
+  "date": "2026-07-22T14:24:05",
+  "device": "cuda",
+  "cuda_available": true,
+  "runtime_seconds": 271.672,
+  "gpu_hours": 0.075464,
+  "total_sam_calls": 3138,
+  "train_query_count": 80,
+  "train_seed_count": 5,
+  "config_count": 3,
+  "val_query_count": 41,
+  "gate_r2_decision": "PHASER_GATE_R2_CONSENSUS_NO_GAIN"
+}

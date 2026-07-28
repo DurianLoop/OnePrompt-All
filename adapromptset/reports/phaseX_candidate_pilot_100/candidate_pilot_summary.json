@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "issues": [],
+  "episode_count": 10,
+  "max_positive_limit": 100,
+  "mean_point_precision": 0.40700000000000003,
+  "mean_random_precision": 0.193,
+  "precision_delta": 0.21400000000000002,
+  "mean_component_coverage": 0.43282648681790314,
+  "mean_negative_blank_fraction": 0.113,
+  "formal_gate_c": "PASS",
+  "device": "cpu",
+  "elapsed_seconds": 36.256,
+  "gpu_hours_estimate": 0.0,
+  "predeclared_rules": {
+    "min_episodes": 10,
+    "precision_margin": 0.05,
+    "positive_limits": [
+      100
+    ],
+    "positive_layout": "spread",
+    "min_positive_distance": 4.0,
+    "dataset_role": "MoNuSAC validation only",
+    "test_split_used": false,
+    "query_mask_use": "diagnostic metrics and random-baseline evaluation only"
+  },
+  "matcher_checkpoint_sha256": "D5383EA8F4877B2472EB973E0FD72D557C7DA5D3611BD527CEEB1D7162CBF428",
+  "artifacts": {
+    "metrics_csv": "reports\\phaseX_candidate_pilot_100\\candidate_pilot_metrics.csv",
+    "candidates_csv": "reports\\phaseX_candidate_pilot_100\\candidate_pilot_candidates.csv"
+  }
+}

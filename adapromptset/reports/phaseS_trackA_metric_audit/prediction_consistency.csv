@@ -1,0 +1,4 @@
+config_name,mean_prediction_overlap_AB,mean_single_prediction_overlap_AB,n_queries
+P20-N1,0.518292,0.523542,41
+P30-N0,0.607517,0.594181,41
+P50-N0,0.711258,0.697748,41

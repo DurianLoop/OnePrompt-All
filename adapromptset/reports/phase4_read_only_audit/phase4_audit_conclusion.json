@@ -1,0 +1,46 @@
+{
+  "artifacts": [
+    "reports/phase4_read_only_audit/control_construction_audit.md",
+    "reports/phase4_read_only_audit/r00_r09_complete_metrics.csv",
+    "reports/phase4_read_only_audit/automatic_random_fullimage_decomposition.csv",
+    "reports/phase4_read_only_audit/proposal_area_location_scale_analysis.csv",
+    "reports/phase4_read_only_audit/random_seed_sensitivity_from_existing_artifacts.csv",
+    "reports/phase4_read_only_audit/internal_vs_strict_validation_consistency.csv",
+    "reports/phase4_read_only_audit/morphology_failure_decomposition.csv",
+    "reports/phase4_read_only_audit/direct_matching_mask_analysis.csv",
+    "reports/phase4_read_only_audit/prompt_interface_failure_map.csv",
+    "reports/phase4_read_only_audit/paper_claim_audit.md",
+    "reports/phase4_read_only_audit/paper_artifact_consistency.md"
+  ],
+  "date": "2026-07-19",
+  "failure_type_counts": {
+    "large_area_prior_not_localization": 19,
+    "matched_control_not_beaten": 17,
+    "precise_fragment_undercoverage": 77,
+    "weak_positive_but_gate_insufficient": 7
+  },
+  "interpretation": "R03's absolute IoU is largely compatible with a large scale/area prior because the size-matched random control is also high. R00 is precise but under-recovers foreground. The current evidence is strongest as a promptability/control benchmark motivation, not as a validated method route.",
+  "key_answers": {
+    "artifact_consistency": "PASS",
+    "full_image_recall": 1.0,
+    "full_image_spill_mean": 0.462921,
+    "internal_vs_strict_consistency": "All selected families remained FAIL on strict validation; R03 retained high absolute IoU but not enough matched-control advantage.",
+    "morphology_concentration": "Failures are associated with scale/foreground area and component structure, but no single morphology bucket rescues R1.",
+    "phase3_pdf_overclaim": false,
+    "r00_precision": 0.9343509598370808,
+    "r00_raw_dice": 0.17875410077174622,
+    "r00_recall": 0.09962777031101776,
+    "r03_area_ratio": 0.6980662681434883,
+    "r03_box_iou_definition": "IoU between the automatic proposal bounding box and the query GT union bounding box, computed by _box_iou(proposal_box, target_box).",
+    "r03_close_to_full_image_box": true,
+    "r04_r05_difference": "R04/R05 have much smaller area ratios and foreground recall than R03, indicating component-level undercoverage rather than robust localization.",
+    "random_box_width_height_source": "The random box uses width and height copied from the corresponding automatic proposal bounding box.",
+    "random_control_inherits_automatic_scale": true,
+    "random_control_uses_gt_for_generation": false,
+    "random_samples_per_query_per_family": 1
+  },
+  "new_model_inference": false,
+  "schema_version": "adapromptset.phase4.read_only_audit.v1",
+  "status": "PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK",
+  "testA_testB_access": false
+}

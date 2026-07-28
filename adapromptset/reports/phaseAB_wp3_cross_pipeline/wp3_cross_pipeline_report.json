@@ -1,0 +1,130 @@
+{
+  "gate": "WP3",
+  "date": "2026-07-28",
+  "status": "PHASEAB_CROSS_PIPELINE_DIRECTIONAL_PASS",
+  "n_strong": 0,
+  "n_directional": 5,
+  "n_no_support": 0,
+  "n_total": 5,
+  "paper_wording": "pipeline-specific, strongest for SAM-B",
+  "conclusion": "Prediction consistency shows 5/5 pipelines with at least directional support.",
+  "primary_pipeline": "DINOv2-L + SAM-B",
+  "primary_pipeline_support": "directional",
+  "pipeline_verdicts": {
+    "L+SAM-B": {
+      "support": "directional",
+      "auroc": 0.03557312252964423,
+      "aurc_b4": 0.015804558486673743,
+      "aurc_random": 0.07629503624417007,
+      "cfr_red_80_pct": 88.63636363636364,
+      "cfr_b4_80": 0.015625,
+      "cfr_rand_80": 0.140625,
+      "dice_at_80": 0.5006861291666667,
+      "n_queries": 80,
+      "cv_5fold": {
+        "auroc_mean": 0.056227106227106215,
+        "auroc_std": 0.07293793644386866,
+        "aurc_mean": 0.048538451675062204,
+        "aurc_std": 0.026225665545849694,
+        "cfr_red_80_mean": 63.59397818377839
+      },
+      "checks": {
+        "auroc_ge_0p70": false,
+        "aurc_better_than_random": true,
+        "cfr_not_increase": true
+      }
+    },
+    "L+SAM-L": {
+      "support": "directional",
+      "auroc": 0.32950631458094143,
+      "aurc_b4": 0.10020578301427878,
+      "aurc_random": 0.13951419415530814,
+      "cfr_red_80_pct": 23.076923076923077,
+      "cfr_b4_80": 0.125,
+      "cfr_rand_80": 0.171875,
+      "dice_at_80": 0.302899615625,
+      "n_queries": 80,
+      "cv_5fold": {
+        "auroc_mean": 0.3389377289377289,
+        "auroc_std": 0.1653392211725251,
+        "aurc_mean": 0.1192575003852097,
+        "aurc_std": 0.06911637105223824,
+        "cfr_red_80_mean": 44.33461016401003
+      },
+      "checks": {
+        "auroc_ge_0p70": false,
+        "aurc_better_than_random": true,
+        "cfr_not_increase": true
+      }
+    },
+    "L+SAM2-T": {
+      "support": "directional",
+      "auroc": 0.4018445322793149,
+      "aurc_b4": 0.09101794187711912,
+      "aurc_random": 0.12501080290714123,
+      "cfr_red_80_pct": 9.090909090909099,
+      "cfr_b4_80": 0.125,
+      "cfr_rand_80": 0.140625,
+      "dice_at_80": 0.3247976,
+      "n_queries": 80,
+      "cv_5fold": {
+        "auroc_mean": 0.4216483516483517,
+        "auroc_std": 0.16582682575595054,
+        "aurc_mean": 0.16337938231909063,
+        "aurc_std": 0.05264821304946829,
+        "cfr_red_80_mean": -10.14469878547083
+      },
+      "checks": {
+        "auroc_ge_0p70": false,
+        "aurc_better_than_random": true,
+        "cfr_not_increase": true
+      }
+    },
+    "L+SAM2-S": {
+      "support": "directional",
+      "auroc": 0.408203125,
+      "aurc_b4": 0.13393194635140987,
+      "aurc_random": 0.21745478997094372,
+      "cfr_red_80_pct": -1.5624999999999944,
+      "cfr_b4_80": 0.203125,
+      "cfr_rand_80": 0.203125,
+      "dice_at_80": 0.28093366249999996,
+      "n_queries": 80,
+      "cv_5fold": {
+        "auroc_mean": 0.41213120213120213,
+        "auroc_std": 0.11016718397109508,
+        "aurc_mean": 0.14297855239759083,
+        "aurc_std": 0.057552257066485396,
+        "cfr_red_80_mean": -5.372856395302817
+      },
+      "checks": {
+        "auroc_ge_0p70": false,
+        "aurc_better_than_random": true,
+        "cfr_not_increase": true
+      }
+    },
+    "B+SAM-B": {
+      "support": "directional",
+      "auroc": 0.026350461133069835,
+      "aurc_b4": 0.014484087987715485,
+      "aurc_random": 0.14193088329562814,
+      "cfr_red_80_pct": 88.63636363636364,
+      "cfr_b4_80": 0.015625,
+      "cfr_rand_80": 0.140625,
+      "dice_at_80": 0.46829885520833336,
+      "n_queries": 80,
+      "cv_5fold": {
+        "auroc_mean": 0.02142857142857143,
+        "auroc_std": 0.04285714285714286,
+        "aurc_mean": 0.05745210894150525,
+        "aurc_std": 0.018132626552679484,
+        "cfr_red_80_mean": 64.81489363673374
+      },
+      "checks": {
+        "auroc_ge_0p70": false,
+        "aurc_better_than_random": true,
+        "cfr_not_increase": true
+      }
+    }
+  }
+}

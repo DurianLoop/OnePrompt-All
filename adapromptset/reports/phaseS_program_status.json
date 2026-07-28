@@ -1,0 +1,89 @@
+{
+  "phase": "S",
+  "date": "2026-07-22",
+  "branch": "phaseS-multitrack-reference-robust-research",
+  "state": "PHASES_TRACK_C_COMPLETE_NO_GAIN",
+  "tracks": {
+    "A": {
+      "name": "Metric Correction and Stability Benchmark",
+      "status": "PHASES_TRACK_A_REFERENCE_INSTABILITY_BENCHMARK_VALID",
+      "gate_section": "6.5",
+      "conditions_passed": 7,
+      "conditions_total": 7,
+      "compute_used_gpu_hours": 0.0,
+      "compute_cap_gpu_hours": 20
+    },
+    "B": {
+      "name": "Learned Reference Reliability and Robust Aggregation",
+      "status": "PHASES_TRACK_B_NO_GAIN",
+      "gate_section": "7.6",
+      "conditions_passed": 1,
+      "conditions_total": 6,
+      "requirements_passed": 5,
+      "requirements_total": 6,
+      "best_model": "M4_gbm",
+      "inner_cv_spearman_train": 0.9163,
+      "utility_prediction_spearman_val": 0.4781,
+      "delta_dice": -0.0024,
+      "sam_calls": 123,
+      "compute_used_gpu_hours": 0.0,
+      "compute_cap_gpu_hours": 35
+    },
+    "C": {
+      "name": "Set-Conditioned Robust Prompting",
+      "status": "PHASES_TRACK_C_NO_GAIN",
+      "gate_section": "8.4",
+      "conditions_passed": 5,
+      "conditions_total": 8,
+      "best_alpha": 0.0,
+      "best_beta": 0.0,
+      "best_gamma": 0.0,
+      "best_method": "B2_mean_baseline (no C3/C4 improvement)",
+      "delta_dice_vs_trackB": 0.0047,
+      "train_mean_dice": 0.5038,
+      "val_mean_dice": 0.4779,
+      "sam_calls_train": 6432,
+      "sam_calls_val": 117,
+      "sam_calls_gate_eval": 110,
+      "compute_used_gpu_hours": 0.0,
+      "compute_cap_gpu_hours": 45,
+      "start_rationale": "Track B has stable positive signal (Spearman=0.478 > 0.30) but plateaued (deltaDice=-0.0024)"
+    },
+    "D": {
+      "name": "Direct Reference-Conditioned Segmentation",
+      "status": "START_CONDITION_NOT_FULLY_MET",
+      "gate_section": "9.4",
+      "conditions_count": 8,
+      "compute_cap_gpu_hours": 50,
+      "start_assessment": "Track A confirmed instability, Track B/C failed. But condition 3 (raw matching maps have stable signal but point prompt conversion loses significantly) is NOT clearly met because SAM refinement HELPS (consensus Dice 0.48 vs raw matching map Dice <0.3). Track D not started."
+    }
+  },
+  "holdout": {
+    "status": "BLOCKED",
+    "reason": "Track B and C both failed; directive §11 requires Track B/C/D PASS"
+  },
+  "cross_dataset": {
+    "status": "BLOCKED",
+    "reason": "Holdout blocked; directive §12 requires holdout PASS"
+  },
+  "formal_test": "LOCKED_UNUSED",
+  "compute": {
+    "used_gpu_hours": 0.0,
+    "cap_gpu_hours": 210,
+    "remaining_gpu_hours": 210.0,
+    "checkpoints": [50, 100, 160, 210]
+  },
+  "final_report": {
+    "tables_generated": 20,
+    "figures_generated": 24,
+    "figures_dir": "reports/phaseS_figures/",
+    "novelty_audit": "reports/phaseS_novelty_audit.md",
+    "mock_review": "reports/phaseS_mock_review.md",
+    "final_research_summary_md": "reports/phaseS_final_research_summary.md",
+    "final_research_summary_json": "reports/phaseS_final_research_summary.json",
+    "prohibited_claim_scan": "PASSED (no actual prohibited claims present)",
+    "mock_review_scores": {"soundness": 6, "presentation": 7, "contribution": 6},
+    "mock_review_recommendation": "Weak Reject/Borderline — resubmit with cross-dataset validation"
+  },
+  "next_action": "Phase S complete. All 17 steps executed. Final state: PHASES_BENCHMARK_PAPER_READY."
+}

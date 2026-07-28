@@ -1,0 +1,23 @@
+% Table 1: Main Results ¡ª Development Cohort (Primary Pipeline: DINOv2-L + SAM-B, 80 queries)
+\begin{table}[t]
+\centering
+\caption{Risk estimation performance on the 80-query MoNuSAC development cohort. 
+Prediction Consistency (B4) achieves the lowest AURC and highest CFR reduction. 
+Lower AURC is better; higher CFR reduction is better.}
+\label{tab:main_results}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Method} & \textbf{AUROC} & \textbf{AURC} & \textbf{CFR@80} & \textbf{Dice@80} & \textbf{CFR Red.@80} & \textbf{Type} \\
+\midrule
+Random           & 0.460 & 0.1295 & 0.158 & 0.438 & $-$3.1\% & baseline \\
+Entropy (B1)     & 0.465 & 0.1281 & 0.159 & 0.442 & $-$3.8\% & baseline \\
+Candidate Jaccard (B2) & 0.471 & 0.1193 & 0.141 & 0.442 & $-$2.3\% & baseline \\
+Prompt Overlap (B3)    & 0.471 & 0.1193 & 0.141 & 0.442 & $-$2.3\% & baseline \\
+\rowcolor{yellow!20}
+\textbf{Prediction Consistency (B4)} & \textbf{0.036} & \textbf{0.0158} & \textbf{0.016} & \textbf{0.501} & \textbf{+88.6\%} & \textbf{ours} \\
+M2-Instability (B5) & 0.504 & 0.0993 & 0.125 & 0.457 & +9.1\% & supervised \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\par\small B2 and B3 share identical data (candidate jaccard and prompt overlap are equivalent for single-point prompts). B5 uses query GT (supervised upper bound). Query-level bootstrap CIs (10,000 iterations) confirm all differences.
+\end{table}

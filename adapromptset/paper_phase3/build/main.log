@@ -1,0 +1,435 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  19 JUL 2026 17:17
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./main.tex
+(main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/base\size11.clo
+File: size11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2026/03/07 v6.0 Page Geometry
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count283
+\Gm@cntv=\count284
+\c@Gm@tempcnt=\count285
+\Gm@bindingoffset=\dimen149
+\Gm@wd@mp=\dimen150
+\Gm@odd@mp=\dimen151
+\Gm@even@mp=\dimen152
+\Gm@layoutwidth=\dimen153
+\Gm@layoutheight=\dimen154
+\Gm@layouthoffset=\dimen155
+\Gm@layoutvoffset=\dimen156
+\Gm@dimlist=\toks18
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cf
+g
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen157
+\Gin@req@width=\dimen158
+) (C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip51
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks19
+\ex@=\dimen159
+))
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen160
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count286
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count287
+\leftroot@=\count288
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count289
+\DOTSCASE@=\count290
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen161
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count291
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count292
+\dotsspace@=\muskip17
+\c@parentequation=\count293
+\dspbrk@lvl=\count294
+\tag@help=\toks20
+\row@=\count295
+\column@=\count296
+\maxfields@=\count297
+\andhelp@=\toks21
+\eqnshift@=\dimen162
+\alignsep@=\dimen163
+\tagshift@=\dimen164
+\tagwidth@=\dimen165
+\totwidth@=\dimen166
+\lineht@=\dimen167
+\@envbody=\toks22
+\multlinegap=\skip52
+\multlinetaggap=\skip53
+\mathdisplay@stack=\toks23
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\times.sty
+Package: times 2020/03/25 PSNFSS-v9.3 (SPQR) 
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2
+0.
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdft
+ex.def
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count298
+) (D:\SAM\adapromptset\paper_phase3\build\main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(56.3705pt, 501.554pt, 56.3705pt)
+* v-part:(T,H,B)=(56.3705pt, 682.22899pt, 56.3705pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=501.554pt
+* \textheight=682.22899pt
+* \oddsidemargin=-15.89949pt
+* \evensidemargin=-15.89949pt
+* \topmargin=-52.89949pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=4.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumntrue
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mki
+i
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count299
+\scratchdimen=\dimen168
+\scratchbox=\box55
+\nofMPsegments=\count300
+\nofMParguments=\count301
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count302
+\MPscratchDim=\dimen169
+\MPnumerator=\count303
+\makeMPintoPDFobject=\count304
+\everyMPtoPDFconversion=\toks25
+)
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-ba
+se.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cf
+g
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+)) (sections/00_abstract.tex
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 2
+.
+
+(C:\Users\user\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+))
+(sections/01_introduction.tex
+Underfull \hbox (badness 1082) in paragraph at lines 3--4
+\OT1/ptm/m/n/10.95 route reached \OT1/pcr/m/n/10.95 PIVOT[]ORACLE[]ANALYSIS\OT1
+/ptm/m/n/10.95 : the ob-
+ []
+
+
+Underfull \hbox (badness 1009) in paragraph at lines 3--4
+\OT1/ptm/m/n/10.95 pol-icy train-ing. The sub-se-quent GlaS strict pro-to-
+ []
+
+(tables/table_phase2d_interpretation.tex)) (sections/02_related_work.tex
+Underfull \vbox (badness 3769) has occurred while \output is active []
+
+ [1{C:/Users/user/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/us
+er/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
+
+
+]
+Underfull \hbox (badness 4084) in paragraph at lines 3--5
+\OT1/ptm/b/n/10.95 Promptable seg-men-ta-tion. \OT1/ptm/m/n/10.95 SAM pop-u-lar
+-ized a
+ []
+
+
+Underfull \hbox (badness 1286) in paragraph at lines 6--8
+[]\OT1/ptm/b/n/10.95 Reference-guided dense pre-dic-tion. \OT1/ptm/m/n/10.95 Re
+ference-
+ []
+
+) (sections/03_protocol.tex
+Underfull \hbox (badness 1226) in paragraph at lines 12--1
+\OT1/ptm/m/n/10.95 boxes and GT coarse masks are in-for-ma-tive up-per
+ []
+
+(tables/table_region_action_definitions.tex)
+(tables/table_selected_region_configs.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 18--19
+[]\OT1/ptm/m/n/10.95 Failure of all au-to-matic fam-i-lies trig-gers
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 18--19
+\OT1/pcr/m/n/10.95 STOP[]GLAS[]REGION[]PROPOSAL[]FAILURE\OT1/ptm/m/n/10.95 . Un
+-
+ []
+
+<figures/phase3_gate_state_flow.png, id=8, 448.074pt x 165.8925pt>
+File: figures/phase3_gate_state_flow.png Graphic file (type png)
+<use figures/phase3_gate_state_flow.png>
+Package pdftex.def Info: figures/phase3_gate_state_flow.png  used on input line
+ 22.
+(pdftex.def)             Requested size: 476.47476pt x 176.40968pt.
+) (sections/04_results.tex [2] (tables/table_control_decomposition.tex)
+<figures/phase2d_point_vs_region_upper_bound.png, id=13, 317.988pt x 216.81pt>
+File: figures/phase2d_point_vs_region_upper_bound.png Graphic file (type png)
+<use figures/phase2d_point_vs_region_upper_bound.png>
+Package pdftex.def Info: figures/phase2d_point_vs_region_upper_bound.png  used 
+on input line 11.
+(pdftex.def)             Requested size: 245.777pt x 167.57608pt.
+<figures/p3_failure_taxonomy.png, id=14, 361.35pt x 216.81pt>
+File: figures/p3_failure_taxonomy.png Graphic file (type png)
+<use figures/p3_failure_taxonomy.png>
+Package pdftex.def Info: figures/p3_failure_taxonomy.png  used on input line 18
+.
+(pdftex.def)             Requested size: 245.777pt x 147.46523pt.
+<figures/phase2d_dice_vs_component_count.png, id=15, 361.35pt x 245.718pt>
+File: figures/phase2d_dice_vs_component_count.png Graphic file (type png)
+<use figures/phase2d_dice_vs_component_count.png>
+Package pdftex.def Info: figures/phase2d_dice_vs_component_count.png  used on i
+nput line 25.
+(pdftex.def)             Requested size: 240.74377pt x 163.70786pt.
+<figures/phase2d_representative_failure_panels.png, id=16, 361.35pt x 361.35pt>
+
+File: figures/phase2d_representative_failure_panels.png Graphic file (type png)
+
+<use figures/phase2d_representative_failure_panels.png>
+Package pdftex.def Info: figures/phase2d_representative_failure_panels.png  use
+d on input line 26.
+(pdftex.def)             Requested size: 240.74377pt x 240.74686pt.
+
+(tables/table_r1_region_proposal_quality.tex)
+<figures/r1_family_metrics.png, id=17, 505.89pt x 231.264pt>
+File: figures/r1_family_metrics.png Graphic file (type png)
+<use figures/r1_family_metrics.png>
+Package pdftex.def Info: figures/r1_family_metrics.png  used on input line 41.
+(pdftex.def)             Requested size: 240.74377pt x 110.0562pt.
+<figures/r1_automatic_vs_control_scatter.png, id=18, 295.9785pt x 238.491pt>
+File: figures/r1_automatic_vs_control_scatter.png Graphic file (type png)
+<use figures/r1_automatic_vs_control_scatter.png>
+Package pdftex.def Info: figures/r1_automatic_vs_control_scatter.png  used on i
+nput line 42.
+(pdftex.def)             Requested size: 240.74377pt x 193.98814pt.
+<figures/r1_parameter_grid_curves.png, id=19, 303.534pt x 224.037pt>
+File: figures/r1_parameter_grid_curves.png Graphic file (type png)
+<use figures/r1_parameter_grid_curves.png>
+Package pdftex.def Info: figures/r1_parameter_grid_curves.png  used on input li
+ne 49.
+(pdftex.def)             Requested size: 245.777pt x 181.40742pt.
+
+(tables/table_downstream_gate_status.tex) (tables/table_compute_and_access.tex)
+) (sections/05_discussion.tex [3]) (sections/06_limitations.tex
+Underfull \hbox (badness 3168) in paragraph at lines 9--1
+[]\OT1/ptm/m/n/10.95 One prac-ti-cal con-se-quence is that the next le-
+ []
+
+
+Underfull \hbox (badness 1365) in paragraph at lines 9--1
+\OT1/ptm/m/n/10.95 gal ex-per-i-ment can-not be a quiet thresh-old ex-pan-
+ []
+
+
+Underfull \hbox (badness 1983) in paragraph at lines 9--1
+\OT1/ptm/m/n/10.95 re-quire a new pre-registered res-cue pro-to-col us-ing
+ []
+
+
+Underfull \hbox (badness 2020) in paragraph at lines 9--1
+\OT1/ptm/m/n/10.95 only al-lowed de-vel-op-ment data or a new ex-ter-nal
+ []
+
+
+Underfull \hbox (badness 4872) in paragraph at lines 9--1
+\OT1/ptm/m/n/10.95 gates. With-out that, the cor-rect fi-nal state is
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [4 <./figures/phase3_gate_state_flow.png>]) (sections/07_reproducibility.tex
+Underfull \hbox (badness 1412) in paragraph at lines 5--6
+\OT1/ptm/m/n/10.95 Phase 3 starts from the Phase 2D ar-ti-fact com-mit
+ []
+
+[5 <./figures/phase2d_point_vs_region_upper_bound.png> <./figures/p3_failure_ta
+xonomy.png>] [6 <./figures/phase2d_dice_vs_component_count.png> <./figures/phas
+e2d_representative_failure_panels.png (PNG copy)>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+)
+(sections/08_conclusion.tex
+Underfull \hbox (badness 2443) in paragraph at lines 3--4
+\OT1/ptm/m/n/10.95 Phase 3 pre-serves the his-tor-i-cal Phase 2D op-er-a-
+ []
+
+
+Underfull \hbox (badness 2221) in paragraph at lines 3--4
+\OT1/ptm/m/n/10.95 i-leged re-gion prompts show that the re-gion in-ter-
+ []
+
+
+Underfull \hbox (badness 1448) in paragraph at lines 3--4
+\OT1/ptm/m/n/10.95 olds on GlaS strict val-i-da-tion. The fi-nal state is
+ []
+
+
+Underfull \hbox (badness 1184) in paragraph at lines 3--4
+\OT1/ptm/m/n/10.95 to-matic re-gion prompt-ing suc-cess, SAM re-fine-ment
+ []
+
+[7 <./figures/r1_family_metrics.png> <./figures/r1_automatic_vs_control_scatter
+.png> <./figures/r1_parameter_grid_curves.png>])
+(sections/09_artifact_index.tex)
+Underfull \hbox (badness 2142) in paragraph at lines 42--43
+[]\OT1/ptm/m/n/10.95 Sirinukunwattana et al. Gland Seg-men-ta-tion in
+ []
+
+[8
+
+] (D:\SAM\adapromptset\paper_phase3\build\main.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 2994 strings out of 467871
+ 51285 string characters out of 5418861
+ 480018 words of memory out of 5000000
+ 31801 multiletter control sequences out of 15000+600000
+ 644125 words of font info for 72 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 57i,9n,65p,1618b,239s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/user/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.p
+fb><C:/Users/user/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pf
+b><C:/Users/user/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb
+>
+Output written on D:\SAM\adapromptset\paper_phase3\build\main.pdf (8 pages, 557
+891 bytes).
+PDF statistics:
+ 61 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+

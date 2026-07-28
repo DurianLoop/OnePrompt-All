@@ -1,0 +1,102 @@
+{
+  "best": {
+    "model": "M4_gbm",
+    "T": 0.25,
+    "eps": 0.0,
+    "lam": 0.0
+  },
+  "best_mean_robust_utility": 0.469942,
+  "model_cv": {
+    "M0_uniform": {
+      "trained": true,
+      "inner_cv_spearman": 0.0,
+      "cv_detail": {
+        "note": "uniform baseline, no learning"
+      },
+      "notes": "w_r = 1/n uniformly"
+    },
+    "M1_handcrafted": {
+      "trained": true,
+      "inner_cv_spearman": 0.138956,
+      "cv_detail": {
+        "alpha": 1.0,
+        "beta": 1.0,
+        "spearman": 0.1389564304267678
+      },
+      "notes": "w_r \u221d (1 + \u03b1\u00b7ca + \u03b2\u00b7ges); \u00fb_r = \u03b1\u00b7ca + \u03b2\u00b7ges"
+    },
+    "M2_ridge": {
+      "trained": true,
+      "inner_cv_spearman": 0.431057,
+      "cv_detail": {
+        "alpha_grid": {
+          "0.01": 0.4305856586677931,
+          "0.1": 0.43105656056399305,
+          "1.0": 0.42977538060250164
+        },
+        "best_alpha": 0.1
+      },
+      "notes": "Ridge on features -> utility"
+    },
+    "M3_pairwise_rank": {
+      "trained": true,
+      "inner_cv_spearman": 0.275963,
+      "cv_detail": {
+        "margin_grid": {
+          "0.05": {
+            "ranking_accuracy": 0.6464802425659316,
+            "spearman": 0.2759626563216672
+          },
+          "0.1": {
+            "ranking_accuracy": 0.6282570502076783,
+            "spearman": 0.2759626563216672
+          },
+          "0.2": {
+            "ranking_accuracy": 0.5808663162112963,
+            "spearman": 0.2759626563216672
+          }
+        },
+        "best_margin": 0.05,
+        "note": "\u00fb_r = w\u00b7x_r where w from Ridge on pairwise diffs"
+      },
+      "notes": "Pairwise Ridge; \u00fb_r = w\u00b7x_r"
+    },
+    "M4_gbm": {
+      "trained": true,
+      "inner_cv_spearman": 0.916348,
+      "cv_detail": {
+        "grid": {
+          "depth3_n100": 0.6791154188360847,
+          "depth3_n300": 0.8023809649188973,
+          "depth5_n100": 0.8261199617730336,
+          "depth5_n300": 0.9163476559658903
+        },
+        "best_depth": 5,
+        "best_n_estimators": 300
+      },
+      "notes": "GradientBoostingRegressor -> utility"
+    },
+    "M5_mlp": {
+      "trained": true,
+      "inner_cv_spearman": 0.232971,
+      "cv_detail": {
+        "grid": {
+          "hidden64": 0.2329705587097617,
+          "hidden128": 0.19380410635201928
+        },
+        "best_hidden": 64
+      },
+      "notes": "MLPRegressor -> utility"
+    }
+  },
+  "harmfulness_deltas": {
+    "0.02": {
+      "note": "h_r = 1[u_r < u_mean(q) - \u03b4]; computed per episode at selection"
+    },
+    "0.05": {
+      "note": "h_r = 1[u_r < u_mean(q) - \u03b4]; computed per episode at selection"
+    }
+  },
+  "n_train_rows": 7200,
+  "reasoning": "Selected M4_gbm with T=0.25, eps=0.0, lam=0.0 maximising mean robust-utility proxy (E_w[D] - lam*Std_w[D], R1 per-reference Dice as proxy) on train."
+}

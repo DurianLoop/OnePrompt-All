@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Related-work boundaries used by the current oracle-analysis skeleton. The table is generated from the project boundary registry and does not assert an adaptive-policy result.}
+\label{tab:related-work-boundaries}
+\begin{tabular}{llllll}
+\toprule
+Work & Ref. guided & Negative evidence & Learned policy & Grouping & Budgeted complete action \\
+\midrule
+GF-SAM & yes & background ref. & none & graph rule & no \\
+SynPo & yes & explicit neg. & none & fixed K-means & no \\
+AlignSAM & no & label module & seq. RL & patch centers & no \\
+Point Prompt Defender & no & adv. prompt opt. & adv. DQN & graph env. & no \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+\footnotesize AdaPromptSet boundary: one-shot, offline, complete prompt-set selection under frozen matching and segmentation modules.
+\end{table*}

@@ -1,0 +1,104 @@
+{
+  "phase": "WP8",
+  "title": "原始结果复现 (Artifact Replay)",
+  "date": "2026-07-28",
+  "status": "COMPLETED",
+  "summary": {
+    "total_results": 60,
+    "match": 44,
+    "match_corrected": 8,
+    "match_qualitative": 1,
+    "noted_as_proxy": 2,
+    "cannot_reproduce_no_data": 5,
+    "level1_artifact_replay": 55,
+    "level0_inaccessible": 5
+  },
+  "priority_results": {
+    "1_topk_dice": {
+      "claim": "Top-K Dice = 0.446 (DINOv2-L + SAM-B, MoNuSAC)",
+      "reproduced": "0.4462434825",
+      "verdict": "MATCH",
+      "source": "reports/phaseU_baselines/baselines_summary.json"
+    },
+    "2_reference_variation": {
+      "claim": "Reference variation 0.82 → 0.02",
+      "reproduced": "prediction_jaccard_k1_within: 0.379 to 0.929; std_dice_k1: 0.003 to 0.246",
+      "verdict": "MATCH_QUALITATIVE",
+      "source": "reports/phaseU_wp1/sam_b/phase2_episode_instability.csv",
+      "note": "prediction_jaccard_k1_within (cross-reference agreement) varies from 0.38 to 0.93; std_dice_k1 from 0.003 to 0.246"
+    },
+    "3_catastrophic_prevalence": {
+      "claim": "Catastrophic prevalence > 14%",
+      "reproduced": "14.25% (DINOv2-L+SAM-B), 14.67% (DINOv2-B+SAM2-T), 19.58% (sam2_s)",
+      "verdict": "MATCH",
+      "source": "reports/phaseU_baselines/baselines_summary.json"
+    },
+    "4_prediction_consistency": {
+      "claim": "AURC=0.0158, CFR@80 reduction=88.6%, Dice@80=0.501",
+      "reproduced": "AURC=0.0158, CFR@80 reduction=88.64%, Dice@80=0.5007",
+      "verdict": "MATCH",
+      "source": "reports/phaseW_risk_coverage/risk_coverage_curves.json"
+    },
+    "5_v4_cfr_reduction": {
+      "claim": "CFR reduction 37.5-84.4% at 80% coverage",
+      "reproduced": "37.5-84.4%",
+      "verdict": "MATCH",
+      "source": "reports/phaseU_ramp/ramp_results.json",
+      "note": "Phase V corrected range from 56-84% to 37.5-84.4%"
+    },
+    "6_external_baselines": {
+      "gf_sam": {"claim": "0.388", "reproduced": "0.388", "verdict": "MATCH"},
+      "maup": {"claim": "0.279", "reproduced": "0.279", "verdict": "MATCH"},
+      "cyclesam": {"claim": "0.412", "verdict": "CANNOT_REPRODUCE_NO_DATA"},
+      "h_sam": {"claim": "0.405", "verdict": "CANNOT_REPRODUCE_NO_DATA"},
+      "sam_med2d": {"claim": "0.438", "verdict": "CANNOT_REPRODUCE_NO_DATA"}
+    },
+    "7_rrn": {
+      "auroc": {"claim": "0.612", "reproduced": "0.6119", "verdict": "MATCH"},
+      "dice_top3": {"claim": "0.525", "reproduced": "0.5247", "verdict": "MATCH"},
+      "note": "Phase AB corrected AUROC from 0.612 to 0.573; Appendix only"
+    },
+    "8_mc_dropout_deep_ensemble": {
+      "mc_dropout": {"claim": "CFR reduction 10.7%", "reproduced": "10.7%", "verdict": "NOTED_AS_PROXY"},
+      "deep_ensemble": {"claim": "CFR reduction 6.25%", "reproduced": "6.25%", "verdict": "NOTED_AS_PROXY"},
+      "note": "Both are proxy estimates, not actual MC Dropout or Deep Ensemble runs"
+    },
+    "9_pascal_coco": {
+      "claim": "Pascal/COCO fold evaluation",
+      "verdict": "CANNOT_REPRODUCE_NO_DATA",
+      "note": "Phase V notes: fold-0 only (single fold); need 4-fold evaluation"
+    }
+  },
+  "corrected_claims_from_phaseV": {
+    "anti_correlation_range": "Corrected from -0.43 to -0.71 → -0.18 to -0.49",
+    "n_segmenters": "Corrected from 6 → 4",
+    "n_matchers": "Corrected from 4 → 2",
+    "cfr_range": "Corrected from 56-84% → 37.5-84.4%",
+    "training_free": "Retracted (uses gradient boosting)",
+    "calibration_free": "Retracted (ECE=0.477)",
+    "equivalence": "Retracted (p>0.05 ≠ equivalence)",
+    "identical_conditions": "Retracted (backbone differs)",
+    "component_ablation": "Data unreliable (all variants produce identical dice)"
+  },
+  "data_sources": [
+    "reports/phaseU_wp1/sam_b/phase2_episode_instability.csv",
+    "reports/phaseU_wp1/sam_l/phase2_episode_instability.csv",
+    "reports/phaseU_wp1/sam2_s/phase2_episode_instability.csv",
+    "reports/phaseU_wp1/sam2_t/phase2_episode_instability.csv",
+    "reports/phaseU_wp1/phaseU_wp1_summary.json",
+    "reports/phaseU_wp2/wp2_matcher_summary.json",
+    "reports/phaseU_wp4/wp4_dinov2b_sam2t.json",
+    "reports/phaseU_wp5/wp5_cross_pipeline_summary.json",
+    "reports/phaseU_ramp/ramp_results.json",
+    "reports/phaseU_rrn/rrn_results.json",
+    "reports/phaseU_baselines/baselines_summary.json",
+    "reports/phaseU_external_gfsam/gfsam_summary.json",
+    "reports/phaseU_external_maup/maup_summary.json",
+    "reports/phaseU_multi_model/phaseU_multi_model_summary.json",
+    "reports/phaseW_risk_coverage/risk_coverage_curves.json",
+    "reports/phaseV_query_level_stats/query_level_statistics.json",
+    "reports/phaseV_consistency_audit/corrected_master_numbers.json",
+    "reports/phaseAB_integrity/corrected_master_numbers.json"
+  ],
+  "registry_file": "VV4/08_REPRODUCTION/reproduction_registry.csv"
+}

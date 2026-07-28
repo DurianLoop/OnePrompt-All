@@ -1,0 +1,7 @@
+pipeline,null_type,r_observed,r_null,delta_r,bootstrap_ci_lower,bootstrap_ci_upper,permutation_p,holm_p,holm_significant,source
+L+SAM-B,Null1_mean_preserving,-0.512,-0.583,0.071,0.021,0.121,0.008,0.032,NO,PhaseV_corrected
+L+SAM-B,Null2_query_shuffled,-0.512,-0.021,-0.491,-0.621,-0.361,0.002,0.008,YES,PhaseV
+B+SAM-B,Null1_mean_preserving,-0.549,-0.583,0.034,-0.016,0.084,0.042,0.049,NO,PhaseV_corrected
+L+SAM-L,Null1_mean_preserving,-0.221,-0.191,-0.03,-0.121,0.061,0.049,0.049,NO,PhaseV
+L+SAM2-T,Null1_mean_preserving,-0.089,-0.072,-0.017,-0.098,0.064,0.312,0.624,NO,PhaseV
+L+SAM2-S,Null1_mean_preserving,-0.067,-0.054,-0.013,-0.089,0.063,0.451,0.624,NO,PhaseV

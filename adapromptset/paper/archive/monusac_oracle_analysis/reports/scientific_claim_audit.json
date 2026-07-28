@@ -1,0 +1,59 @@
+{
+  "checked_files": [
+    "README.md",
+    "reports/final_project_report.md",
+    "reports/oracle_analysis_paper_assets.md",
+    "paper/main.tex",
+    "paper/sections/00_abstract.tex",
+    "paper/sections/01_intro.tex",
+    "paper/sections/02_related.tex",
+    "paper/sections/03_method.tex",
+    "paper/sections/04_experiments.tex",
+    "paper/sections/05_results.tex",
+    "paper/sections/06_limitations.tex",
+    "paper/sections/07_conclusion.tex"
+  ],
+  "claim_boundary": "oracle_analysis_only",
+  "evidence_artifacts": [
+    "reports/final_project_report.json",
+    "reports/gates/gate_f_oracle_gap.json",
+    "reports/fixed_oracle_analysis/fixed_oracle_summary.json",
+    "reports/representation_analysis/representation_summary.json"
+  ],
+  "gate_f_status": "FAIL_ORACLE_GAP_SMALL",
+  "prohibited_claim_tokens": [
+    "state of the art",
+    "state-of-the-art",
+    "policy improves",
+    "adaptive policy improves",
+    "model-agnostic",
+    "universal",
+    "generalizable",
+    "generalization",
+    "plug-and-play",
+    "test-time action search",
+    "test time action search",
+    "transfers across datasets",
+    "transfer across datasets",
+    "efficiency gain"
+  ],
+  "required_evidence_checks": {
+    "background_reference_not_explicit_negative": true,
+    "claim_boundary_oracle_only": true,
+    "failures_and_limitations_disclosed": true,
+    "gate_f_pivot_documented": true,
+    "glas_not_promoted": true,
+    "multi_reference_not_independent": true,
+    "no_in_domain_transfer_claim": true,
+    "oracle_not_deployable": true,
+    "pdf_hash_recorded": true,
+    "policy_training_prohibited": true,
+    "posthoc_action_redesign_prohibited": true,
+    "representation_pivot_documented": true,
+    "statistics_not_promoted": true,
+    "test_time_search_prohibited": true
+  },
+  "schema_version": "adapromptset.scientific_claim_audit.v1",
+  "status": "PASS",
+  "violations": []
+}

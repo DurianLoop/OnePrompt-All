@@ -1,0 +1,26 @@
+{
+  "gate": "AA1",
+  "date": "2026-07-27",
+  "decision": "PHASEAA_VALIDATION41_NOT_HOLDOUT",
+  "option": "B",
+  "classification": "Validation Cohort",
+  "confirmatory_eligible": false,
+  "reasons": [
+    "41 queries were used for M2 model selection in Phase T (M2-2_logistic_regression)",
+    "41 queries were used for coverage evaluation (CFR@80%)",
+    "41 queries were used for feature evaluation (indirectly through M2 models)",
+    "41 queries were NOT used for B4 Prediction Consistency score design",
+    "41 queries are disjoint from the 80 Development Cohort queries"
+  ],
+  "alternative_fresh_data": {
+    "MoNuSeg": {"status": "AVAILABLE", "risk": "different domain, small sample (14 test)"},
+    "IDRID": {"status": "AVAILABLE", "risk": "different domain, ECE=0.477"},
+    "GlaS": {"status": "AVAILABLE", "risk": "different domain, gland vs nuclei"},
+    "Formal Test": {"status": "LOCKED"}
+  },
+  "next_actions": [
+    "Proceed to Gate AA2 (Development Cohort 80-query grouped CV)",
+    "Skip Gate AA3 (no valid confirmatory cohort)",
+    "Use cross-dataset validation (Gate AA5) as external evidence"
+  ]
+}

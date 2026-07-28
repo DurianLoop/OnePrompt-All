@@ -1,0 +1,14 @@
+{
+  "date": "2026-07-23T14:12:54",
+  "dataset": "idrid",
+  "device": "cpu",
+  "cuda_available": false,
+  "runtime_seconds": 581.244,
+  "gpu_hours": 0.0,
+  "total_sam_calls": 3504,
+  "total_episodes": 450,
+  "query_count": 30,
+  "seed_count": 5,
+  "config_count": 3,
+  "gate_wp2_decision": "PHASET_DATASET_FAIL"
+}

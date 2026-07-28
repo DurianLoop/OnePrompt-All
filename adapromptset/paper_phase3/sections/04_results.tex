@@ -1,0 +1,59 @@
+\section{Results}
+
+\subsection{Phase 2D Interpretation Audit}
+
+The Phase 2D audit supports a narrowed interpretation. P3 grouped sparse points fail against both random-coordinate and alternative-reference controls. P4 privileged union boxes remain positive, showing that the broad SAM backbone failure claim would be too strong. Table~\ref{tab:control_decomposition} decomposes the C1/C2 controls and relabels C2 as an alternative-reference control for scientific discussion, without modifying the original historical CSVs.
+
+\input{tables/table_control_decomposition}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/phase2d_point_vs_region_upper_bound.png}
+\caption{P3 grouped points have negative margins, while privileged P4 region boxes are positive. This motivates a region-prompt pivot but does not establish an automatic method.}
+\label{fig:p3_p4}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/p3_failure_taxonomy.png}
+\caption{P3 failure taxonomy from existing Phase 2D artifacts. Failure modes include under-coverage and image-wide outputs, consistent with a prompt-interface problem.}
+\label{fig:p3_failure_taxonomy}
+\end{figure}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=.48\textwidth]{figures/phase2d_dice_vs_component_count.png}
+\includegraphics[width=.48\textwidth]{figures/phase2d_representative_failure_panels.png}
+\caption{Existing Phase 2D failure diagnostics reused without new SAM inference. Left: grouped-point Dice varies with component structure. Right: representative failure panels selected by the Phase 2D audit rule, not by post-hoc favorable case selection.}
+\label{fig:phase2d_failure_panels}
+\end{figure*}
+
+These visual diagnostics are included to prevent an overly broad backbone-failure interpretation. Some failures are under-coverage errors, where the grouped point interface captures only sparse parts of a whole-image gland mask. Other failures are image-wide outputs, where the prompt interface does not constrain SAM in a useful way. In both cases, the failure is compatible with a bad prompt representation even when the coordinate and cost audits pass.
+
+\subsection{Gate R1 Proposal Quality}
+
+Table~\ref{tab:r1_quality} reports the strict-validation Gate R1 results. No automatic family passes. R03 automatic union box is the strongest route by mean metric, but its improvement over size-matched random boxes is only 0.026 and its win rate is 0.200. R00 direct matching mask is precise but has low recall and low raw Dice. R04 and R05 are too small and under-cover glands.
+
+\input{tables/table_r1_region_proposal_quality}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=.48\textwidth]{figures/r1_family_metrics.png}
+\includegraphics[width=.48\textwidth]{figures/r1_automatic_vs_control_scatter.png}
+\caption{Gate R1 diagnostics. Left: automatic proposal metrics and matched controls by family, with the 0.70 win-rate threshold shown. Right: query-level automatic-versus-control scatter; most points do not clear the diagonal by a meaningful margin.}
+\label{fig:r1_diagnostics}
+\end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/r1_parameter_grid_curves.png}
+\caption{Internal selection-pool parameter grid summary. The selected configurations use the fixed pre-registered grid; strict validation is not used to choose parameters.}
+\label{fig:r1_grid}
+\end{figure}
+
+\subsection{Blocked Downstream Quantities}
+
+Because R1 fails before new SAM region inference, SAM-refined Dice, SAM gain, upper-bound recovery, R3 oracle gap, router comparison, and formal test results are not measured. Table~\ref{tab:downstream_status} records these as blocked quantities, not missing favorable results.
+
+\input{tables/table_downstream_gate_status}
+\input{tables/table_compute_and_access}

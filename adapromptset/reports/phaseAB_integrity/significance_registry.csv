@@ -1,0 +1,6 @@
+pipeline,raw_p,holm_p,holm_threshold,holm_significant,phaseV_label,phaseW_label,resolved_label,notes
+L+SAM-B,0.008,0.008,0.010,YES,YES,YES,YES,Consistent across phases
+B+SAM-B,0.042,0.042,0.013,NO,YES,NO,NO,PhaseW overclaimed
+L+SAM-L,0.049,0.049,0.017,NO,NO,YES,NO,PhaseW overclaimed without Holm
+L+SAM2-T,0.312,0.312,0.025,NO,NO,NO,NO,Consistent — not significant
+L+SAM2-S,0.451,0.451,0.050,NO,NO,NO,NO,Consistent — not significant

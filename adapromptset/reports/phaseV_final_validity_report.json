@@ -1,0 +1,107 @@
+{
+  "phase": "PhaseV",
+  "date": "2026-07-27",
+  "final_state": "PHASEV_EMPIRICAL_SELECTIVE_PREDICTION_READY",
+  "gate_statuses": {
+    "Gate_V0_Numerical_Consistency": "PASS",
+    "Gate_V1_Theory_Repair": "PASS",
+    "Gate_V2_Metric_Coupling_Controls": "EMPIRICAL_ASSOCIATION_ONLY",
+    "Gate_V3_Method_Executable": "PASS",
+    "Gate_V4_Query_Level_Statistics": "PASS",
+    "Gate_V5_Baseline_Fairness": "PASS",
+    "Gate_V6_RRN_Evaluation": "APPENDIX_ONLY"
+  },
+  "answers": {
+    "1_v4_contradictions": "14 contradictions found (7 P0-CRITICAL). All resolved in v5: anti-correlation r range corrected, segmenter/matcher counts corrected, CFR reduction range corrected to 37.5-84.4%, training-free/calibration-free fixed, algorithm corrected to post-hoc, component ablation data noted as unreliable, equivalence claim corrected.",
+    "2_code_vs_writing": "Code issues: component ablation data unreliable (all variants identical), RRN single small split (12 test queries). Writing issues: all P0 problems are writing overclaims now fixed in v5.",
+    "3_lemmas_theorem_retained": "NO. Three Lemmas and Theorem replaced with Geometric Hypotheses (H1-H3) + Empirical Mechanism Analysis + Testable Predictions. No formal theorem language in v5.",
+    "4_anticorrelation_passes_independent_controls": "PARTIALLY. Split-reference correlation significant (r=-0.51), GT-free instability significant (r=-0.59), partial correlation significant (r=-0.25). But Null 1 (random beta) reproduces 94% of correlation. Query-level reanalysis further qualifies: only SAM-B pipelines significant after Holm correction.",
+    "5_null_correlation": "Null 1 (random beta): r=-0.583; Null 2 (shuffled): r=+0.643; Null 3 (uniform): r=+0.381. Observed: r=-0.619. Effect size vs Null 1: Δr=-0.036.",
+    "6_after_controlling_mean_dice": "YES at query level for SAM-B pipelines. L+SAM-B: r_partial=-0.381 (p=0.0005). B+SAM-B: r_partial=-0.500 (p<0.001). But L+SAM-L: r_partial=-0.064 (p=0.575), L+SAM2-T: r_partial=+0.129 (p=0.255). Association is pipeline-specific.",
+    "7_ramp_actual_inference": "Post-hoc Selective Prediction (Option A). Stage 1: matcher→f1-f3 for all refs. Stage 2: SAM→mask for all refs. Stage 3: compute f4 from masks. Stage 4: risk predictor→scores. Stage 5: accept/abstain via coverage ranking.",
+    "8_matcher_segmenter_passes_per_query": "K+1 matcher calls (query + K references), K SAM calls. With K=6: 7 matcher + 6 SAM = 13 model passes per query. Risk predictor adds negligible cost (<1ms).",
+    "9_ramp_training_free": "NO. RAMP uses gradient-boosted tree risk predictor trained on labeled multi-reference data. v5 correctly describes it as 'supervised risk estimator with frozen matcher and segmenter'.",
+    "10_calibration_free": "NO. IDRID ECE=0.477. v5 correctly describes it as 'coverage-based ranking without fixed probability threshold'.",
+    "11_query_level_statistics_significant": "YES for SAM-B pipelines. Anti-correlation: L+SAM-B r=-0.512 (Holm p<0.001), B+SAM-B r=-0.549 (Holm p<0.001). SAM-L (r=-0.221, p=0.049) fails Holm. SAM2-T (r=-0.111, p=0.325) and SAM2-S (r=-0.179, p=0.113) not significant. RAMP CFR reduction: 37.5-84.4% at 80% coverage.",
+    "12_matcher_equivalent": "NO. p>0.05 does not equal equivalence. v5 correctly states 'no statistically significant difference detected'.",
+    "13_rrn_retained": "APPENDIX ONLY. AUROC=0.612 < 0.65 threshold. Dice@Top-3 advantage +0.009 < +0.010. Only 12 test queries, 0 catastrophic cases. Evaluated in Appendix A of v5.",
+    "14_fair_external_baselines": "GF-SAM and MAUP use SAM-H (not SAM-B). CycleSAM uses SAM-B (fair). H-SAM not reference-guided. SAM-Med2D checkpoint blocked. v5 clearly marks backbone differences in Table 4.",
+    "15_strongest_credible_claim": "Reference reliability estimation is a missing component in visual prompting. RAMP with supervised risk estimator achieves 37.5-84.4% CFR reduction at 80% coverage. The instability-CFR association is a reproducible empirical pattern in SAM-B pipelines (r=-0.51, partial r=-0.38 after controlling mean Dice), but does not generalize to SAM2 pipelines.",
+    "16_withdrawn_claims": "training-free, calibration-free, formal theorem proves anti-correlation, six segmenters and four matchers, 56-84% CFR reduction (now 37.5-84.4%), identical conditions (now shared protocol, backbone differences noted), equivalence (now no significant difference), reference reliability dominates prompt sophistication (now orthogonal dimension), anti-correlation is universal (now pipeline-specific), component ablation values (data unreliable)",
+    "17_v5_recommended_title": "Reference-Aware Selective Prediction for Frozen Visual Prompting Pipelines",
+    "18_v5_suitable_venues": "MICCAI 2027 (primary), Medical Image Analysis (journal), CVPR 2027 (if natural image experiments expanded to 4-fold), TMI (journal), Pattern Recognition (journal)",
+    "19_need_sam3_dinov3": "NO. v5 explicitly claims scope as 'tested DINOv2 and SAM/SAM2 pipelines'.",
+    "20_next_experiments_only": "1. Re-run component ablation with proper isolation; 2. Grouped nested 5-fold CV for RRN; 3. Complete 4-fold Pascal-5i/COCO-20i evaluation; 4. Add SAM3/DINOv3 for boundary audit",
+    "21_final_state": "PHASEV_EMPIRICAL_SELECTIVE_PREDICTION_READY"
+  },
+  "query_level_key_findings": {
+    "anti_correlation": {
+      "L+SAM-B": {"pearson_r": -0.512, "p": "<0.001", "holm_significant": true, "partial_r": -0.381, "partial_p": 0.0005},
+      "B+SAM-B": {"pearson_r": -0.549, "p": "<0.001", "holm_significant": true, "partial_r": -0.500, "partial_p": "<0.001"},
+      "L+SAM-L": {"pearson_r": -0.221, "p": 0.049, "holm_significant": false, "partial_r": -0.064, "partial_p": 0.575},
+      "L+SAM2-T": {"pearson_r": -0.111, "p": 0.325, "holm_significant": false, "partial_r": 0.129, "partial_p": 0.255},
+      "L+SAM2-S": {"pearson_r": -0.179, "p": 0.113, "holm_significant": false, "partial_r": -0.176, "partial_p": 0.118}
+    },
+    "ramp_cfr_reduction": {
+      "L+SAM-B": "55.9%",
+      "L+SAM-L": "84.4%",
+      "L+SAM2-T": "37.5%",
+      "B+SAM-B": "55.9%"
+    },
+    "statistical_unit": "query (N=80), aggregated over seeds and configs",
+    "holm_correction": "applied to all anti-correlation tests",
+    "bootstrap_ci": "10,000 resamples for all primary metrics"
+  },
+  "claim_audit_summary": {
+    "SUPPORTED": 1,
+    "PARTIALLY_SUPPORTED": 5,
+    "UNSUPPORTED": 1,
+    "PROHIBITED": 7,
+    "total": 14
+  },
+  "key_artifacts": [
+    "paper/phaseV/full_draft_v5.tex (venue-neutral corrected paper)",
+    "reports/phaseV_consistency_audit/claim_number_registry.csv",
+    "reports/phaseV_consistency_audit/contradiction_log.md",
+    "reports/phaseV_consistency_audit/corrected_master_numbers.json",
+    "reports/phaseV_consistency_audit/claim_registry.md",
+    "reports/phaseV_consistency_audit/selective_prediction_metrics.md",
+    "reports/phaseV_consistency_audit/figure_number_registry.csv",
+    "reports/phaseV_consistency_audit/table_number_registry.csv",
+    "reports/phaseV_consistency_audit/dataset_split_registry.csv",
+    "reports/phaseV_consistency_audit/model_count_registry.csv",
+    "reports/phaseV_consistency_audit/metric_definition_registry.csv",
+    "reports/phaseV_consistency_audit/version_diff_registry.csv",
+    "reports/phaseV_method_audit/actual_inference_graph.md",
+    "reports/phaseV_method_audit/code_trace.md",
+    "reports/phaseV_method_audit/pass_count_table.csv",
+    "reports/phaseV_method_audit/online_vs_cached_features.md",
+    "reports/phaseV_method_audit/corrected_algorithm.md",
+    "reports/phaseV_method_audit/feature_dependency_table.csv",
+    "reports/phaseV_query_level_stats/query_level_statistics.json",
+    "reports/phaseV_query_level_stats/anti_correlation_summary.csv",
+    "reports/phaseV_query_level_stats/descriptives_summary.csv",
+    "reports/phaseV_anticorrelation_controls/anticorrelation_controls.json",
+    "reports/phaseV_baseline_audit/comparator_registry.md",
+    "reports/phaseV_rrn_evaluation.md",
+    "src/adapromptset/scripts/run_phaseV_query_level_statistics.py",
+    "src/adapromptset/scripts/run_phaseV_anticorrelation_controls.py"
+  ],
+  "one_command_reproduction": "python src/adapromptset/scripts/run_phaseV_query_level_statistics.py",
+  "unresolved_blockers": [
+    "Component ablation data needs regeneration (all variants produce identical dice)",
+    "RRN needs grouped nested 5-fold CV for reliable evaluation",
+    "Pascal-5i/COCO-20i only fold-0 (need 4-fold for valid cross-domain claim)",
+    "SAM-Med2D checkpoint blocked (cannot reproduce)",
+    "LaTeX compilation blocked by MiKTeX package download (v5.tex is structurally correct)"
+  ],
+  "v5_changes_from_v4": {
+    "title": "Changed from 'Reference Reliability Estimation for Visual Prompting Pipelines' to 'Reference-Aware Selective Prediction for Frozen Visual Prompting Pipelines'",
+    "abstract": "All numbers corrected, prohibited claims removed, anti-correlation scope qualified",
+    "theory": "Geometric Hypotheses (H1-H3) retained, formal theorem language removed, non-monotonic entropy-CFR relationship discussed",
+    "method": "RAMP described as post-hoc selective predictor with supervised risk estimator, RRN moved to Appendix A",
+    "experiments": "Query-level statistics throughout, Holm correction, bootstrap CIs, backbone differences clearly marked, SAM2 anti-correlation results honestly reported",
+    "limitations": "Expanded to 7 honest limitations covering multi-reference cost, pipeline scope, cross-domain calibration, natural image fold coverage, component ablation, external baseline fairness, modern model coverage",
+    "claims": "14 claims audited, 7 prohibited claims removed, 5 partially supported claims qualified, 1 fully supported claim retained"
+  }
+}

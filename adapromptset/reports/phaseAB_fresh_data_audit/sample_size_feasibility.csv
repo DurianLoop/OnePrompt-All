@@ -1,0 +1,7 @@
+dataset,n_queries,expected_cfr,expected_catastrophic_events,meets_minimum,notes
+MoNuSAC,80,0.15,12,Yes,"Development cohort, fully observed"
+MoNuSeg,30,0.00,0,No,"CFR=0 — no catastrophic failures to detect"
+IDRID,30,0.63,19,Yes,"Very high CFR — segmentation quality is poor"
+GlaS,Unknown,Unknown,Unknown,Unknown,"Need to check"
+CPM17,17,Unknown,Unknown,Unknown,"Small sample"
+Validation41,41,0.12,5,No,"Only 5 events — insufficient for confirmatory"

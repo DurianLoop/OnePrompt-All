@@ -1,0 +1,68 @@
+{
+  "phase": "phaseY",
+  "stage": "data_audit_and_split",
+  "directive_section": "5.1-5.3",
+  "source_manifest": "D:\\SAM\\code\\datasets\\MoNuSAC\\processed\\monusac_processed_manifest.csv",
+  "source_manifest_sha256": "697B95B168E4FD08306C8A4F1AED78E8253C1F40BF7CFC7F7D08E48919A1532B",
+  "split_seed": 20260721,
+  "reference_seed": 20260721,
+  "total_cases": 310,
+  "train_cases": 209,
+  "test_cases": 101,
+  "test_locked": true,
+  "phasex_query_cases": [
+    "train_111",
+    "train_190",
+    "train_132",
+    "train_204",
+    "train_200",
+    "train_116",
+    "train_123",
+    "train_207",
+    "train_113",
+    "train_017"
+  ],
+  "phasex_reference_cases": [
+    "train_004",
+    "train_005"
+  ],
+  "phasex_exposed_patients": [
+    "TCGA-55-1594",
+    "TCGA-86-7713",
+    "TCGA-BH-A18T",
+    "TCGA-EJ-5495",
+    "TCGA-G9-6342",
+    "TCGA-G9-6499",
+    "TCGA-L4-A4E5",
+    "TCGA-P4-AAVK",
+    "TCGA-UZ-A9PO",
+    "TCGA-YL-A9WY"
+  ],
+  "eligible_fresh_cases": 161,
+  "eligible_fresh_patients": 36,
+  "split": {
+    "train": {
+      "case_count": 80,
+      "patient_count": 18,
+      "target": 80
+    },
+    "validation": {
+      "case_count": 41,
+      "patient_count": 9,
+      "target": 40
+    },
+    "holdout": {
+      "case_count": 40,
+      "patient_count": 9,
+      "target": 40
+    }
+  },
+  "reference_pool_size": 80,
+  "reference_set_A_rows": 483,
+  "reference_set_B_rows": 483,
+  "refs_per_query_per_set": 3,
+  "patient_level_disjoint": true,
+  "reference_patient_disjoint_from_query": true,
+  "set_A_B_disjoint_per_query": true,
+  "status": "PHASEY_DATA_AUDIT_COMPLETE"
+}

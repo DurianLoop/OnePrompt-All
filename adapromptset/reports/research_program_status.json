@@ -1,0 +1,84 @@
+{
+  "schema_version": "adapromptset.research_program_status.v1",
+  "date": "2026-07-19",
+  "branch": "phase4plus-submission-program",
+  "state": "PRIMARY_TRACK_B_SELECTED",
+  "phase4_audit_status": "PHASE4_AUDIT_SUPPORTS_BENCHMARK_TRACK",
+  "base_commit": "9f33382",
+  "phase4plus_preregistration_commit": "b4ee8e2",
+  "frozen_prior_states": {
+    "monusac": "PIVOT_ORACLE_ANALYSIS",
+    "glas_grouped_point": "STOP_GLAS_GROUPED_POINT_PROMPT_PATH_CONFIRMED",
+    "glas_region_scientific": "STOP_GLAS_REGION_LOCALIZATION_ADVANTAGE_NOT_ESTABLISHED",
+    "glas_region_operational": "STOP_GLAS_REGION_PROPOSAL_FAILURE",
+    "glas_testA_testB": "LOCKED_UNUSED"
+  },
+  "registered_tracks": {
+    "A": "Promptability-Aware Routing",
+    "B": "Reference Promptability Benchmark",
+    "C": "Direct Reference Segmentation"
+  },
+  "primary_track": "B_reference_promptability_benchmark",
+  "fallback_track": "A_promptability_aware_routing",
+  "deferred_track": "C_direct_reference_segmentation",
+  "route_b_ddr_dev_manifest_status": "PASS_DDR_ROUTE_B_DEV_MANIFEST",
+  "route_b_ddr_dev_manifest_report": "reports/route_b_ddr_manifest/ddr_route_b_manifest_report.json",
+  "route_b_b1_prereq_freeze_status": "PASS_ROUTE_B_B1_PREREQ_FREEZE",
+  "route_b_b1_prereq_freeze_report": "reports/route_b_benchmark_freeze/route_b_benchmark_freeze_audit.json",
+  "route_b_benchmark_config": "configs/experiments/route_b_promptability_benchmark_v1.json",
+  "route_b_ddr_episode_status": "PASS_DDR_ROUTE_B_EPISODES",
+  "route_b_ddr_episode_report": "reports/route_b_ddr_episodes/ddr_route_b_episode_report.json",
+  "route_b_ddr_matcher_smoke_status": "PASS_ROUTE_B_DDR_MATCHER_SMOKE",
+  "route_b_ddr_matcher_smoke_report": "reports/route_b_ddr_development_smoke/route_b_ddr_matcher_smoke.json",
+  "route_b_ddr_stratified_matcher_status": "PASS_ROUTE_B_DDR_STRATIFIED_MATCHER_SMOKE",
+  "route_b_ddr_stratified_matcher_report": "reports/route_b_ddr_stratified_matcher/stratified_matcher_summary.json",
+  "route_b_ddr_failure_taxonomy_status": "PASS_ROUTE_B_DDR_FAILURE_TAXONOMY",
+  "route_b_ddr_failure_taxonomy_report": "reports/route_b_ddr_failure_taxonomy/failure_taxonomy_summary.json",
+  "route_b_ddr_matcher_smoke_signal": {
+    "intent": "MA",
+    "query_image_id": "007-2846-100",
+    "reference_image_id": "007-4668-200",
+    "point_precision": 0.0,
+    "component_coverage": 0.0,
+    "segmenter_inference": false,
+    "claim_boundary": "development_smoke_only_not_benchmark_result"
+  },
+  "route_b_ddr_stratified_matcher_signal": {
+    "selected_episode_count": 16,
+    "queries_per_intent": 2,
+    "mean_point_precision": 0.0125,
+    "mean_component_coverage": 0.0025,
+    "zero_precision_fraction": 0.9375,
+    "zero_component_coverage_fraction": 0.9375,
+    "segmenter_inference": false,
+    "claim_boundary": "stratified_development_smoke_only_not_benchmark_result"
+  },
+  "route_b_ddr_failure_taxonomy_signal": {
+    "n": 16,
+    "mean_point_precision": 0.0125,
+    "mean_random_point_precision": 0.0,
+    "mean_component_coverage": 0.0025,
+    "mean_random_component_coverage": 0.0,
+    "small_sparse_target": 16,
+    "diffuse_matching_map": 16,
+    "no_candidate_hit": 15,
+    "no_component_covered": 15,
+    "random_not_beaten": 15,
+    "claim_boundary": "control_aware_development_taxonomy_not_benchmark_result"
+  },
+  "route_b_ddr_dev_manifest_counts": {
+    "train_images": 383,
+    "train_positive_queries": 964,
+    "valid_images": 149,
+    "valid_positive_queries": 401
+  },
+  "route_b_ddr_episode_counts": {
+    "references_per_query": 3,
+    "train_episode_rows": 2892,
+    "valid_episode_rows": 1203
+  },
+  "next_required_action": "add prompt-interface controls or second-domain development evidence for Route B; candidate-only DINOv2 matching on DDR should be treated as a failure-taxonomy benchmark signal, not a method-positive route",
+  "new_model_inference_since_preregistration": true,
+  "formal_test_access": false,
+  "submission_ready": false
+}

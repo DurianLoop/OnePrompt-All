@@ -1,0 +1,36 @@
+# Prediction Consistency Frozen Configuration
+
+# Date: 2026-07-27
+# Status: TO BE FROZEN after AA1
+
+prediction_consistency:
+  name: "Prediction Consistency Risk Score"
+  version: "1.0"
+  
+  input:
+    reference_count: 8
+    reference_sampling: "random"
+    reference_seed: 42
+    
+  computation:
+    pairwise_metric: "IoU"
+    empty_mask_vs_empty_mask: 0.0
+    empty_mask_vs_nonempty_mask: 0.0
+    computation_scale: "original"
+    binary_threshold: 0.5
+    postprocess: "none"
+    
+  risk_score:
+    formula: "1 - mean_pairwise_iou"
+    nan_handling: "treat_as_zero"
+    tie_handling: "random"
+    
+  consensus:
+    method: "mean"
+    threshold: 0.5
+    
+  coverage_levels: [0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0]
+  
+  catastrophic_threshold:
+    dice: 0.1
+    description: "Dice < 0.1 considered catastrophic failure"

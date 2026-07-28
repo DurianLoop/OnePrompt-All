@@ -1,0 +1,58 @@
+{
+  "phase": "phaseX",
+  "preregistration_date": "2026-07-20",
+  "input_hashes": {
+    "directive": {
+      "path": "D:\\SAM\\adapromptset\\AdaPromptSet_ActionSpace_Oracle_Retry.md",
+      "sha256": "07C92FE8B11891371BA9E1F4E457AABCD66F82FBA4AFB7634C105D8D0C7616FD"
+    },
+    "bank_v1": {
+      "path": "D:\\SAM\\adapromptset\\configs\\actions\\prompt_set_bank_v1.json",
+      "sha256": "D4D2EF1C7AB4B33D66A061AAC9D5B8B1DDA51B89F4D1A0BDF074575A75B266F9"
+    },
+    "bank_v2": {
+      "path": "D:\\SAM\\adapromptset\\configs\\actions\\prompt_set_bank_v2.json",
+      "sha256": "9A04120FBD18A77DA617CD61E14FC7EFC7BCDA6009AC8BF156FF10178BBA5ADE"
+    },
+    "oracle_v2_summary": {
+      "path": "D:\\SAM\\adapromptset\\reports\\oracle_gap_pilot_v2\\oracle_gap_pilot_summary.json",
+      "sha256": "F4CBE717CF9CA94755DF6CFC85F7623E47CD0FE4FB425F46A6A8D5A82EF92FF5"
+    },
+    "fixed_oracle_summary": {
+      "path": "D:\\SAM\\adapromptset\\reports\\fixed_oracle_analysis\\fixed_oracle_summary.json",
+      "sha256": "41E418051800F7A08308506B9D6EC4FCBA54FD95E9DCFD86E9E4D740050AF491"
+    },
+    "phase5_decision": {
+      "path": "D:\\SAM\\adapromptset\\reports\\decision_checkpoint\\phase5_decision.json",
+      "sha256": "B6EC74EA3AF9984EA37F17EC38C35DDD67758F94D88E1FE9A1764143768FBE90"
+    },
+    "gate_f_report": {
+      "path": "D:\\SAM\\adapromptset\\reports\\gates\\gate_f_oracle_gap.json",
+      "sha256": "D70A77F86A34A526834A6DFB35AB88220E6C6D667E1900A275966864705FDEA2"
+    },
+    "action_utility": {
+      "path": "D:\\SAM\\adapromptset\\reports\\oracle_gap_pilot_v2\\action_utility_pilot.csv",
+      "sha256": "74A58008BE058FC18723144B14C17F4863F464F1F42A4D1125DDC60C19CC2A9B"
+    },
+    "fixed_action_summary": {
+      "path": "D:\\SAM\\adapromptset\\reports\\fixed_oracle_analysis\\action_summary.csv",
+      "sha256": "BDD702B6C7C6324C4DF02CB90E42F26FB85B96C2A199316D935A0D491E885FD0"
+    },
+    "budget_pareto": {
+      "path": "D:\\SAM\\adapromptset\\reports\\fixed_oracle_analysis\\budget_pareto.csv",
+      "sha256": "6D6156F9040457E73A86C4AF437EB175B8A4E52560C0D1B2D9A368C3739F6F18"
+    },
+    "oracle_heatmap": {
+      "path": "D:\\SAM\\adapromptset\\reports\\decision_checkpoint\\oracle_action_heatmap.csv",
+      "sha256": "245C32732E58FCD209BE2236EDF52D553F9A2B79B9ED8228801A22461429DA4C"
+    },
+    "episodes_val": {
+      "path": "D:\\SAM\\adapromptset\\manifests\\episodes\\monusac\\episodes_val.csv",
+      "sha256": "F9CB7807B69FD73A9FD431B33544F786CBFAED9EC05DC39B59A6023A9B4FB2E6"
+    },
+    "candidate_pilot": {
+      "path": "D:\\SAM\\adapromptset\\reports\\candidate_pilot\\candidate_pilot_candidates.csv",
+      "sha256": "7ACDC14862C40230EBFF8C94A5B4EE7C42D36FE4D88E12E01A3BB9CF356BA031"
+    }
+  }
+}

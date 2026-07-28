@@ -1,0 +1,86 @@
+{
+  "gate_wp2": {
+    "gate": "Phase T WP2 Cross-Dataset Gate (idrid)",
+    "dataset": "idrid",
+    "n_directional_conditions": 5,
+    "n_directional_pass": 4,
+    "n_strong_conditions": 4,
+    "n_strong_pass": 2,
+    "n_queries": 30,
+    "configs": [
+      "P20-N1",
+      "P30-N0",
+      "P50-N0"
+    ],
+    "k_values": [
+      1,
+      3,
+      6
+    ],
+    "seed_count": 5,
+    "metrics_summary": {
+      "frac_queries_best_worst_gap_ge_0p05": 0.633333,
+      "mean_within_query_ref_std": 0.060539,
+      "mean_consensus_dice_k6": 0.090439,
+      "mean_b1_single_dice_k1": 0.10219,
+      "consensus_gain": -0.011751,
+      "bootstrap_ci_lower": -0.031757,
+      "cfr_b1_single": 0.895556,
+      "cfr_consensus_k6": 0.888889,
+      "cvar_b1_single": 0.028745,
+      "cvar_consensus_k6": 0.029062,
+      "mean_j_pred_b1_single": 0.784265,
+      "mean_j_pred_consensus_k6": 0.853865,
+      "best_disagreement_rho": 0.951869,
+      "best_disagreement_feature": "prediction_jaccard_k1_within"
+    },
+    "conditions": {
+      "d1_30pct_queries_best_worst_gap_ge_0p05": {
+        "pass": true,
+        "details": "fraction of queries with mean best-worst gap>=0.05 = 0.6333 (n=30); threshold 0.3",
+        "tier": "directional"
+      },
+      "d2_mean_within_query_ref_std_ge_0p015": {
+        "pass": true,
+        "details": "mean within-query reference std (k=1) = 0.060539; threshold 0.015",
+        "tier": "directional"
+      },
+      "d3_consensus_dice_ge_single_dice": {
+        "pass": false,
+        "details": "mean consensus(k=6) Dice = 0.090439, mean B1-single(k=1) Dice = 0.102190, gain = -0.011751",
+        "tier": "directional"
+      },
+      "d4_consensus_cfr_le_single_cfr": {
+        "pass": true,
+        "details": "consensus CFR(k=6) = 0.888889, single CFR(B1) = 0.895556",
+        "tier": "directional"
+      },
+      "d5_consensus_j_pred_ge_single_j_pred": {
+        "pass": true,
+        "details": "mean cross-seed J_pred: consensus(k=6) = 0.853865, B1-single(k=1) = 0.784265",
+        "tier": "directional"
+      },
+      "s1_consensus_gain_ge_0p01": {
+        "pass": false,
+        "details": "consensus gain = -0.011751; threshold 0.01",
+        "tier": "strong"
+      },
+      "s2_bootstrap_ci_lower_gt_0": {
+        "pass": false,
+        "details": "paired bootstrap (by query, 10000 iters) 95% CI lower bound = -0.031757; n_queries=30",
+        "tier": "strong"
+      },
+      "s3_consensus_cvar_ge_single_cvar_minus_tol": {
+        "pass": true,
+        "details": "consensus CVaR_0.1(k=6) = 0.029062, single CVaR_0.1(B1) = 0.028745, tolerance 0.005",
+        "tier": "strong"
+      },
+      "s4_disagreement_feature_spearman_rho_ge_0p20": {
+        "pass": true,
+        "details": "best |Spearman(prediction_jaccard_k1_within, best_worst_gap_k1)| = 0.9519; per feature {'matching_map_disagreement': 0.1017, 'candidate_jaccard_mean_k1': 0.4014, 'prompt_overlap_mean_k1': 0.4014, 'prediction_jaccard_k1_within': 0.9519}; threshold 0.2",
+        "tier": "strong"
+      }
+    },
+    "decision": "PHASET_DATASET_FAIL"
+  }
+}
