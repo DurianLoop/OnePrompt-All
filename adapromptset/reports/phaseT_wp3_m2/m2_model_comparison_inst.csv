@@ -1,0 +1,6 @@
+model_name,model_type,auroc_instability,auprc_instability,auprc_catastrophic,ece,ece_calibrated,platt_applied,cfr_no_abstention,cfr_at_80_coverage,cfr_reduction_at_80,dice_no_abstention,dice_at_80_coverage,dice_change_at_80,auroc_instability_query,auprc_catastrophic_query,cfr_reduction_at_80_query,dice_change_at_80_query,best_threshold,best_threshold_raw
+M2-0_entropy_threshold,threshold,0.497733,0.855543,0.083059,0.034267,0.034267,True,0.117073,0.146341,-0.250000,0.414136,0.394520,-0.019616,0.527027,0.096873,-0.242424,-0.021574,0.502513,0.348208
+M2-1_disagreement_threshold,threshold,0.497733,0.855543,0.083059,0.034267,0.034267,True,0.117073,0.146341,-0.250000,0.414136,0.394520,-0.019616,0.527027,0.096873,-0.242424,-0.021574,0.502513,0.348208
+M2-2_logistic_regression,sklearn,0.944317,0.989384,0.071012,0.028064,0.028064,False,0.117073,0.140244,-0.197917,0.414136,0.411231,-0.002906,0.939189,0.082791,-0.242424,-0.014776,,
+M2-3_gradient_boosting,sklearn,0.926492,0.983050,0.073889,0.058410,0.058410,False,0.117073,0.136179,-0.163194,0.414136,0.406564,-0.007572,0.912162,0.084650,-0.242424,-0.012816,,
+M2-4_small_mlp,sklearn,0.941275,0.988978,0.071283,0.039371,0.039371,False,0.117073,0.140244,-0.197917,0.414136,0.409970,-0.004166,0.939189,0.083764,-0.242424,-0.014776,,

@@ -1,0 +1,54 @@
+{
+  "gate": "Phase T WP3 M2 Holdout Confirmation (section 12)",
+  "date": "2026-07-23T18:22:15",
+  "frozen_cat_model": "M2-2_logistic_regression",
+  "frozen_inst_model": "M2-2_logistic_regression",
+  "val_cat_auprc": 0.4337997537825642,
+  "val_inst_auroc": 0.9443173929023564,
+  "n_train_episodes": 1200,
+  "n_val_episodes": 615,
+  "n_holdout_episodes": 1200,
+  "n_train_queries": 80,
+  "n_val_queries": 41,
+  "n_holdout_queries": 40,
+  "holdout_prevalence_instability": 0.8916666666666667,
+  "holdout_prevalence_catastrophic": 0.05,
+  "holdout_auroc_instability": 0.928296189791517,
+  "holdout_auprc_instability": 0.989267982357048,
+  "holdout_auprc_catastrophic": 0.5277459238260516,
+  "holdout_ece": 0.02695498041667286,
+  "holdout_ece_calibrated": 0.02695498041667286,
+  "holdout_cfr_no_abstention": 0.05,
+  "holdout_cfr_at_80": 0.010416666666666666,
+  "holdout_cfr_reduction_at_80": 0.7916666666666667,
+  "holdout_dice_no_abstention": 0.476220125,
+  "holdout_dice_at_80": 0.4852076177083333,
+  "holdout_dice_change_at_80": 0.008987492708333322,
+  "conditions": {
+    "cond1_instability_auroc_ge_0p70": {
+      "pass": true,
+      "details": "AUROC = 0.9283 (query-level: 1.0000) [instability-trained model]"
+    },
+    "cond2_catastrophic_auprc_gt_prevalence": {
+      "pass": true,
+      "details": "AUPRC = 0.5277, prevalence = 0.0500 [catastrophic-trained model]"
+    },
+    "cond3_ece_le_0p10": {
+      "pass": true,
+      "details": "ECE = 0.0270"
+    },
+    "cond4_cfr_reduction_30pct_at_80pct_coverage": {
+      "pass": true,
+      "details": "CFR reduction = 79.2% (CFR all=0.0500, CFR@80%=0.0104)"
+    },
+    "cond5_dice_not_decrease_at_80pct_coverage": {
+      "pass": true,
+      "details": "Dice change = +0.008987 (Dice all=0.476220, Dice@80%=0.485208)"
+    },
+    "cond6_holdout_direction_consistent": {
+      "pass": true,
+      "details": "cond1-5 all pass on holdout (directionally consistent with val)"
+    }
+  },
+  "decision": "PHASET_M2_SELECTIVE_PREDICTION_PASS"
+}

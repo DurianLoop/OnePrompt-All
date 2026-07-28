@@ -1,0 +1,12 @@
+{
+  "status": "OK",
+  "n_rows": 1200,
+  "inst_auroc": 0.9944507683551508,
+  "cat_auprc": 0.96554329265232,
+  "prevalence_inst": 0.8366666666666667,
+  "prevalence_cat": 0.145,
+  "cfr_baseline": 0.145,
+  "cfr_accepted": 0.004166666666666667,
+  "cfr_reduction": 0.9712643678160918,
+  "anti_correlation": true
+}

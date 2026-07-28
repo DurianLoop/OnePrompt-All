@@ -1,0 +1,39 @@
+{
+  "gate": "Phase T WP3 M2 Selective Prediction Gate",
+  "n_train_episodes": 1200,
+  "n_val_episodes": 615,
+  "n_train_queries": 80,
+  "n_val_queries": 41,
+  "best_model_cat": "M2-2_logistic_regression",
+  "best_model_inst": "M2-2_logistic_regression",
+  "prevalence_instability": 0.847154,
+  "prevalence_catastrophic": 0.117073,
+  "tail_risk_threshold": 0.067587,
+  "conditions": {
+    "cond1_instability_auroc_ge_0p70": {
+      "pass": true,
+      "details": "AUROC = 0.9443 (query-level: 0.9392) [instability-trained model: M2-2_logistic_regression]"
+    },
+    "cond2_catastrophic_auprc_gt_prevalence": {
+      "pass": true,
+      "details": "AUPRC = 0.4338, prevalence = 0.1171 [catastrophic-trained model: M2-2_logistic_regression]"
+    },
+    "cond3_ece_le_0p10": {
+      "pass": true,
+      "details": "ECE = 0.0425 [catastrophic model]"
+    },
+    "cond4_cfr_reduction_30pct_at_80pct_coverage": {
+      "pass": true,
+      "details": "CFR reduction = 39.2% (CFR all=0.1171, CFR@80%=0.0711)"
+    },
+    "cond5_dice_not_decrease_at_80pct_coverage": {
+      "pass": true,
+      "details": "Dice change = +0.021425 (Dice all=0.414136, Dice@80%=0.435561) [catastrophic model]"
+    },
+    "cond6_holdout_direction_consistent": {
+      "pass": null,
+      "details": "PENDING - requires holdout run (holdout benchmark not yet executed)"
+    }
+  },
+  "decision": "PHASET_M2_SELECTIVE_PREDICTION_PASS"
+}

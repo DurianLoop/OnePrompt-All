@@ -1,0 +1,20 @@
+{
+  "method": "GF-SAM",
+  "n_episodes": 2400,
+  "mean_dice": 0.38802813689045795,
+  "median_dice": 0.40526920754084267,
+  "std_dice": 0.21840633570389914,
+  "min_dice": 0.0,
+  "max_dice": 0.9290724352671256,
+  "comparison": {
+    "n_queries": 400,
+    "gfsam_mean_dice": 0.3880281368904579,
+    "internal_mean_dice": 0.44624348249999995,
+    "delta_mean": -0.05821534560954204,
+    "delta_std": 0.1377819330593185,
+    "wilcoxon_p": 8.275455240338623e-14,
+    "gfsam_wins": 145,
+    "internal_wins": 255,
+    "ties": 0
+  }
+}

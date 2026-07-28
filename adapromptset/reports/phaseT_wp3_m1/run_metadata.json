@@ -1,0 +1,138 @@
+{
+  "date": "2026-07-23T18:18:43",
+  "script": "run_phaseT_wp3_m1_dynamic_budget.py",
+  "smoke": false,
+  "runtime_seconds": 34.813,
+  "feature_cols": [
+    "matching_map_disagreement",
+    "candidate_jaccard_mean_k1",
+    "prompt_overlap_mean_k1",
+    "prediction_jaccard_k1_within"
+  ],
+  "k_values": [
+    1,
+    3,
+    6
+  ],
+  "risk_surrogate": "best_worst_gap_k1",
+  "cost_function": "C(k) = k / 6",
+  "n_train_episodes": 1200,
+  "n_val_episodes": 615,
+  "n_train_queries": 80,
+  "n_val_queries": 41,
+  "n_missing_k3k6_train": 0,
+  "n_missing_k3k6_val": 0,
+  "lambda_grid": {
+    "lambda_c": [
+      0.0,
+      0.01,
+      0.025,
+      0.05
+    ],
+    "lambda_r": [
+      0.0,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "n_inner_folds": 5
+  },
+  "eval_lambdas": {
+    "lambda_c": 0.025,
+    "lambda_r": 0.5
+  },
+  "gate_thresholds": {
+    "dice_tolerance_k6": 0.003,
+    "cvar_tolerance_k6": 0.005,
+    "avg_k_cost_saving": 4.5,
+    "avg_k_qc_lo": 2.5,
+    "avg_k_qc_hi": 3.5,
+    "dice_gain_k3": 0.0075,
+    "cvar_quantile": 0.1,
+    "catastrophic_dice_threshold": 0.1
+  },
+  "models": [
+    {
+      "model_name": "M1-0_always_k1",
+      "model_type": "baseline",
+      "lambda_c": 0.0,
+      "lambda_r": 0.0,
+      "mean_dice": 0.4141363008130081,
+      "avg_k": 1.0,
+      "cvar_0_1": 0.0597623870967742,
+      "cfr": 0.11707317073170732,
+      "cost": 0.16666666666666666,
+      "mean_u": 0.3011985479674797
+    },
+    {
+      "model_name": "M1-1_always_k3",
+      "model_type": "baseline",
+      "lambda_c": 0.0,
+      "lambda_r": 0.0,
+      "mean_dice": 0.44324546666666664,
+      "avg_k": 3.0,
+      "cvar_0_1": 0.054352483870967735,
+      "cfr": 0.11544715447154472,
+      "cost": 0.5,
+      "mean_u": 0.3219743804878049
+    },
+    {
+      "model_name": "M1-2_always_k6",
+      "model_type": "baseline",
+      "lambda_c": 0.0,
+      "lambda_r": 0.0,
+      "mean_dice": 0.45855276910569104,
+      "avg_k": 6.0,
+      "cvar_0_1": 0.04899941935483871,
+      "cfr": 0.12520325203252033,
+      "cost": 1.0,
+      "mean_u": 0.3247816829268293
+    },
+    {
+      "model_name": "M1-3_handcrafted_threshold",
+      "model_type": "threshold",
+      "lambda_c": 0.0,
+      "lambda_r": 0.0,
+      "mean_dice": 0.45705633008130087,
+      "avg_k": 5.634146341463414,
+      "cvar_0_1": 0.05371783870967743,
+      "cfr": 0.12032520325203253,
+      "cost": 0.9390243902439024,
+      "mean_u": 0.32480963414634145
+    },
+    {
+      "model_name": "M1-4_logistic_regression",
+      "model_type": "logistic",
+      "lambda_c": 0.0,
+      "lambda_r": 0.0,
+      "mean_dice": 0.455239562601626,
+      "avg_k": 5.878048780487805,
+      "cvar_0_1": 0.048977322580645154,
+      "cfr": 0.12520325203252033,
+      "cost": 0.9796747967479674,
+      "mean_u": 0.32197660650406507
+    },
+    {
+      "model_name": "M1-5_gradient_boosting",
+      "model_type": "gradient_boosting",
+      "lambda_c": 0.0,
+      "lambda_r": 0.0,
+      "mean_dice": 0.4516264650406504,
+      "avg_k": 4.980487804878049,
+      "cvar_0_1": 0.05277253225806451,
+      "cfr": 0.11707317073170732,
+      "cost": 0.8300813008130081,
+      "mean_u": 0.32210334634146337
+    }
+  ],
+  "best_model": "M1-3_handcrafted_threshold",
+  "best_model_metrics": {
+    "mean_dice": 0.45705633008130087,
+    "avg_k": 5.634146341463414,
+    "cvar_0_1": 0.05371783870967743,
+    "cfr": 0.12032520325203253,
+    "cost": 0.9390243902439024,
+    "mean_u": 0.32480963414634145
+  },
+  "gate_decision": "PHASET_M1_DYNAMIC_BUDGET_NO_GAIN"
+}

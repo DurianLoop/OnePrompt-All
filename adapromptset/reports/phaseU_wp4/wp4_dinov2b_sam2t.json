@@ -1,0 +1,13 @@
+{
+  "pipeline": "DINOv2-B+SAM2-T",
+  "n_episodes": 1200,
+  "inst_auroc": 0.999595632252717,
+  "cat_auprc": 0.8749302617163388,
+  "prevalence_inst": 0.4066666666666667,
+  "prevalence_cat": 0.14666666666666667,
+  "cfr_baseline": 0.14666666666666667,
+  "cfr_accepted": 0.025,
+  "cfr_reduction": 0.8295454545454546,
+  "anti_correlation": true,
+  "phase2_elapsed_s": 2498.3815326001495
+}

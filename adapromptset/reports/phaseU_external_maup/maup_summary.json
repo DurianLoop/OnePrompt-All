@@ -1,0 +1,16 @@
+{
+  "method": "MAUP",
+  "n_episodes": 2400,
+  "mean_dice": 0.2791017930260175,
+  "median_dice": 0.2903488509334371,
+  "std_dice": 0.17707309209797262,
+  "min_dice": 0.0,
+  "max_dice": 0.8729173175788906,
+  "comparison": {
+    "n_queries": 400,
+    "maup_mean_dice": 0.27910179302601756,
+    "internal_mean_dice": 0.44624348249999995,
+    "delta_mean": -0.16714168947398242,
+    "wilcoxon_p": 7.052134040654417e-66
+  }
+}

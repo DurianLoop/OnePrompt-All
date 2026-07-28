@@ -1,0 +1,2 @@
+# put the pretrained DINOv2 here
+

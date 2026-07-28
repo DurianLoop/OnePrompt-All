@@ -1,0 +1,65 @@
+{
+  "gate": "Phase T WP3 M1 Dynamic Reference Budget Gate",
+  "n_train_episodes": 1200,
+  "n_val_episodes": 615,
+  "n_train_queries": 80,
+  "n_val_queries": 41,
+  "best_model": "M1-3_handcrafted_threshold",
+  "selected_lambda_c": 0.0,
+  "selected_lambda_r": 0.0,
+  "baseline_k6": {
+    "mean_dice": 0.45855276910569104,
+    "cvar_0_1": 0.04899941935483871,
+    "cfr": 0.12520325203252033,
+    "avg_k": 6.0
+  },
+  "baseline_k3": {
+    "mean_dice": 0.44324546666666664,
+    "cvar_0_1": 0.054352483870967735,
+    "cfr": 0.11544715447154472,
+    "avg_k": 3.0
+  },
+  "policy": {
+    "mean_dice": 0.45705633008130087,
+    "cvar_0_1": 0.05371783870967743,
+    "cfr": 0.12032520325203253,
+    "avg_k": 5.634146341463414
+  },
+  "conditions": {
+    "cost_saving_mode": {
+      "cs1_dice_not_below_k6_by_0p003": {
+        "pass": true,
+        "details": "Dice diff = -0.001496 (policy=0.457056, k6=0.458553)"
+      },
+      "cs2_cvar_not_decrease_by_0p005": {
+        "pass": true,
+        "details": "CVaR diff = +0.004718 (policy=0.053718, k6=0.048999)"
+      },
+      "cs3_cfr_not_increase": {
+        "pass": true,
+        "details": "CFR diff = -0.004878 (policy=0.120325, k6=0.125203)"
+      },
+      "cs4_avg_ref_count_reduce_25pct": {
+        "pass": false,
+        "details": "avg_k = 5.6341, reduction = 6.1% (threshold < 4.5)"
+      },
+      "mode_pass": false
+    },
+    "quality_cost_mode": {
+      "qc1_dice_ge_k3_plus_0p0075": {
+        "pass": false,
+        "details": "Dice diff vs k=3 = +0.013811 but avg_k = 5.6341 not in [2.5, 3.5]"
+      },
+      "qc2_cvar_improve": {
+        "pass": false,
+        "details": "CVaR diff vs k=3 = -0.000635 (policy=0.053718, k3=0.054352)"
+      },
+      "qc3_cfr_not_increase": {
+        "pass": false,
+        "details": "CFR diff vs k=3 = +0.004878 (policy=0.120325, k3=0.115447)"
+      },
+      "mode_pass": false
+    }
+  },
+  "decision": "PHASET_M1_DYNAMIC_BUDGET_NO_GAIN"
+}

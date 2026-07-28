@@ -1,6 +1,64 @@
+# Temp & test
 .test_tmp/
 test_tmp_gate/
+tmp/
+tmp_*.txt
+*.log
+
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Cache
 .matplotlib_cache/
-tmp/
+.cache/
+*.aux
+*.out
+*.toc
+
+# Checkpoints & models
+assets/checkpoints/
+*.pth
+*.pt
+*.pkl
+!src/**/*.pkl
+
+# External data
+external/
+MoNuSAC/
+MoNuSeg/
+IDRID/
+ISIC/
+GlaS/
+datasets/
+
+# Large external repos
+sam2/
+sam3/
+MedSAM/
+nnUNet/
+Matcher/
+code/
+
+# Conda envs
+conda_envs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Reports temp
+reports/*/tmp/
+reports/tmp/

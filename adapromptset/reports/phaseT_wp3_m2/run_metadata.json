@@ -1,0 +1,64 @@
+{
+  "date": "2026-07-23T18:17:06",
+  "script": "run_phaseT_wp3_m2_selective.py",
+  "approach": "dual_model",
+  "smoke": false,
+  "runtime_seconds": 1.37,
+  "feature_cols": [
+    "matching_map_disagreement",
+    "candidate_jaccard_mean_k1",
+    "prompt_overlap_mean_k1",
+    "prediction_jaccard_k1_within"
+  ],
+  "n_train_episodes": 1200,
+  "n_val_episodes": 615,
+  "n_train_queries": 80,
+  "n_val_queries": 41,
+  "label_thresholds": {
+    "instability_gap": 0.05,
+    "catastrophic_dice": 0.1,
+    "tail_risk_quantile": 0.1,
+    "tail_risk_threshold": 0.0675867
+  },
+  "gate_thresholds": {
+    "auroc": 0.7,
+    "ece": 0.1,
+    "ece_calibrated": 0.08,
+    "cfr_reduction": 0.3,
+    "coverage": 0.8
+  },
+  "prevalence": {
+    "train_instability": 0.8333333333333334,
+    "train_catastrophic": 0.1425,
+    "train_tail_risk": 0.1,
+    "val_instability": 0.8471544715447155,
+    "val_catastrophic": 0.11707317073170732
+  },
+  "catastrophic_model": {
+    "name": "M2-2_logistic_regression",
+    "metrics": {
+      "auroc_instability": 0.05999101564095234,
+      "auprc_instability": 0.675034773594867,
+      "auprc_catastrophic": 0.4337997537825642,
+      "ece": 0.04254576641773721,
+      "ece_calibrated": 0.04254576641773721,
+      "platt_applied": false,
+      "cfr_reduction_at_80": 0.39236111111111116,
+      "dice_change_at_80": 0.0214247398373984
+    }
+  },
+  "instability_model": {
+    "name": "M2-2_logistic_regression",
+    "metrics": {
+      "auroc_instability": 0.9443173929023564,
+      "auprc_instability": 0.9893841474386775,
+      "auprc_catastrophic": 0.07101246075452296,
+      "ece": 0.02806384032833264,
+      "ece_calibrated": 0.02806384032833264,
+      "platt_applied": false,
+      "cfr_reduction_at_80": -0.1979166666666667,
+      "dice_change_at_80": -0.0029057642276422713
+    }
+  },
+  "gate_decision": "PHASET_M2_SELECTIVE_PREDICTION_PASS"
+}

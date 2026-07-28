@@ -1,0 +1,23 @@
+# Table 18 — Claim registry
+
+Registry of paper claims, their supporting evidence, their status after the Phase T gates, and the boundary conditions that restrict each claim.
+
+| # | Claim | Evidence | Status | Boundary / prohibition |
+| --- | --- | --- | --- | --- |
+| C1 | Reference choice induces substantial instability in visual-reference segmentation under a frozen DINOv2-L + SAM-B stack. | WP1 V_ref_frac = 0.2627/0.2110/0.1264 (P20/P30/P50), 92.5% of holdout queries with gap ≥ 0.05. | CONFIRMED (PHASET_WP1_MONUSAC_HOLDOUT_CONFIRMED) | Claim is restricted to MoNuSAC holdout (40 queries) and the three frozen prompt configs. |
+| C2 | Within-query reference variance is correctly isolated from cross-query variance using V_ref / V_query / V_ref_frac. | WP1 Table 3: V_ref_frac in [0.061, 0.263] across (config, k). | CONFIRMED | Statistical unit is the query; reference episodes are never treated as independent samples. |
+| C3 | Mean consensus (B2) over k reference subsets improves Dice and reduces tail risk versus random single (B1). | WP1 consensus gain = +0.0266, CI lower = +0.0140, CFR ↓, CVaR stable. | CONFIRMED | Effect is confirmed for k ∈ {1, 3, 6} and the three prompt configs; no claim is made about k > 6. |
+| C4 | Test-time-safe disagreement features predict per-query reference instability. | WP1 best Spearman ρ = 0.7241 (prediction_jaccard_k1_within). | CONFIRMED | Claim is correlational (Spearman), not causal; the predictor is evaluated on holdout, not used to gate holdout inference. |
+| C5 | Reference instability replicates on at least two additional datasets under the unified protocol. | MoNuSeg STRONG_SUPPORT (5/5 directional, 4/4 strong); IDRID 4/5 directional but FAIL overall (consensus gain −0.0118). | PARTIALLY CONFIRMED — PHASET_DATASET_STRONG_SUPPORT + PHASET_DATASET_FAIL | IDRID failure is reported transparently; the §6.4 minimum (2 datasets directional support) is met but IDRID's strong tier fails. |
+| C6 | A learned reference utility weighting beats uniform mean consensus. | Phase S: GBM Spearman = 0.478, weighted Dice = 0.4732 vs mean = 0.4756 (Δ = −0.0024). | REFUTED (Phase S) | This negative result is reported; B7 is not promoted to holdout. |
+| C7 | A dynamic reference budget policy can match k=6 Dice at substantially lower reference cost. | M1 best policy avg_k = 5.63 (only 6.1% below k=6); cs4 fails (needs ≥ 25%); qc1-qc3 fail. | REFUTED (PHASET_M1_DYNAMIC_BUDGET_NO_GAIN) | M1 is reported as a negative result; the §9.6 gate is not met. |
+| C8 | An instability-aware selective prediction model can reliably identify high-risk episodes and reduce CFR at 80% coverage without hurting Dice. | M2 val: AUROC = 0.9443, CFR reduction = 39.2%, Dice change = +0.0214. M2 holdout: AUROC = 0.9283, CFR reduction = 79.17%, Dice change = +0.0090. | CONFIRMED (PHASET_M2_SELECTIVE_PREDICTION_PASS on val; PHASET_M2_SELECTIVE_PREDICTION_PASS on holdout) | Claim is restricted to the MoNuSAC holdout; the frozen dual-model uses logistic regression with 4 test-time-safe features. |
+| C9 | The proposed protocol is the first to benchmark reference-induced instability under a frozen matcher + segmenter with patient-disjoint reference resampling. | Novelty audit (§17); external comparator audit (Table 9). | NOVELTY AUDIT | ProSAM studies prompt-space instability, not reference-choice instability; SAMIX learns reference selection (training-time). No prior method attacks the same axis. |
+| C10 | The benchmark generalizes universally across datasets and prompt configs. | IDRID FAIL; P20-N1 V_ref_frac on IDRID = 0.6844 but P50-N0 = 0.1826. | REFUTED (prohibited claim #2) | The §6.4 prohibition on claiming 'universal across datasets' is respected; the paper claims MoNuSAC + MoNuSeg support only. |
+| C11 | External reference-guided methods (GF-SAM, MAUP) exhibit the same reference-induced instability under our protocol. | External baseline audit (Table 9) — no external method was run. | NOT YET TESTED | Pending user authorization to download GF-SAM / MAUP code (§23.1). Tier-2 reproduction plan documented in protocol_alignment.md. |
+
+**Notes:**
+- Claims C1-C5 and C8 are the positive results that survive the Phase T gates; C6, C7 and C10 are negative results reported transparently; C9 is the novelty positioning; C11 is a deferred test.
+- Each claim is paired with a boundary condition that restricts its scope; no claim is made about formal test (still LOCKED).
+- Prohibited claims (per Phase T directive): 'SUBMISSION_READY', 'PUBLICATION_COMPLETED', 'SOTA', 'universal across datasets'.
+- The claim registry is the single source of truth for what the paper can and cannot assert; any text in the manuscript must trace back to an entry in this table.

@@ -1,0 +1,10 @@
+config_name,k,j_pred_type,mean_j_pred,n_queries
+P20-N1,1,cross_seed_b1_single,0.549641,41
+P20-N1,6,cross_seed_consensus_k6,0.615489,41
+P30-N0,1,cross_seed_b1_single,0.586969,41
+P30-N0,6,cross_seed_consensus_k6,0.688785,41
+P50-N0,1,cross_seed_b1_single,0.689731,41
+P50-N0,6,cross_seed_consensus_k6,0.782101,41
+P20-N1,1,within_episode_k1,0.551094,205
+P30-N0,1,within_episode_k1,0.600073,205
+P50-N0,1,within_episode_k1,0.702878,205
