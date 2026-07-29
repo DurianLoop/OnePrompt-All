@@ -37,13 +37,11 @@ ISIC/
 GlaS/
 datasets/
 
-# Large external repos
-sam2/
-sam3/
-MedSAM/
-nnUNet/
-Matcher/
-code/
+# External repos & assets (all under external/)
+external/
+
+# Training outputs
+runs/
 
 # Conda envs
 conda_envs/

@@ -1,4 +1,0 @@
-xFormers not available
-xFormers not available
-D:\SAM\FSPL\scripts\render_stage17_qualitative.py:36: UserWarning: You passed a edgecolor/edgecolors ('black') for an unfilled marker ('x').  Matplotlib is ignoring the edgecolor in favor of the facecolor.  This behavior may change in the future.
-  ax.scatter(points[:, 0], points[:, 1], c="#ff3b30", edgecolors="black", s=25, marker="x", linewidths=1.0)

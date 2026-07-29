@@ -1,2 +1,0 @@
-case_id,split,rule_name,utility,predicted_utility,prompt_count
-reference_001::IDRiD_68,test,spread5_n3_d4,0.4,0.4000000000000021,8

@@ -1,5 +1,0 @@
-case_id,reference_case_id,query_case_id,split,rule_name,utility,sam_score,positive_count,negative_count,prompt_count,contrast_mean,contrast_std,contrast_p10,contrast_p50,contrast_p90,foreground_mean,background_mean,foreground_background_correlation,positive_score_mean,positive_score_margin,negative_score_mean,negative_score_margin,action_positive_count,action_negative_count,action_lambda_bg,positive_layout_is_spread,positive_mean_nearest_distance_patches
-reference_001::IDRiD_68,reference_001,IDRiD_68,test,top5_n3,0.1,0.8,5,3,8,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-reference_001::IDRiD_68,reference_001,IDRiD_68,test,spread5_n3_d2,0.2,0.8,5,3,8,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0
-reference_001::IDRiD_68,reference_001,IDRiD_68,test,spread5_n3_d3,0.30000000000000004,0.8,5,3,8,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0,2.0
-reference_001::IDRiD_68,reference_001,IDRiD_68,test,spread5_n3_d4,0.4,0.8,5,3,8,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0

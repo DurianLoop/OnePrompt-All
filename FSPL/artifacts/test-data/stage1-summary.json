@@ -1,8 +1,0 @@
-{
-  "dice": 0.5,
-  "elapsed_seconds": 1.25,
-  "negative_count": 3,
-  "positive_count": 5,
-  "query_case_id": "case_b",
-  "reference_case_id": "case_a"
-}

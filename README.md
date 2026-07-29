@@ -70,22 +70,42 @@ After rigorous VV4 forensic audit (92 claims extracted, 8 contradicted by later 
 - **SAM-Med2D**: Checkpoint unverifiable. Permanently removed from main tables.
 - **External baseline incompleteness**: CycleSAM, H-SAM, SAM-Med2D have no reproducible predictions.
 
-### Directory Structure
+### Project Structure
 
 ```
-adapromptset/
-├── src/adapromptset/          # Core package (matchers, segmenters, evaluation, statistics)
-│   └── scripts/               # Package-level scripts (Phase U-W, VV4 forensics)
-├── scripts/                   # Main working scripts (all phases)
-├── configs/                   # YAML/JSON configs (actions, data, matchers, segmenters, frozen protocols)
-├── docs/                      # Research protocols, claim registries, decision logs
-├── reports/                   # All phase results, gate statuses, program statuses
-├── paper/                     # Paper drafts (Phase U, V, T, AB), figures, tables, LaTeX
-├── VV4/                       # V4 paper forensic audit package (evidence forensics)
-├── manifests/                 # Episode/split manifests with SHA256 hashes
-├── tests/                     # Unit tests
-├── external_baselines/        # GF-SAM and MAUP reference implementations
-└── .gitignore                 # Excludes checkpoints, datasets, external repos
+D:\SAM\
+├── adapromptset/              # Main research project (core)
+│   ├── src/adapromptset/      # Core package (matchers, segmenters, evaluation, statistics)
+│   │   └── scripts/           # Package-level scripts (Phase U-W, VV4 forensics)
+│   ├── scripts/               # Main working scripts (all phases)
+│   ├── configs/               # YAML/JSON configs (actions, data, matchers, frozen protocols)
+│   ├── docs/                  # Research protocols, claim registries, decision logs
+│   ├── reports/               # All phase results, gate statuses, program statuses
+│   ├── paper/                 # Paper drafts (Phase U, V, T, AB), figures, tables, LaTeX
+│   ├── VV4/                   # V4 paper forensic audit package
+│   ├── manifests/             # Episode/split manifests with SHA256 hashes
+│   ├── tests/                 # Unit tests
+│   └── external_baselines/    # GF-SAM and MAUP reference implementations
+├── external/                  # All cloned external repos and assets
+│   ├── MedSAM/                # MedSAM
+│   ├── sam2/                  # SAM2
+│   ├── sam3/                  # SAM3
+│   ├── nnUNet/                # nnUNet
+│   ├── Matcher/               # Matcher (one-shot visual prompting)
+│   ├── SAM-Med2D/             # SAM-Med2D
+│   ├── Medical-SAM-Adapter/   # Medical-SAM-Adapter
+│   ├── FSPL/                  # FSPL
+│   ├── FoB_SAM/               # FoB_SAM
+│   ├── GBMSeg/                # GBMSeg
+│   ├── PPO/                   # PPO
+│   ├── ocsam_demo/            # Original OCSAM demo workbench
+│   ├── legacy_scripts/        # Legacy nnUNet/medical dataset scripts
+│   └── assets/                # Test images, etc.
+├── reports/                   # Global research summaries (1.md, 2.md)
+├── docs/                      # Documentation
+├── assets/                    # Demo screenshots
+├── runs/                      # Training outputs (gitignored, ~46GB)
+└── conda_envs/                # Conda environments (gitignored)
 ```
 
 ### Quick Start
@@ -254,7 +274,15 @@ pip install -e .
 # Run tests
 $env:PYTHONPATH = "D:\SAM\adapromptset\src"
 python -m pytest tests/
+
+# (Optional) Run the original OCSAM demo
+cd external/ocsam_demo
+python demos/medical_sam_click_app.py --host 127.0.0.1 --port 7860
 ```
+
+### External Repos
+
+All cloned external repositories are organized under `external/`. Model checkpoints should be placed in `assets/checkpoints/` as documented in the original OCSAM setup guide. See `external/ocsam_demo/` for the demo workbench, and individual external repo directories for their respective README files.
 
 ### License
 
