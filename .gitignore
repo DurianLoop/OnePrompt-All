@@ -46,6 +46,21 @@ Matcher/debug_figure/
 Matcher/vis/
 Matcher/output/
 
+# SURF workbench: keep source in Git; retain datasets, weights and generated
+# visualizations locally.
+surf/datasets/*
+!surf/datasets/oneprompt_all/
+!surf/datasets/oneprompt_all/**
+surf/datasets/oneprompt_all/benchmark220/
+surf/datasets/oneprompt_all/surf_v2_unified/
+surf/demo_outputs/
+surf/vis/
+surf/__pycache__/
+surf/**/__pycache__/
+surf/UI/*.pth
+surf/UI/*.pt
+surf/UI/*.ckpt
+
 # Notebook/editor/system clutter
 .ipynb_checkpoints/
 **/.ipynb_checkpoints/
