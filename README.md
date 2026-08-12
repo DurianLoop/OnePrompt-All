@@ -73,13 +73,10 @@ The `poster/` directory includes the updated PDF, LaTeX source, and figure depen
 
 ## References
 
-```bibtex
-@misc{onepromptall2026, title={OnePrompt-All: Single-Image Single-Exemplar Multi-Instance Segmentation}, author={OnePrompt-All Authors}, year={2026}, howpublished={\url{https://github.com/DurianLoop/OnePrompt-All}}}
-@article{sam3, title={SAM 3: Segment Anything with Concepts}, author={Carion, Nicolas and Gustafson, Laura and Hu, Yuan-Ting and others}, journal={arXiv preprint}, year={2025}}
-@article{dinov2, title={DINOv2: Learning Robust Visual Features without Supervision}, author={Oquab, Maxime and Darcet, Timothee and Moutakanni, Theo and others}, journal={Transactions on Machine Learning Research}, year={2024}}
-@inproceedings{sam, title={Segment Anything}, author={Kirillov, Alexander and Mintun, Eric and Ravi, Nikhila and others}, booktitle={ICCV}, year={2023}}
-@inproceedings{matcher, title={Matcher: Segment Anything with One Shot Using All-Purpose Feature Matching}, author={Liu, Yang and Zhu, Muzhi and Li, Hengtao and others}, booktitle={ICLR}, year={2024}}
-```
+See [External Dependencies and References](docs/EXTERNAL_DEPENDENCIES.md) for
+the curated BibTeX entries, software provenance, and dataset citations. The
+project deliberately has no self-citation placeholder until a preprint or DOI
+is available.
 
 ## Acknowledgements
 

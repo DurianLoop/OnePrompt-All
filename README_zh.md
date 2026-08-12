@@ -71,13 +71,7 @@ Text Oracle 预先获得 GT 类别名；OnePrompt-All 只有一个点提示，�
 
 ## 参考文献
 
-```bibtex
-@misc{onepromptall2026, title={OnePrompt-All: Single-Image Single-Exemplar Multi-Instance Segmentation}, author={OnePrompt-All Authors}, year={2026}, howpublished={\url{https://github.com/DurianLoop/OnePrompt-All}}}
-@article{sam3, title={SAM 3: Segment Anything with Concepts}, author={Carion, Nicolas and Gustafson, Laura and Hu, Yuan-Ting and others}, journal={arXiv preprint}, year={2025}}
-@article{dinov2, title={DINOv2: Learning Robust Visual Features without Supervision}, author={Oquab, Maxime and Darcet, Timothee and Moutakanni, Theo and others}, journal={Transactions on Machine Learning Research}, year={2024}}
-@inproceedings{sam, title={Segment Anything}, author={Kirillov, Alexander and Mintun, Eric and Ravi, Nikhila and others}, booktitle={ICCV}, year={2023}}
-@inproceedings{matcher, title={Matcher: Segment Anything with One Shot Using All-Purpose Feature Matching}, author={Liu, Yang and Zhu, Muzhi and Li, Hengtao and others}, booktitle={ICLR}, year={2024}}
-```
+[外部依赖与参考文献](docs/EXTERNAL_DEPENDENCIES_zh.md)提供规范 BibTeX、软件来源与数据集引用。项目尚无预印本或 DOI，因此刻意不提供 OnePrompt-All 的自引占位条目。
 
 ## 致谢
 

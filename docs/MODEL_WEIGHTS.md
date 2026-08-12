@@ -4,6 +4,9 @@
 
 Weights are not included in this repository and must not be committed.
 
+For the complete code, checkpoint, and dataset matrix covering every
+`external/` module, see [Complete Resource Installation Guide](ALL_RESOURCES.md).
+
 ## Required layout
 
 ```text
