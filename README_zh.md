@@ -35,17 +35,7 @@ pip install -e external/sam3
 
 ### 模型权重
 
-权重不随仓库发布，请在本地放置：
-
-```text
-assets/checkpoints/sam3_modelscope/sam3.pt
-assets/checkpoints/dinov2_vitb14_pretrain.pth
-```
-
-| 组件 | 预期文件 | 下载位置 |
-|---|---|---|
-| SAM3 实例生成器 | `assets/checkpoints/sam3_modelscope/sam3.pt` | 在官方 [SAM3 Hugging Face 页面](https://huggingface.co/facebook/sam3)申请权限，运行 `hf auth login` 后下载兼容的图像 checkpoint；也可使用 `--sam3-checkpoint <path>` 指定路径。 |
-| DINOv2-B/14 特征编码器 | `assets/checkpoints/dinov2_vitb14_pretrain.pth` | 从官方 [DINOv2 预训练模型](https://github.com/facebookresearch/dinov2#pretrained-models)下载 ViT-B/14 backbone，并按此文件名保存。 |
+模型权重的下载、放置、验证以及 SAM3、DINOv2、SAM、SAM2、MedSAM、Matcher 的可选配置，均见独立的[模型权重说明](docs/MODEL_WEIGHTS.md)。
 
 ### 启动
 

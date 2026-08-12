@@ -35,20 +35,9 @@ pip install -e external/sam3
 
 ### Checkpoints
 
-Weights are intentionally not included. Create this local layout:
-
-```text
-assets/
-└── checkpoints/
-    ├── sam3_modelscope/
-    │   └── sam3.pt
-    └── dinov2_vitb14_pretrain.pth
-```
-
-| Component | Expected file | Source |
-|---|---|---|
-| SAM3 instance generator | `assets/checkpoints/sam3_modelscope/sam3.pt` | Request access at [SAM3 on Hugging Face](https://huggingface.co/facebook/sam3), run `hf auth login`, then download a compatible image checkpoint. Rename it to `sam3.pt`, or pass `--sam3-checkpoint <path>`. |
-| DINOv2-B/14 encoder | `assets/checkpoints/dinov2_vitb14_pretrain.pth` | Download the ViT-B/14 backbone from [official DINOv2 pretrained models](https://github.com/facebookresearch/dinov2#pretrained-models) and save it with this name. |
+See the dedicated [model-weight guide](docs/MODEL_WEIGHTS.md) for downloading,
+placing, verifying, and optionally configuring SAM3, DINOv2, SAM, SAM2, MedSAM,
+and Matcher checkpoints.
 
 ### Launch
 
