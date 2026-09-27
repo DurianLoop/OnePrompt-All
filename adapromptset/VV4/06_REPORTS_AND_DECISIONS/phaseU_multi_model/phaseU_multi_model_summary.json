@@ -1,0 +1,25 @@
+{
+  "phase": "U",
+  "experiment": "multi_model_instability_benchmark",
+  "date": "2026-07-24T00:35:01",
+  "matcher": "dinov2_l",
+  "env": "current",
+  "models": [
+    "sam_b"
+  ],
+  "n_train_queries": 80,
+  "n_seeds": 2,
+  "smoke": true,
+  "results": [
+    {
+      "sam_key": "sam_b",
+      "status": "INSUFFICIENT_DATA",
+      "n_train": 12,
+      "n_val": 615
+    }
+  ],
+  "summary": {
+    "n_models_tested": 1,
+    "n_anti_correlation_confirmed": 0
+  }
+}

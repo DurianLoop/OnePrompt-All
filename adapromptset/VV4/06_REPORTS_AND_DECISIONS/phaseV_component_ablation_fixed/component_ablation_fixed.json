@@ -1,0 +1,146 @@
+{
+  "phase": "PhaseV_Component_Ablation_Fixed",
+  "description": "Fixed component ablation with real per-reference Dice and meaningful variants",
+  "fixes_applied": [
+    "Replaced no-config/no-budget (identical to RAMP-full) with no-consensus (single best ref)",
+    "Used real per-reference Dice from phase2_raw_per_call.csv instead of simulated values",
+    "Properly isolated each component: weights, stratification, consensus"
+  ],
+  "variants": {
+    "RAMP-full": "adaptive weights + risk-stratified consensus",
+    "RAMP-no-weights": "uniform weights + risk-stratified consensus",
+    "RAMP-no-stratify": "adaptive weights + always weighted mean",
+    "RAMP-no-consensus": "single best reference (lowest predicted risk)",
+    "Baseline": "original per-episode mean Dice"
+  },
+  "pipeline_results": {
+    "L+SAM-B": {
+      "RAMP-full": {
+        "mean_dice": 0.4545123041394097,
+        "std_dice": 0.22477318310934333,
+        "delta_vs_baseline": 0.00826882163940973,
+        "cfr_rate": 0.14916666666666667
+      },
+      "RAMP-no-weights": {
+        "mean_dice": 0.4545123041394097,
+        "std_dice": 0.22477318310934333,
+        "delta_vs_baseline": 0.00826882163940973,
+        "cfr_rate": 0.14916666666666667
+      },
+      "RAMP-no-stratify": {
+        "mean_dice": 0.45476150716232155,
+        "std_dice": 0.22441229742861432,
+        "delta_vs_baseline": 0.0085180246623216,
+        "cfr_rate": 0.14916666666666667
+      },
+      "RAMP-no-consensus": {
+        "mean_dice": 0.4448079388151822,
+        "std_dice": 0.23677513418581775,
+        "delta_vs_baseline": -0.0014355436848177416,
+        "cfr_rate": 0.14916666666666667
+      },
+      "Baseline": {
+        "mean_dice": 0.44624348249999995,
+        "std_dice": 0.22060235154961447,
+        "delta_vs_baseline": 0.0,
+        "cfr_rate": 0.14916666666666667
+      }
+    },
+    "L+SAM-L": {
+      "RAMP-full": {
+        "mean_dice": 0.3110838499070944,
+        "std_dice": 0.17296037150269988,
+        "delta_vs_baseline": 0.0003037365737610376,
+        "cfr_rate": 0.16166666666666665
+      },
+      "RAMP-no-weights": {
+        "mean_dice": 0.3110838499070944,
+        "std_dice": 0.17296037150269988,
+        "delta_vs_baseline": 0.0003037365737610376,
+        "cfr_rate": 0.16166666666666665
+      },
+      "RAMP-no-stratify": {
+        "mean_dice": 0.3111941889393132,
+        "std_dice": 0.1728184593302558,
+        "delta_vs_baseline": 0.0004140756059798356,
+        "cfr_rate": 0.16166666666666665
+      },
+      "RAMP-no-consensus": {
+        "mean_dice": 0.31112386531800473,
+        "std_dice": 0.17586603392345565,
+        "delta_vs_baseline": 0.0003437519846713477,
+        "cfr_rate": 0.16166666666666665
+      },
+      "Baseline": {
+        "mean_dice": 0.3107801133333334,
+        "std_dice": 0.17241491961265654,
+        "delta_vs_baseline": 0.0,
+        "cfr_rate": 0.16166666666666665
+      }
+    },
+    "L+SAM2-T": {
+      "RAMP-full": {
+        "mean_dice": 0.3320946245065036,
+        "std_dice": 0.1768136737958222,
+        "delta_vs_baseline": 0.0038796095065036784,
+        "cfr_rate": 0.16916666666666666
+      },
+      "RAMP-no-weights": {
+        "mean_dice": 0.3320946245065036,
+        "std_dice": 0.1768136737958222,
+        "delta_vs_baseline": 0.0038796095065036784,
+        "cfr_rate": 0.16916666666666666
+      },
+      "RAMP-no-stratify": {
+        "mean_dice": 0.33250830804359993,
+        "std_dice": 0.1762019592915576,
+        "delta_vs_baseline": 0.004293293043599988,
+        "cfr_rate": 0.16916666666666666
+      },
+      "RAMP-no-consensus": {
+        "mean_dice": 0.32860508838725005,
+        "std_dice": 0.19848517043865516,
+        "delta_vs_baseline": 0.00039007338725011165,
+        "cfr_rate": 0.16916666666666666
+      },
+      "Baseline": {
+        "mean_dice": 0.32821501499999994,
+        "std_dice": 0.1734778870446935,
+        "delta_vs_baseline": 0.0,
+        "cfr_rate": 0.16916666666666666
+      }
+    },
+    "B+SAM-B": {
+      "RAMP-full": {
+        "mean_dice": 0.45446719706665134,
+        "std_dice": 0.22491877861772183,
+        "delta_vs_baseline": 0.028840392066651344,
+        "cfr_rate": 0.15416666666666667
+      },
+      "RAMP-no-weights": {
+        "mean_dice": 0.45446719706665134,
+        "std_dice": 0.22491877861772183,
+        "delta_vs_baseline": 0.028840392066651344,
+        "cfr_rate": 0.15416666666666667
+      },
+      "RAMP-no-stratify": {
+        "mean_dice": 0.45476150716232155,
+        "std_dice": 0.22441229742861432,
+        "delta_vs_baseline": 0.029134702162321557,
+        "cfr_rate": 0.15416666666666667
+      },
+      "RAMP-no-consensus": {
+        "mean_dice": 0.4448079388151822,
+        "std_dice": 0.23677513418581775,
+        "delta_vs_baseline": 0.019181133815182216,
+        "cfr_rate": 0.15416666666666667
+      },
+      "Baseline": {
+        "mean_dice": 0.425626805,
+        "std_dice": 0.21685026966093135,
+        "delta_vs_baseline": 0.0,
+        "cfr_rate": 0.15416666666666667
+      }
+    }
+  }
+}

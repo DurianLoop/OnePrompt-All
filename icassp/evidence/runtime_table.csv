@@ -1,0 +1,3 @@
+backend,parameters_million,model_load_seconds,image_embedding_seconds,single_mask_decode_median_seconds,two_candidate_decode_seconds,peak_cuda_memory_mib,gpu,scope
+sam,93.735,1.524537,0.261356,0.004133,0.008266,2772.211,NVIDIA GeForce RTX 5090 D v2,segmenter only; excludes DINO matching and disk I/O
+sammed2d,271.242,3.154367,0.27214,0.004833,0.009666,1122.22,NVIDIA GeForce RTX 5090 D v2,segmenter only; excludes DINO matching and disk I/O

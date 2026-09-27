@@ -1,0 +1,73 @@
+{
+  "phase": "U",
+  "work_package": "WP1",
+  "experiment": "segmenter_sensitivity_audit",
+  "date": "2026-07-24T21:38:25",
+  "device": "cuda",
+  "smoke": false,
+  "models": [
+    "sam_b",
+    "sam_l",
+    "sam2_t"
+  ],
+  "results": [
+    {
+      "sam_key": "sam_b",
+      "family": "sam1",
+      "n_rows": 1200,
+      "status": "OK",
+      "phase2_elapsed_s": 3325.3848906001076,
+      "prevalence_catastrophic": 0.1425,
+      "prevalence_instability": 0.8333333333333334,
+      "cat_model": "M2-3_gradient_boosting",
+      "inst_model": "M2-3_gradient_boosting",
+      "cat_auroc_instability": 0.05833000000000001,
+      "cat_auprc_catastrophic": 0.9632240157893497,
+      "inst_auroc_instability": 0.994225,
+      "inst_auprc_catastrophic": 0.07683022438185258,
+      "anti_correlation_confirmed": true,
+      "gate_cond1_auroc_ge_0p70": true,
+      "gate_cond2_auprc_gt_prevalence": true
+    },
+    {
+      "sam_key": "sam_l",
+      "family": "sam1",
+      "n_rows": 1200,
+      "status": "OK",
+      "phase2_elapsed_s": 5565.300336400047,
+      "prevalence_catastrophic": 0.16666666666666666,
+      "prevalence_instability": 0.19666666666666666,
+      "cat_model": "M2-3_gradient_boosting",
+      "inst_model": "M2-3_gradient_boosting",
+      "cat_auroc_instability": 0.2315563682396793,
+      "cat_auprc_catastrophic": 0.9128049848880805,
+      "inst_auroc_instability": 0.9992747380265842,
+      "inst_auprc_catastrophic": 0.13943872508434926,
+      "anti_correlation_confirmed": true,
+      "gate_cond1_auroc_ge_0p70": true,
+      "gate_cond2_auprc_gt_prevalence": true
+    },
+    {
+      "sam_key": "sam2_t",
+      "family": "sam2",
+      "n_rows": 1200,
+      "status": "OK",
+      "phase2_elapsed_s": 1185.0050503001548,
+      "prevalence_catastrophic": 0.8566666666666667,
+      "prevalence_instability": 0.08083333333333333,
+      "cat_model": "M2-3_gradient_boosting",
+      "inst_model": "M2-3_gradient_boosting",
+      "cat_auroc_instability": 0.05507005262124852,
+      "cat_auprc_catastrophic": 0.9999999999999999,
+      "inst_auroc_instability": 1.0,
+      "inst_auprc_catastrophic": 0.9116531704331177,
+      "anti_correlation_confirmed": false,
+      "gate_cond1_auroc_ge_0p70": true,
+      "gate_cond2_auprc_gt_prevalence": true
+    }
+  ],
+  "summary": {
+    "n_models_tested": 3,
+    "n_anti_correlation": 2
+  }
+}

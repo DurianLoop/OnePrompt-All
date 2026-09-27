@@ -1,0 +1,32 @@
+{
+  "phase": "U",
+  "work_package": "WP1",
+  "experiment": "segmenter_sensitivity_audit",
+  "date": "2026-07-24T18:44:23",
+  "device": "cuda",
+  "smoke": true,
+  "models": [
+    "sam_b",
+    "sam2_t"
+  ],
+  "results": [
+    {
+      "sam_key": "sam_b",
+      "family": "sam1",
+      "n_rows": 12,
+      "status": "INSUFFICIENT_DATA",
+      "phase2_elapsed_s": 143.4535008003004
+    },
+    {
+      "sam_key": "sam2_t",
+      "family": "sam2",
+      "n_rows": 12,
+      "status": "INSUFFICIENT_DATA",
+      "phase2_elapsed_s": 105.13767769979313
+    }
+  ],
+  "summary": {
+    "n_models_tested": 0,
+    "n_anti_correlation": 0
+  }
+}

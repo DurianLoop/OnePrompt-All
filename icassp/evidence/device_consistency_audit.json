@@ -1,0 +1,20 @@
+﻿{
+    "audit":  "existing identical support-query prompts generated on CPU versus GPU",
+    "comparison_count":  128,
+    "unique_pair_count":  84,
+    "max_abs_coord_delta":  0,
+    "max_abs_point_score_delta":  8.99999999992573E-06,
+    "max_abs_dice_delta":  0.000145000000000062,
+    "mean_abs_dice_delta":  2.7195312500002048E-05,
+    "max_abs_sam_score_delta":  5.6000000000056E-05,
+    "max_abs_pred_area_pct_delta":  0.0214999999999961,
+    "max_abs_object_recall_delta":  0.00116799999999995,
+    "thresholds":  {
+                       "dice":  0.0002,
+                       "sam_score":  0.0001,
+                       "pred_area_pct":  0.03,
+                       "object_recall":  0.002
+                   },
+    "passed":  true,
+    "decision":  "numerically equivalent within declared audit tolerances"
+}

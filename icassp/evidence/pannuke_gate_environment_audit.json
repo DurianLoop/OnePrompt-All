@@ -1,0 +1,12 @@
+{
+  "status": "COMPATIBILITY_REMEDIATED",
+  "date": "2026-08-09",
+  "saved_gate_sklearn_versions": {
+    "folds_0_1": "1.7.2",
+    "folds_2_4": "1.9.0"
+  },
+  "initial_sam_gpu_environment_sklearn_version": "1.9.0",
+  "initial_attempt_disposition": "Discarded before any cohort interpretation because joblib emitted InconsistentVersionWarning under both attempted single-version environments.",
+  "remediation": "The full runner will emit model-independent N0/N5 response records. Fold 0/1 gates must be evaluated in the 1.7.2 environment and fold 2/3/4 gates in the 1.9.0 CUDA environment; a deterministic offline majority join then chooses an already-generated action without reading query labels.",
+  "policy": "No PanNuke cohort statistic may use a gate vote produced under a mismatched deserialization environment."
+}

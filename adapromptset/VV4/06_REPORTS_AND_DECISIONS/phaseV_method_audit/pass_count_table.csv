@@ -1,0 +1,25 @@
+Stage,Operation,Count per Query,Notes
+0,Matcher (DINOv2) - query features,1,提取 query 图像的 DINOv2 特征
+0,Matcher (DINOv2) - reference features,K,每个 reference 提取 DINOv2 特征
+0,Matcher (DINOv2) - matching computation,K,每个 reference 与 query 的双向匹配
+0,SAM Segmenter inference,K,每个 reference 运行 SAM 生成 mask
+0,Feature aggregation,-,聚合为 episode-level 特征写入 CSV
+1,Load episode CSV,1,读取预计算特征表 (不在推理循环内)
+2,Train instability model,1,GradientBoostingClassifier(100 trees, depth=3) 在 episode 级别训练
+2,Train catastrophic model,1,GradientBoostingClassifier(100 trees, depth=3) 在 episode 级别训练
+3,Risk prediction (instability),1 per query,对 query 的所有 references 预测 instability risk
+3,Risk prediction (catastrophic),1 per query,对 query 的所有 references 预测 catastrophic risk
+4,Adaptive weight computation,1 per query,softmax over -cat_risk
+5,Adaptive config selection,1 per query,基于 mean_cat_risk 选择 P20-N1/P30-N0/P50-N0 (仅报告)
+6,Adaptive budget computation,1 per query,线性插值 [2, 6] 基于 mean_cat_risk
+7,Risk-stratified consensus fusion,1 per query,weighted mean / trimmed mean / median
+8,Coverage-based accept/abstain,1 per evaluation,按 cat_risk 排序 选择 top coverage%
+,,,
+SUMMARY (K=6),,,,,
+,Matcher calls (offline),K+1 = 7,,"query(1) + refs(6), 在 feature pre-computation 阶段"
+,SAM calls (offline),K = 6,在 feature pre-computation 阶段
+,Risk model training,2,instability + catastrophic 各 1 个 GBM
+,Risk model inference,1,"predict_proba 调用, 同时产出 inst + cat risk"
+,Consensus fusion,1 per query,风险分层融合
+,Total operations per query (online),~5,模型推理 + 后处理 (不含离线 Matcher/SAM)
+,Total operations per query (offline),K+1 + K = 13,Matcher + SAM 在预计算阶段

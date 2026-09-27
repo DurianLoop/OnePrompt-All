@@ -1,0 +1,55 @@
+Claim ID,文中原话,数值,数据集,Split,Matcher,Segmenter,Prompt,K refs,Seed,统计单位,代码来源,是否可复现,修正方案
+C001,"Pearson r=-0.43 to -0.71 (p<0.001)",r=-0.43 to -0.71,MoNuSAC,80 queries,SAM-B/SAM-L/SAM2-T/SAM2-S,?,?,6,?,query,run_phaseU_theory_figures.py,否,实际范围r=-0.18到-0.49；仅SAM-B(p<0.001)显著；SAM-L(p=0.055)/SAM2-S(p=0.105)/SAM2-T(p=0.913)不显著；DINOv2-B+SAM-B(p=0.516)不显著
+C002,"six segmenters",6,MoNuSAC,80 queries,?,全部,?,?,?,模型,model_availability_audit.md,否,实际WP1数据仅4个segmenter(SAM-B/SAM-L/SAM2-T/SAM2-S)；SAM-H和MedSAM未在实际anti-correlation实验中使用
+C003,"four matchers",4,MoNuSAC,80 queries,全部,?,?,?,?,模型,model_availability_audit.md,否,实际仅2个matcher(DINOv2-L/DINOv2-B)
+C004,"RAMP reduces CFR by 56-84%",56-84%,MoNuSAC,80 queries,DINOv2-L/DINOv2-B,SAM-B/SAM-L/SAM2-T,?,6,5,80% coverage,ramp_results.json,否,实际范围37.5-84.4%；SAM2-T=37.5%被省略
+C005,"RAMP is training-free",N/A,MoNuSAC,?,?,?,?,?,?,方法,ramp_results.json,否,RAMP使用gradient boosting(M2-3)是learned model;不能称training-free;应改为"frozen foundation models, lightweight supervised risk estimator"
+C006,"RAMP is calibration-free",N/A,MoNuSAC,?,?,?,?,?,?,方法,ramp_results.json,否,IDRID ECE=0.477;使用阈值0.3/0.7和temperature τ=1.0;不能称calibration-free
+C007,"six reference selection strategies",6,MoNuSAC,70/15/15,DINOv2-L,SAM-B,P20-N1,1,1,per-reference,rrn_results.json,否,实际仅5种(random/similarity/entropy/RRN/oracle);CLIP-similarity虽在baseline列表但未在表中报告
+C008,"DINOv2-L + SAM-B Dice=0.446",0.446,MoNuSAC,80 queries,DINOv2-L,SAM-B,?,6,5,query,ramp_results.json/baselines_summary.json,是,基线Dice=0.446(mean across all refs);可复现
+C009,"14% of queries experience catastrophic failure",14%,MoNuSAC,80 queries,DINOv2-L,SAM-B,?,6,5,query,wp1数据,部分,CFR prevalence=14.3%(SAM-B);但paper中写"over 14%...from at least one reference"含义模糊
+C010,"SAM-L reduces instability by 76%",76%,MoNuSAC,80 queries,DINOv2-L,SAM-B vs SAM-L,?,?,?,query,paper正文,否,需要从数据验证;instability prevalence SAM-B=?,SAM-L=?
+C011,"SAM-L increases CFR from 14.3% to 16.7%",14.3%→16.7%,MoNuSAC,80 queries,DINOv2-L,SAM-B vs SAM-L,?,?,?,query,Table 1,是,Table 1: P_Cat SAM-B=0.143, SAM-L=0.167
+C012,"Inst_AUC >= 0.994 across all segmenters",>=0.994,MoNuSAC,80 queries,DINOv2-L,全部,?,?,?,episode?,wp1数据,否,WP1仅测试SAM2-S(Inst_AUC=0.999);其余segmenter数据来自Phase T需要确认
+C013,"Cat_AP >= 0.893 across all segmenters",>=0.893,MoNuSAC,80 queries,DINOv2-L,全部,?,?,?,episode?,wp1数据,否,同C012;WP1仅SAM2-S(Cat_AP=0.903)
+C014,"RAMP CFR reduction at 80% coverage: L+SAM-B=55.9%",55.9%,MoNuSAC,80 queries,DINOv2-L,SAM-B,?,6,5,80% coverage,ramp_results.json,是,可复现
+C015,"RAMP CFR reduction at 80% coverage: L+SAM-L=84.4%",84.4%,MoNuSAC,80 queries,DINOv2-L,SAM-L,?,6,5,80% coverage,ramp_results.json,是,可复现
+C016,"RAMP CFR reduction at 80% coverage: L+SAM2-T=37.5%",37.5%,MoNuSAC,80 queries,DINOv2-L,SAM2-T,?,6,5,80% coverage,ramp_results.json,是,可复现;但paper摘要写56-84%省略了此值
+C017,"RAMP CFR reduction at 80% coverage: B+SAM-B=55.9%",55.9%,MoNuSAC,80 queries,DINOv2-B,SAM-B,?,6,5,80% coverage,ramp_results.json,是,可复现
+C018,"RRN AUROC=0.612",0.612,MoNuSAC,70/15/15 split,DINOv2-L,SAM-B,P20-N1,1,1,per-reference,rrn_results.json,是,可复现;train 1680 samples/val 360/test 360;仅12 test queries
+C019,"RRN Dice@Top-3=0.525",0.525,MoNuSAC,70/15/15 split,DINOv2-L,SAM-B,P20-N1,3,1,per-reference,rrn_results.json,是,可复现;vs similarity 0.516/oracle 0.588
+C020,"RRN Dice@Top-3 similarity=0.516",0.516,MoNuSAC,70/15/15 split,DINOv2-L,SAM-B,P20-N1,3,1,per-reference,rrn_results.json,是,可复现
+C021,"RRN Dice@Top-3 oracle=0.588",0.588,MoNuSAC,70/15/15 split,DINOv2-L,SAM-B,P20-N1,3,1,per-reference,rrn_results.json,是,可复现
+C022,"GF-SAM Dice=0.388",0.388,MoNuSAC,80 queries,?,SAM-H,?,?,?,query,external_gfsam.py,是,可复现
+C023,"MAUP Dice=0.279",0.279,MoNuSAC,80 queries,?,SAM-H,?,?,?,query,external_maup.py,是,可复现
+C024,"CycleSAM Dice=0.412",0.412,MoNuSAC,?,?,SAM-B,?,?,?,?,paper正文,待验证,PhaseU未运行CycleSAM
+C025,"H-SAM Dice=0.405",0.405,MoNuSAC,?,?,SAM-L,?,?,?,?,paper正文,待验证,PhaseU未运行H-SAM
+C026,"SAM-Med2D Dice=0.438",0.438,MoNuSAC,?,?,SAM-B,?,?,?,?,paper正文,待验证,SAM-Med2D checkpoint格式问题导致blocked
+C027,"MC Dropout CFR reduction=10.7%",10.7%,MoNuSAC,80 queries,DINOv2-L,SAM-B,?,?,?,80% coverage,ramp_results.json,是,可复现(proxy)
+C028,"Deep Ensemble CFR reduction=6.3%",6.3%,MoNuSAC,80 queries,DINOv2-L,SAM-B+SAM-L+SAM2-T,?,?,?,80% coverage,ramp_results.json,是,可复现(proxy)
+C029,"Cross-dataset: MoNuSeg Inst_AUC=0.874",0.874,MoNuSeg,30 queries,?,?,?,?,?,query,paper正文,待验证,需要确认代码来源
+C030,"Cross-dataset: IDRID Inst_AUC=0.994",0.994,IDRID,30 queries,?,?,?,?,?,query,paper正文,待验证,需要确认代码来源
+C031,"IDRID ECE=0.477",0.477,IDRID,30 queries,?,?,?,?,?,query,paper正文,待验证,需要确认代码来源
+C032,"Pascal-5i anti-correlation r=-0.51",-0.51,Pascal-5i,fold-0,DINOv2-L,SAM-B,?,?,?,query,paper正文,否,fold-0仅单fold;需要4-fold完整评估
+C033,"COCO-20i anti-correlation r=-0.47",-0.47,COCO-20i,fold-0,DINOv2-L,SAM-B,?,?,?,query,paper正文,否,fold-0仅单fold;需要4-fold完整评估
+C034,"Pascal-5i RAMP CFR reduction=42.3%",42.3%,Pascal-5i,fold-0,DINOv2-L,SAM-B,?,?,?,80% coverage,paper正文,否,单fold;需要4-fold完整评估
+C035,"COCO-20i RAMP CFR reduction=38.7%",38.7%,COCO-20i,fold-0,DINOv2-L,SAM-B,?,?,?,80% coverage,paper正文,否,单fold;需要4-fold完整评估
+C036,"Pascal-5i Dice Ours=0.612 GF-SAM=0.634",0.612/0.634,Pascal-5i,fold-0,DINOv2-L,SAM-B,?,?,?,query,paper正文,否,单fold
+C037,"COCO-20i Dice Ours=0.583 GF-SAM=0.601",0.583/0.601,COCO-20i,fold-0,DINOv2-L,SAM-B,?,?,?,query,paper正文,否,单fold
+C038,"Matcher equivalence: Δ<0.001, p>0.05",Δ<0.001,MoNuSAC,80 queries,DINOv2-L vs DINOv2-B,SAM-B,?,?,?,?,Table 2,否,p>0.05不等于equivalence;需要TOST或改写为"no significant difference detected"
+C039,"Factorial ANOVA: segmenter F(1,237)=28.4, p<0.001",F=28.4,MoNuSAC,?,?,?,?,?,?,?,paper正文,待验证,需要确认ANOVA自由度和数据来源
+C040,"Matcher ANOVA: F(1,237)=0.12, p=0.73",F=0.12,MoNuSAC,?,?,?,?,?,?,?,paper正文,待验证,需要确认
+C041,"Interaction ANOVA: p=0.86",p=0.86,MoNuSAC,?,?,?,?,?,?,?,paper正文,待验证,需要确认
+C042,"Feature ablation: f4 removal drops Cat_AP from 0.966 to 0.250",0.966→0.250,MoNuSAC,?,DINOv2-L,SAM-B,?,?,?,?,Table 7,是,可复现
+C043,"Feature ablation: f1 removal drops Inst_AUC from 0.994 to 0.831",0.994→0.831,MoNuSAC,?,DINOv2-L,SAM-B,?,?,?,?,Table 7,是,可复现
+C044,"Reference count: K=2 CFR_Red=29.4%",29.4%,MoNuSAC,?,DINOv2-L,SAM-B,?,2,?,80% coverage,Table 8,待验证,需要确认
+C045,"Reference count: K=4 CFR_Red=47.8%",47.8%,MoNuSAC,?,DINOv2-L,SAM-B,?,4,?,80% coverage,Table 8,待验证,需要确认
+C046,"Reference count: K=6 CFR_Red=55.9%",55.9%,MoNuSAC,?,DINOv2-L,SAM-B,?,6,?,80% coverage,Table 8,是,可复现
+C047,"Reference count: K=8 CFR_Red=58.7%",58.7%,MoNuSAC,?,DINOv2-L,SAM-B,?,8,?,80% coverage,Table 8,待验证,需要确认
+C048,"Component ablation: Full RAMP CFR_Red=55.9%",55.9%,MoNuSAC,?,DINOv2-L,SAM-B,?,6,?,80% coverage,Table 6,是,可复现
+C049,"Component ablation: -weights CFR_Red=43.6%",43.6%,MoNuSAC,?,DINOv2-L,SAM-B,?,6,?,80% coverage,Table 6,否,实际ablation结果显示所有变体dice相同(RAMP代码中ablation未生效)
+C050,"Component ablation: -config CFR_Red=37.2%",37.2%,MoNuSAC,?,DINOv2-L,SAM-B,?,6,?,80% coverage,Table 6,否,同C049;ablation变体dice相同
+C051,"Component ablation: -stratify CFR_Red=47.5%",47.5%,MoNuSAC,?,DINOv2-L,SAM-B,?,6,?,80% coverage,Table 6,否,同C049;ablation变体dice相同
+C052,"Component ablation: simple ensemble CFR_Red=38.2%",38.2%,MoNuSAC,?,DINOv2-L,SAM-B,?,6,?,80% coverage,Table 6,否,同C049
+C053,"Anti-correlation stable across cross-dataset: MoNuSAC r=-0.67",-0.67,MoNuSAC,?,?,?,?,?,?,query,Table 9,否,与theory_verification中r=-0.491矛盾;需要统一数据来源
+C054,"Deployment envelope: prevalence 5-60%",5-60%,MoNuSAC/MoNuSeg/IDRID,?,?,?,?,?,?,?,paper正文,部分,MoNuSeg=0%低于下限;IDRID=80.7%高于上限;envelope来自3个点外推

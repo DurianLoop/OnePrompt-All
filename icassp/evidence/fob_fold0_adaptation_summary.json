@@ -1,0 +1,37 @@
+{
+  "status": "ADAPTED_FOB_FOLD0_DIAGNOSTIC_COMPLETE",
+  "date": "2026-08-09",
+  "scope": "One frozen MoNuSeg nested-CV fold only; adapted released FoB source, public 37-case MoNuSeg train images, official ResNet-101 initialization, and local SAM ViT-H decoding.",
+  "training": {
+    "train_episode_count": 115,
+    "steps": 1000,
+    "checkpoints": [250, 500, 750, 1000],
+    "query_labels_read_during_training": true,
+    "training_status": "TRAINING_COMPLETE"
+  },
+  "inner_validation_selection": {
+    "episodes": 30,
+    "selection_rule": "largest mean Dice; ties use smaller training step",
+    "ranked_mean_dice": {
+      "step_0250": 0.008204172948857554,
+      "step_0500": 0.007732016020261373,
+      "step_0750": 0.0049477727863510845,
+      "step_1000": 0.006357469855946539
+    },
+    "selected_checkpoint": "step_0250.pth"
+  },
+  "outer_test": {
+    "episodes": 40,
+    "mean_dice": 0.00477028458579416,
+    "evaluated_once_after_inner_selection": true,
+    "query_ground_truth_policy": "Query masks were loaded only after FoB prompts and SAM-H predictions, solely to calculate Dice."
+  },
+  "interpretation": "The direct pathology adaptation failed on this fold. This is a diagnostic negative-transfer result, not a fair head-to-head comparison with the primary five-fold DINOv2-L plus SAM ViT-B protocol and not evidence of superiority or inferiority of either published method.",
+  "provenance": {
+    "training_status": "../runs/fob_monuseg_fold0/status.json",
+    "checkpoint_selection": "../runs/fob_monuseg_fold0/selection/selected_checkpoint.json",
+    "outer_test": "../runs/fob_monuseg_fold0/test/summary.json",
+    "per_episode_scores": "../runs/fob_monuseg_fold0/test/per_episode.csv",
+    "compatibility_record": "../baselines/fob_source/COMPATIBILITY.md"
+  }
+}

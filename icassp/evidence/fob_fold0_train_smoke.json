@@ -1,0 +1,23 @@
+{
+  "status": "FOB_TRAIN_STEP_PASS",
+  "scope": "single train-only fold-0 episode; feasibility only; not a performance result",
+  "fold": 0,
+  "episode_id": "monuseg_nested_f0_train__TCGA-E2-A1B5-01Z-00-DX1__to__TCGA-B0-5698-01Z-00-DX1",
+  "support_case_id": "TCGA-E2-A1B5-01Z-00-DX1",
+  "query_case_id": "TCGA-B0-5698-01Z-00-DX1",
+  "support_role": "train",
+  "query_source_split": "train",
+  "seed": 20260809,
+  "losses": {
+    "prompt": 7500.82373046875,
+    "contrastive": 1.300726056098938,
+    "foreground": 2.591606378555298,
+    "total": 7504.71630859375
+  },
+  "finite_gradients": true,
+  "elapsed_seconds": 1.5603796998038888,
+  "peak_cuda_memory_mib": 3490.01220703125,
+  "model_parameter_count": 54554688,
+  "checkpoint": "models\\deeplabv3_resnet101_coco-586e9e4e.pth",
+  "checkpoint_bytes": 244545539
+}

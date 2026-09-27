@@ -58,10 +58,11 @@ def resolve_episode_paths(row: dict[str, str], workspace_root: Path) -> dict[str
         path = Path(path_text)
         if path.is_absolute():
             return path
-        dataset_relative = dataset_root / path
-        if dataset_relative.exists():
-            return dataset_relative
-        return workspace_root / path
+        # Episode manifests store paths relative to their declared dataset
+        # root.  Keep that contract even in dry runs where synthetic paths do
+        # not exist yet; falling back to ``workspace_root / path`` silently
+        # changes MoNuSAC's parent and makes path provenance ambiguous.
+        return dataset_root / path
 
     return {
         "support_image": resolve_path(row["support_image_path"]),

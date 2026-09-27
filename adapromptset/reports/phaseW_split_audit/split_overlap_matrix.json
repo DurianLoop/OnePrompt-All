@@ -1,0 +1,12 @@
+{
+  "M2_Train_vs_RAMP": 80,
+  "M2_Train_vs_RRN_CV": 80,
+  "M2_Train_vs_Ablation": 80,
+  "M2_Train_vs_PaperV5": 80,
+  "M2_Val_vs_All": 0,
+  "Total_M2_TrainVal": 121,
+  "Total_Paper_Queries": 80,
+  "Overlap_Percent": "100.0%",
+  "M2_Val_Queries_NOT_in_Paper": 41,
+  "M2_Val_Queries_IN_Paper": 0
+}

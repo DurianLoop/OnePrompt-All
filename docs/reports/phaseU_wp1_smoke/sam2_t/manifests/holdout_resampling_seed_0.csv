@@ -1,0 +1,13 @@
+query_case_id,seed,reference_index,reference_case_id,reference_patient
+train_000,0,0,train_056,TCGA-EW-A6SD
+train_000,0,1,train_067,TCGA-G7-A8LD
+train_000,0,2,train_072,TCGA-G7-A8LD
+train_000,0,3,train_157,TCGA-EJ-5505
+train_000,0,4,train_084,TCGA-E9-A22G
+train_000,0,5,train_069,TCGA-G7-A8LD
+train_001,0,0,train_134,TCGA-69-7760
+train_001,0,1,train_067,TCGA-G7-A8LD
+train_001,0,2,train_186,TCGA-78-7220
+train_001,0,3,train_160,TCGA-EJ-5505
+train_001,0,4,train_039,TCGA-D8-A1X5
+train_001,0,5,train_053,TCGA-EW-A6SD

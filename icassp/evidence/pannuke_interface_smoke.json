@@ -1,0 +1,24 @@
+{
+  "status": "PANNUKE_FROZEN_PIPELINE_INTERFACE_PASS",
+  "scope": "One pre-registered support-query pair only; interface/wiring verification, not a cohort result or model-selection input.",
+  "protocol": "icassp.pannuke_zero_shot_v1",
+  "support_case_id": "fold2_01197",
+  "query_case_id": "fold1_00000",
+  "pipeline": "frozen DINOv2-L/14 foreground-background contrast, K=40, lambda=0.75, SAM ViT-B",
+  "interface": {
+    "input_shape": [256, 256, 3],
+    "dino_feature_and_coordinate_path": "PASS",
+    "sam_b_decode_path": "PASS",
+    "negative_budget_path": "PASS"
+  },
+  "diagnostic_metrics": {
+    "fg_bg_n0_dice": 0.33246386595881794,
+    "fg_bg_n5_dice": 0.46029301773065245,
+    "note": "These values are a single smoke pair and must not be aggregated, used for selection, or reported as PanNuke performance."
+  },
+  "provenance": {
+    "matching_run": "../runs/pannuke_interface_smoke/candidates.csv",
+    "negative_budget_run": "../runs/pannuke_interface_smoke/negative_ablation/per_case.csv",
+    "materialization": "../data/pannuke_hf/materialized_zero_shot_v1/preparation_report.json"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "status": "COMPLETE",
+  "protocol": "icassp.end_to_end_latency_v1",
+  "seed": 20260809,
+  "hardware": {
+    "device_name": "NVIDIA GeForce RTX 5090 D v2",
+    "total_memory_gib": 23.88,
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8"
+  },
+  "pipeline": {
+    "support_query_input_px": [
+      256,
+      256
+    ],
+    "internal_dino_input_px": [
+      518,
+      518
+    ],
+    "matcher": "DINOv2-L foreground-background",
+    "segmenter": "SAM ViT-B",
+    "positive_points": 40,
+    "negative_candidates": [
+      0,
+      5
+    ],
+    "lambda_bg": 0.75
+  },
+  "measurement": {
+    "warmup_episodes": 5,
+    "measured_episodes": 30,
+    "cuda_synchronized": true,
+    "query_gt_opened": false,
+    "full_episode_includes": [
+      "support/query image and support-mask read",
+      "support/query DINO features",
+      "matching and point selection",
+      "SAM image embedding",
+      "N0 and N5 decode"
+    ],
+    "support_cached_pipeline_excludes": [
+      "support image/mask read",
+      "support DINO feature extraction"
+    ]
+  },
+  "seconds": {
+    "full_support_query_episode_s": {
+      "mean_s": 0.24901850673680503,
+      "median_s": 0.2407468999736011,
+      "p90_s": 0.38936278959736226,
+      "min_s": 0.14638959988951683,
+      "max_s": 0.42443129979074
+    },
+    "support_cached_query_pipeline_s": {
+      "mean_s": 0.19229283342137932,
+      "median_s": 0.17892819922417402,
+      "p90_s": 0.30934898015111684,
+      "min_s": 0.10662319976836443,
+      "max_s": 0.36906569823622704
+    },
+    "support_dino_s": {
+      "mean_s": 0.05364006680125991,
+      "median_s": 0.04817125014960766,
+      "p90_s": 0.07614237070083618,
+      "min_s": 0.036534400656819344,
+      "max_s": 0.08106670062988997
+    },
+    "query_dino_s": {
+      "mean_s": 0.05519675326844056,
+      "median_s": 0.04939100006595254,
+      "p90_s": 0.07981934938579797,
+      "min_s": 0.03612910024821758,
+      "max_s": 0.08114639949053526
+    },
+    "matching_points_s": {
+      "mean_s": 0.011235670000314713,
+      "median_s": 0.006186199840158224,
+      "p90_s": 0.021212630067020656,
+      "min_s": 0.0033539999276399612,
+      "max_s": 0.022097899578511715
+    },
+    "sam_image_embedding_s": {
+      "mean_s": 0.08998620671530565,
+      "median_s": 0.07509679952636361,
+      "p90_s": 0.13554923003539443,
+      "min_s": 0.054483299143612385,
+      "max_s": 0.14701620023697615
+    },
+    "sam_n0_decode_s": {
+      "mean_s": 0.019134083359191815,
+      "median_s": 0.006348350550979376,
+      "p90_s": 0.039266500528901814,
+      "min_s": 0.004737299866974354,
+      "max_s": 0.11133090034127235
+    },
+    "sam_n5_decode_s": {
+      "mean_s": 0.015157740097492933,
+      "median_s": 0.005393600091338158,
+      "p90_s": 0.03570832945406437,
+      "min_s": 0.004036100581288338,
+      "max_s": 0.03943239990621805
+    }
+  }
+}

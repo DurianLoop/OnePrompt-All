@@ -1,0 +1,73 @@
+{
+  "phase": "PhaseW",
+  "date": "2026-07-27",
+  "audit": "WP0 Split Provenance",
+  "gate": "PHASEW_SPLIT_RENAMED_TO_DEVELOPMENT_COHORT",
+  "datasets": {
+    "MoNuSAC": {
+      "development_cohort": {
+        "n_queries": 80,
+        "query_ids_prefix": "train_",
+        "used_for": ["M2 training", "RAMP risk predictor training", "RRN CV", "component ablation", "query-level statistics", "paper v5 results"],
+        "first_exposed": "PhaseT",
+        "exposure_level": "FULL",
+        "role": "Development"
+      },
+      "validation_cohort": {
+        "n_queries": 41,
+        "query_ids": "M2 validation queries (train_034-train_185 range)",
+        "used_for": ["M2 validation only"],
+        "first_exposed": "PhaseT",
+        "exposure_level": "PARTIAL",
+        "role": "Validation",
+        "in_paper_v5": false
+      },
+      "internal_holdout": {
+        "n_queries": 0,
+        "role": "Does not exist"
+      },
+      "formal_test": {
+        "n_queries": 0,
+        "role": "Does not exist (locked)"
+      }
+    },
+    "MoNuSeg": {
+      "n_queries": 30,
+      "role": "Cross-dataset validation",
+      "in_paper_v5": true
+    },
+    "IDRID": {
+      "n_queries": 30,
+      "role": "Cross-dataset validation",
+      "in_paper_v5": true
+    },
+    "Pascal_5i": {
+      "n_folds_completed": 1,
+      "n_folds_required": 4,
+      "role": "Preliminary cross-domain evidence",
+      "in_paper_v5": true,
+      "note": "Only fold-0 evaluated"
+    },
+    "COCO_20i": {
+      "n_folds_completed": 1,
+      "n_folds_required": 4,
+      "role": "Preliminary cross-domain evidence",
+      "in_paper_v5": true,
+      "note": "Only fold-0 evaluated"
+    }
+  },
+  "key_findings": [
+    "All 80 MoNuSAC queries in v5 paper are M2 training queries (100% overlap)",
+    "M2 had 41 validation queries that were never used in paper results",
+    "No true holdout exists for MoNuSAC",
+    "All paper results are development-set results",
+    "Query naming 'train_XXX' confirms origin from training set",
+    "MoNuSeg and IDRID serve as cross-dataset validation only"
+  ],
+  "paper_impact": {
+    "holdout_claims": "All 'holdout' and 'holdout-confirmed' claims must be removed",
+    "development_cohort": "80 queries must be renamed to 'Development Cohort'",
+    "validation_available": "41 M2 validation queries available for validation check",
+    "strength_of_conclusions": "Reduced - results are development-set not holdout"
+  }
+}

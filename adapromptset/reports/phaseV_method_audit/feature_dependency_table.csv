@@ -1,0 +1,42 @@
+# RAMP 推理流程特征依赖审计
+
+## 五个特征的依赖分析
+
+| Feature | 描述 | 需要Matcher | 需要SAM输出 | 需要多个Reference | 需要GT | 可在Prompt选择前得到 | 在线成本 |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---|
+| f1 (matching entropy) | 匹配图熵 | YES | NO | NO | NO | YES | 1 matcher call |
+| f2 (feature similarity) | 特征余弦相似度 | YES | NO | NO | NO | YES | 1 matcher call |
+| f3 (prompt dispersion) | 点坐标方差 | YES | NO | NO | NO | YES | 1 matcher call |
+| f4 (mask consistency) | 预测mask Jaccard | YES | YES | YES | NO | NO | 1 matcher + K SAM calls |
+| f5 (prediction uncertainty) | 预测mask熵 | YES | YES | NO | NO | NO | 1 matcher + 1 SAM call |
+
+## 推理流程分析
+
+### 当前代码实际执行顺序 (Post-hoc Selective Prediction)
+1. Matcher提取特征 → 计算f1, f2, f3
+2. SAM推理 → 生成mask
+3. 从mask计算f4, f5
+4. 风险预测器(f1-f5) → 输出风险分数
+5. 基于风险分数做选择性预测
+
+### 循环依赖问题
+- 旧版论文算法: 先计算risk → 再运行SAM (不可行, 因为f4/f5需要SAM输出)
+- 修复后算法: 先运行SAM → 再计算risk → 选择性预测 (可行, post-hoc)
+
+### 修正后算法选择: Option A (Post-hoc Selective Prediction)
+- 固定prompt config
+- 每个reference运行matcher + segmenter
+- 计算所有特征和风险分数
+- 基于风险分数accept or abstain
+- 对已有masks做fusion
+
+### 每个query的inference成本
+- Matcher calls: 1 (query features) + K (reference features) = K+1
+- SAM calls: K (one per reference)
+- 风险预测: 1 (GBM inference, negligible)
+- 总passes: K+1 matcher + K SAM
+
+### 训练边界
+- Matcher: 冻结 (DINOv2)
+- Segmenter: 冻结 (SAM/SAM2)
+- 风险预测器: 训练 (gradient boosting on labeled multi-reference data)

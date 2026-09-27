@@ -1,0 +1,113 @@
+{
+  "audit": "icassp_evidence_snapshot",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "fg_bg_mean_matches_performance_table",
+      "passed": true,
+      "detail": "MoNuSeg FG-BG N0 mean is identical across the performance and paired-effect tables."
+    },
+    {
+      "name": "learned_gate_mean_matches_two_comparisons",
+      "passed": true,
+      "detail": "The main learned-gate Dice is 0.5475548066554488 in all three records."
+    },
+    {
+      "name": "primary_ci_excludes_zero",
+      "passed": true,
+      "detail": "Both MoNuSeg gate comparisons have positive reported 95% CI lower bounds."
+    },
+    {
+      "name": "oracle_gap_metadata",
+      "passed": true,
+      "detail": "The diagnostic oracle mean and 66.1% gap closure are mutually consistent."
+    },
+    {
+      "name": "external_boundary_preserved",
+      "passed": true,
+      "detail": "The transfer gate improves N0 but does not beat post-hoc global N5; this boundary must remain in the paper."
+    },
+    {
+      "name": "monusac_patient_aggregate_is_positive_but_sign_test_conservative",
+      "passed": true,
+      "detail": "The patient-aggregated MoNuSAC bootstrap CI is positive, while its sign test is not below 0.05; both facts must be preserved."
+    },
+    {
+      "name": "segmenter_negative_transfer_preserved",
+      "passed": true,
+      "detail": "SAM-Med2D is a non-positive transfer result and may not be presented as support."
+    },
+    {
+      "name": "device_audit_passed",
+      "passed": true,
+      "detail": "The copied 128-pair CPU/GPU numerical-consistency audit passes its Dice tolerance."
+    },
+    {
+      "name": "fob_adaptation_is_heldout_negative_diagnostic",
+      "passed": true,
+      "detail": "The one-fold FoB adaptation selected on 30 inner-validation episodes and tested once on 40 held-out episodes; it is a negative diagnostic, not a head-to-head claim."
+    },
+    {
+      "name": "pannuke_smoke_remains_non_result_interface_check",
+      "passed": true,
+      "detail": "The PanNuke artifact validates the frozen pipeline interface on one pair and explicitly forbids treating it as cohort evidence."
+    },
+    {
+      "name": "pannuke_full_gate_is_version_isolated_and_positive_over_n0",
+      "passed": true,
+      "detail": "The full field-level PanNuke protocol has 2,540 query tiles; the version-isolated five-fold gate improves N0 while fixed N5 degrades it."
+    },
+    {
+      "name": "end_to_end_latency_is_declared_and_gt_free",
+      "passed": true,
+      "detail": "The synchronized 30-episode timing uses declared DINOv2-L + SAM ViT-B hardware/input settings and does not open query labels."
+    },
+    {
+      "name": "pannuke_support_strata_preserve_direction_descriptively",
+      "passed": true,
+      "detail": "All five fixed-support descriptive strata retain a positive gate-vs-N0 CI lower bound and a negative fixed-N5-vs-N0 CI upper bound; this is not a support-selection result."
+    },
+    {
+      "name": "pannuke_tissue_strata_report_both_positive_and_indeterminate_results",
+      "passed": true,
+      "detail": "The post-hoc public-tissue analysis reports 15 positive, 4 indeterminate, and no negative gate-vs-N0 strata rather than upgrading subgroup evidence to a primary claim."
+    },
+    {
+      "name": "nested_instance_diagnostic_preserves_dice_only_claim_boundary",
+      "passed": true,
+      "detail": "The nested instance-oriented diagnostic does not establish a positive object-recall or merge-error effect, so the manuscript must limit its gain claim to union-mask Dice."
+    },
+    {
+      "name": "all_manuscript_figures_present",
+      "passed": true,
+      "detail": "All copied raster figures referenced by the manuscript are present."
+    }
+  ],
+  "evidence_files": [
+    "device_consistency_audit.json",
+    "end_to_end_latency_per_episode.csv",
+    "end_to_end_latency_summary.json",
+    "final_paired_effects.csv",
+    "final_performance_table.csv",
+    "final_results_metadata.json",
+    "fob_fold0_adaptation_summary.json",
+    "fob_fold0_train_smoke.json",
+    "fob_sam_h_gtfree_smoke.json",
+    "nested_instance_metrics_per_query.csv",
+    "nested_instance_metrics_summary.json",
+    "pannuke_gate_environment_audit.json",
+    "pannuke_interface_smoke.json",
+    "pannuke_support_sensitivity.csv",
+    "pannuke_support_sensitivity_summary.json",
+    "pannuke_tissue_sensitivity.csv",
+    "pannuke_tissue_sensitivity_summary.json",
+    "pannuke_zero_shot_per_query.csv",
+    "pannuke_zero_shot_summary.json",
+    "runtime_table.csv",
+    "verification_report.json"
+  ],
+  "notes": [
+    "This validates cross-file integrity of the frozen evidence snapshot.",
+    "It does not re-run GPU feature extraction, SAM inference, or policy training."
+  ]
+}

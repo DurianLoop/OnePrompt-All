@@ -1,0 +1,143 @@
+{
+  "method": "RRN",
+  "timestamp": "2026-07-27 00:38:26",
+  "config": "P20-N1",
+  "wp_dir": "reports\\phaseU_wp1\\sam_b",
+  "train_queries": [
+    "train_000",
+    "train_003",
+    "train_024",
+    "train_025",
+    "train_026",
+    "train_027",
+    "train_028",
+    "train_029",
+    "train_030",
+    "train_039",
+    "train_040",
+    "train_042",
+    "train_047",
+    "train_048",
+    "train_049",
+    "train_050",
+    "train_053",
+    "train_056",
+    "train_065",
+    "train_066",
+    "train_067",
+    "train_069",
+    "train_070",
+    "train_072",
+    "train_073",
+    "train_074",
+    "train_075",
+    "train_077",
+    "train_078",
+    "train_079",
+    "train_080",
+    "train_081",
+    "train_083",
+    "train_084",
+    "train_085",
+    "train_086",
+    "train_088",
+    "train_089",
+    "train_134",
+    "train_135",
+    "train_136",
+    "train_140",
+    "train_142",
+    "train_157",
+    "train_158",
+    "train_160",
+    "train_161",
+    "train_162",
+    "train_170",
+    "train_171",
+    "train_173",
+    "train_175",
+    "train_176",
+    "train_186",
+    "train_188",
+    "train_189"
+  ],
+  "val_queries": [
+    "train_031",
+    "train_055",
+    "train_071",
+    "train_076",
+    "train_082",
+    "train_087",
+    "train_141",
+    "train_143",
+    "train_159",
+    "train_172",
+    "train_178",
+    "train_187"
+  ],
+  "test_queries": [
+    "train_001",
+    "train_002",
+    "train_041",
+    "train_051",
+    "train_052",
+    "train_054",
+    "train_068",
+    "train_090",
+    "train_133",
+    "train_148",
+    "train_174",
+    "train_177"
+  ],
+  "n_train": 1680,
+  "n_val": 360,
+  "n_test": 360,
+  "training": {
+    "epochs_trained": 21,
+    "best_val_loss": 0.7102676530679067,
+    "best_val_auroc": 0.5355183946488294
+  },
+  "test_metrics": {
+    "auroc": 0.6118656624274601,
+    "auprc": 0.6271641148659475,
+    "success_prevalence": 0.5055555701255798
+  },
+  "selective_prediction": {
+    "n_queries": 60,
+    "cfr_all": 0.0,
+    "cfr_rrn": 0.016666666666666666,
+    "cfr_reduction_pct": 0.0,
+    "mean_dice_all": 0.49985917319293954,
+    "mean_dice_rrn": 0.5247163857383947,
+    "auroc": 0.6118656624274601,
+    "auprc": 0.6271641148659475,
+    "prevalence_catastrophic": 0.0
+  },
+  "reference_selection_benchmark": {
+    "oracle": {
+      "mean_dice": 0.588417307001662
+    },
+    "random": {
+      "mean_dice": 0.5008844694133169
+    },
+    "similarity": {
+      "mean_dice": 0.5156926170733968
+    },
+    "entropy": {
+      "mean_dice": 0.5156926170733968
+    },
+    "rrn": {
+      "mean_dice": 0.5247163857383947
+    },
+    "all_refs": {
+      "mean_dice": 0.49985917319293954
+    }
+  },
+  "feature_correlations": {
+    "f1": 0.11281309414931483,
+    "f2": 0.1406086632908789,
+    "f3": 0.1406086632908789,
+    "f4": 0.20419942311949618,
+    "f5": -0.16554857110027346
+  }
+}

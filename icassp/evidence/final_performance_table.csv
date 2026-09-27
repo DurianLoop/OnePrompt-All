@@ -1,0 +1,10 @@
+dataset,protocol,method,dice
+MoNuSeg,nested_cv,FG-only K40,0.47332464324324325
+MoNuSeg,nested_cv,FG-BG N0,0.5380495567567568
+MoNuSeg,nested_cv,Global fixed N5,0.538371804129419
+MoNuSeg,nested_cv,Learned gate,0.5475548066554488
+MoNuSeg,nested_cv,Per-query oracle,0.5522697405400265
+MoNuSAC,patient_disjoint_test,FG-BG N0,0.5282497800995
+MoNuSAC,patient_disjoint_test,Frozen MoNuSeg gate,0.5361536988895645
+MoNuSAC,patient_disjoint_test,Within-domain gate,0.5342006471417197
+MoNuSAC,patient_disjoint_test,Global fixed N5,0.5441669665512874

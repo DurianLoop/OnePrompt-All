@@ -1,0 +1,59 @@
+{
+  "status": "GATE_COMPLETE",
+  "protocol": "icassp.pannuke_zero_shot_v1",
+  "query_count": 2540,
+  "supports_per_query": 5,
+  "sklearn_versions_by_fold": {
+    "0": "1.7.2",
+    "1": "1.7.2",
+    "2": "1.9.0",
+    "3": "1.9.0",
+    "4": "1.9.0"
+  },
+  "means": {
+    "n0": 0.49266858056655205,
+    "n5": 0.479960668749858,
+    "five_fold_majority_gate": 0.4973685429593727
+  },
+  "n5_vs_n0": {
+    "delta": -0.012707911816694069,
+    "ci95_low": -0.014252089013196597,
+    "ci95_high": -0.01115020312722766
+  },
+  "gate_vs_n0": {
+    "delta": 0.004699962392820607,
+    "ci95_low": 0.004019897802723699,
+    "ci95_high": 0.005415199420254009
+  },
+  "gate_vs_n5": {
+    "delta": 0.017407874209514677,
+    "ci95_low": 0.01608187549210079,
+    "ci95_high": 0.018790450080779935
+  },
+  "win_tie_loss": {
+    "n5_vs_n0": {
+      "win": 872,
+      "tie": 1,
+      "loss": 1667
+    },
+    "gate_vs_n0": {
+      "win": 1354,
+      "tie": 469,
+      "loss": 717
+    },
+    "gate_vs_n5": {
+      "win": 1881,
+      "tie": 237,
+      "loss": 422
+    }
+  },
+  "episode_n5_vote_histogram": {
+    "0": 415,
+    "1": 203,
+    "2": 6681,
+    "3": 1129,
+    "4": 1047,
+    "5": 3225
+  },
+  "query_gt_policy": "raw masks opened after action predictions; gate consumes no Dice or ground truth"
+}

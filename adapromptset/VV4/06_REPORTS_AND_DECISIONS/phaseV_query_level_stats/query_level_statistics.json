@@ -1,0 +1,542 @@
+{
+  "phase": "PhaseV",
+  "task": "Query-Level Statistics Reanalysis",
+  "date": "2026-07-27T12:09:16.737361",
+  "corrected_statistical_unit": "query (n=80 per dataset)",
+  "n_pipelines": 5,
+  "anti_correlation": [
+    {
+      "pipeline": "L+SAM-B",
+      "n_queries": 80,
+      "pearson_r": -0.5120046489487432,
+      "pearson_p": 1.2074243502253327e-06,
+      "pearson_ci_95": [
+        -0.6463364711762962,
+        -0.34341780191272697
+      ],
+      "spearman_r": -0.2797096110029945,
+      "spearman_p": 0.011977813074575065,
+      "partial_r": -0.3808284444566522,
+      "partial_p": 0.000492277585987485,
+      "partial_ci_95": [
+        -0.5518684747079777,
+        -0.20696520770528298
+      ],
+      "significant_pearson": true,
+      "significant_spearman": true,
+      "significant_partial": true
+    },
+    {
+      "pipeline": "L+SAM-L",
+      "n_queries": 80,
+      "pearson_r": -0.220763002180425,
+      "pearson_p": 0.04908650641013397,
+      "pearson_ci_95": [
+        -0.302318334711076,
+        -0.1386011298043629
+      ],
+      "spearman_r": -0.29469212540653794,
+      "spearman_p": 0.007965537728166884,
+      "partial_r": -0.0636503577594176,
+      "partial_p": 0.5748552594479742,
+      "partial_ci_95": [
+        -0.22719486267115724,
+        0.08136187720816627
+      ],
+      "significant_pearson": true,
+      "significant_spearman": true,
+      "significant_partial": false
+    },
+    {
+      "pipeline": "L+SAM2-T",
+      "n_queries": 80,
+      "pearson_r": -0.11137752901356124,
+      "pearson_p": 0.3253236436642309,
+      "pearson_ci_95": [
+        -0.25661516593228656,
+        0.06043067635573834
+      ],
+      "spearman_r": 0.20108711252796127,
+      "spearman_p": 0.07368104907784562,
+      "partial_r": 0.1286805531847216,
+      "partial_p": 0.25529737322649076,
+      "partial_ci_95": [
+        -0.03809327800236366,
+        0.2891727520681675
+      ],
+      "significant_pearson": false,
+      "significant_spearman": false,
+      "significant_partial": false
+    },
+    {
+      "pipeline": "L+SAM2-S",
+      "n_queries": 80,
+      "pearson_r": -0.17851237644156878,
+      "pearson_p": 0.11312814002929328,
+      "pearson_ci_95": [
+        -0.27995939904678613,
+        -0.06444842054892101
+      ],
+      "spearman_r": -0.11260658132366116,
+      "spearman_p": 0.31997959961541783,
+      "partial_r": -0.17598189230871975,
+      "partial_p": 0.11841282997212867,
+      "partial_ci_95": [
+        -0.3434926813411035,
+        -0.005335676138635898
+      ],
+      "significant_pearson": false,
+      "significant_spearman": false,
+      "significant_partial": false
+    },
+    {
+      "pipeline": "B+SAM-B",
+      "n_queries": 80,
+      "pearson_r": -0.5486639439955697,
+      "pearson_p": 1.371535773398816e-07,
+      "pearson_ci_95": [
+        -0.6691756748167736,
+        -0.38980082881656736
+      ],
+      "spearman_r": -0.2363089370672936,
+      "spearman_p": 0.03482960741456803,
+      "partial_r": -0.5002832118762482,
+      "partial_p": 2.2976413466831233e-06,
+      "partial_ci_95": [
+        -0.6446614066299649,
+        -0.34275612780714093
+      ],
+      "significant_pearson": true,
+      "significant_spearman": true,
+      "significant_partial": true
+    }
+  ],
+  "descriptives": [
+    {
+      "pipeline": "L+SAM-B",
+      "n_queries": 80,
+      "mean_dice": 0.4462434824999999,
+      "dice_ci_95": [
+        0.39943467191666665,
+        0.49257191579166665
+      ],
+      "dice_std": 0.21765504399151603,
+      "mean_instability": 0.19849841333333332,
+      "instability_std": 0.13064037757249924,
+      "mean_cfr": 0.15361111416666667,
+      "cfr_ci_95": [
+        0.08388889245833334,
+        0.23222222420833333
+      ],
+      "prevalence_catastrophic": 0.15,
+      "prevalence_high_instability": 0.175
+    },
+    {
+      "pipeline": "L+SAM-L",
+      "n_queries": 80,
+      "mean_dice": 0.31078011333333333,
+      "dice_ci_95": [
+        0.2740081653125,
+        0.3481577921666667
+      ],
+      "dice_std": 0.172553634258991,
+      "mean_instability": 0.04273972583333334,
+      "instability_std": 0.07157896919243364,
+      "mean_cfr": 0.16430555833333332,
+      "cfr_ci_95": [
+        0.08916667,
+        0.2476388916875
+      ],
+      "prevalence_catastrophic": 0.1625,
+      "prevalence_high_instability": 0.025
+    },
+    {
+      "pipeline": "L+SAM2-T",
+      "n_queries": 80,
+      "mean_dice": 0.32821501499999994,
+      "dice_ci_95": [
+        0.2937902238958333,
+        0.362017236375
+      ],
+      "dice_std": 0.15842259057255959,
+      "mean_instability": 0.14320262666666667,
+      "instability_std": 0.16212312564494805,
+      "mean_cfr": 0.18583333833333332,
+      "cfr_ci_95": [
+        0.12055555247916667,
+        0.2579201485208333
+      ],
+      "prevalence_catastrophic": 0.1625,
+      "prevalence_high_instability": 0.175
+    },
+    {
+      "pipeline": "L+SAM2-S",
+      "n_queries": 80,
+      "mean_dice": 0.29776383333333334,
+      "dice_ci_95": [
+        0.26181992212499994,
+        0.3344462185416667
+      ],
+      "dice_std": 0.1685535913004464,
+      "mean_instability": 0.039320139999999996,
+      "instability_std": 0.06430065537819445,
+      "mean_cfr": 0.201111115,
+      "cfr_ci_95": [
+        0.12027431183333333,
+        0.28861458639583326
+      ],
+      "prevalence_catastrophic": 0.2,
+      "prevalence_high_instability": 0.0
+    },
+    {
+      "pipeline": "B+SAM-B",
+      "n_queries": 80,
+      "mean_dice": 0.4256268050000001,
+      "dice_ci_95": [
+        0.3791977837916667,
+        0.4711595084791667
+      ],
+      "dice_std": 0.21345203880406935,
+      "mean_instability": 0.21703437250000004,
+      "instability_std": 0.13678926824012896,
+      "mean_cfr": 0.16444445,
+      "cfr_ci_95": [
+        0.09332986533333335,
+        0.2443055544583333
+      ],
+      "prevalence_catastrophic": 0.15,
+      "prevalence_high_instability": 0.2625
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "pipeline_a": "L+SAM-B",
+      "pipeline_b": "L+SAM-L",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": 0.13546336916666665,
+        "diff_ci_95": [
+          0.11591725504166665,
+          0.15541173822916665
+        ],
+        "wilcoxon_stat": 19.0,
+        "p_value": 1.605157999768754e-14,
+        "win_tie_loss": "71/8/1"
+      },
+      "cfr": {
+        "mean_diff": -0.010694444166666667,
+        "diff_ci_95": [
+          -0.031111111708333337,
+          0.006944448333333332
+        ],
+        "wilcoxon_stat": 50.0,
+        "p_value": 0.5697495261536836,
+        "win_tie_loss": "5/73/2"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM-B",
+      "pipeline_b": "L+SAM2-T",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": 0.11802846749999998,
+        "diff_ci_95": [
+          0.09601510591666665,
+          0.14069556416666662
+        ],
+        "wilcoxon_stat": 164.0,
+        "p_value": 2.8813255258668134e-12,
+        "win_tie_loss": "66/6/8"
+      },
+      "cfr": {
+        "mean_diff": -0.03222222416666667,
+        "diff_ci_95": [
+          -0.06194444254166667,
+          -0.004861121604166666
+        ],
+        "wilcoxon_stat": 205.0,
+        "p_value": 0.00981254063679894,
+        "win_tie_loss": "19/55/6"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM-B",
+      "pipeline_b": "L+SAM2-S",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": 0.14847964916666664,
+        "diff_ci_95": [
+          0.12567277195833335,
+          0.17234755127083334
+        ],
+        "wilcoxon_stat": 8.0,
+        "p_value": 1.0619072426644935e-14,
+        "win_tie_loss": "71/9/0"
+      },
+      "cfr": {
+        "mean_diff": -0.04750000083333334,
+        "diff_ci_95": [
+          -0.0930590286875,
+          -0.009722228270833336
+        ],
+        "wilcoxon_stat": 56.5,
+        "p_value": 0.02294229779485103,
+        "win_tie_loss": "11/68/1"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM-B",
+      "pipeline_b": "B+SAM-B",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": 0.020616677499999993,
+        "diff_ci_95": [
+          0.008070289458333322,
+          0.03416390933333332
+        ],
+        "wilcoxon_stat": 1157.0,
+        "p_value": 0.026372577257563312,
+        "win_tie_loss": "32/27/21"
+      },
+      "cfr": {
+        "mean_diff": -0.010833335833333336,
+        "diff_ci_95": [
+          -0.018333331687500003,
+          -0.004722222479166667
+        ],
+        "wilcoxon_stat": 10.0,
+        "p_value": 0.0006216890994264571,
+        "win_tie_loss": "5/75/0"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM-L",
+      "pipeline_b": "L+SAM2-T",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": -0.01743490166666667,
+        "diff_ci_95": [
+          -0.03462972035416667,
+          -0.0005460781875000013
+        ],
+        "wilcoxon_stat": 1253.0,
+        "p_value": 0.07836756324274503,
+        "win_tie_loss": "21/32/27"
+      },
+      "cfr": {
+        "mean_diff": -0.021527780000000003,
+        "diff_ci_95": [
+          -0.05333681035416667,
+          0.012083325187500002
+        ],
+        "wilcoxon_stat": 229.0,
+        "p_value": 0.024610261076118935,
+        "win_tie_loss": "19/54/7"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM-L",
+      "pipeline_b": "L+SAM2-S",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": 0.013016280000000002,
+        "diff_ci_95": [
+          0.005452756895833342,
+          0.021807384833333332
+        ],
+        "wilcoxon_stat": 888.0,
+        "p_value": 0.00044662222455290777,
+        "win_tie_loss": "26/48/6"
+      },
+      "cfr": {
+        "mean_diff": -0.03680555666666667,
+        "diff_ci_95": [
+          -0.07444791870833334,
+          -0.0077777807708333336
+        ],
+        "wilcoxon_stat": 27.0,
+        "p_value": 0.01896615415346599,
+        "win_tie_loss": "8/72/0"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM-L",
+      "pipeline_b": "B+SAM-B",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": -0.11484669166666665,
+        "diff_ci_95": [
+          -0.13360148585416667,
+          -0.09592277266666668
+        ],
+        "wilcoxon_stat": 61.0,
+        "p_value": 7.580064558889703e-14,
+        "win_tie_loss": "2/11/67"
+      },
+      "cfr": {
+        "mean_diff": -0.0001388916666666684,
+        "diff_ci_95": [
+          -0.015416675833333332,
+          0.01583680956249995
+        ],
+        "wilcoxon_stat": 66.0,
+        "p_value": 0.39530372453863905,
+        "win_tie_loss": "4/73/3"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM2-T",
+      "pipeline_b": "L+SAM2-S",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": 0.03045118166666667,
+        "diff_ci_95": [
+          0.011270830437500004,
+          0.05070687145833333
+        ],
+        "wilcoxon_stat": 945.0,
+        "p_value": 0.0012058453663418738,
+        "win_tie_loss": "33/32/15"
+      },
+      "cfr": {
+        "mean_diff": -0.015277776666666664,
+        "diff_ci_95": [
+          -0.05486109614583334,
+          0.020138887541666664
+        ],
+        "wilcoxon_stat": 369.0,
+        "p_value": 0.7694474225950909,
+        "win_tie_loss": "12/54/14"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM2-T",
+      "pipeline_b": "B+SAM-B",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": -0.09741179,
+        "diff_ci_95": [
+          -0.12325606906250001,
+          -0.07167248091666667
+        ],
+        "wilcoxon_stat": 413.0,
+        "p_value": 7.075670886025602e-09,
+        "win_tie_loss": "15/6/59"
+      },
+      "cfr": {
+        "mean_diff": 0.021388888333333335,
+        "diff_ci_95": [
+          -0.005416665020833337,
+          0.049305554999999994
+        ],
+        "wilcoxon_stat": 258.5,
+        "p_value": 0.04168457372011104,
+        "win_tie_loss": "7/57/16"
+      }
+    },
+    {
+      "pipeline_a": "L+SAM2-S",
+      "pipeline_b": "B+SAM-B",
+      "n_paired_queries": 80,
+      "dice": {
+        "mean_diff": -0.12786297166666666,
+        "diff_ci_95": [
+          -0.14705316433333332,
+          -0.1085551743125
+        ],
+        "wilcoxon_stat": 37.0,
+        "p_value": 3.137366790917399e-14,
+        "win_tie_loss": "1/10/69"
+      },
+      "cfr": {
+        "mean_diff": 0.03666666500000001,
+        "diff_ci_95": [
+          0.003611110000000002,
+          0.07611110004166668
+        ],
+        "wilcoxon_stat": 95.0,
+        "p_value": 0.19072128853304426,
+        "win_tie_loss": "1/70/9"
+      }
+    }
+  ],
+  "holm_correction": [
+    {
+      "pipeline": "B+SAM-B",
+      "p_raw": 1.371535773398816e-07,
+      "holm_threshold": 0.01,
+      "holm_significant": true
+    },
+    {
+      "pipeline": "L+SAM-B",
+      "p_raw": 1.2074243502253327e-06,
+      "holm_threshold": 0.0125,
+      "holm_significant": true
+    },
+    {
+      "pipeline": "L+SAM-L",
+      "p_raw": 0.04908650641013397,
+      "holm_threshold": 0.016666666666666666,
+      "holm_significant": false
+    },
+    {
+      "pipeline": "L+SAM2-S",
+      "p_raw": 0.11312814002929328,
+      "holm_threshold": 0.025,
+      "holm_significant": false
+    },
+    {
+      "pipeline": "L+SAM2-T",
+      "p_raw": 0.3253236436642309,
+      "holm_threshold": 0.05,
+      "holm_significant": false
+    }
+  ],
+  "summary": {
+    "anti_correlation_query_level": {
+      "L+SAM-B": {
+        "pearson_r": -0.5120046489487432,
+        "pearson_p": 1.2074243502253327e-06,
+        "significant": true,
+        "partial_r": -0.3808284444566522,
+        "partial_p": 0.000492277585987485
+      },
+      "L+SAM-L": {
+        "pearson_r": -0.220763002180425,
+        "pearson_p": 0.04908650641013397,
+        "significant": true,
+        "partial_r": -0.0636503577594176,
+        "partial_p": 0.5748552594479742
+      },
+      "L+SAM2-T": {
+        "pearson_r": -0.11137752901356124,
+        "pearson_p": 0.3253236436642309,
+        "significant": false,
+        "partial_r": 0.1286805531847216,
+        "partial_p": 0.25529737322649076
+      },
+      "L+SAM2-S": {
+        "pearson_r": -0.17851237644156878,
+        "pearson_p": 0.11312814002929328,
+        "significant": false,
+        "partial_r": -0.17598189230871975,
+        "partial_p": 0.11841282997212867
+      },
+      "B+SAM-B": {
+        "pearson_r": -0.5486639439955697,
+        "pearson_p": 1.371535773398816e-07,
+        "significant": true,
+        "partial_r": -0.5002832118762482,
+        "partial_p": 2.2976413466831233e-06
+      }
+    },
+    "key_findings": [
+      "All statistics now use query (n=80) as the primary unit, not episode (n=1200)",
+      "Anti-correlation range at query level: -0.549 to -0.111",
+      "Partial correlation (controlling mean Dice) range: -0.500 to 0.129",
+      "Paired comparisons use query-level aggregation with Wilcoxon signed-rank test",
+      "Bootstrap CIs (10,000 resamples) provided for all key metrics",
+      "Holm-Bonferroni correction applied for multiple anti-correlation tests"
+    ]
+  }
+}

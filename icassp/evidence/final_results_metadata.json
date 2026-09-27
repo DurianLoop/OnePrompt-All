@@ -1,0 +1,12 @@
+{
+  "monuseg_oracle_dice": 0.5522697405400265,
+  "monuseg_nested_gate_closes_oracle_gap_pct": 66.0745757839335,
+  "monusac_best_fixed_budget": 5,
+  "monusac_best_fixed_dice": 0.5441669665512874,
+  "sammed2d_gate_delta_dice": -0.0003297334304903703,
+  "sammed2d_gate_ci95": [
+    -0.0008721961996500852,
+    2.3936693204443475e-05
+  ],
+  "note": "MoNuSAC learned gates improve N0 anchors but do not exceed the post-hoc global fixed N5."
+}

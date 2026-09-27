@@ -1,0 +1,20 @@
+{
+  "status": "FOB_SAM_H_GTFREE_SMOKE_PASS",
+  "scope": "untrained FoB prompt policy + SAM-H decode; wiring/GT-free check only; not a result",
+  "fold": 0,
+  "episode_id": "monuseg_nested_f0_val__TCGA-B0-5698-01Z-00-DX1__to__TCGA-B0-5711-01Z-00-DX1",
+  "split": "inner_validation",
+  "support_case_id": "TCGA-B0-5698-01Z-00-DX1",
+  "query_case_id": "TCGA-B0-5711-01Z-00-DX1",
+  "query_gt_loaded": false,
+  "positive_point_count": 10,
+  "negative_point_count": 10,
+  "prediction_shape": [
+    1000,
+    1000
+  ],
+  "prediction_foreground_fraction": 0.0442890003323555,
+  "elapsed_seconds": 6.035126100294292,
+  "peak_cuda_memory_mib": 5980.61181640625,
+  "sam_checkpoint_bytes": 2564550879
+}

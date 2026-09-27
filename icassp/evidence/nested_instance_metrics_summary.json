@@ -1,0 +1,41 @@
+{
+  "status": "DIAGNOSTIC_COMPLETE",
+  "protocol": "nested_cv5_negative_budget",
+  "query_count": 37,
+  "references_per_query": 5,
+  "bootstrap_resamples": 10000,
+  "seed": 20260715,
+  "metrics": {
+    "dice": {
+      "fixed_mean": 0.5374577420263341,
+      "learned_mean": 0.5475548066554488,
+      "delta_learned_minus_fixed": 0.010097064629114541,
+      "ci95_low": 0.0038698159527043034,
+      "ci95_high": 0.01877674035419923,
+      "favorable_win": 15,
+      "tie": 21,
+      "favorable_loss": 1
+    },
+    "object_recall": {
+      "fixed_mean": 0.9556099539657613,
+      "learned_mean": 0.9534543403740987,
+      "delta_learned_minus_fixed": -0.0021556135916624914,
+      "ci95_low": -0.005644544802968009,
+      "ci95_high": 2.8075330778866677e-05,
+      "favorable_win": 5,
+      "tie": 24,
+      "favorable_loss": 8
+    },
+    "merge_error": {
+      "fixed_mean": 0.07597806854044162,
+      "learned_mean": 0.07868639595636275,
+      "delta_learned_minus_fixed": 0.002708327415921145,
+      "ci95_low": -0.0002191324863361615,
+      "ci95_high": 0.005619622893943565,
+      "favorable_win": 3,
+      "tie": 21,
+      "favorable_loss": 13
+    }
+  },
+  "scope": "diagnostic instance-oriented metrics; Dice remains the predeclared primary endpoint"
+}

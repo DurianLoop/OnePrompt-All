@@ -80,3 +80,5 @@ phase,command,gpu_hours,notes
 3-candidate-pilot,scripts/run_candidate_pilot.py,0.000000,MoNuSAC validation multi-episode DINOv2-L candidate quality pilot.
 6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
 6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
+6-oracle-gap-pilot,scripts/run_oracle_gap_pilot.py,0.000000,glas validation subset action utility and oracle-gap pilot.
